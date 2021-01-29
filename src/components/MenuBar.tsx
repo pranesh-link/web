@@ -8,19 +8,21 @@ const MenuBar = () => {
     refs: { homeRef, skillsRef, experienceRef, educationRef, contactRef },
   } = React.useContext(AppContext);
   const goTo = (ref: React.MutableRefObject<any>) => {
-    const yOffset = -70;
+    const yOffset = -20;
     const y =
       ref.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
     window.scrollTo({ top: y, behavior: "smooth" });
   };
   return (
     <MenuWrapper>
-      <FlexBox justifyContent="space-between" className="wrapper">
-        <MenuBtn onClick={() => goTo(homeRef)}>Home</MenuBtn>
+      <FlexBox
+        justifyContent="space-between"
+        direction="column"
+        className="wrapper"
+      >
+        <MenuBtn onClick={() => goTo(homeRef)}>About Me</MenuBtn>
         <MenuBtn onClick={() => goTo(skillsRef)}>Skills</MenuBtn>
-        <MenuBtn onClick={() => goTo(experienceRef)}>
-          Professional Experience
-        </MenuBtn>
+        <MenuBtn onClick={() => goTo(experienceRef)}>Experience</MenuBtn>
         <MenuBtn onClick={() => goTo(educationRef)}>Education</MenuBtn>
         <MenuBtn onClick={() => goTo(contactRef)}>Contact</MenuBtn>
       </FlexBox>
@@ -33,13 +35,12 @@ export default MenuBar;
 const MenuWrapper = styled.nav`
   overflow: hidden;
   position: fixed;
-  top: 0;
+  top: 20%;
+  right: 25px;
   width: 100%;
   z-index: 10;
-  background-color: #ccc;
-  .wrapper {
-    padding: 20px;
-  }
+  background-color: #222222;
+  max-width: 10%;
 `;
 
 const MenuBtn = styled.button`
@@ -47,13 +48,11 @@ const MenuBtn = styled.button`
   border: none;
   cursor: pointer;
   outline: none;
-  color: #0c77b9;
+  color: #fff;
   font-size: 14px;
   font-weight: bold;
-  padding: 5px 15px;
-  border-radius: 20px;
+  padding: 20px 5px;
   &:hover {
-    color: #fff;
-    background-color: #0c77b9;
+    color: #434242;
   }
 `;

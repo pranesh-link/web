@@ -17,7 +17,11 @@ interface IAppContext {
 const DEFAULT_CONTEXT = {
   data: {
     data: {
-      objective: {
+      aboutMe: {
+        title: "",
+        info: "",
+      },
+      details: {
         title: "",
         info: "",
       },

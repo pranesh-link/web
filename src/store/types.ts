@@ -25,7 +25,8 @@ export interface IProject {
 }
 
 export type ProfileSectionType =
-  | "objective"
+  | "aboutMe"
+  | "details"
   | "skills"
   | "experience"
   | "education"

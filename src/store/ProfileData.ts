@@ -2,12 +2,29 @@ import { IProfileData } from "./types";
 
 export const ProfileData: IProfileData = {
   data: {
-    objective: {
-      title: "Objective",
-      info: `To be an integral part of a competitive work environment, it would
+    aboutMe: {
+      title: "About Me",
+      info: `I'm an enthusiastic front developer who wants to be an integral part of a competitive work environment, which would
     help me to update my knowledge and skills, both on the intellectual
     and personal front while contributing to the growth and success of the
     organisation.`,
+    },
+    details: {
+      title: "Details",
+      info: [
+        {
+          label: "Name:",
+          info: "Pranesh",
+        },
+        {
+          label: "Age:",
+          info: "30 years",
+        },
+        {
+          label: "Location:",
+          info: "Bengaluru, India",
+        },
+      ],
     },
     skills: {
       title: "Skills",

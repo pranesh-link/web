@@ -19,5 +19,6 @@ export const ExperienceInfo = (props: IExperienceInfoProps) => {
 };
 
 const SectionWrapper = styled.section`
-  margin-left: 20px;
+  padding-left: 20px;
+  padding-right: 15%;
 `;
