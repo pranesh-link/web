@@ -37,7 +37,7 @@ const DEFAULT_CONTEXT = {
         title: "",
         info: "",
       },
-      contact: {
+      links: {
         title: "",
         info: "",
       },

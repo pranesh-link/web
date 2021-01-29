@@ -8,11 +8,15 @@ export interface IProfileData {
   };
 }
 
-export type InfoType = string | (ISkill | IProject)[];
+export type InfoType = string | (ISkill | IProject | ILink)[];
 
 export interface ISkill {
   label: string;
   info: string;
+}
+
+export interface ILink extends ISkill {
+  icon: string;
 }
 
 export interface IProject {
@@ -30,4 +34,4 @@ export type ProfileSectionType =
   | "skills"
   | "experience"
   | "education"
-  | "contact";
+  | "links";

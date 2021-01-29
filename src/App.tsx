@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import MenuBar from "./components/MenuBar";
 import ProfileSections from "./components/ProfileSections";
@@ -11,6 +11,7 @@ function App() {
   const experienceRef = useRef(null);
   const educationRef = useRef(null);
   const contactRef = useRef(null);
+
   return (
     <AppProvider
       value={{

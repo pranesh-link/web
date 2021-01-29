@@ -1,31 +1,86 @@
-import React from "react";
+import classNames from "classnames";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { FlexBox } from "../common/Elements";
+import { FlexBoxSection } from "../common/Elements";
 import { AppContext } from "../context";
 
 const MenuBar = () => {
   const {
     refs: { homeRef, skillsRef, experienceRef, educationRef, contactRef },
   } = React.useContext(AppContext);
+  const [currentSection, setCurrentSection] = useState<string>("about");
   const goTo = (ref: React.MutableRefObject<any>) => {
-    const yOffset = -20;
-    const y =
-      ref.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
-    window.scrollTo({ top: y, behavior: "smooth" });
+    const top = ref.current.getBoundingClientRect().top + window.pageYOffset;
+    window.scrollTo({ top, behavior: "smooth" });
   };
+
+  const handleScroll = () => {
+    const positions = [
+      { section: "about", pos: homeRef.current.getBoundingClientRect().top },
+      { section: "skills", pos: skillsRef.current.getBoundingClientRect().top },
+      {
+        section: "experiences",
+        pos: experienceRef.current.getBoundingClientRect().top,
+      },
+      {
+        section: "education",
+        pos: educationRef.current.getBoundingClientRect().top,
+      },
+    ];
+
+    const resultPosition = positions.reduce(
+      (result, curr, index) => {
+        if (index === 0) {
+          return curr;
+        }
+        if (curr.pos <= 0 && curr.pos > result.pos) {
+          return curr;
+        }
+        return result;
+      },
+      { section: "about", pos: 0 }
+    );
+    setCurrentSection(resultPosition.section);
+  };
+
+  useEffect(() => {
+    handleScroll();
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <MenuWrapper>
-      <FlexBox
-        justifyContent="space-between"
-        direction="column"
-        className="wrapper"
-      >
-        <MenuBtn onClick={() => goTo(homeRef)}>About Me</MenuBtn>
-        <MenuBtn onClick={() => goTo(skillsRef)}>Skills</MenuBtn>
-        <MenuBtn onClick={() => goTo(experienceRef)}>Experience</MenuBtn>
-        <MenuBtn onClick={() => goTo(educationRef)}>Education</MenuBtn>
-        <MenuBtn onClick={() => goTo(contactRef)}>Contact</MenuBtn>
-      </FlexBox>
+    <MenuWrapper className="wrapper">
+      <FlexBoxSection direction="column">
+        <MenuBtn
+          onClick={() => goTo(homeRef)}
+          className={classNames({ "is-active": currentSection === "about" })}
+        >
+          About Me
+        </MenuBtn>
+        <MenuBtn
+          onClick={() => goTo(skillsRef)}
+          className={classNames({ "is-active": currentSection === "skills" })}
+        >
+          Skills
+        </MenuBtn>
+        <MenuBtn
+          onClick={() => goTo(experienceRef)}
+          className={classNames({
+            "is-active": currentSection === "experiences",
+          })}
+        >
+          Experiences
+        </MenuBtn>
+        <MenuBtn
+          onClick={() => goTo(educationRef)}
+          className={classNames({
+            "is-active": currentSection === "education",
+          })}
+        >
+          Education
+        </MenuBtn>
+      </FlexBoxSection>
     </MenuWrapper>
   );
 };
@@ -41,6 +96,29 @@ const MenuWrapper = styled.nav`
   z-index: 10;
   background-color: #222222;
   max-width: 10%;
+  &.wrapper {
+    .is-active {
+      background-color: #3f9c35;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+    li {
+      text-align: center;
+      padding: 20px 5px;
+    }
+    a {
+      font-weight: bold;
+      padding: 20px 5px;
+      text-decoration: none;
+      color: #fff;
+      &:hover {
+        color: #434242;
+      }
+    }
+  }
 `;
 
 const MenuBtn = styled.button`
@@ -49,9 +127,8 @@ const MenuBtn = styled.button`
   cursor: pointer;
   outline: none;
   color: #fff;
-  font-size: 14px;
   font-weight: bold;
-  padding: 20px 5px;
+  padding: 20px 10px;
   &:hover {
     color: #434242;
   }

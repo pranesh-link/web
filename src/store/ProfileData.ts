@@ -13,16 +13,16 @@ export const ProfileData: IProfileData = {
       title: "Details",
       info: [
         {
-          label: "Name:",
-          info: "Pranesh",
-        },
-        {
-          label: "Age:",
-          info: "30 years",
-        },
-        {
           label: "Location:",
           info: "Bengaluru, India",
+        },
+        {
+          label: "Mobile",
+          info: "<a href='tel:+91-9443329991'>Call me</a>",
+        },
+        {
+          label: "E-mail",
+          info: "<a href='mailto:prans1991@gmail.com'>Mail me</a>",
         },
       ],
     },
@@ -156,9 +156,35 @@ export const ProfileData: IProfileData = {
       info:
         "<strong>B.E (Electronics and Communication)</strong>, Sri Krishna College of Engineering and Technology",
     },
-    contact: {
-      title: "Contact",
-      info: "",
+    links: {
+      title: "Links",
+      info: [
+        {
+          label: "Github",
+          info:
+            "<a href='https://github.com/prans1991/' target='_blank'>Github</a><span> - </span>",
+        },
+        {
+          label: "LinkedIn",
+          info: `<a href='https://www.instagram.com/anonymous_offl/' target='_blank'>LinkedIn</a>
+             <span> - </span> `,
+        },
+        {
+          label: "Instagram",
+          info:
+            "<a href='https://www.instagram.com/anonymous_offl/' target='_blank'>Instagram</a><span> - </span>",
+        },
+        {
+          label: "Facebook",
+          info:
+            "<a href='https://www.facebook.com/anonymousOffl/' target='_blank'>Facebook</a><span> - </span>",
+        },
+        {
+          label: "Twitter",
+          info:
+            "<a href='https://twitter.com/anonymous_offl' target='_blank'>Twitter</a>",
+        },
+      ],
     },
   },
 };

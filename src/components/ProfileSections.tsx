@@ -12,19 +12,17 @@ const ProfileSections = () => {
     data,
     refs: { homeRef, skillsRef, experienceRef, educationRef, contactRef },
   } = React.useContext(AppContext);
-  const {
-    aboutMe,
-    details,
-    skills,
-    education,
-    experience,
-    contact,
-  } = data.data;
+  const { aboutMe, details, skills, education, experience, links } = data.data;
+
   return (
     <Wrapper>
-      <PageHeader>Profile</PageHeader>
+      <ShortDesc>Hey, I'm </ShortDesc>
+      <PageHeader>
+        <hr className="header-sep" />
+        <span>Pranesh</span>
+        <hr className="header-sep" />
+      </PageHeader>
       <FlexBox direction="column" alignItems="center">
-        <ShortDesc>I'm a Front End Developer</ShortDesc>
         <Separator />
       </FlexBox>
       <SectionsWrapper>
@@ -32,6 +30,7 @@ const ProfileSections = () => {
           className="profile-section about"
           justifyContent="center"
           ref={homeRef}
+          id="home"
         >
           <FlexBoxSection direction="column" className="about-me">
             <SecHeader className="about-me-title">{aboutMe.title}</SecHeader>
@@ -47,32 +46,56 @@ const ProfileSections = () => {
             <FlexBoxSection direction="column">
               {valueIsArray(details.info) && valueIsSkillInfo(details.info)
                 ? details.info.map((detail, index) => (
-                    <FlexBoxSection key={index} direction="column">
+                    <FlexBoxSection
+                      className="detail"
+                      key={index}
+                      direction="column"
+                    >
                       <DetailLabel>{detail.label}</DetailLabel>
-                      <span className="detail-info">{detail.info}</span>
+                      <span
+                        className="detail-info"
+                        dangerouslySetInnerHTML={{ __html: detail.info }}
+                      />
                     </FlexBoxSection>
                   ))
                 : null}
             </FlexBoxSection>
           </FlexBoxSection>
         </FlexBoxSection>
-        <section className="profile-section" ref={skillsRef}>
+        <section className="profile-section" id="skills" ref={skillsRef}>
           <SecHeader>{skills.title}</SecHeader>
           <SkillsInfo />
         </section>
-        <section className="profile-section experience" ref={experienceRef}>
+        <section
+          className="profile-section experience"
+          id="experience"
+          ref={experienceRef}
+        >
           <SecHeader>{experience.title}</SecHeader>
           <ExperienceInfo experience={experience.info} />
         </section>
-        <section className="profile-section" ref={educationRef}>
+        <section className="profile-section" id="education" ref={educationRef}>
           <SecHeader>{education.title}</SecHeader>
           <Desc
             dangerouslySetInnerHTML={{ __html: education.info as string }}
           />
         </section>
-        <section className="profile-section" ref={contactRef}>
-          <SecHeader>{contact.title}</SecHeader>
-        </section>
+        <FlexBoxSection
+          justifyContent="center"
+          className="profile-section links"
+          id="links"
+          ref={contactRef}
+        >
+          {valueIsArray(links.info) && valueIsSkillInfo(links.info)
+            ? links.info.map((link) => (
+                <div
+                  className="link"
+                  key={link.label}
+                  dangerouslySetInnerHTML={{ __html: link.info }}
+                ></div>
+              ))
+            : null}
+        </FlexBoxSection>
       </SectionsWrapper>
     </Wrapper>
   );
@@ -80,7 +103,15 @@ const ProfileSections = () => {
 
 export default ProfileSections;
 
-const Wrapper = styled.section``;
+const Wrapper = styled.section`
+  .header-sep {
+    min-width: 100px;
+    opacity: 0.6;
+    height: 0;
+    border-top: 5px solid #22a39f;
+    margin: 0 10px;
+  }
+`;
 
 const SectionsWrapper = styled.section`
   display: flex;
@@ -88,14 +119,45 @@ const SectionsWrapper = styled.section`
   justify-content: space-evenly;
   height: 100%;
   margin-top: 40px;
-  padding-bottom: 50%;
+  padding-bottom: 60%;
   .profile-section {
     margin-bottom: 20px;
     padding-left: 20px;
-
+    &.links {
+      padding: 30px 0;
+      background-color: #434242;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      margin-bottom: 0;
+    }
+    .link {
+      a {
+        padding: 10px 15px;
+        text-decoration: none;
+        border-radius: 20px;
+        background-color: #0c77b9;
+        &:hover {
+          background-color: #3f9c35;
+        }
+      }
+      a,
+      span {
+        color: #f0f0f0;
+      }
+      padding-right: 5px;
+      .link-separator {
+        &:last-child {
+          display: none;
+        }
+      }
+    }
     &.experience {
       padding-top: 20px;
       background-color: #f3f0de;
+    }
+    &.about {
+      padding-top: 20px;
     }
     .about-me {
       flex-basis: 20%;
@@ -103,15 +165,13 @@ const SectionsWrapper = styled.section`
     }
     .image {
       .image-wrap {
-        padding: 10px;
-        border-radius: 50%;
-        background-color: #dddbca;
-        margin-right: 25px;
+        margin-right: 50px;
       }
       .profile-image {
         width: 200px;
         height: 200px;
         border-radius: 50%;
+        border: 10px solid #dddbca;
       }
     }
     .details {
@@ -131,20 +191,25 @@ const Separator = styled.hr`
   border-top: 1px solid #eee;
 `;
 
-const ShortDesc = styled.p`
+const ShortDesc = styled.h3`
   text-align: center;
   color: #727878;
   font-size: 21px;
   margin-bottom: 20px;
   font-weight: 300;
   line-height: 1.4;
+  font-style: italic;
 `;
 const PageHeader = styled.h2`
   font-size: 54px;
-  font-weight: 300;
+  font-weight: 500;
   color: #22a39f;
   text-align: center;
-  margin: 25px 0 0 0;
+  margin: 0;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const SecHeader = styled.header`
@@ -173,5 +238,5 @@ const Desc = styled.p`
 
 const DetailLabel = styled.label`
   font-weight: bold;
-  line-height: 1.2;
+  line-height: 1.5;
 `;
