@@ -39,7 +39,7 @@ const ProfileSections = () => {
           </FlexBoxSection>
           <FlexBoxSection className="image">
             <p className="image-wrap">
-              <img className="profile-image" src={ProfileImg} />
+              <img alt="" className="profile-image" src={ProfileImg} />
             </p>
           </FlexBoxSection>
           <FlexBoxSection direction="column" className="details">
@@ -165,6 +165,9 @@ const Desc = styled.p`
   padding-right: 15%;
   &.about {
     padding-left: 0;
+  }
+  strong {
+    color: #3e3e3e;
   }
 `;
 

@@ -60,6 +60,7 @@ const SectionWrapper = styled(FlexBoxSection)`
     flex-basis: 20%;
     margin-right: 10px;
     text-transform: uppercase;
+    color: #3e3e3e;
   }
   .info-wrapper {
     line-height: 2;
@@ -71,6 +72,7 @@ const SectionWrapper = styled(FlexBoxSection)`
 `;
 const ProjectName = styled.header`
   font-weight: bold;
-  font-size: 18px;
+  font-size: 24px;
   margin-bottom: 10px;
+  color: #3e3e3e;
 `;
