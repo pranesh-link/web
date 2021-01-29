@@ -77,6 +77,7 @@ const ProfileSections = () => {
         <section className="profile-section" id="education" ref={educationRef}>
           <SecHeader>{education.title}</SecHeader>
           <Desc
+            className="education"
             dangerouslySetInnerHTML={{ __html: education.info as string }}
           />
         </section>
@@ -122,7 +123,6 @@ const SectionsWrapper = styled.section`
   padding-bottom: 60%;
   .profile-section {
     margin-bottom: 20px;
-    padding-left: 20px;
     &.links {
       padding: 30px 0;
       background-color: #434242;
@@ -226,10 +226,13 @@ const SecHeader = styled.header`
 
 const Desc = styled.p`
   margin: 0;
-  padding-left: 20px;
   padding-right: 15%;
   &.about {
     padding-left: 0;
+  }
+  &.education {
+    text-align: center;
+    padding-right: 0;
   }
   strong {
     color: #3e3e3e;

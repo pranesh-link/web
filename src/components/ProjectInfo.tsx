@@ -57,7 +57,7 @@ const SectionWrapper = styled(FlexBoxSection)`
   }
   .info-label {
     font-weight: bold;
-    flex-basis: 20%;
+    flex-basis: 25%;
     margin-right: 10px;
     text-transform: uppercase;
     color: #3e3e3e;

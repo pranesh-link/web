@@ -5,6 +5,7 @@ import React from "react";
 import { AppContext } from "../context";
 import { ISkill } from "../store/types";
 import { valueIsArray, valueIsSkillInfo } from "./Utils";
+import { FlexBoxSection } from "../common/Elements";
 
 export const SkillsInfo = () => {
   const { data } = React.useContext(AppContext);
@@ -14,7 +15,7 @@ export const SkillsInfo = () => {
     const { info } = skills;
     return valueIsArray(info) && valueIsSkillInfo(info)
       ? info.map((skill: ISkill) => ({
-          technology: skill.label,
+          technology: <strong>{skill.label}</strong>,
           skills: skill.info,
         }))
       : [];
@@ -23,21 +24,23 @@ export const SkillsInfo = () => {
   const skillsData = getSkillsData();
 
   return (
-    <TABLE
-      columns={COLUMNS}
-      data={skillsData}
-      defaultPageSize={skillsData.length}
-      TheadComponent={(props) => null}
-      className="-striped -highlight"
-      NoDataComponent={NoData}
-      showPagination={false}
-    />
+    <FlexBoxSection justifyContent="center">
+      <TABLE
+        columns={COLUMNS}
+        data={skillsData}
+        defaultPageSize={skillsData.length}
+        TheadComponent={(props) => null}
+        className="-striped -highlight"
+        NoDataComponent={NoData}
+        showPagination={false}
+      />
+    </FlexBoxSection>
   );
 };
 
 const TABLE = styled(ReactTable)`
-  margin-left: 20px;
   border: 1px solid #fff;
+  flex-basis: 30%;
   &.-highlight {
     .rt-tbody {
       .rt-tr {
