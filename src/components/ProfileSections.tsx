@@ -62,6 +62,14 @@ const ProfileSections = () => {
             </FlexBoxSection>
           </FlexBoxSection>
         </FlexBoxSection>
+
+        <section className="profile-section" id="education" ref={educationRef}>
+          <SecHeader>{education.title}</SecHeader>
+          <Desc
+            className="education"
+            dangerouslySetInnerHTML={{ __html: education.info as string }}
+          />
+        </section>
         <section className="profile-section" id="skills" ref={skillsRef}>
           <SecHeader>{skills.title}</SecHeader>
           <SkillsInfo />
@@ -73,13 +81,6 @@ const ProfileSections = () => {
         >
           <SecHeader>{experience.title}</SecHeader>
           <ExperienceInfo experience={experience.info} />
-        </section>
-        <section className="profile-section" id="education" ref={educationRef}>
-          <SecHeader>{education.title}</SecHeader>
-          <Desc
-            className="education"
-            dangerouslySetInnerHTML={{ __html: education.info as string }}
-          />
         </section>
         <FlexBoxSection
           justifyContent="center"
@@ -120,7 +121,7 @@ const SectionsWrapper = styled.section`
   justify-content: space-evenly;
   height: 100%;
   margin-top: 40px;
-  padding-bottom: 60%;
+  padding-bottom: 60px;
   .profile-section {
     margin-bottom: 20px;
     &.links {

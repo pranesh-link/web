@@ -59,6 +59,14 @@ const MenuBar = () => {
           About Me
         </MenuBtn>
         <MenuBtn
+          onClick={() => goTo(educationRef)}
+          className={classNames({
+            "is-active": currentSection === "education",
+          })}
+        >
+          Education
+        </MenuBtn>
+        <MenuBtn
           onClick={() => goTo(skillsRef)}
           className={classNames({ "is-active": currentSection === "skills" })}
         >
@@ -71,14 +79,6 @@ const MenuBar = () => {
           })}
         >
           Experiences
-        </MenuBtn>
-        <MenuBtn
-          onClick={() => goTo(educationRef)}
-          className={classNames({
-            "is-active": currentSection === "education",
-          })}
-        >
-          Education
         </MenuBtn>
       </FlexBoxSection>
     </MenuWrapper>
