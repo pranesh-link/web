@@ -4,6 +4,7 @@ export const ProfileData: IProfileData = {
   data: {
     aboutMe: {
       title: "About Me",
+      ref: "homeRef",
       info: `I'm an enthusiastic front developer who wants to be an integral part of a competitive work environment, which would
     help me to update my knowledge and skills, both on the intellectual
     and personal front while contributing to the growth and success of the
@@ -26,8 +27,15 @@ export const ProfileData: IProfileData = {
         },
       ],
     },
+    education: {
+      title: "Education",
+      ref: "educationRef",
+      info:
+        "<strong>B.E (Electronics and Communication)</strong>, Sri Krishna College of Engineering and Technology, Coimbatore",
+    },
     skills: {
       title: "Skills",
+      ref: "skillsRef",
       info: [
         {
           label: "Web Technologies",
@@ -49,7 +57,8 @@ export const ProfileData: IProfileData = {
       ],
     },
     experience: {
-      title: "Professional Experience",
+      title: "Experiences",
+      ref: "experienceRef",
       info: [
         {
           title: "aXess Developer Platform",
@@ -151,11 +160,7 @@ export const ProfileData: IProfileData = {
         },
       ],
     },
-    education: {
-      title: "Education",
-      info:
-        "<strong>B.E (Electronics and Communication)</strong>, Sri Krishna College of Engineering and Technology",
-    },
+
     links: {
       title: "Links",
       info: [

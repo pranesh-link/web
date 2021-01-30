@@ -4,6 +4,7 @@ export interface IProfileData {
     [key in ProfileSectionType]: {
       title: string;
       info: InfoType;
+      ref?: string;
     };
   };
 }

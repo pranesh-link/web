@@ -196,8 +196,8 @@ const ShortDesc = styled.h3`
   text-align: center;
   color: #727878;
   font-size: 21px;
+  font-weight: bold;
   margin-bottom: 20px;
-  font-weight: 300;
   line-height: 1.4;
   font-style: italic;
 `;

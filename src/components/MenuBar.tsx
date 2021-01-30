@@ -2,43 +2,47 @@ import classNames from "classnames";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FlexBoxSection } from "../common/Elements";
-import { AppContext } from "../context";
+import { AppContext, RefTypes } from "../context";
+import { ProfileSectionType } from "../store/types";
 
 const MenuBar = () => {
-  const {
-    refs: { homeRef, skillsRef, experienceRef, educationRef, contactRef },
-  } = React.useContext(AppContext);
+  const { refs, data } = React.useContext(AppContext);
+
   const [currentSection, setCurrentSection] = useState<string>("about");
+
   const goTo = (ref: React.MutableRefObject<any>) => {
     const top = ref.current.getBoundingClientRect().top + window.pageYOffset;
     window.scrollTo({ top, behavior: "smooth" });
   };
 
-  const handleScroll = () => {
-    const positions = [
-      { section: "about", pos: homeRef.current.getBoundingClientRect().top },
-      { section: "skills", pos: skillsRef.current.getBoundingClientRect().top },
-      {
-        section: "experiences",
-        pos: experienceRef.current.getBoundingClientRect().top,
-      },
-      {
-        section: "education",
-        pos: educationRef.current.getBoundingClientRect().top,
-      },
-    ];
+  const menuItems = Object.keys(data.data).reduce(
+    (
+      items: { title: string; ref: string; section: string }[],
+      current: string
+    ) => {
+      if (data.data[current as ProfileSectionType].ref) {
+        const { title, ref = "" } = data.data[current as ProfileSectionType];
+        items.push({ section: current, title, ref });
+      }
+      return items;
+    },
+    []
+  );
 
-    const resultPosition = positions.reduce(
+  const handleScroll = () => {
+    const resultPosition = menuItems.reduce(
       (result, curr, index) => {
-        if (index === 0) {
-          return curr;
-        }
-        if (curr.pos <= 0 && curr.pos > result.pos) {
-          return curr;
+        const { ref, section } = curr;
+        const pos = refs[ref as RefTypes].current.getBoundingClientRect().top;
+        if (index === 0 || (pos <= 0 && pos > result.pos)) {
+          return {
+            section,
+            pos,
+          };
         }
         return result;
       },
-      { section: "about", pos: 0 }
+      { section: "aboutMe", pos: 0 }
     );
     setCurrentSection(resultPosition.section);
   };
@@ -47,39 +51,23 @@ const MenuBar = () => {
     handleScroll();
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <MenuWrapper className="wrapper">
       <FlexBoxSection direction="column">
-        <MenuBtn
-          onClick={() => goTo(homeRef)}
-          className={classNames({ "is-active": currentSection === "about" })}
-        >
-          About Me
-        </MenuBtn>
-        <MenuBtn
-          onClick={() => goTo(educationRef)}
-          className={classNames({
-            "is-active": currentSection === "education",
-          })}
-        >
-          Education
-        </MenuBtn>
-        <MenuBtn
-          onClick={() => goTo(skillsRef)}
-          className={classNames({ "is-active": currentSection === "skills" })}
-        >
-          Skills
-        </MenuBtn>
-        <MenuBtn
-          onClick={() => goTo(experienceRef)}
-          className={classNames({
-            "is-active": currentSection === "experiences",
-          })}
-        >
-          Experiences
-        </MenuBtn>
+        {menuItems.map((item) => (
+          <MenuBtn
+            key={item.section}
+            onClick={() => goTo(refs[item.ref as RefTypes])}
+            className={classNames({
+              "is-active": currentSection === item.section,
+            })}
+          >
+            {item.title}
+          </MenuBtn>
+        ))}
       </FlexBoxSection>
     </MenuWrapper>
   );

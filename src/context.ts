@@ -1,7 +1,7 @@
 import React from "react";
 import { IProfileData } from "./store/types";
 
-type RefTypes =
+export type RefTypes =
   | "homeRef"
   | "skillsRef"
   | "experienceRef"
