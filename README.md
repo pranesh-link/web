@@ -1,3 +1,7 @@
+<p align="center">
+  <a href="https://github.com/prans1991/profile"><img alt="GitHub Actions status" src="https://github.com/prans1991/profile/workflows/Build/badge.svg"></a>
+</p>
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
