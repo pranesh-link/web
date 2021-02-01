@@ -1,11 +1,11 @@
-name: Node Continuous Integration
+name: Build
 
 on:
-  pull_request:
+  push:
     branches: [master]
 
 jobs:
-  test_pull_request:
+  build:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
