@@ -12,6 +12,11 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 10
-      - run: npm install -g react-scripts
-      - run: npm test
-      - run: npm run build
+    - name: Install dependencies
+      run: npm install
+    - name: Install react-scripts
+      run: npm install react-scripts
+    - name: Run the tests
+      run: npm test
+    - name: Build
+      run: npm run build
