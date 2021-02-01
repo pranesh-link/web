@@ -178,7 +178,7 @@ const SectionsWrapper = styled.section`
     .details {
       flex-basis: 20%;
       .detail-info {
-        line-height: 1.2;
+        line-height: 1.4;
       }
     }
   }
