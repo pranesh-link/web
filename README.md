@@ -1,5 +1,6 @@
 <p align="center">
   <a href="https://github.com/prans1991/profile"><img alt="GitHub Actions status" src="https://github.com/prans1991/profile/workflows/Build/badge.svg"></a>
+  <a href="https://github.com/prans1991/profile"><img alt="GitHub Actions status" src="https://github.com/prans1991/profile/workflows/PR/badge.svg"></a>
 </p>
 
 # Getting Started with Create React App
