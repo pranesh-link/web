@@ -2,8 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { FlexBox, FlexBoxSection } from "../common/Elements";
 import { IProject } from "../store/types";
-import RightArrowIcon from "../assets/right-arrow.svg";
-import UpArrowIcon from "../assets/up-arrow.svg";
 import classNames from "classnames";
 
 interface IProjectInfoProps {
@@ -26,42 +24,39 @@ export const ProjectInfo = (props: IProjectInfoProps) => {
         className={classNames({ expanded: props.isExpanded })}
         onClick={() => props.setExpanded(!props.isExpanded)}
       >
-        <img alt="" src={props.isExpanded ? UpArrowIcon : RightArrowIcon} />
         <span>{title}</span>
       </ProjectName>
-      {props.isExpanded && (
-        <FlexBoxSection direction="column" className="project-info">
-          <FlexBoxSection direction="column" className="project-short-info">
-            <FlexBox className="info-wrapper">
-              <label className="info-label">Client</label>
-              <div className="info">{client}</div>
-            </FlexBox>
-            <FlexBox className="info-wrapper">
-              <label className="info-label">Duration</label>
-              <div className="info">{duration}</div>
-            </FlexBox>
-            <FlexBox className="info-wrapper">
-              <label className="info-label">Software/Technologies</label>
-              <div className="info">{softwareTech}</div>
-            </FlexBox>
-          </FlexBoxSection>
-
-          <FlexBox direction="column" className="info-wrapper">
-            <label className="info-label">Description</label>
-            <div
-              className="info description"
-              dangerouslySetInnerHTML={{ __html: description }}
-            />
+      <FlexBoxSection direction="column" className="project-info">
+        <FlexBoxSection direction="column" className="project-short-info">
+          <FlexBox className="info-wrapper">
+            <label className="info-label">Client</label>
+            <div className="info">{client}</div>
           </FlexBox>
-          <FlexBox direction="column" className="info-wrapper">
-            <label className="info-label">Responsibilities</label>
-            <div
-              className="info responsibilities"
-              dangerouslySetInnerHTML={{ __html: responsibilities }}
-            />
+          <FlexBox className="info-wrapper">
+            <label className="info-label">Duration</label>
+            <div className="info">{duration}</div>
+          </FlexBox>
+          <FlexBox className="info-wrapper">
+            <label className="info-label">Software/Technologies</label>
+            <div className="info">{softwareTech}</div>
           </FlexBox>
         </FlexBoxSection>
-      )}
+
+        <FlexBox direction="column" className="info-wrapper">
+          <label className="info-label">Description</label>
+          <div
+            className="info description"
+            dangerouslySetInnerHTML={{ __html: description }}
+          />
+        </FlexBox>
+        <FlexBox direction="column" className="info-wrapper">
+          <label className="info-label">Responsibilities</label>
+          <div
+            className="info responsibilities"
+            dangerouslySetInnerHTML={{ __html: responsibilities }}
+          />
+        </FlexBox>
+      </FlexBoxSection>
     </SectionWrapper>
   );
 };

@@ -174,7 +174,7 @@ const SecHeader = styled.header`
   }
   @media screen and (max-width: 767px) {
     text-align: left;
-    font-size: 36px;
+    font-size: 28px;
   }
 `;
 
