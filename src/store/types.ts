@@ -9,11 +9,15 @@ export interface IProfileData {
   };
 }
 
-export type InfoType = string | (ISkill | IProject | ILink)[];
+export type InfoType = string | (ISkill | IProject | ILink | IDetailInfo)[];
 
 export interface ISkill {
   label: string;
   info: string;
+}
+
+export interface IDetailInfo extends ISkill {
+  canCopy?: boolean;
 }
 
 export interface ILink extends ISkill {

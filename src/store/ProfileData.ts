@@ -21,11 +21,13 @@ export const ProfileData: IProfileData = {
           label: "Mobile",
           //   info: "<a href='tel:+91-9443329991'>Call me</a>",
           info: "+91-9443329991",
+          canCopy: true,
         },
         {
           label: "E-mail",
           //   info: "<a href='mailto:prans1991@gmail.com'>Mail me</a>",
           info: "prans1991@gmail.com",
+          canCopy: true,
         },
       ],
     },

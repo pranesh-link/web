@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FlexBox, FlexBoxSection } from "../common/Elements";
 import { AppContext } from "../context";
 import { ExperienceInfo } from "./ExperienceInfo";
 import { SkillsInfo } from "./SkillsInfo";
 import ProfileImg from "../assets/linkedin.jpeg";
-import { valueIsSkillInfo, valueIsArray } from "./Utils";
+import {
+  valueIsSkillInfo,
+  valueIsArray,
+  valueIsDetailInfo,
+  lowercase,
+} from "./Utils";
+import classNames from "classnames";
+import * as clipboard from "clipboard-polyfill/text";
 
 const ProfileSections = () => {
   const {
@@ -13,6 +20,17 @@ const ProfileSections = () => {
     refs: { homeRef, skillsRef, experienceRef, educationRef, contactRef },
   } = React.useContext(AppContext);
   const { aboutMe, details, skills, education, experience, links } = data.data;
+  const [copied, setCopied] = useState<boolean>(false);
+  const [copyInfoId, setCopyInfoId] = useState<string>("");
+
+  useEffect(() => {
+    if (copied) {
+      setTimeout(() => {
+        setCopied(false);
+        setCopyInfoId("");
+      }, 3000);
+    }
+  }, [copied]);
 
   return (
     <Wrapper>
@@ -44,7 +62,7 @@ const ProfileSections = () => {
             </FlexBoxSection>
             <FlexBoxSection direction="column" className="details">
               <FlexBoxSection direction="column">
-                {valueIsArray(details.info) && valueIsSkillInfo(details.info)
+                {valueIsArray(details.info) && valueIsDetailInfo(details.info)
                   ? details.info.map((detail, index) => (
                       <FlexBoxSection
                         className="detail"
@@ -52,10 +70,32 @@ const ProfileSections = () => {
                         direction="column"
                       >
                         <DetailLabel>{detail.label}</DetailLabel>
-                        <span
-                          className="detail-info"
-                          dangerouslySetInnerHTML={{ __html: detail.info }}
-                        />
+                        <FlexBox alignItems="center" className="detail-info">
+                          <span id={lowercase(detail.label)}>
+                            {detail.info}
+                          </span>
+                          {detail.canCopy && (
+                            <CopyButton
+                              data-id={lowercase(detail.label)}
+                              data-clipboard-text={detail.info}
+                              onClick={(
+                                event: React.MouseEvent<HTMLButtonElement>
+                              ) => {
+                                clipboard.writeText(detail.info).then(() => {
+                                  setCopyInfoId(detail.label);
+                                  setCopied(true);
+                                });
+                              }}
+                              className={classNames({
+                                copied: copied && copyInfoId === detail.label,
+                              })}
+                            >
+                              {copied && copyInfoId === detail.label
+                                ? "Copied!"
+                                : "Copy"}
+                            </CopyButton>
+                          )}
+                        </FlexBox>
                       </FlexBoxSection>
                     ))
                   : null}
@@ -301,4 +341,19 @@ const Desc = styled.p`
 const DetailLabel = styled.label`
   font-weight: bold;
   line-height: 1.5;
+`;
+
+const CopyButton = styled.button`
+  background-color: transparent;
+  border: none;
+  background-color: #434242;
+  color: #f0f0f0;
+  cursor: pointer;
+  outline: none;
+  border-radius: 15px;
+  padding: 5px 10px;
+  margin-left: 10px;
+  &.copied {
+    background-color: #3f9c35;
+  }
 `;
