@@ -159,6 +159,25 @@ const Wrapper = styled.section`
   }
 `;
 
+const SecHeader = styled.header`
+  font-size: 54px;
+  font-weight: 300;
+  margin-bottom: 20px;
+  color: #22a39f;
+  text-align: center;
+  &.about-me-title {
+    text-align: left;
+    font-size: 28px;
+    @media screen and (max-width: 767px) {
+      margin-bottom: 0;
+    }
+  }
+  @media screen and (max-width: 767px) {
+    text-align: left;
+    font-size: 36px;
+  }
+`;
+
 const SectionsWrapper = styled.section`
   display: flex;
   flex-direction: column;
@@ -208,6 +227,11 @@ const SectionsWrapper = styled.section`
     &.experience {
       padding-top: 20px;
       background-color: #f3f0de;
+      ${SecHeader} {
+        @media screen and (max-width: 767px) {
+          margin-bottom: 10px;
+        }
+      }
       @media screen and (max-width: 767px) {
         background: none;
       }
@@ -278,7 +302,7 @@ const ShortDesc = styled.h3`
   line-height: 1.4;
   font-style: italic;
   @media screen and (max-width: 767px) {
-    padding-top: 55px;
+    padding-top: 75px;
     margin: 0;
   }
 `;
@@ -293,25 +317,6 @@ const PageHeader = styled.h2`
   align-items: center;
   justify-content: center;
   @media screen and (max-width: 767px) {
-    font-size: 36px;
-  }
-`;
-
-const SecHeader = styled.header`
-  font-size: 54px;
-  font-weight: 300;
-  margin-bottom: 20px;
-  color: #22a39f;
-  text-align: center;
-  &.about-me-title {
-    text-align: left;
-    font-size: 28px;
-    @media screen and (max-width: 767px) {
-      margin-bottom: 0;
-    }
-  }
-  @media screen and (max-width: 767px) {
-    text-align: left;
     font-size: 36px;
   }
 `;

@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import React, { useEffect, useState } from "react";
 import { Transition } from "react-transition-group";
 import styled from "styled-components";
@@ -13,6 +14,7 @@ export const HamBurgerMenu = () => {
   const { links } = data.data;
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [hamburgerClicked, setHamburgerClicked] = useState<boolean>(false);
   const scrollbarSize =
     window.innerWidth - document.documentElement.clientWidth;
 
@@ -38,7 +40,14 @@ export const HamBurgerMenu = () => {
   return (
     <>
       <IconWrap>
-        <Icon src={HamBurgerIcon} onClick={() => setIsOpen(true)} />
+        <Icon
+          src={HamBurgerIcon}
+          onClick={() => {
+            setIsOpen(true);
+            setHamburgerClicked(true);
+          }}
+          className={classNames({ clicked: hamburgerClicked })}
+        />
       </IconWrap>
       <Transition
         in={isOpen}
@@ -81,6 +90,7 @@ const IconWrap = styled.div`
   z-index: 20;
   background: #fff;
   padding: 20px 0;
+
   @media screen and (min-width: 768px) {
     display: none;
   }
@@ -145,9 +155,19 @@ const RightSection = styled.div`
 `;
 const Icon = styled.img`
   margin-left: 10px;
-
   cursor: pointer;
-  @media screen and (min-width: 768px) {
-    /* display: none; */
+  padding: 10px;
+  animation: blinker 5s linear infinite;
+  box-shadow: rgb(0 0 0 / 20%) 0 -1px 0px 1px, inset #304701 0 -1px 0px,
+    #3f9c35 0 2px 12px;
+  &.clicked {
+    animation: none;
+    box-shadow: none;
+    @keyframes blinker {
+      50% {
+        opacity: 0.5;
+        box-shadow: none;
+      }
+    }
   }
 `;

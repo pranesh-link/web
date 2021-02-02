@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { FlexBoxSection } from "../common/Elements";
 import { InfoType } from "../store/types";
@@ -10,10 +10,20 @@ interface IExperienceInfoProps {
 }
 export const ExperienceInfo = (props: IExperienceInfoProps) => {
   const { experience } = props;
+
+  const [isExpanded, setIsExpanded] = useState<{ [key: string]: boolean }>({});
+
   return valueIsArray(experience) && valueIsProjectInfo(experience) ? (
     <SectionWrapper direction="column" justifyContent="space-around">
       {experience.map((project, index) => (
-        <ProjectInfo key={index} project={project} />
+        <ProjectInfo
+          key={index}
+          project={project}
+          isExpanded={isExpanded[project.title]}
+          setExpanded={(isExpanded) =>
+            setIsExpanded({ [project.title]: isExpanded })
+          }
+        />
       ))}
     </SectionWrapper>
   ) : null;
