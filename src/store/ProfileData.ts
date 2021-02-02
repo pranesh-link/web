@@ -175,7 +175,7 @@ export const ProfileData: IProfileData = {
         },
         {
           label: "LinkedIn",
-          info: `<a href='https://www.instagram.com/anonymous_offl/' target='_blank'>LinkedIn</a>
+          info: `<a href='https://www.linkedin.com/in/pranesh-g/' target='_blank'>LinkedIn</a>
              <span> - </span> `,
         },
 
