@@ -5,7 +5,7 @@ export const ProfileData: IProfileData = {
     aboutMe: {
       title: "About Me",
       ref: "homeRef",
-      info: `I'm an enthusiastic front developer who wants to be an integral part of a competitive work environment, which would
+      info: `I'm an enthusiastic front-end developer who wants to be an integral part of a competitive work environment, which would
     help me to update my knowledge and skills, both on the intellectual
     and personal front while contributing to the growth and success of the
     organisation.`,
@@ -19,11 +19,13 @@ export const ProfileData: IProfileData = {
         },
         {
           label: "Mobile",
-          info: "<a href='tel:+91-9443329991'>Call me</a>",
+          //   info: "<a href='tel:+91-9443329991'>Call me</a>",
+          info: "+91-9443329991",
         },
         {
           label: "E-mail",
-          info: "<a href='mailto:prans1991@gmail.com'>Mail me</a>",
+          //   info: "<a href='mailto:prans1991@gmail.com'>Mail me</a>",
+          info: "prans1991@gmail.com",
         },
       ],
     },
@@ -174,11 +176,7 @@ export const ProfileData: IProfileData = {
           info: `<a href='https://www.instagram.com/anonymous_offl/' target='_blank'>LinkedIn</a>
              <span> - </span> `,
         },
-        {
-          label: "Instagram",
-          info:
-            "<a href='https://www.instagram.com/anonymous_offl/' target='_blank'>Instagram</a><span> - </span>",
-        },
+
         {
           label: "Facebook",
           info:
@@ -189,6 +187,11 @@ export const ProfileData: IProfileData = {
           info:
             "<a href='https://twitter.com/anonymous_offl' target='_blank'>Twitter</a>",
         },
+        // {
+        //   label: "Instagram",
+        //   info:
+        //     "<a href='https://www.instagram.com/anonymous_offl/' target='_blank'>Instagram</a><span> - </span>",
+        // },
       ],
     },
   },

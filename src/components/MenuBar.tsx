@@ -5,13 +5,21 @@ import { FlexBoxSection } from "../common/Elements";
 import { AppContext, RefTypes } from "../context";
 import { ProfileSectionType } from "../store/types";
 
-const MenuBar = () => {
+interface IMenuBarProps {
+  isMobileMenu?: boolean;
+  closeHamburgerMenu?: () => void;
+}
+const MenuBar = (props: IMenuBarProps) => {
   const { refs, data } = React.useContext(AppContext);
 
   const [currentSection, setCurrentSection] = useState<string>("about");
 
   const goTo = (ref: React.MutableRefObject<any>) => {
-    const top = ref.current.getBoundingClientRect().top + window.pageYOffset;
+    const additionalOffset = visualViewport.width < 767 ? -70 : 0;
+    const top =
+      ref.current.getBoundingClientRect().top +
+      additionalOffset +
+      window.pageYOffset;
     window.scrollTo({ top, behavior: "smooth" });
   };
 
@@ -33,7 +41,10 @@ const MenuBar = () => {
     const resultPosition = menuItems.reduce(
       (result, curr, index) => {
         const { ref, section } = curr;
-        const pos = refs[ref as RefTypes].current.getBoundingClientRect().top;
+        let pos = refs[ref as RefTypes].current.getBoundingClientRect().top;
+        pos = visualViewport.width < 767 ? pos - 75 : pos;
+        console.log(pos);
+
         if (index === 0 || (pos <= 0 && pos > result.pos)) {
           return {
             section,
@@ -55,12 +66,19 @@ const MenuBar = () => {
   }, []);
 
   return (
-    <MenuWrapper className="wrapper">
+    <MenuWrapper
+      className={classNames("wrapper", { mobile: props.isMobileMenu })}
+    >
       <FlexBoxSection direction="column">
         {menuItems.map((item) => (
           <MenuBtn
             key={item.section}
-            onClick={() => goTo(refs[item.ref as RefTypes])}
+            onClick={() => {
+              goTo(refs[item.ref as RefTypes]);
+              if (props.closeHamburgerMenu) {
+                props.closeHamburgerMenu();
+              }
+            }}
             className={classNames({
               "is-active": currentSection === item.section,
             })}
@@ -84,6 +102,12 @@ const MenuWrapper = styled.nav`
   z-index: 10;
   background-color: #222222;
   max-width: 10%;
+  &.mobile {
+    padding-top: 25px;
+    position: static;
+    max-width: unset;
+    height: 100%;
+  }
   &.wrapper {
     .is-active {
       background-color: #3f9c35;
@@ -105,6 +129,12 @@ const MenuWrapper = styled.nav`
       &:hover {
         color: #434242;
       }
+    }
+  }
+  &:not(.mobile) {
+    @media screen and (max-width: 767px) {
+      display: none;
+      right: 0;
     }
   }
 `;

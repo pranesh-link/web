@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import styled from "styled-components";
+import { HamBurgerMenu } from "./components/HamBurgerMenu";
 import MenuBar from "./components/MenuBar";
 import ProfileSections from "./components/ProfileSections";
 import { AppProvider } from "./context";
@@ -20,6 +21,7 @@ function App() {
       }}
     >
       <Wrapper>
+        <HamBurgerMenu />
         <MenuBar />
         <ProfileSections />
       </Wrapper>

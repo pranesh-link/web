@@ -23,4 +23,12 @@ const SectionWrapper = styled(FlexBoxSection)`
   padding-left: 20px;
   padding-right: 15%;
   margin-left: 25%;
+  @media screen and (max-width: 767px) {
+    padding: 0;
+    margin-left: 0;
+    ul {
+      margin: 0;
+      padding-left: 25px;
+    }
+  }
 `;

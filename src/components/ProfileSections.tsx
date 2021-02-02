@@ -36,29 +36,30 @@ const ProfileSections = () => {
             <SecHeader className="about-me-title">{aboutMe.title}</SecHeader>
             <Desc className="about">{aboutMe.info}</Desc>
           </FlexBoxSection>
-          <FlexBoxSection className="image">
-            <p className="image-wrap">
-              <img alt="" className="profile-image" src={ProfileImg} />
-            </p>
-          </FlexBoxSection>
-          <FlexBoxSection direction="column" className="details">
-            <SecHeader className="about-me-title">{details.title}</SecHeader>
-            <FlexBoxSection direction="column">
-              {valueIsArray(details.info) && valueIsSkillInfo(details.info)
-                ? details.info.map((detail, index) => (
-                    <FlexBoxSection
-                      className="detail"
-                      key={index}
-                      direction="column"
-                    >
-                      <DetailLabel>{detail.label}</DetailLabel>
-                      <span
-                        className="detail-info"
-                        dangerouslySetInnerHTML={{ __html: detail.info }}
-                      />
-                    </FlexBoxSection>
-                  ))
-                : null}
+          <FlexBoxSection alignItems="center" className="image-details-wrap">
+            <FlexBoxSection className="image">
+              <p className="image-wrap">
+                <img alt="" className="profile-image" src={ProfileImg} />
+              </p>
+            </FlexBoxSection>
+            <FlexBoxSection direction="column" className="details">
+              <FlexBoxSection direction="column">
+                {valueIsArray(details.info) && valueIsSkillInfo(details.info)
+                  ? details.info.map((detail, index) => (
+                      <FlexBoxSection
+                        className="detail"
+                        key={index}
+                        direction="column"
+                      >
+                        <DetailLabel>{detail.label}</DetailLabel>
+                        <span
+                          className="detail-info"
+                          dangerouslySetInnerHTML={{ __html: detail.info }}
+                        />
+                      </FlexBoxSection>
+                    ))
+                  : null}
+              </FlexBoxSection>
             </FlexBoxSection>
           </FlexBoxSection>
         </FlexBoxSection>
@@ -112,6 +113,9 @@ const Wrapper = styled.section`
     height: 0;
     border-top: 5px solid #22a39f;
     margin: 0 10px;
+    @media screen and (max-width: 767px) {
+      display: none;
+    }
   }
 `;
 
@@ -124,6 +128,11 @@ const SectionsWrapper = styled.section`
   padding-bottom: 60px;
   .profile-section {
     margin-bottom: 20px;
+    > header {
+      @media screen and (max-width: 767px) {
+        margin-bottom: 0px;
+      }
+    }
     &.links {
       padding: 30px 0;
       background-color: #434242;
@@ -131,6 +140,9 @@ const SectionsWrapper = styled.section`
       bottom: 0;
       width: 100%;
       margin-bottom: 0;
+      @media screen and (max-width: 767px) {
+        display: none;
+      }
     }
     .link {
       a {
@@ -156,9 +168,19 @@ const SectionsWrapper = styled.section`
     &.experience {
       padding-top: 20px;
       background-color: #f3f0de;
+      @media screen and (max-width: 767px) {
+        background: none;
+      }
     }
     &.about {
       padding-top: 20px;
+      @media screen and (max-width: 767px) {
+        flex-direction: column;
+        justify-content: normal;
+      }
+    }
+    .image-details-wrap {
+      margin-right: 10px;
     }
     .about-me {
       flex-basis: 20%;
@@ -167,20 +189,32 @@ const SectionsWrapper = styled.section`
     .image {
       .image-wrap {
         margin-right: 50px;
+        @media screen and (max-width: 767px) {
+          margin-right: 20px;
+        }
       }
       .profile-image {
         width: 200px;
         height: 200px;
         border-radius: 50%;
-        border: 10px solid #dddbca;
+        border: 2px solid #dddbca;
+        @media screen and (max-width: 767px) {
+          width: 125px;
+          height: 125px;
+        }
       }
     }
     .details {
       flex-basis: 20%;
       .detail-info {
         line-height: 1.5;
+        margin-right: 10px;
       }
     }
+  }
+  @media screen and (max-width: 767px) {
+    padding-left: 20px;
+    margin-top: 0;
   }
 `;
 
@@ -190,6 +224,9 @@ const Separator = styled.hr`
   opacity: 0.2;
   height: 0;
   border-top: 1px solid #eee;
+  @media screen and (max-width: 767px) {
+    display: none;
+  }
 `;
 
 const ShortDesc = styled.h3`
@@ -200,6 +237,10 @@ const ShortDesc = styled.h3`
   margin-bottom: 20px;
   line-height: 1.4;
   font-style: italic;
+  @media screen and (max-width: 767px) {
+    padding-top: 55px;
+    margin: 0;
+  }
 `;
 const PageHeader = styled.h2`
   font-size: 54px;
@@ -211,6 +252,9 @@ const PageHeader = styled.h2`
   display: flex;
   align-items: center;
   justify-content: center;
+  @media screen and (max-width: 767px) {
+    font-size: 36px;
+  }
 `;
 
 const SecHeader = styled.header`
@@ -222,18 +266,32 @@ const SecHeader = styled.header`
   &.about-me-title {
     text-align: left;
     font-size: 28px;
+    @media screen and (max-width: 767px) {
+      margin-bottom: 0;
+    }
+  }
+  @media screen and (max-width: 767px) {
+    text-align: left;
+    font-size: 36px;
   }
 `;
 
 const Desc = styled.p`
   margin: 0;
   padding-right: 15%;
+  @media screen and (max-width: 767px) {
+    padding-right: 0;
+  }
   &.about {
     padding-left: 0;
   }
   &.education {
     text-align: center;
     padding-right: 0;
+    @media screen and (max-width: 767px) {
+      text-align: left;
+      padding: 0 5px;
+    }
   }
   strong {
     color: #3e3e3e;
