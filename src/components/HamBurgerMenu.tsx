@@ -81,6 +81,9 @@ const IconWrap = styled.div`
   z-index: 20;
   background: #fff;
   padding: 20px 0;
+  @media screen and (min-width: 768px) {
+    display: none;
+  }
 `;
 const Menu = styled.div`
   display: flex;
