@@ -32,6 +32,7 @@ export const HamBurgerMenu = () => {
         ? `${scrollbarSize}px`
         : "";
     }, 100);
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
   return (
