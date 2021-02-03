@@ -46,7 +46,7 @@ export const ProfileData: IProfileData = {
         {
           label: "Scripting Languages",
           info:
-            "Javascript, Jquery, Angular JS, EmberJS, Angular 5, React, Typescript",
+            "Javascript, Jquery, AngularJS, EmberJS, Angular 5, React, Typescript",
         },
         {
           label: "Tools",
@@ -99,7 +99,7 @@ export const ProfileData: IProfileData = {
           client: { info: "Standard Chartered Bank" },
           duration: { info: "January 2017 – March 2020" },
           softwareTech: {
-            info: "Ember CLI, Angular JS, CSS, HTML5, Cordova, Xcode",
+            info: "Ember CLI, AngularJS, CSS, HTML5, Cordova, Xcode",
           },
           description: {
             info: `Real Time On-boarding is a future driven initiative, with creation of bank accounts in real time to the customers using the pre-populated customer details from their Identity proofs`,
@@ -125,7 +125,7 @@ export const ProfileData: IProfileData = {
           client: { info: "Standard Chartered Bank" },
           duration: { info: "May 2015 – December 2016" },
           softwareTech: {
-            info: "Ember CLI, Angular JS,CSS, HTML5, Cordova, Xcode",
+            info: "Ember CLI, AngularJS, CSS, HTML5, Cordova, Xcode",
           },
           description: {
             info:

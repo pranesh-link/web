@@ -27,31 +27,16 @@ export const ProjectInfo = (props: IProjectInfoProps) => {
               <label className="info-label">{LABEL_TEXT[key]}</label>
               <div className="info">{project[key].info}</div>
             </FlexBox>
-            // <FlexBox className="info-wrapper">
-            //   <label className="info-label">{duration.label}</label>
-            //   <div className="info">{duration.info}</div>
-            // </FlexBox>
-            // <FlexBox className="info-wrapper">
-            //   <label className="info-label">{softwareTech.label}</label>
-            //   <div className="info">{softwareTech.info}</div>
-            // </FlexBox>
           ))}
         </FlexBoxSection>
-
-        {/* <FlexBox direction="column" className="info-wrapper">
-          <label className="info-label">{description.label}</label>
-          <div
-            className="info description"
-            dangerouslySetInnerHTML={{ __html: description.info }}
-          />
-        </FlexBox> */}
         {EXPANDABLE_INFOS.map((key, index) => {
           const isExpanded = props.isExpanded[`${key}-${props.index}`];
+          const { requiresShowHide, info } = project[key];
           return (
             <FlexBox direction="column" className="info-wrapper" key={index}>
               <label className="info-label">
                 <span>{LABEL_TEXT[key]}</span>
-                {project[key].requiresShowHide && (
+                {requiresShowHide && (
                   <button
                     className={classNames("show-hide", {
                       hide: isExpanded,
@@ -62,65 +47,16 @@ export const ProjectInfo = (props: IProjectInfoProps) => {
                   </button>
                 )}
               </label>
-              {((project[key].requiresShowHide && isExpanded) ||
-                !project[key].requiresShowHide) && (
+              {((requiresShowHide && isExpanded) || !requiresShowHide) && (
                 <div
                   className={`info ${key}`}
-                  dangerouslySetInnerHTML={{ __html: project[key].info }}
+                  dangerouslySetInnerHTML={{ __html: info }}
                 />
               )}
             </FlexBox>
           );
         })}
       </FlexBoxSection>
-      {/* <ProjectName>
-        <span>{title.info}</span>
-      </ProjectName>
-      <FlexBoxSection direction="column" className="project-info">
-        <FlexBoxSection direction="column" className="project-short-info">
-          <FlexBox className="info-wrapper">
-            <label className="info-label">{client.label}</label>
-            <div className="info">{client.info}</div>
-          </FlexBox>
-          <FlexBox className="info-wrapper">
-            <label className="info-label">{duration.label}</label>
-            <div className="info">{duration.info}</div>
-          </FlexBox>
-          <FlexBox className="info-wrapper">
-            <label className="info-label">{softwareTech.label}</label>
-            <div className="info">{softwareTech.info}</div>
-          </FlexBox>
-        </FlexBoxSection>
-
-        <FlexBox direction="column" className="info-wrapper">
-          <label className="info-label">{description.label}</label>
-          <div
-            className="info description"
-            dangerouslySetInnerHTML={{ __html: description.info }}
-          />
-        </FlexBox>
-        <FlexBox direction="column" className="info-wrapper">
-          <label className="info-label">
-            <span>{responsibilities.label}</span>
-            <button
-              className={classNames("show-hide", {
-                hide: props.isExpanded,
-              })}
-              onClick={() =>
-                props.setExpanded("responsibilities", !props.isExpanded)
-              }
-            >
-              {props.isExpanded ? "Hide" : "Show"}
-            </button>
-          </label>
-          {props.isExpanded && (
-            <div
-              className="info responsibilities"
-              dangerouslySetInnerHTML={{ __html: responsibilities.info }}
-            />
-          )}
-        </FlexBox>
-      </FlexBoxSection> */}
     </SectionWrapper>
   );
 };
@@ -148,11 +84,11 @@ const SectionWrapper = styled(FlexBoxSection)`
       border-radius: 15px;
       padding: 1px 10px;
       margin-left: 10px;
-      &:hover {
-        background-color: #0c77b9;
-      }
       &.hide {
         background-color: #e02020;
+      }
+      &:hover {
+        background-color: #0c77b9;
       }
     }
   }
