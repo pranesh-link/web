@@ -11,7 +11,7 @@ import { valueIsArray, valueIsSkillInfo } from "./Utils";
 export const HamBurgerMenu = () => {
   const contentRef = React.useRef<HTMLDivElement>(null);
   const { data } = React.useContext(AppContext);
-  const { links } = data.data;
+  const { links } = data.sections;
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [hamburgerClicked, setHamburgerClicked] = useState<boolean>(false);

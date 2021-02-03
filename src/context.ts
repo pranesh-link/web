@@ -16,7 +16,11 @@ interface IAppContext {
 
 const DEFAULT_CONTEXT = {
   data: {
-    data: {
+    header: {
+      shortDesc: "",
+      name: "",
+    },
+    sections: {
       aboutMe: {
         title: "",
         info: "",

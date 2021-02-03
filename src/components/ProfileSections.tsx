@@ -10,17 +10,18 @@ import { Contact } from "./Sections/Contact";
 
 const ProfileSections = () => {
   const {
-    data,
+    data: { sections, header },
     refs: { homeRef, skillsRef, experienceRef, educationRef, contactRef },
   } = React.useContext(AppContext);
-  const { aboutMe, details, skills, education, experience, links } = data.data;
+  const { aboutMe, details, skills, education, experience, links } = sections;
+  const { shortDesc, name } = header;
 
   return (
     <Wrapper>
-      <ShortDesc>Hey, I'm </ShortDesc>
+      <ShortDesc>{shortDesc}</ShortDesc>
       <PageHeader>
         <hr className="header-sep" />
-        <span>Pranesh</span>
+        <span>{name}</span>
         <hr className="header-sep" />
       </PageHeader>
       <FlexBox direction="column" alignItems="center">

@@ -1,7 +1,11 @@
 import { IProfileData } from "./types";
 
 export const ProfileData: IProfileData = {
-  data: {
+  header: {
+    shortDesc: "Hey, I'm",
+    name: "Pranesh",
+  },
+  sections: {
     aboutMe: {
       title: "About Me",
       ref: "homeRef",

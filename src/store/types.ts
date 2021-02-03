@@ -1,6 +1,10 @@
 export interface IProfileData {
   //TODO change to relevant types
-  data: {
+  header: {
+    shortDesc: string;
+    name: string;
+  };
+  sections: {
     [key in ProfileSectionType]: ISectionInfo;
   };
 }

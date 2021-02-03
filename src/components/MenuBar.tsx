@@ -23,13 +23,15 @@ const MenuBar = (props: IMenuBarProps) => {
     window.scrollTo({ top, behavior: "smooth" });
   };
 
-  const menuItems = Object.keys(data.data).reduce(
+  const menuItems = Object.keys(data.sections).reduce(
     (
       items: { title: string; ref: string; section: string }[],
       current: string
     ) => {
-      if (data.data[current as ProfileSectionType].ref) {
-        const { title, ref = "" } = data.data[current as ProfileSectionType];
+      if (data.sections[current as ProfileSectionType].ref) {
+        const { title, ref = "" } = data.sections[
+          current as ProfileSectionType
+        ];
         items.push({ section: current, title, ref });
       }
       return items;
