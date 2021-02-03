@@ -45,7 +45,6 @@ const MenuBar = (props: IMenuBarProps) => {
         const { ref, section } = curr;
         let pos = refs[ref as RefTypes].current.getBoundingClientRect().top;
         pos = visualViewport.width < 767 ? pos - 95 : pos;
-        console.log(pos);
 
         if (index === 0 || (pos <= 0 && pos > result.pos)) {
           return {
