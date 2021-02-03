@@ -1,18 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import { FlexBox, FlexBoxSection } from "../common/Elements";
+import { Desc, FlexBox, FlexBoxSection, SecHeader } from "../common/Elements";
 import { AppContext } from "../context";
 import { ExperienceInfo } from "./ExperienceInfo";
 import { SkillsInfo } from "./SkillsInfo";
-import ProfileImg from "../assets/linkedin.jpeg";
-import {
-  valueIsSkillInfo,
-  valueIsArray,
-  valueIsDetailInfo,
-  lowercase,
-} from "./Utils";
-import classNames from "classnames";
-import * as clipboard from "clipboard-polyfill/text";
+import { valueIsSkillInfo, valueIsArray } from "./Utils";
+import { About } from "./Sections/About";
 
 const ProfileSections = () => {
   const {
@@ -20,17 +13,6 @@ const ProfileSections = () => {
     refs: { homeRef, skillsRef, experienceRef, educationRef, contactRef },
   } = React.useContext(AppContext);
   const { aboutMe, details, skills, education, experience, links } = data.data;
-  const [copied, setCopied] = useState<boolean>(false);
-  const [copyInfoId, setCopyInfoId] = useState<string>("");
-
-  useEffect(() => {
-    if (copied) {
-      setTimeout(() => {
-        setCopied(false);
-        setCopyInfoId("");
-      }, 3000);
-    }
-  }, [copied]);
 
   return (
     <Wrapper>
@@ -44,66 +26,7 @@ const ProfileSections = () => {
         <Separator />
       </FlexBox>
       <SectionsWrapper>
-        <FlexBoxSection
-          className="profile-section about"
-          justifyContent="center"
-          ref={homeRef}
-          id="home"
-        >
-          <FlexBoxSection direction="column" className="about-me">
-            <SecHeader className="about-me-title">{aboutMe.title}</SecHeader>
-            <Desc className="about">{aboutMe.info}</Desc>
-          </FlexBoxSection>
-          <FlexBoxSection alignItems="center" className="image-details-wrap">
-            <FlexBoxSection className="image">
-              <p className="image-wrap">
-                <img alt="" className="profile-image" src={ProfileImg} />
-              </p>
-            </FlexBoxSection>
-            <FlexBoxSection direction="column" className="details">
-              <FlexBoxSection direction="column">
-                {valueIsArray(details.info) && valueIsDetailInfo(details.info)
-                  ? details.info.map((detail, index) => (
-                      <FlexBoxSection
-                        className="detail"
-                        key={index}
-                        direction="column"
-                      >
-                        <DetailLabel>{detail.label}</DetailLabel>
-                        <FlexBox alignItems="center" className="detail-info">
-                          <span id={lowercase(detail.label)}>
-                            {detail.info}
-                          </span>
-                          {detail.canCopy && (
-                            <CopyButton
-                              data-id={lowercase(detail.label)}
-                              data-clipboard-text={detail.info}
-                              onClick={(
-                                event: React.MouseEvent<HTMLButtonElement>
-                              ) => {
-                                clipboard.writeText(detail.info).then(() => {
-                                  setCopyInfoId(detail.label);
-                                  setCopied(true);
-                                });
-                              }}
-                              className={classNames({
-                                copied: copied && copyInfoId === detail.label,
-                              })}
-                            >
-                              {copied && copyInfoId === detail.label
-                                ? "Copied!"
-                                : "Copy"}
-                            </CopyButton>
-                          )}
-                        </FlexBox>
-                      </FlexBoxSection>
-                    ))
-                  : null}
-              </FlexBoxSection>
-            </FlexBoxSection>
-          </FlexBoxSection>
-        </FlexBoxSection>
-
+        <About refObj={homeRef} aboutMe={aboutMe} details={details} />
         <section className="profile-section" id="education" ref={educationRef}>
           <SecHeader>{education.title}</SecHeader>
           <Desc
@@ -111,10 +34,12 @@ const ProfileSections = () => {
             dangerouslySetInnerHTML={{ __html: education.info as string }}
           />
         </section>
+
         <section className="profile-section" id="skills" ref={skillsRef}>
           <SecHeader>{skills.title}</SecHeader>
           <SkillsInfo />
         </section>
+
         <section
           className="profile-section experience"
           id="experience"
@@ -156,25 +81,6 @@ const Wrapper = styled.section`
     @media screen and (max-width: 767px) {
       display: none;
     }
-  }
-`;
-
-const SecHeader = styled.header`
-  font-size: 54px;
-  font-weight: 300;
-  margin-bottom: 20px;
-  color: #22a39f;
-  text-align: center;
-  &.about-me-title {
-    text-align: left;
-    font-size: 28px;
-    @media screen and (max-width: 767px) {
-      margin-bottom: 0;
-    }
-  }
-  @media screen and (max-width: 767px) {
-    text-align: left;
-    font-size: 28px;
   }
 `;
 
@@ -273,6 +179,9 @@ const SectionsWrapper = styled.section`
       .detail-info {
         line-height: 1.5;
         margin-right: 10px;
+        span {
+          flex-basis: 75%;
+        }
       }
     }
   }
@@ -318,46 +227,5 @@ const PageHeader = styled.h2`
   justify-content: center;
   @media screen and (max-width: 767px) {
     font-size: 36px;
-  }
-`;
-
-const Desc = styled.p`
-  margin: 0;
-  padding-right: 15%;
-  @media screen and (max-width: 767px) {
-    padding-right: 0;
-  }
-  &.about {
-    padding-left: 0;
-  }
-  &.education {
-    text-align: center;
-    padding-right: 0;
-    @media screen and (max-width: 767px) {
-      text-align: left;
-      padding: 0 5px;
-    }
-  }
-  strong {
-    color: #3e3e3e;
-  }
-`;
-
-const DetailLabel = styled.label`
-  font-weight: bold;
-  line-height: 1.5;
-`;
-
-const CopyButton = styled.button`
-  border: none;
-  background-color: #434242;
-  color: #f0f0f0;
-  cursor: pointer;
-  outline: none;
-  border-radius: 15px;
-  padding: 3px 10px;
-  margin-left: 10px;
-  &.copied {
-    background-color: #3f9c35;
   }
 `;

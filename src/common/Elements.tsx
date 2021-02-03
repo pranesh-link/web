@@ -54,3 +54,44 @@ export type FLEX_DIRECTION =
   | "row-reverse"
   | "column"
   | "column-reverse";
+
+export const SecHeader = styled.header`
+  font-size: 54px;
+  font-weight: 300;
+  margin-bottom: 20px;
+  color: #22a39f;
+  text-align: center;
+  &.about-me-title {
+    text-align: left;
+    font-size: 28px;
+    @media screen and (max-width: 767px) {
+      margin-bottom: 0;
+    }
+  }
+  @media screen and (max-width: 767px) {
+    text-align: left;
+    font-size: 28px;
+  }
+`;
+
+export const Desc = styled.p`
+  margin: 0;
+  padding-right: 15%;
+  @media screen and (max-width: 767px) {
+    padding-right: 0;
+  }
+  &.about {
+    padding-left: 0;
+  }
+  &.education {
+    text-align: center;
+    padding-right: 0;
+    @media screen and (max-width: 767px) {
+      text-align: left;
+      padding: 0 5px;
+    }
+  }
+  strong {
+    color: #3e3e3e;
+  }
+`;

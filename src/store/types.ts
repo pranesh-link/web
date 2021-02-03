@@ -1,12 +1,14 @@
 export interface IProfileData {
   //TODO change to relevant types
   data: {
-    [key in ProfileSectionType]: {
-      title: string;
-      info: InfoType;
-      ref?: string;
-    };
+    [key in ProfileSectionType]: ISectionInfo;
   };
+}
+
+export interface ISectionInfo {
+  title: string;
+  info: InfoType;
+  ref?: string;
 }
 
 export type InfoType = string | (ISkill | IProject | ILink | IDetailInfo)[];

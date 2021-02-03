@@ -12,8 +12,10 @@ interface IProjectInfoProps {
   setExpanded: (expandSection: string, isExpanded: boolean) => void;
 }
 export const ProjectInfo = (props: IProjectInfoProps) => {
-  const { title } = props.project;
-  const { project } = props;
+  const {
+    project,
+    project: { title },
+  } = props;
 
   return (
     <SectionWrapper direction="column">
