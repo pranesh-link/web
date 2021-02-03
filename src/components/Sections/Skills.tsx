@@ -2,16 +2,18 @@ import ReactTable from "react-table";
 import styled from "styled-components";
 import "react-table/react-table.css";
 import React from "react";
-import { AppContext } from "../context";
-import { ISkill } from "../store/types";
-import { valueIsArray, valueIsSkillInfo } from "./Utils";
-import { FlexBoxSection } from "../common/Elements";
+import { ISkill, ISectionInfo } from "../../store/types";
+import { valueIsArray, valueIsSkillInfo } from "../Utils";
+import { FlexBoxSection, SecHeader } from "../../common/Elements";
 
-export const SkillsInfo = () => {
-  const { data } = React.useContext(AppContext);
+interface ISkillsProps {
+  refObj: React.MutableRefObject<any>;
+  skills: ISectionInfo;
+}
+export const Skills = (props: ISkillsProps) => {
+  const { refObj, skills } = props;
 
   const getSkillsData = () => {
-    const { skills } = data.data;
     const { info } = skills;
     return valueIsArray(info) && valueIsSkillInfo(info)
       ? info.map((skill: ISkill) => ({
@@ -24,17 +26,20 @@ export const SkillsInfo = () => {
   const skillsData = getSkillsData();
 
   return (
-    <SkillsInfoWrapper justifyContent="center">
-      <TABLE
-        columns={COLUMNS}
-        data={skillsData}
-        defaultPageSize={skillsData.length}
-        TheadComponent={(props) => null}
-        className="-striped -highlight"
-        NoDataComponent={NoData}
-        showPagination={false}
-      />
-    </SkillsInfoWrapper>
+    <section className="profile-section" id="skills" ref={refObj}>
+      <SecHeader>{skills.title}</SecHeader>
+      <SkillsInfoWrapper justifyContent="center">
+        <TABLE
+          columns={COLUMNS}
+          data={skillsData}
+          defaultPageSize={skillsData.length}
+          TheadComponent={(props) => null}
+          className="-striped -highlight"
+          NoDataComponent={NoData}
+          showPagination={false}
+        />
+      </SkillsInfoWrapper>
+    </section>
   );
 };
 

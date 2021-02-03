@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import { Desc, FlexBox, FlexBoxSection, SecHeader } from "../common/Elements";
+import { FlexBox, SecHeader } from "../common/Elements";
 import { AppContext } from "../context";
-import { ExperienceInfo } from "./ExperienceInfo";
-import { SkillsInfo } from "./SkillsInfo";
-import { valueIsSkillInfo, valueIsArray } from "./Utils";
+import { Experiences } from "./Sections/Experiences";
+import { Skills } from "./Sections/Skills";
 import { About } from "./Sections/About";
+import { Education } from "./Sections/Education";
+import { Contact } from "./Sections/Contact";
 
 const ProfileSections = () => {
   const {
@@ -26,44 +27,11 @@ const ProfileSections = () => {
         <Separator />
       </FlexBox>
       <SectionsWrapper>
-        <About refObj={homeRef} aboutMe={aboutMe} details={details} />
-        <section className="profile-section" id="education" ref={educationRef}>
-          <SecHeader>{education.title}</SecHeader>
-          <Desc
-            className="education"
-            dangerouslySetInnerHTML={{ __html: education.info as string }}
-          />
-        </section>
-
-        <section className="profile-section" id="skills" ref={skillsRef}>
-          <SecHeader>{skills.title}</SecHeader>
-          <SkillsInfo />
-        </section>
-
-        <section
-          className="profile-section experience"
-          id="experience"
-          ref={experienceRef}
-        >
-          <SecHeader>{experience.title}</SecHeader>
-          <ExperienceInfo experience={experience.info} />
-        </section>
-        <FlexBoxSection
-          justifyContent="center"
-          className="profile-section links"
-          id="links"
-          ref={contactRef}
-        >
-          {valueIsArray(links.info) && valueIsSkillInfo(links.info)
-            ? links.info.map((link) => (
-                <div
-                  className="link"
-                  key={link.label}
-                  dangerouslySetInnerHTML={{ __html: link.info }}
-                ></div>
-              ))
-            : null}
-        </FlexBoxSection>
+        <About aboutMe={aboutMe} details={details} refObj={homeRef} />
+        <Education education={education} refObj={educationRef} />
+        <Skills skills={skills} refObj={skillsRef} />
+        <Experiences experiences={experience} refObj={experienceRef} />
+        <Contact links={links} refObj={contactRef} />
       </SectionsWrapper>
     </Wrapper>
   );
