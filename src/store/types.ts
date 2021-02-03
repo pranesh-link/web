@@ -25,12 +25,16 @@ export interface ILink extends ISkill {
 }
 
 export interface IProject {
-  title: string;
-  client: string;
-  duration: string;
-  softwareTech: string;
-  description: string;
-  responsibilities: string;
+  [key: string]: {
+    info: string;
+    requiresShowHide?: boolean;
+  };
+  // title: string;
+  // client: string;
+  // duration: string;
+  // softwareTech: string;
+  // description: string;
+  // responsibilities: string;
 }
 
 export type ProfileSectionType =

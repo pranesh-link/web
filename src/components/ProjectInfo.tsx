@@ -3,60 +3,124 @@ import styled from "styled-components";
 import { FlexBox, FlexBoxSection } from "../common/Elements";
 import { IProject } from "../store/types";
 import classNames from "classnames";
+import { EXPANDABLE_INFOS, LABEL_TEXT, SHORT_INFOS } from "./Constants";
 
 interface IProjectInfoProps {
+  index: number;
   project: IProject;
-  isExpanded: boolean;
-  setExpanded: (isExpanded: boolean) => void;
+  isExpanded: { [key: string]: boolean };
+  setExpanded: (expandSection: string, isExpanded: boolean) => void;
 }
 export const ProjectInfo = (props: IProjectInfoProps) => {
-  const {
-    title,
-    client,
-    duration,
-    softwareTech,
-    description,
-    responsibilities,
-  } = props.project;
+  const { title } = props.project;
+  const { project } = props;
+
   return (
     <SectionWrapper direction="column">
-      <ProjectName
-        className={classNames({ expanded: props.isExpanded })}
-        onClick={() => props.setExpanded(!props.isExpanded)}
-      >
-        <span>{title}</span>
+      <ProjectName>
+        <span>{title.info}</span>
+      </ProjectName>
+      <FlexBoxSection direction="column" className="project-info">
+        <FlexBoxSection direction="column" className="project-short-info">
+          {SHORT_INFOS.map((key, index) => (
+            <FlexBox className="info-wrapper" key={index}>
+              <label className="info-label">{LABEL_TEXT[key]}</label>
+              <div className="info">{project[key].info}</div>
+            </FlexBox>
+            // <FlexBox className="info-wrapper">
+            //   <label className="info-label">{duration.label}</label>
+            //   <div className="info">{duration.info}</div>
+            // </FlexBox>
+            // <FlexBox className="info-wrapper">
+            //   <label className="info-label">{softwareTech.label}</label>
+            //   <div className="info">{softwareTech.info}</div>
+            // </FlexBox>
+          ))}
+        </FlexBoxSection>
+
+        {/* <FlexBox direction="column" className="info-wrapper">
+          <label className="info-label">{description.label}</label>
+          <div
+            className="info description"
+            dangerouslySetInnerHTML={{ __html: description.info }}
+          />
+        </FlexBox> */}
+        {EXPANDABLE_INFOS.map((key, index) => {
+          const isExpanded = props.isExpanded[`${key}-${props.index}`];
+          return (
+            <FlexBox direction="column" className="info-wrapper" key={index}>
+              <label className="info-label">
+                <span>{LABEL_TEXT[key]}</span>
+                {project[key].requiresShowHide && (
+                  <button
+                    className={classNames("show-hide", {
+                      hide: isExpanded,
+                    })}
+                    onClick={() => props.setExpanded(key, !isExpanded)}
+                  >
+                    {isExpanded ? "Hide" : "Show"}
+                  </button>
+                )}
+              </label>
+              {((project[key].requiresShowHide && isExpanded) ||
+                !project[key].requiresShowHide) && (
+                <div
+                  className={`info ${key}`}
+                  dangerouslySetInnerHTML={{ __html: project[key].info }}
+                />
+              )}
+            </FlexBox>
+          );
+        })}
+      </FlexBoxSection>
+      {/* <ProjectName>
+        <span>{title.info}</span>
       </ProjectName>
       <FlexBoxSection direction="column" className="project-info">
         <FlexBoxSection direction="column" className="project-short-info">
           <FlexBox className="info-wrapper">
-            <label className="info-label">Client</label>
-            <div className="info">{client}</div>
+            <label className="info-label">{client.label}</label>
+            <div className="info">{client.info}</div>
           </FlexBox>
           <FlexBox className="info-wrapper">
-            <label className="info-label">Duration</label>
-            <div className="info">{duration}</div>
+            <label className="info-label">{duration.label}</label>
+            <div className="info">{duration.info}</div>
           </FlexBox>
           <FlexBox className="info-wrapper">
-            <label className="info-label">Software/Technologies</label>
-            <div className="info">{softwareTech}</div>
+            <label className="info-label">{softwareTech.label}</label>
+            <div className="info">{softwareTech.info}</div>
           </FlexBox>
         </FlexBoxSection>
 
         <FlexBox direction="column" className="info-wrapper">
-          <label className="info-label">Description</label>
+          <label className="info-label">{description.label}</label>
           <div
             className="info description"
-            dangerouslySetInnerHTML={{ __html: description }}
+            dangerouslySetInnerHTML={{ __html: description.info }}
           />
         </FlexBox>
         <FlexBox direction="column" className="info-wrapper">
-          <label className="info-label">Responsibilities</label>
-          <div
-            className="info responsibilities"
-            dangerouslySetInnerHTML={{ __html: responsibilities }}
-          />
+          <label className="info-label">
+            <span>{responsibilities.label}</span>
+            <button
+              className={classNames("show-hide", {
+                hide: props.isExpanded,
+              })}
+              onClick={() =>
+                props.setExpanded("responsibilities", !props.isExpanded)
+              }
+            >
+              {props.isExpanded ? "Hide" : "Show"}
+            </button>
+          </label>
+          {props.isExpanded && (
+            <div
+              className="info responsibilities"
+              dangerouslySetInnerHTML={{ __html: responsibilities.info }}
+            />
+          )}
         </FlexBox>
-      </FlexBoxSection>
+      </FlexBoxSection> */}
     </SectionWrapper>
   );
 };
@@ -75,6 +139,22 @@ const SectionWrapper = styled(FlexBoxSection)`
     margin-right: 10px;
     text-transform: uppercase;
     color: #3e3e3e;
+    .show-hide {
+      background-color: #3f9c35;
+      border: none;
+      color: #f0f0f0;
+      cursor: pointer;
+      outline: none;
+      border-radius: 15px;
+      padding: 1px 10px;
+      margin-left: 10px;
+      &:hover {
+        background-color: #0c77b9;
+      }
+      &.hide {
+        background-color: #e02020;
+      }
+    }
   }
   .info-wrapper {
     line-height: 2;

@@ -349,7 +349,6 @@ const DetailLabel = styled.label`
 `;
 
 const CopyButton = styled.button`
-  background-color: transparent;
   border: none;
   background-color: #434242;
   color: #f0f0f0;

@@ -18,10 +18,14 @@ export const ExperienceInfo = (props: IExperienceInfoProps) => {
       {experience.map((project, index) => (
         <ProjectInfo
           key={index}
+          index={index}
           project={project}
-          isExpanded={isExpanded[project.title]}
-          setExpanded={(isExpanded) =>
-            setIsExpanded({ [project.title]: isExpanded })
+          isExpanded={isExpanded}
+          setExpanded={(expandSection, expanded) =>
+            setIsExpanded({
+              ...isExpanded,
+              [`${expandSection}-${index}`]: expanded,
+            })
           }
         />
       ))}
