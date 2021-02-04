@@ -3,15 +3,15 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 12
-    # commands:
-    #   - npm i npm@latest -g
+      nodejs: 10
+    commands:
+      - npm i yarn -g
   pre_build:
     commands:
-      - npm install
+      - yarn
   build:
     commands:
-      - npm run build
+      - yarn build
   post_build:
     commands:
       - aws s3 rm s3://pranesh-react-app --recursive
