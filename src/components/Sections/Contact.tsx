@@ -20,7 +20,7 @@ export const Contact = (props: IContactProps) => {
       {valueIsArray(links.info) && valueIsLinkInfo(links.info)
         ? links.info.map((link) => (
             <a className="link" href={link.link} key={link.label}>
-              <img className={link.label} src={link.icon} />
+              <img alt="" className={link.label} src={link.icon} />
             </a>
           ))
         : null}

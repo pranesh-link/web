@@ -3,10 +3,11 @@ import React, { useEffect, useState } from "react";
 import { Transition } from "react-transition-group";
 import styled from "styled-components";
 import HamBurgerIcon from "../assets/burgericon.svg";
-import { FlexBoxSection, SectionsWrapper } from "../common/Elements";
+import { FlexBox, FlexBoxSection, SectionsWrapper } from "../common/Elements";
 import { AppContext } from "../context";
 import MenuBar from "./MenuBar";
 import { Contact } from "./Sections/Contact";
+import CloseIcon from "../assets/close-icon.svg";
 
 export const HamBurgerMenu = () => {
   const contentRef = React.useRef<HTMLDivElement>(null);
@@ -63,6 +64,14 @@ export const HamBurgerMenu = () => {
         {(state) => (
           <Menu className={state}>
             <ContentSection direction="column" justifyContent="space-around">
+              <FlexBox justifyContent="flex-end">
+                <img
+                  alt=""
+                  src={CloseIcon}
+                  className="close-button"
+                  onClick={() => setIsOpen(false)}
+                />
+              </FlexBox>
               <MenuBar
                 isMobileMenu={true}
                 closeHamburgerMenu={() => setIsOpen(false)}
@@ -116,6 +125,11 @@ const ContentSection = styled(FlexBoxSection)`
     padding-left: 15px;
     font-style: italic;
     font-weight: bold;
+  }
+  .close-button {
+    cursor: pointer;
+    margin: 10px;
+    height: 30px;
   }
 `;
 const RightSection = styled.div`

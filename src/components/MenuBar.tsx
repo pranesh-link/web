@@ -104,7 +104,7 @@ const MenuWrapper = styled.nav`
   background-color: #222222;
   max-width: 15%;
   &.mobile {
-    padding-top: 25px;
+    padding-top: 0;
     position: static;
     max-width: unset;
     height: 100%;
