@@ -4,6 +4,7 @@ import { FlexBox, FlexBoxSection } from "../common/Elements";
 import { IProject } from "../store/types";
 import classNames from "classnames";
 import { EXPANDABLE_INFOS, LABEL_TEXT, SHORT_INFOS } from "./Constants";
+import { AppContext } from "../context";
 
 interface IProjectInfoProps {
   index: number;
@@ -16,6 +17,7 @@ export const ProjectInfo = (props: IProjectInfoProps) => {
     project,
     project: { title },
   } = props;
+  const { isExport } = React.useContext(AppContext);
 
   return (
     <SectionWrapper direction="column">
@@ -38,7 +40,7 @@ export const ProjectInfo = (props: IProjectInfoProps) => {
             <FlexBox direction="column" className="info-wrapper" key={index}>
               <label className="info-label">
                 <span>{LABEL_TEXT[key]}</span>
-                {requiresShowHide && (
+                {!isExport && requiresShowHide && (
                   <button
                     className={classNames("show-hide", {
                       hide: isExpanded,
@@ -49,7 +51,9 @@ export const ProjectInfo = (props: IProjectInfoProps) => {
                   </button>
                 )}
               </label>
-              {((requiresShowHide && isExpanded) || !requiresShowHide) && (
+              {((requiresShowHide && isExpanded) ||
+                !requiresShowHide ||
+                isExport) && (
                 <div
                   className={`info ${key}`}
                   dangerouslySetInnerHTML={{ __html: info }}

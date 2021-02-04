@@ -7,9 +7,11 @@ import { Skills } from "./Sections/Skills";
 import { About } from "./Sections/About";
 import { Education } from "./Sections/Education";
 import { Contact } from "./Sections/Contact";
+import classNames from "classnames";
 
 const ProfileSections = () => {
   const {
+    isExport,
     data: { sections, header },
     refs: { homeRef, skillsRef, experienceRef, educationRef, contactRef },
   } = React.useContext(AppContext);
@@ -20,9 +22,9 @@ const ProfileSections = () => {
     <Wrapper>
       <ShortDesc>{shortDesc}</ShortDesc>
       <PageHeader>
-        <hr className="header-sep" />
+        <hr className={classNames("header-sep", { export: isExport })} />
         <span>{name}</span>
-        <hr className="header-sep" />
+        <hr className={classNames("header-sep", { export: isExport })} />
       </PageHeader>
       <FlexBox direction="column" alignItems="center">
         <Separator />
@@ -47,6 +49,9 @@ const Wrapper = styled.section`
     height: 0;
     border-top: 5px solid #22a39f;
     margin: 0 10px;
+    &.export {
+      display: none;
+    }
     @media screen and (max-width: 767px) {
       display: none;
     }

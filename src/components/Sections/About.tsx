@@ -11,6 +11,7 @@ import { valueIsArray, valueIsDetailInfo, lowercase } from "../Utils";
 import ProfileImg from "../../assets/profile.jpeg";
 import * as clipboard from "clipboard-polyfill/text";
 import styled from "styled-components";
+import { AppContext } from "../../context";
 
 interface IAboutProps {
   refObj: React.MutableRefObject<any>;
@@ -19,7 +20,7 @@ interface IAboutProps {
 }
 export const About = (props: IAboutProps) => {
   const { refObj, aboutMe, details } = props;
-
+  const { isExport } = React.useContext(AppContext);
   const [copied, setCopied] = useState<boolean>(false);
   const [copyInfoId, setCopyInfoId] = useState<string>("");
 
@@ -61,7 +62,7 @@ export const About = (props: IAboutProps) => {
                     <DetailLabel>{detail.label}</DetailLabel>
                     <FlexBox alignItems="center" className="detail-info">
                       <span id={lowercase(detail.label)}>{detail.info}</span>
-                      {detail.canCopy && (
+                      {!isExport && detail.canCopy && (
                         <CopyButton
                           data-id={lowercase(detail.label)}
                           data-clipboard-text={detail.info}

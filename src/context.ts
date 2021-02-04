@@ -12,6 +12,7 @@ interface IAppContext {
   refs: {
     [key in RefTypes]: React.MutableRefObject<any>;
   };
+  isExport: boolean;
 }
 
 const DEFAULT_CONTEXT = {
@@ -54,6 +55,7 @@ const DEFAULT_CONTEXT = {
     educationRef: React.createRef(),
     contactRef: React.createRef(),
   },
+  isExport: false,
 };
 
 const AppContext = React.createContext<IAppContext>(DEFAULT_CONTEXT);

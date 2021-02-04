@@ -1525,6 +1525,25 @@
     schema-utils "^2.6.5"
     source-map "^0.7.3"
 
+"@progress/kendo-drawing@1.5.7":
+  version "1.5.7"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-drawing/-/kendo-drawing-1.5.7.tgz#03c8edadf85a7880234657e87599106b76fbc88e"
+  integrity sha512-0Vej4gGWkTPQSXfcqa/uDVafME0w7P4nTUl/Nm389VHdZYP2J8m/AYbQkFQxCvhcgA3mpTpsSs597skGONta1A==
+  dependencies:
+    pako "^1.0.5"
+
+"@progress/kendo-file-saver@^1.0.1":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-file-saver/-/kendo-file-saver-1.1.0.tgz#d87b18d230b2df39d7eebca7317f5fe3a51b7db2"
+  integrity sha512-26iPl67d0izUlzU6p98QM5f/spOK3QCdmSJrEzGakw1Yp0qyFmp2V9uKeswfWgX0NhKmJApWjlAxxrtRvYjHYA==
+
+"@progress/kendo-react-pdf@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-react-pdf/-/kendo-react-pdf-2.0.0.tgz#98afbc3a7f79f4f51032d6bb20fc1d96f0f2ce20"
+  integrity sha512-T4wOEP4HSPpGkxQBFiN9I926HX35zhL8fKDkHwZgFqcFL1E/TCzIucV1ZCeUORRI6sfRlyTOsw3Vl1NTGRRdcw==
+  dependencies:
+    "@progress/kendo-file-saver" "^1.0.1"
+
 "@rollup/plugin-node-resolve@^7.1.1":
   version "7.1.3"
   resolved "https://registry.yarnpkg.com/@rollup/plugin-node-resolve/-/plugin-node-resolve-7.1.3.tgz#80de384edfbd7bfc9101164910f86078151a3eca"
@@ -7976,7 +7995,7 @@ p-try@^2.0.0:
   resolved "https://registry.yarnpkg.com/p-try/-/p-try-2.2.0.tgz#cb2868540e313d61de58fafbe35ce9004d5540e6"
   integrity sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==
 
-pako@~1.0.5:
+pako@^1.0.5, pako@~1.0.5:
   version "1.0.11"
   resolved "https://registry.yarnpkg.com/pako/-/pako-1.0.11.tgz#6c9599d340d54dfd3946380252a35705a6b992bf"
   integrity sha512-4hLB8Py4zZce5s4yd9XzopqwVv/yGNhV1Bl8NTmCq1763HeK2+EwVTv+leGeL13Dnh2wfbqowVPXCIO0z4taYw==
