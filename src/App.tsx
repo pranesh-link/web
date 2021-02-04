@@ -22,16 +22,18 @@ function App() {
           refs: { homeRef, skillsRef, experienceRef, educationRef, contactRef },
         }}
       >
-        <button
-          onClick={() => {
-            console.log("pdf");
-            if (pdfExportComponent) {
-              pdfExportComponent.save();
-            }
-          }}
-        >
-          Download profile
-        </button>
+        {false && (
+          <button
+            onClick={() => {
+              console.log("pdf");
+              if (pdfExportComponent) {
+                pdfExportComponent.save();
+              }
+            }}
+          >
+            Download profile
+          </button>
+        )}
         <HamBurgerMenu />
         <MenuBar />
         <ProfileSections />
