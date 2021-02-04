@@ -14,18 +14,18 @@ function App() {
   const contactRef = useRef(null);
 
   return (
-    <AppProvider
-      value={{
-        data: ProfileData,
-        refs: { homeRef, skillsRef, experienceRef, educationRef, contactRef },
-      }}
-    >
-      <Wrapper>
+    <Wrapper>
+      <AppProvider
+        value={{
+          data: ProfileData,
+          refs: { homeRef, skillsRef, experienceRef, educationRef, contactRef },
+        }}
+      >
         <HamBurgerMenu />
         <MenuBar />
         <ProfileSections />
-      </Wrapper>
-    </AppProvider>
+      </AppProvider>
+    </Wrapper>
   );
 }
 
