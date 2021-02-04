@@ -73,7 +73,7 @@ export const ProfileData: IProfileData = {
         {
           title: { info: "aXess Developer Platform" },
           client: { info: "Standard Chartered Bank" },
-          duration: { info: "April 2020 - Jan 2021" },
+          duration: { info: "Apr 2020 - Jan 2021" },
           softwareTech: {
             info: "React, Redux, Typescript, CSS, HTML5,GraphQL",
           },
@@ -105,7 +105,7 @@ export const ProfileData: IProfileData = {
         {
           title: { info: "Real Time On-boarding" },
           client: { info: "Standard Chartered Bank" },
-          duration: { info: "January 2017 – March 2020" },
+          duration: { info: "Jan 2017 – Mar 2020" },
           softwareTech: {
             info: "Ember CLI, AngularJS, CSS, HTML5, Cordova, Xcode",
           },
@@ -131,7 +131,7 @@ export const ProfileData: IProfileData = {
         {
           title: { info: "Retail Workbench" },
           client: { info: "Standard Chartered Bank" },
-          duration: { info: "May 2015 – December 2016" },
+          duration: { info: "May 2015 – Dec 2016" },
           softwareTech: {
             info: "Ember CLI, AngularJS, CSS, HTML5, Cordova, Xcode",
           },
@@ -156,7 +156,7 @@ export const ProfileData: IProfileData = {
         {
           title: { info: "Breeze Mobile Web – Indonesia [SKN/DFS]" },
           client: { info: "Standard Chartered Bank Indonesia" },
-          duration: { info: "Feb 2015 – April 2015" },
+          duration: { info: "Feb 2015 – Apr 2015" },
           softwareTech: { info: "Ember CLI, CSS, HTML5, Cordova" },
           description: {
             info: `Breeze Mobile Web was developed with focus on giving a ease of use Banking experience anytime and at any place in their mobile devices. The
@@ -179,7 +179,7 @@ export const ProfileData: IProfileData = {
         {
           title: { info: "Breeze Mobile Web – India" },
           client: { info: "Standard Chartered Bank India" },
-          duration: { info: "January 2013 – Feb 2015" },
+          duration: { info: "Jan 2013 – Feb 2015" },
           softwareTech: { info: "Ember CLI, CSS, HTML5, Cordova" },
           description: {
             info: `Breeze Mobile Web India had an initial launch in August 2013 (Phase1) which met user’s basic banking needs.

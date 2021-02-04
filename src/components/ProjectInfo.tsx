@@ -24,11 +24,16 @@ export const ProjectInfo = (props: IProjectInfoProps) => {
       <ProjectName>
         <span>{title.info}</span>
       </ProjectName>
-      <FlexBoxSection direction="column" className="project-info">
+      <FlexBoxSection
+        direction="column"
+        className={classNames("project-info", { export: isExport })}
+      >
         <FlexBoxSection direction="column" className="project-short-info">
           {SHORT_INFOS.map((key, index) => (
             <FlexBox className="info-wrapper" key={index}>
-              <label className="info-label">{LABEL_TEXT[key]}</label>
+              <label className={classNames("info-label", { export: isExport })}>
+                {LABEL_TEXT[key]}
+              </label>
               <div className="info">{project[key].info}</div>
             </FlexBox>
           ))}
@@ -55,7 +60,7 @@ export const ProjectInfo = (props: IProjectInfoProps) => {
                 !requiresShowHide ||
                 isExport) && (
                 <div
-                  className={`info ${key}`}
+                  className={classNames("info", key, { export: isExport })}
                   dangerouslySetInnerHTML={{ __html: info }}
                 />
               )}
@@ -71,6 +76,9 @@ const SectionWrapper = styled(FlexBoxSection)`
   margin-bottom: 20px;
   .project-info {
     margin-left: 10px;
+    &.export {
+      margin-left: 0;
+    }
     @media screen and (max-width: 767px) {
       margin-left: 0px;
     }
@@ -81,6 +89,9 @@ const SectionWrapper = styled(FlexBoxSection)`
     margin-right: 10px;
     text-transform: uppercase;
     color: #3e3e3e;
+    &.export {
+      flex-basis: 35%;
+    }
     .show-hide {
       background-color: #3f9c35;
       border: none;
@@ -107,6 +118,9 @@ const SectionWrapper = styled(FlexBoxSection)`
   .description,
   .responsibilities {
     margin-left: 20px;
+    &.export {
+      margin-left: 0;
+    }
     @media screen and (max-width: 767px) {
       margin-left: 0px;
     }
@@ -114,7 +128,7 @@ const SectionWrapper = styled(FlexBoxSection)`
 `;
 const ProjectName = styled.header`
   font-weight: bold;
-  font-size: 24px;
+  font-size: 20px;
   margin-bottom: 10px;
   color: #3e3e3e;
   display: flex;

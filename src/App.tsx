@@ -1,5 +1,5 @@
 import { PDFExport } from "@progress/kendo-react-pdf";
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import { HamBurgerMenu } from "./components/HamBurgerMenu";
 import MenuBar from "./components/MenuBar";
@@ -13,23 +13,24 @@ function App() {
   const experienceRef = useRef(null);
   const educationRef = useRef(null);
   const contactRef = useRef(null);
-  let pdfExportComponent: { save: () => void };
+  let pdfExportComponent: { save: () => void } = { save: () => {} };
   return (
     <Wrapper>
       <AppProvider
         value={{
           data: ProfileData,
           refs: { homeRef, skillsRef, experienceRef, educationRef, contactRef },
-          isExport: false,
         }}
       >
         <button
-          className="k-button"
           onClick={() => {
-            pdfExportComponent.save();
+            console.log("pdf");
+            if (pdfExportComponent) {
+              pdfExportComponent.save();
+            }
           }}
         >
-          Export PDF
+          Download profile
         </button>
         <HamBurgerMenu />
         <MenuBar />
@@ -40,13 +41,15 @@ function App() {
           data: ProfileData,
           refs: { homeRef, skillsRef, experienceRef, educationRef, contactRef },
           isExport: true,
+          exportRef: pdfExportComponent,
         }}
       >
-        <div className="export">
+        <div className="export-wrapper">
           <PDFExport
             scale={0.65}
-            paperSize="A3"
+            paperSize="A4"
             margin="0cm"
+            fileName="Pranesh_Profile"
             ref={(component: any) => (pdfExportComponent = component)}
           >
             <HamBurgerMenu />
@@ -62,7 +65,7 @@ function App() {
 export default App;
 
 const Wrapper = styled.section`
-  .export {
+  .export-wrapper {
     position: absolute;
     left: -3000px;
     top: 0;

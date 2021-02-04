@@ -40,14 +40,16 @@ export type JUSTIFY_CONTENT =
   | "center"
   | "space-between"
   | "space-around"
-  | "space-evenly";
+  | "space-evenly"
+  | "normal";
 
 export type ALIGN_ITEMS =
   | "flex-start"
   | "flex-end"
   | "center"
   | "baseline"
-  | "stretch";
+  | "stretch"
+  | "normal";
 
 export type FLEX_DIRECTION =
   | "row"
@@ -61,6 +63,11 @@ export const SecHeader = styled.header`
   margin-bottom: 20px;
   color: #22a39f;
   text-align: center;
+  &.export {
+    text-align: unset;
+    margin-bottom: 0;
+    font-size: 30px;
+  }
   &.about-me-title {
     text-align: left;
     font-size: 28px;
@@ -91,6 +98,9 @@ export const Desc = styled.p`
       padding: 0 5px;
     }
   }
+  &.export {
+    text-align: left;
+  }
   strong {
     color: #3e3e3e;
   }
@@ -103,6 +113,10 @@ export const SectionsWrapper = styled.section`
   height: 100%;
   margin-top: 40px;
   padding-bottom: 40px;
+  &.export {
+    padding-left: 10%;
+    margin-top: 0;
+  }
   &.hamburger-menu {
     padding-left: 0;
     padding-bottom: 0;
@@ -173,6 +187,10 @@ export const SectionsWrapper = styled.section`
     &.experience {
       padding-top: 20px;
       background-color: #f3f0de;
+      &.export {
+        background-color: transparent;
+        padding-top: 0px;
+      }
       ${SecHeader} {
         @media screen and (max-width: 767px) {
           margin-bottom: 10px;
@@ -195,6 +213,9 @@ export const SectionsWrapper = styled.section`
     .about-me {
       flex-basis: 20%;
       padding-right: 10px;
+      &.export {
+        flex-basis: 33%;
+      }
     }
     .image {
       .image-wrap {

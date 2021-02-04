@@ -12,6 +12,7 @@ import classNames from "classnames";
 const ProfileSections = () => {
   const {
     isExport,
+    exportRef: pdfExportComponent,
     data: { sections, header },
     refs: { homeRef, skillsRef, experienceRef, educationRef, contactRef },
   } = React.useContext(AppContext);
@@ -27,13 +28,26 @@ const ProfileSections = () => {
         <hr className={classNames("header-sep", { export: isExport })} />
       </PageHeader>
       <FlexBox direction="column" alignItems="center">
-        <Separator />
+        <Separator className={classNames({ export: isExport })} />
       </FlexBox>
-      <SectionsWrapper>
-        <About aboutMe={aboutMe} details={details} refObj={homeRef} />
-        <Education education={education} refObj={educationRef} />
-        <Skills skills={skills} refObj={skillsRef} />
-        <Experiences experiences={experience} refObj={experienceRef} />
+      <SectionsWrapper className={classNames({ export: isExport })}>
+        <About
+          isExport={isExport}
+          aboutMe={aboutMe}
+          details={details}
+          refObj={homeRef}
+        />
+        <Education
+          isExport={isExport}
+          education={education}
+          refObj={educationRef}
+        />
+        <Skills isExport={isExport} skills={skills} refObj={skillsRef} />
+        <Experiences
+          isExport={isExport}
+          experiences={experience}
+          refObj={experienceRef}
+        />
         <Contact links={links} refObj={contactRef} />
       </SectionsWrapper>
     </Wrapper>
@@ -64,6 +78,9 @@ const Separator = styled.hr`
   opacity: 0.2;
   height: 0;
   border-top: 1px solid #eee;
+  &.export {
+    display: none;
+  }
   @media screen and (max-width: 767px) {
     display: none;
   }
@@ -83,7 +100,7 @@ const ShortDesc = styled.h3`
   }
 `;
 const PageHeader = styled.h2`
-  font-size: 54px;
+  font-size: 45px;
   font-weight: 500;
   color: #22a39f;
   text-align: center;

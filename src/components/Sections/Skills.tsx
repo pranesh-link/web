@@ -5,13 +5,15 @@ import React from "react";
 import { ISkill, ISectionInfo } from "../../store/types";
 import { valueIsArray, valueIsSkillInfo } from "../Utils";
 import { FlexBoxSection, SecHeader } from "../../common/Elements";
+import classNames from "classnames";
 
 interface ISkillsProps {
+  isExport?: boolean;
   refObj: React.MutableRefObject<any>;
   skills: ISectionInfo;
 }
 export const Skills = (props: ISkillsProps) => {
-  const { refObj, skills } = props;
+  const { refObj, skills, isExport } = props;
 
   const getSkillsData = () => {
     const { info } = skills;
@@ -23,12 +25,29 @@ export const Skills = (props: ISkillsProps) => {
       : [];
   };
 
+  const COLUMNS = [
+    {
+      Header: "technology",
+      accessor: "technology",
+      minWidth: 200,
+      maxWidth: 200,
+    },
+    {
+      Header: "skills",
+      accessor: "skills",
+      minWidth: isExport ? 600 : 200,
+      maxWidth: isExport ? 1000 : 300,
+    },
+  ];
+
   const skillsData = getSkillsData();
 
   return (
     <section className="profile-section" id="skills" ref={refObj}>
-      <SecHeader>{skills.title}</SecHeader>
-      <SkillsInfoWrapper justifyContent="center">
+      <SecHeader className={classNames({ export: isExport })}>
+        {skills.title}
+      </SecHeader>
+      <SkillsInfoWrapper justifyContent={isExport ? "normal" : "center"}>
         <TABLE
           columns={COLUMNS}
           data={skillsData}
@@ -78,20 +97,6 @@ const TABLE = styled(ReactTable)`
     }
   }
 `;
-const COLUMNS = [
-  {
-    Header: "technology",
-    accessor: "technology",
-    minWidth: 200,
-    maxWidth: 200,
-  },
-  {
-    Header: "skills",
-    accessor: "skills",
-    minWidth: 200,
-    maxWidth: 300,
-  },
-];
 
 const NoData = () => <NoDataText>Fetching data....</NoDataText>;
 
