@@ -124,7 +124,7 @@ export const SectionsWrapper = styled.section`
     }
     &.links {
       padding: 15px 0;
-      background-color: #fff;
+      background-color: #222222;
       position: fixed;
       bottom: 0;
       width: 100%;
