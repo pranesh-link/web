@@ -3,14 +3,17 @@ import React, { useEffect, useState } from "react";
 import { Transition } from "react-transition-group";
 import styled from "styled-components";
 import HamBurgerIcon from "../assets/burgericon.svg";
-import { FlexBoxSection } from "../common/Elements";
+import { FlexBoxSection, SectionsWrapper } from "../common/Elements";
 import { AppContext } from "../context";
 import MenuBar from "./MenuBar";
-import { valueIsArray, valueIsSkillInfo } from "./Utils";
+import { Contact } from "./Sections/Contact";
 
 export const HamBurgerMenu = () => {
   const contentRef = React.useRef<HTMLDivElement>(null);
-  const { data } = React.useContext(AppContext);
+  const {
+    data,
+    refs: { contactRef },
+  } = React.useContext(AppContext);
   const { links } = data.sections;
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -64,18 +67,10 @@ export const HamBurgerMenu = () => {
                 isMobileMenu={true}
                 closeHamburgerMenu={() => setIsOpen(false)}
               />
-              <div className="find-me">Find me @</div>
-              <FlexBoxSection flexWrap="wrap" className="links" id="links">
-                {valueIsArray(links.info) && valueIsSkillInfo(links.info)
-                  ? links.info.map((link) => (
-                      <div
-                        className="link"
-                        key={link.label}
-                        dangerouslySetInnerHTML={{ __html: link.info }}
-                      ></div>
-                    ))
-                  : null}
-              </FlexBoxSection>
+              <label className="find-me">Find me @</label>
+              <SectionsWrapper className="hamburger-menu">
+                <Contact links={links} refObj={contactRef} />
+              </SectionsWrapper>
             </ContentSection>
             <RightSection onClick={() => setIsOpen(false)} />
           </Menu>
@@ -84,6 +79,7 @@ export const HamBurgerMenu = () => {
     </>
   );
 };
+
 const IconWrap = styled.div`
   position: fixed;
   width: 100%;
@@ -120,34 +116,6 @@ const ContentSection = styled(FlexBoxSection)`
     padding-left: 15px;
     font-style: italic;
     font-weight: bold;
-  }
-  .links {
-    padding: 30px 10px;
-    /* position: fixed; */
-    bottom: 0;
-    margin-bottom: 0;
-    .link {
-      padding-right: 5px;
-      margin-bottom: 40px;
-      a {
-        padding: 10px 15px;
-        text-decoration: none;
-        border-radius: 20px;
-        background-color: #0c77b9;
-        &:hover {
-          background-color: #3f9c35;
-        }
-      }
-      a {
-        color: #f0f0f0;
-      }
-      span {
-        display: none;
-      }
-      .link-separator {
-        display: none;
-      }
-    }
   }
 `;
 const RightSection = styled.div`

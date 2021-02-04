@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { FlexBox, SecHeader } from "../common/Elements";
+import { FlexBox, SectionsWrapper } from "../common/Elements";
 import { AppContext } from "../context";
 import { Experiences } from "./Sections/Experiences";
 import { Skills } from "./Sections/Skills";
@@ -50,113 +50,6 @@ const Wrapper = styled.section`
     @media screen and (max-width: 767px) {
       display: none;
     }
-  }
-`;
-
-const SectionsWrapper = styled.section`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  height: 100%;
-  margin-top: 40px;
-  padding-bottom: 60px;
-  .profile-section {
-    margin-bottom: 20px;
-    > header {
-      @media screen and (max-width: 767px) {
-        margin-bottom: 0px;
-      }
-    }
-    &.links {
-      padding: 30px 0;
-      background-color: #434242;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      margin-bottom: 0;
-      @media screen and (max-width: 767px) {
-        display: none;
-      }
-    }
-    .link {
-      a {
-        padding: 10px 15px;
-        text-decoration: none;
-        border-radius: 20px;
-        background-color: #0c77b9;
-        &:hover {
-          background-color: #3f9c35;
-        }
-      }
-      a,
-      span {
-        color: #f0f0f0;
-      }
-      padding-right: 5px;
-      .link-separator {
-        &:last-child {
-          display: none;
-        }
-      }
-    }
-    &.experience {
-      padding-top: 20px;
-      background-color: #f3f0de;
-      ${SecHeader} {
-        @media screen and (max-width: 767px) {
-          margin-bottom: 10px;
-        }
-      }
-      @media screen and (max-width: 767px) {
-        background: none;
-      }
-    }
-    &.about {
-      padding-top: 20px;
-      @media screen and (max-width: 767px) {
-        flex-direction: column;
-        justify-content: normal;
-      }
-    }
-    .image-details-wrap {
-      margin-right: 10px;
-    }
-    .about-me {
-      flex-basis: 20%;
-      padding-right: 10px;
-    }
-    .image {
-      .image-wrap {
-        margin-right: 50px;
-        @media screen and (max-width: 767px) {
-          margin-right: 20px;
-        }
-      }
-      .profile-image {
-        width: 200px;
-        height: 200px;
-        border-radius: 50%;
-        border: 2px solid #dddbca;
-        @media screen and (max-width: 767px) {
-          width: 125px;
-          height: 125px;
-        }
-      }
-    }
-    .details {
-      flex-basis: 20%;
-      .detail-info {
-        line-height: 1.5;
-        margin-right: 10px;
-        span {
-          flex-basis: 75%;
-        }
-      }
-    }
-  }
-  @media screen and (max-width: 767px) {
-    padding-left: 20px;
-    margin-top: 0;
   }
 `;
 

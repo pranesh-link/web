@@ -26,8 +26,10 @@ export interface IDetailInfo extends ISkill {
   canCopy?: boolean;
 }
 
-export interface ILink extends ISkill {
+export interface ILink {
   icon: string;
+  link: string;
+  label: string;
 }
 
 export interface IProject {

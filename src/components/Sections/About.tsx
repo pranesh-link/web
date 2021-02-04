@@ -8,7 +8,7 @@ import {
 } from "../../common/Elements";
 import { ISectionInfo } from "../../store/types";
 import { valueIsArray, valueIsDetailInfo, lowercase } from "../Utils";
-import ProfileImg from "../../assets/linkedin.jpeg";
+import ProfileImg from "../../assets/profile.jpeg";
 import * as clipboard from "clipboard-polyfill/text";
 import styled from "styled-components";
 

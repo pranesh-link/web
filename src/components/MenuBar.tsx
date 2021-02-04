@@ -15,7 +15,7 @@ const MenuBar = (props: IMenuBarProps) => {
   const [currentSection, setCurrentSection] = useState<string>("about");
 
   const goTo = (ref: React.MutableRefObject<any>) => {
-    const additionalOffset = visualViewport.width < 767 ? -90 : 0;
+    const additionalOffset = window.innerWidth < 767 ? -90 : 0;
     const top =
       ref.current.getBoundingClientRect().top +
       additionalOffset +
@@ -44,7 +44,7 @@ const MenuBar = (props: IMenuBarProps) => {
       (result, curr, index) => {
         const { ref, section } = curr;
         let pos = refs[ref as RefTypes].current.getBoundingClientRect().top;
-        pos = visualViewport.width < 767 ? pos - 95 : pos;
+        pos = window.innerWidth < 767 ? pos - 95 : pos;
 
         if (index === 0 || (pos <= 0 && pos > result.pos)) {
           return {
@@ -102,7 +102,7 @@ const MenuWrapper = styled.nav`
   width: 100%;
   z-index: 10;
   background-color: #222222;
-  max-width: 10%;
+  max-width: 15%;
   &.mobile {
     padding-top: 25px;
     position: static;

@@ -1,4 +1,8 @@
 import { IProfileData } from "./types";
+import LinkedInImg from "../assets/logos/linkedin-logo.svg";
+import FacebookImg from "../assets/logos/facebook-logo.svg";
+import TwitterImg from "../assets/logos/twitter-logo.svg";
+import GithubImg from "../assets/logos/github-logo.png";
 
 export const ProfileData: IProfileData = {
   header: {
@@ -10,9 +14,9 @@ export const ProfileData: IProfileData = {
       title: "About Me",
       ref: "homeRef",
       info: `I'm an enthusiastic front-end developer who wants to be an integral part of a competitive work environment, which would
-    help me to update my knowledge and skills, both on the intellectual
-    and personal front while contributing to the growth and success of the
-    organisation.`,
+        help me to update my knowledge and skills, both on the intellectual
+        and personal front while contributing to the growth and success of the
+        organisation.`,
     },
     details: {
       title: "Details",
@@ -203,24 +207,24 @@ export const ProfileData: IProfileData = {
       info: [
         {
           label: "Github",
-          info:
-            "<a href='https://github.com/prans1991/' target='_blank'>Github</a><span> - </span>",
+          link: "https://github.com/prans1991/",
+          icon: GithubImg,
         },
         {
           label: "LinkedIn",
-          info: `<a href='https://www.linkedin.com/in/pranesh-g/' target='_blank'>LinkedIn</a>
-             <span> - </span> `,
+          link: "https://www.linkedin.com/in/pranesh-g/",
+          icon: LinkedInImg,
         },
 
         {
           label: "Facebook",
-          info:
-            "<a href='https://www.facebook.com/anonymousOffl/' target='_blank'>Facebook</a><span> - </span>",
+          link: "https://www.facebook.com/anonymousOffl/",
+          icon: FacebookImg,
         },
         {
           label: "Twitter",
-          info:
-            "<a href='https://twitter.com/anonymous_offl' target='_blank'>Twitter</a>",
+          link: "https://twitter.com/anonymous_offl",
+          icon: TwitterImg,
         },
       ],
     },
