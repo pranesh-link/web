@@ -51,7 +51,6 @@ function App() {
             fileName="Pranesh_Profile"
             ref={(component: PDFExport) => (pdfExportComponent = component)}
           >
-            <HamBurgerMenu />
             <MenuBar />
             <ProfileSections />
           </PDFExport>

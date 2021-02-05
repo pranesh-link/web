@@ -149,6 +149,19 @@ export const SectionsWrapper = styled.section`
       bottom: 0;
       width: 100%;
       margin-bottom: 0;
+      &.export {
+        position: static;
+        background-color: transparent;
+        @media screen and (max-width: 767px) {
+          display: flex;
+          position: static;
+          padding: 20px 0;
+          background-color: transparent;
+        }
+        .link {
+          padding-right: 15px;
+        }
+      }
       @media screen and (max-width: 767px) {
         display: none;
         position: static;
@@ -211,10 +224,16 @@ export const SectionsWrapper = styled.section`
       @media screen and (max-width: 767px) {
         flex-direction: column;
         justify-content: normal;
+        &.export {
+          flex-direction: row;
+        }
       }
     }
     .image-details-wrap {
       margin-right: 10px;
+      @media screen and (max-width: 767px) {
+        margin-top: 15px;
+      }
     }
     .about-me {
       flex-basis: 20%;
@@ -242,10 +261,9 @@ export const SectionsWrapper = styled.section`
       }
     }
     .details {
-      flex-basis: 20%;
+      min-width: 55%;
       .detail-info {
         line-height: 1.5;
-        margin-right: 10px;
         span {
           flex-basis: 75%;
         }

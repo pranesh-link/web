@@ -30,7 +30,10 @@ export const ProjectInfo = (props: IProjectInfoProps) => {
       >
         <FlexBoxSection direction="column" className="project-short-info">
           {SHORT_INFOS.map((key, index) => (
-            <FlexBox className="info-wrapper" key={index}>
+            <FlexBox
+              className={classNames("info-wrapper", { export: isExport })}
+              key={index}
+            >
               <label className={classNames("info-label", { export: isExport })}>
                 {LABEL_TEXT[key]}
               </label>
@@ -112,7 +115,9 @@ const SectionWrapper = styled(FlexBoxSection)`
   .info-wrapper {
     line-height: 2;
     @media screen and (max-width: 767px) {
-      flex-direction: column;
+      &:not(.export) {
+        flex-direction: column;
+      }
     }
   }
   .description,

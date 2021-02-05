@@ -8,7 +8,12 @@ import {
   ActionBtn,
 } from "../../common/Elements";
 import { ISectionInfo } from "../../store/types";
-import { valueIsArray, valueIsDetailInfo, lowercase } from "../Utils";
+import {
+  valueIsArray,
+  valueIsDetailInfo,
+  lowercase,
+  valueIsLinkInfo,
+} from "../Utils";
 import ProfileImg from "../../assets/profile.jpeg";
 import * as clipboard from "clipboard-polyfill/text";
 import styled from "styled-components";
@@ -19,26 +24,29 @@ interface IAboutProps {
   isExport?: boolean;
   aboutMe: ISectionInfo;
   details: ISectionInfo;
+  links: ISectionInfo;
   isDownloading?: boolean;
   exportProfile: () => void;
 }
 export const About = (props: IAboutProps) => {
-  const { refObj, aboutMe, details, isExport, isDownloading } = props;
+  const { refObj, aboutMe, details, isExport, isDownloading, links } = props;
   const [copied, setCopied] = useState<boolean>(false);
   const [copyInfoId, setCopyInfoId] = useState<string>("");
+  const [showCopy, setShowCopy] = useState<boolean>(false);
+  const isMobile = window.innerWidth < 768;
 
   useEffect(() => {
     if (copied) {
       setTimeout(() => {
         setCopied(false);
         setCopyInfoId("");
-      }, 3000);
+      }, 2000);
     }
   }, [copied]);
 
   return (
     <FlexBoxSection
-      className="profile-section about"
+      className={classNames("profile-section", "about", { export: isExport })}
       justifyContent={isExport ? "normal" : "center"}
       ref={refObj}
       id="home"
@@ -64,37 +72,71 @@ export const About = (props: IAboutProps) => {
                     className="detail"
                     key={index}
                     direction="column"
+                    onMouseEnter={() => {
+                      setCopyInfoId(detail.label);
+                      setShowCopy(true);
+                    }}
+                    onMouseLeave={() => {
+                      setCopyInfoId("");
+                      setShowCopy(false);
+                    }}
                   >
-                    <DetailLabel>{detail.label}</DetailLabel>
+                    <DetailLabel>
+                      {detail.label}
+                      <CopyButton
+                        data-id={lowercase(detail.label)}
+                        data-clipboard-text={detail.info}
+                        onClick={() => {
+                          clipboard.writeText(detail.info).then(() => {
+                            setCopyInfoId(detail.label);
+                            setCopied(true);
+                          });
+                        }}
+                        className={classNames({
+                          hide: !(
+                            !isExport &&
+                            detail.canCopy &&
+                            showCopy &&
+                            copyInfoId === detail.label
+                          ),
+                          mobile: !isExport && isMobile && detail.canCopy,
+                          copied: copied && copyInfoId === detail.label,
+                        })}
+                      >
+                        {copied && copyInfoId === detail.label
+                          ? "Copied!"
+                          : "Copy"}
+                      </CopyButton>
+                    </DetailLabel>
                     <FlexBox alignItems="center" className="detail-info">
                       <span id={lowercase(detail.label)}>{detail.info}</span>
-                      {!isExport && detail.canCopy && (
-                        <CopyButton
-                          data-id={lowercase(detail.label)}
-                          data-clipboard-text={detail.info}
-                          onClick={() => {
-                            clipboard.writeText(detail.info).then(() => {
-                              setCopyInfoId(detail.label);
-                              setCopied(true);
-                            });
-                          }}
-                          className={classNames({
-                            copied: copied && copyInfoId === detail.label,
-                          })}
-                        >
-                          {copied && copyInfoId === detail.label
-                            ? "Copied!"
-                            : "Copy"}
-                        </CopyButton>
-                      )}
                     </FlexBox>
                   </FlexBoxSection>
                 ))
               : null}
-            {!isExport && (
+            {isExport ? (
+              <FlexBoxSection
+                alignItems="center"
+                className="profile-section links export"
+              >
+                {valueIsArray(links.info) && valueIsLinkInfo(links.info)
+                  ? links.info.map((link) => (
+                      <a
+                        className="link"
+                        href={link.link}
+                        target="_blank"
+                        key={link.label}
+                        rel="noreferrer"
+                      >
+                        <img alt="" className={link.label} src={link.icon} />
+                      </a>
+                    ))
+                  : null}
+              </FlexBoxSection>
+            ) : (
               <DownloadProfileBtn
-                className=""
-                onClick={() => props.exportProfile()}
+                onClick={props.exportProfile}
+                disabled={isDownloading}
               >
                 <span>
                   {isDownloading ? "Downloading..." : "Download profile"}
@@ -112,12 +154,15 @@ export const About = (props: IAboutProps) => {
 const DownloadProfileBtn = styled(ActionBtn)`
   margin-top: 10px;
   background-color: #0c77b9;
-  max-width: 80%;
+  max-width: 75%;
   padding: 10px 5px;
   color: #f0f0f0;
   border-radius: 25px;
   &:hover {
     background-color: #005c84;
+  }
+  @media screen and (max-width: 767px) {
+    max-width: unset;
   }
   img {
     margin-left: 10px;
@@ -133,14 +178,24 @@ const CopyButton = styled.button`
   cursor: pointer;
   outline: none;
   border-radius: 15px;
-  padding: 3px 10px;
+  padding: 3px 7px;
+  font-size: 10px;
   margin-left: 10px;
+  &.hide {
+    visibility: hidden;
+  }
+  &.mobile {
+    visibility: visible;
+  }
   &.copied {
     background-color: #3f9c35;
   }
 `;
 
 const DetailLabel = styled.label`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
   font-weight: bold;
   line-height: 1.5;
 `;

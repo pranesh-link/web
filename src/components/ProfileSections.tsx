@@ -38,6 +38,7 @@ const ProfileSections = (props: IProfileSectionsProps) => {
           isDownloading={isDownloading}
           isExport={isExport}
           aboutMe={aboutMe}
+          links={links}
           details={details}
           refObj={homeRef}
           exportProfile={() => {
