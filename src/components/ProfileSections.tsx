@@ -9,10 +9,13 @@ import { Education } from "./Sections/Education";
 import { Contact } from "./Sections/Contact";
 import classNames from "classnames";
 
-const ProfileSections = () => {
+interface IProfileSectionsProps {
+  exportProfile?: () => void;
+}
+const ProfileSections = (props: IProfileSectionsProps) => {
   const {
     isExport,
-    exportRef: pdfExportComponent,
+    isDownloading,
     data: { sections, header },
     refs: { homeRef, skillsRef, experienceRef, educationRef, contactRef },
   } = React.useContext(AppContext);
@@ -32,10 +35,16 @@ const ProfileSections = () => {
       </FlexBox>
       <SectionsWrapper className={classNames({ export: isExport })}>
         <About
+          isDownloading={isDownloading}
           isExport={isExport}
           aboutMe={aboutMe}
           details={details}
           refObj={homeRef}
+          exportProfile={() => {
+            if (props.exportProfile) {
+              props.exportProfile();
+            }
+          }}
         />
         <Education
           isExport={isExport}

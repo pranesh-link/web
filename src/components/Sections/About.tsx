@@ -5,27 +5,25 @@ import {
   FlexBox,
   SecHeader,
   Desc,
+  ActionBtn,
 } from "../../common/Elements";
 import { ISectionInfo } from "../../store/types";
 import { valueIsArray, valueIsDetailInfo, lowercase } from "../Utils";
 import ProfileImg from "../../assets/profile.jpeg";
 import * as clipboard from "clipboard-polyfill/text";
 import styled from "styled-components";
-import { AppProvider } from "../../context";
-import { PDFExport } from "@progress/kendo-react-pdf";
-import { HamBurgerMenu } from "../HamBurgerMenu";
-import MenuBar from "../MenuBar";
-import ProfileSections from "../ProfileSections";
+import DownloadIcon from "../../assets/download-icon.svg";
 
 interface IAboutProps {
   refObj: React.MutableRefObject<any>;
   isExport?: boolean;
   aboutMe: ISectionInfo;
   details: ISectionInfo;
-  pdfExportComponent?: { save: () => void };
+  isDownloading?: boolean;
+  exportProfile: () => void;
 }
 export const About = (props: IAboutProps) => {
-  const { refObj, aboutMe, details, isExport, pdfExportComponent } = props;
+  const { refObj, aboutMe, details, isExport, isDownloading } = props;
   const [copied, setCopied] = useState<boolean>(false);
   const [copyInfoId, setCopyInfoId] = useState<string>("");
 
@@ -93,17 +91,16 @@ export const About = (props: IAboutProps) => {
                   </FlexBoxSection>
                 ))
               : null}
-            {false && (
-              <button
-                onClick={() => {
-                  console.log("pdf");
-                  if (pdfExportComponent) {
-                    pdfExportComponent.save();
-                  }
-                }}
+            {!isExport && (
+              <DownloadProfileBtn
+                className=""
+                onClick={() => props.exportProfile()}
               >
-                Export PDF
-              </button>
+                <span>
+                  {isDownloading ? "Downloading..." : "Download profile"}
+                </span>
+                <img alt="" src={DownloadIcon} />
+              </DownloadProfileBtn>
             )}
           </FlexBoxSection>
         </FlexBoxSection>
@@ -112,6 +109,23 @@ export const About = (props: IAboutProps) => {
   );
 };
 
+const DownloadProfileBtn = styled(ActionBtn)`
+  margin-top: 10px;
+  background-color: #0c77b9;
+  max-width: 80%;
+  padding: 10px 5px;
+  color: #f0f0f0;
+  border-radius: 25px;
+  &:hover {
+    background-color: #005c84;
+  }
+  img {
+    margin-left: 10px;
+    margin-right: 5px;
+    height: 15px;
+    width: 15px;
+  }
+`;
 const CopyButton = styled.button`
   border: none;
   background-color: #434242;

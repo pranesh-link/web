@@ -1,5 +1,5 @@
 import { PDFExport } from "@progress/kendo-react-pdf";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { HamBurgerMenu } from "./components/HamBurgerMenu";
 import MenuBar from "./components/MenuBar";
@@ -13,37 +13,34 @@ function App() {
   const experienceRef = useRef(null);
   const educationRef = useRef(null);
   const contactRef = useRef(null);
-  let pdfExportComponent: { save: () => void } = { save: () => {} };
+
+  const [isDownloading, setIsDownloading] = useState<boolean>(false);
+
+  let pdfExportComponent: PDFExport;
+
   return (
     <Wrapper>
       <AppProvider
         value={{
           data: ProfileData,
           refs: { homeRef, skillsRef, experienceRef, educationRef, contactRef },
+          isDownloading,
         }}
       >
-        {false && (
-          <button
-            onClick={() => {
-              console.log("pdf");
-              if (pdfExportComponent) {
-                pdfExportComponent.save();
-              }
-            }}
-          >
-            Download profile
-          </button>
-        )}
         <HamBurgerMenu />
         <MenuBar />
-        <ProfileSections />
+        <ProfileSections
+          exportProfile={() => {
+            setIsDownloading(true);
+            pdfExportComponent.save(() => setIsDownloading(false));
+          }}
+        />
       </AppProvider>
       <AppProvider
         value={{
           data: ProfileData,
           refs: { homeRef, skillsRef, experienceRef, educationRef, contactRef },
           isExport: true,
-          exportRef: pdfExportComponent,
         }}
       >
         <div className="export-wrapper">
@@ -52,7 +49,7 @@ function App() {
             paperSize="A4"
             margin="0cm"
             fileName="Pranesh_Profile"
-            ref={(component: any) => (pdfExportComponent = component)}
+            ref={(component: PDFExport) => (pdfExportComponent = component)}
           >
             <HamBurgerMenu />
             <MenuBar />

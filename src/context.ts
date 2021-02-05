@@ -13,7 +13,7 @@ interface IAppContext {
     [key in RefTypes]: React.MutableRefObject<any>;
   };
   isExport?: boolean;
-  exportRef?: { save: () => void };
+  isDownloading?: boolean;
 }
 
 const DEFAULT_CONTEXT = {
@@ -57,7 +57,7 @@ const DEFAULT_CONTEXT = {
     contactRef: React.createRef(),
   },
   isExport: false,
-  exportRef: { save: () => {} },
+  isDownloading: false,
 };
 
 const AppContext = React.createContext<IAppContext>(DEFAULT_CONTEXT);

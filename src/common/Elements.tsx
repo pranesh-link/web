@@ -1,5 +1,11 @@
 import styled from "styled-components";
 
+export const ActionBtn = styled.button`
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  outline: none;
+`;
 export const FlexBox = styled.div<{
   direction?: FLEX_DIRECTION;
   justifyContent?: JUSTIFY_CONTENT;
