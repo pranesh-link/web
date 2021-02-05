@@ -19,4 +19,5 @@ jobs:
       # - name: Run the tests
       #   run: npm test
       - name: Build
-        run: yarn build
+        run: CI="" 
+        yarn build
