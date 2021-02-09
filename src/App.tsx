@@ -15,6 +15,7 @@ function App() {
   const contactRef = useRef(null);
 
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
+  const isMobile = window.innerWidth < 768;
 
   let pdfExportComponent: PDFExport;
 
@@ -25,6 +26,7 @@ function App() {
           data: ProfileData,
           refs: { homeRef, skillsRef, experienceRef, educationRef, contactRef },
           isDownloading,
+          isMobile,
         }}
       >
         <HamBurgerMenu />
@@ -41,6 +43,7 @@ function App() {
           data: ProfileData,
           refs: { homeRef, skillsRef, experienceRef, educationRef, contactRef },
           isExport: true,
+          isMobile,
         }}
       >
         <div className="export-wrapper">

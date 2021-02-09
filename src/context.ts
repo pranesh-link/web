@@ -14,6 +14,7 @@ interface IAppContext {
   };
   isExport?: boolean;
   isDownloading?: boolean;
+  isMobile: boolean;
 }
 
 const DEFAULT_CONTEXT = {
@@ -58,6 +59,7 @@ const DEFAULT_CONTEXT = {
   },
   isExport: false,
   isDownloading: false,
+  isMobile: false,
 };
 
 const AppContext = React.createContext<IAppContext>(DEFAULT_CONTEXT);

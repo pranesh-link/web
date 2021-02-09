@@ -205,7 +205,7 @@ export const SectionsWrapper = styled.section`
 
     &.experience {
       padding-top: 20px;
-      background-color: #f3f0de;
+      /* background-color: #f3f0de; */
       &.export {
         background-color: transparent;
         padding-top: 0px;
@@ -236,7 +236,7 @@ export const SectionsWrapper = styled.section`
       }
     }
     .about-me {
-      flex-basis: 20%;
+      flex-basis: 15%;
       padding-right: 10px;
       &.export {
         flex-basis: 33%;

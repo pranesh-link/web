@@ -22,6 +22,7 @@ import DownloadIcon from "../../assets/download-icon.svg";
 interface IAboutProps {
   refObj: React.MutableRefObject<any>;
   isExport?: boolean;
+  isMobile: boolean;
   aboutMe: ISectionInfo;
   details: ISectionInfo;
   links: ISectionInfo;
@@ -29,11 +30,18 @@ interface IAboutProps {
   exportProfile: () => void;
 }
 export const About = (props: IAboutProps) => {
-  const { refObj, aboutMe, details, isExport, isDownloading, links } = props;
+  const {
+    isMobile,
+    refObj,
+    aboutMe,
+    details,
+    isExport,
+    isDownloading,
+    links,
+  } = props;
   const [copied, setCopied] = useState<boolean>(false);
   const [copyInfoId, setCopyInfoId] = useState<string>("");
   const [showCopy, setShowCopy] = useState<boolean>(false);
-  const isMobile = window.innerWidth < 768;
 
   useEffect(() => {
     if (copied) {

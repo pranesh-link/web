@@ -44,7 +44,7 @@ const MenuBar = (props: IMenuBarProps) => {
       (result, curr, index) => {
         const { ref, section } = curr;
         let pos = refs[ref as RefTypes].current.getBoundingClientRect().top;
-        pos = window.innerWidth < 767 ? pos - 95 : pos;
+        pos = window.innerWidth < 768 ? pos - 95 : pos;
 
         if (index === 0 || (pos <= 0 && pos > result.pos)) {
           return {

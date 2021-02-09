@@ -16,6 +16,7 @@ const ProfileSections = (props: IProfileSectionsProps) => {
   const {
     isExport,
     isDownloading,
+    isMobile,
     data: { sections, header },
     refs: { homeRef, skillsRef, experienceRef, educationRef, contactRef },
   } = React.useContext(AppContext);
@@ -37,6 +38,7 @@ const ProfileSections = (props: IProfileSectionsProps) => {
         <About
           isDownloading={isDownloading}
           isExport={isExport}
+          isMobile={isMobile}
           aboutMe={aboutMe}
           links={links}
           details={details}
