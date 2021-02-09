@@ -1,4 +1,11 @@
-import { IDetailInfo, ILink, InfoType, IProject, ISkill } from "../store/types";
+import {
+  IDetailInfo,
+  ILink,
+  InfoType,
+  IOrganization,
+  IOrgProject,
+  ISkill,
+} from "../store/types";
 
 export const valueIsString = (item: InfoType): item is string => {
   return typeof item === "string";
@@ -8,8 +15,10 @@ export const valueIsArray = (item: InfoType): item is any[] => {
   return Array.isArray(item);
 };
 
-export const valueIsProjectInfo = (item: InfoType): item is IProject[] => {
-  return (item as IProject[])[0].title !== undefined;
+export const valueIsOrgProjectInfo = (
+  item: InfoType
+): item is IOrgProject[] => {
+  return (item as IOrgProject[])[0].organization !== undefined;
 };
 
 export const valueIsSkillInfo = (item: InfoType): item is ISkill[] => {
@@ -24,4 +33,7 @@ export const valueIsLinkInfo = (item: InfoType): item is ILink[] => {
   return (item as ILink[])[0].icon !== undefined;
 };
 
+export const valueIsOrgInfo = (item: InfoType): item is IOrganization[] => {
+  return (item as IOrganization[])[0].name !== undefined;
+};
 export const lowercase = (str: string) => str.toLowerCase().replace(/ /g, "");

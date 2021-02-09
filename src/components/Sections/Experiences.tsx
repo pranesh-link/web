@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { FlexBoxSection, SecHeader } from "../../common/Elements";
 import { ISectionInfo } from "../../store/types";
 import { ProjectInfo } from "../ProjectInfo";
-import { valueIsArray, valueIsProjectInfo } from "../Utils";
+import { valueIsArray, valueIsOrgProjectInfo } from "../Utils";
 
 interface IExperiencesProps {
   experiences: ISectionInfo;
@@ -21,7 +21,7 @@ export const Experiences = (props: IExperiencesProps) => {
 
   const [isExpanded, setIsExpanded] = useState<{ [key: string]: boolean }>({});
 
-  return valueIsArray(experience) && valueIsProjectInfo(experience) ? (
+  return valueIsArray(experience) && valueIsOrgProjectInfo(experience) ? (
     <section
       className={classNames("profile-section", "experience", {
         export: isExport,
@@ -37,19 +37,26 @@ export const Experiences = (props: IExperiencesProps) => {
         justifyContent="space-around"
         className={classNames({ export: isExport })}
       >
-        {experience.map((project, index) => (
-          <ProjectInfo
-            key={index}
-            index={index}
-            project={project}
-            isExpanded={isExpanded}
-            setExpanded={(expandSection, expanded) =>
-              setIsExpanded({
-                ...isExpanded,
-                [`${expandSection}-${index}`]: expanded,
-              })
-            }
-          />
+        {experience.map((experience, index) => (
+          <section key={index}>
+            <h3 className="org-name">{experience.organization}</h3>
+            <section className="org-projects">
+              {experience.projects.map((project, index) => (
+                <ProjectInfo
+                  key={index}
+                  index={index}
+                  project={project}
+                  isExpanded={isExpanded}
+                  setExpanded={(expandSection, expanded) =>
+                    setIsExpanded({
+                      ...isExpanded,
+                      [`${expandSection}-${index}`]: expanded,
+                    })
+                  }
+                />
+              ))}
+            </section>
+          </section>
         ))}
       </SectionWrapper>
     </section>
@@ -64,12 +71,21 @@ const SectionWrapper = styled(FlexBoxSection)`
     margin-left: 0;
     padding-left: 0px;
   }
+  .org-name {
+    font-size: 25px;
+  }
+  .org-projects {
+    padding-left: 10px;
+  }
   @media screen and (max-width: 767px) {
     padding: 0;
     margin-left: 0;
     ul {
       margin: 0;
       padding-left: 25px;
+    }
+    .org-name {
+      font-size: 20px;
     }
   }
 `;

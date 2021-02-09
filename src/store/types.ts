@@ -15,11 +15,21 @@ export interface ISectionInfo {
   ref?: string;
 }
 
-export type InfoType = string | (ISkill | IProject | ILink | IDetailInfo)[];
+export type InfoType =
+  | string
+  | (ISkill | IOrgProject | ILink | IDetailInfo | IOrganization)[];
 
 export interface ISkill {
   label: string;
   info: string;
+}
+
+export interface IOrganization {
+  name: string;
+  type: string;
+  from: string;
+  to?: string;
+  designation: string;
 }
 
 export interface IDetailInfo extends ISkill {
@@ -32,17 +42,16 @@ export interface ILink {
   label: string;
 }
 
+export interface IOrgProject {
+  organization: string;
+  projects: IProject[];
+}
+
 export interface IProject {
   [key: string]: {
     info: string;
     requiresShowHide?: boolean;
   };
-  // title: string;
-  // client: string;
-  // duration: string;
-  // softwareTech: string;
-  // description: string;
-  // responsibilities: string;
 }
 
 export type ProfileSectionType =
@@ -51,4 +60,5 @@ export type ProfileSectionType =
   | "skills"
   | "experience"
   | "education"
-  | "links";
+  | "links"
+  | "organizations";

@@ -13,6 +13,7 @@ function App() {
   const experienceRef = useRef(null);
   const educationRef = useRef(null);
   const contactRef = useRef(null);
+  const orgRef = useRef(null);
 
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
   const isMobile = window.innerWidth < 768;
@@ -24,7 +25,14 @@ function App() {
       <AppProvider
         value={{
           data: ProfileData,
-          refs: { homeRef, skillsRef, experienceRef, educationRef, contactRef },
+          refs: {
+            homeRef,
+            skillsRef,
+            experienceRef,
+            educationRef,
+            contactRef,
+            orgRef,
+          },
           isDownloading,
           isMobile,
         }}
@@ -41,7 +49,14 @@ function App() {
       <AppProvider
         value={{
           data: ProfileData,
-          refs: { homeRef, skillsRef, experienceRef, educationRef, contactRef },
+          refs: {
+            homeRef,
+            orgRef,
+            skillsRef,
+            experienceRef,
+            educationRef,
+            contactRef,
+          },
           isExport: true,
           isMobile,
         }}

@@ -142,6 +142,7 @@ export const SectionsWrapper = styled.section`
         margin-bottom: 0px;
       }
     }
+
     &.links {
       padding: 15px 0;
       background-color: #222222;

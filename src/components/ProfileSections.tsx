@@ -8,6 +8,7 @@ import { About } from "./Sections/About";
 import { Education } from "./Sections/Education";
 import { Contact } from "./Sections/Contact";
 import classNames from "classnames";
+import { Organizations } from "./Sections/Organizations";
 
 interface IProfileSectionsProps {
   exportProfile?: () => void;
@@ -18,9 +19,24 @@ const ProfileSections = (props: IProfileSectionsProps) => {
     isDownloading,
     isMobile,
     data: { sections, header },
-    refs: { homeRef, skillsRef, experienceRef, educationRef, contactRef },
+    refs: {
+      homeRef,
+      skillsRef,
+      experienceRef,
+      educationRef,
+      contactRef,
+      orgRef,
+    },
   } = React.useContext(AppContext);
-  const { aboutMe, details, skills, education, experience, links } = sections;
+  const {
+    aboutMe,
+    details,
+    skills,
+    education,
+    experience,
+    links,
+    organizations,
+  } = sections;
   const { shortDesc, name } = header;
 
   return (
@@ -53,6 +69,12 @@ const ProfileSections = (props: IProfileSectionsProps) => {
           isExport={isExport}
           education={education}
           refObj={educationRef}
+        />
+        <Organizations
+          isExport={isExport}
+          isMobile={isMobile}
+          organizations={organizations}
+          refObj={orgRef}
         />
         <Skills isExport={isExport} skills={skills} refObj={skillsRef} />
         <Experiences

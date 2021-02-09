@@ -43,14 +43,16 @@ const MenuBar = (props: IMenuBarProps) => {
     const resultPosition = menuItems.reduce(
       (result, curr, index) => {
         const { ref, section } = curr;
-        let pos = refs[ref as RefTypes].current.getBoundingClientRect().top;
-        pos = window.innerWidth < 768 ? pos - 95 : pos;
+        if (refs[ref as RefTypes]) {
+          let pos = refs[ref as RefTypes].current.getBoundingClientRect().top;
+          pos = window.innerWidth < 768 ? pos - 95 : pos;
 
-        if (index === 0 || (pos <= 0 && pos > result.pos)) {
-          return {
-            section,
-            pos,
-          };
+          if (index === 0 || (pos <= 0 && pos > result.pos)) {
+            return {
+              section,
+              pos,
+            };
+          }
         }
         return result;
       },

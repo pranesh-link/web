@@ -6,7 +6,8 @@ export type RefTypes =
   | "skillsRef"
   | "experienceRef"
   | "educationRef"
-  | "contactRef";
+  | "contactRef"
+  | "orgRef";
 interface IAppContext {
   data: IProfileData;
   refs: {
@@ -36,6 +37,10 @@ const DEFAULT_CONTEXT = {
         title: "",
         info: "",
       },
+      organizations: {
+        title: "",
+        info: "",
+      },
       experience: {
         title: "",
         info: "",
@@ -56,6 +61,7 @@ const DEFAULT_CONTEXT = {
     experienceRef: React.createRef(),
     educationRef: React.createRef(),
     contactRef: React.createRef(),
+    orgRef: React.createRef(),
   },
   isExport: false,
   isDownloading: false,
