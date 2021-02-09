@@ -13,6 +13,7 @@ import {
   valueIsDetailInfo,
   lowercase,
   valueIsLinkInfo,
+  getHref,
 } from "../Utils";
 import ProfileImg from "../../assets/profile.jpeg";
 import * as clipboard from "clipboard-polyfill/text";
@@ -117,7 +118,13 @@ export const About = (props: IAboutProps) => {
                       </CopyButton>
                     </DetailLabel>
                     <FlexBox alignItems="center" className="detail-info">
-                      <span id={lowercase(detail.label)}>{detail.info}</span>
+                      {isMobile ? (
+                        <a href={getHref(lowercase(detail.label), detail.info)}>
+                          {detail.info}
+                        </a>
+                      ) : (
+                        <span id={lowercase(detail.label)}>{detail.info}</span>
+                      )}
                     </FlexBox>
                   </FlexBoxSection>
                 ))

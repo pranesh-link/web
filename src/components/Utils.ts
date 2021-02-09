@@ -37,3 +37,13 @@ export const valueIsOrgInfo = (item: InfoType): item is IOrganization[] => {
   return (item as IOrganization[])[0].name !== undefined;
 };
 export const lowercase = (str: string) => str.toLowerCase().replace(/ /g, "");
+
+export const getHref = (label: string, info: string) => {
+  switch (label) {
+    case "mobile":
+      return `tel:${info}`;
+    case "e-mail":
+      return `mailto:${info}`;
+  }
+  return "";
+};

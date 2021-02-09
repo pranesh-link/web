@@ -71,6 +71,13 @@ const OrgsWrapper = styled.section`
   .current-org {
     padding-top: 5px;
   }
+  &.export {
+    .current-org,
+    .previous-org {
+      justify-content: normal;
+      padding-left: 0px;
+    }
+  }
   .current-org,
   .previous-org {
     padding-left: 5px;
