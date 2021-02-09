@@ -72,7 +72,7 @@ const SectionWrapper = styled(FlexBoxSection)`
     padding-left: 0px;
   }
   .org-name {
-    font-size: 25px;
+    font-size: 22px;
   }
   .org-projects {
     padding-left: 10px;

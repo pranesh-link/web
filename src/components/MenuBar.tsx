@@ -24,7 +24,7 @@ const MenuBar = (props: IMenuBarProps) => {
         offset = 110;
       }
     }
-    scrollTo(`#${section}`, offset);
+    scrollTo(`#${section}`, 110);
   };
 
   const menuItems = Object.keys(data.sections).reduce(
@@ -50,8 +50,7 @@ const MenuBar = (props: IMenuBarProps) => {
         const currentRef = refs[ref as RefTypes];
         if (currentRef.current) {
           let pos = currentRef.current.getBoundingClientRect().top;
-          pos = window.innerWidth < 768 ? pos - 95 : pos - 20;
-          console.log(section, pos);
+          pos = window.innerWidth < 768 ? pos - 95 : pos - 30;
           if (index === 0 || (pos <= 0 && pos > result.pos)) {
             return {
               section,
@@ -68,7 +67,11 @@ const MenuBar = (props: IMenuBarProps) => {
 
   useEffect(() => {
     handleScroll();
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", () => {
+      setTimeout(() => {
+        handleScroll();
+      }, 1000);
+    });
     return () => window.removeEventListener("scroll", handleScroll);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

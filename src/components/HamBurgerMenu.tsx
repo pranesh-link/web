@@ -93,7 +93,7 @@ const IconWrap = styled.div`
   position: fixed;
   width: 100%;
   z-index: 20;
-  background: #fff;
+  background-color: #f0f0f0;
   padding: 20px 0;
 
   @media screen and (min-width: 768px) {

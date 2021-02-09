@@ -91,6 +91,7 @@ const ProfileSections = (props: IProfileSectionsProps) => {
 export default ProfileSections;
 
 const Wrapper = styled.section`
+  background-color: #f0f0f0;
   .header-sep {
     min-width: 100px;
     opacity: 0.6;
@@ -126,7 +127,8 @@ const ShortDesc = styled.h3`
   font-size: 21px;
   font-weight: bold;
   margin-bottom: 20px;
-  line-height: 1.4;
+  margin-top: 0;
+  line-height: 3;
   font-style: italic;
   @media screen and (max-width: 767px) {
     padding-top: 75px;

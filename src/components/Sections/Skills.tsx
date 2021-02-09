@@ -74,7 +74,7 @@ const SkillsInfoWrapper = styled(FlexBoxSection)`
 
 const TABLE = styled(ReactTable)`
   &.ReactTable {
-    border: 1px solid #fff;
+    border: none;
     flex-basis: 30%;
     &.-highlight {
       .rt-tbody {
@@ -87,15 +87,15 @@ const TABLE = styled(ReactTable)`
     }
     .rt-tbody {
       .rt-tr-group {
-        border-bottom: 1px solid #fff;
+        border: none;
       }
       .rt-td {
-        border-right: 1px solid #fff;
+        border: none;
         white-space: break-spaces;
       }
       .rt-tr {
         &.-odd {
-          background-color: #fff;
+          background-color: #f0f0f0;
         }
       }
     }

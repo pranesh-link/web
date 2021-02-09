@@ -38,7 +38,7 @@ export const Organizations = (props: IOrganizationsProps) => {
             justifyContent={isMobile ? "normal" : "center"}
             className="current-org"
           >
-            <p className="org-info">
+            <p className="org-info current">
               <span className="designation">{currentOrg.designation}, </span>
               <span className="org-name">{currentOrg.name} </span>
               <span className="duration">
@@ -52,7 +52,7 @@ export const Organizations = (props: IOrganizationsProps) => {
           className="previous-org"
         >
           {previousOrgs.map((organization, index) => (
-            <p className="org-info" key={index}>
+            <p className="org-info previous" key={index}>
               <span className="designation">{organization.designation}, </span>
               <span className="org-name">{organization.name} </span>
               <span className="duration">
@@ -83,6 +83,13 @@ const OrgsWrapper = styled.section`
     padding-left: 5px;
   }
   .org-info {
+    margin-top: 0;
+    &.current {
+      color: #006400;
+    }
+    &.previous {
+      color: #8a8982;
+    }
     .duration {
       font-style: italic;
     }

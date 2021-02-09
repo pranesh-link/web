@@ -64,7 +64,7 @@ export type FLEX_DIRECTION =
   | "column-reverse";
 
 export const SecHeader = styled.header`
-  font-size: 54px;
+  font-size: 40px;
   font-weight: 300;
   margin-bottom: 20px;
   color: #22a39f;
@@ -76,9 +76,8 @@ export const SecHeader = styled.header`
   }
   &.about-me-title {
     text-align: left;
-    font-size: 28px;
     @media screen and (max-width: 767px) {
-      margin-bottom: 0;
+      margin-bottom: 10px;
     }
   }
   @media screen and (max-width: 767px) {
@@ -139,7 +138,7 @@ export const SectionsWrapper = styled.section`
     margin-bottom: 20px;
     > header {
       @media screen and (max-width: 767px) {
-        margin-bottom: 0px;
+        margin-bottom: 10px;
       }
     }
 
@@ -205,8 +204,6 @@ export const SectionsWrapper = styled.section`
     }
 
     &.experience {
-      /* padding-top: 20px; */
-      /* background-color: #f3f0de; */
       &.export {
         background-color: transparent;
         padding-top: 0px;
@@ -232,13 +229,15 @@ export const SectionsWrapper = styled.section`
     }
     .image-details-wrap {
       margin-right: 10px;
+      align-self: flex-end;
       @media screen and (max-width: 767px) {
         margin-top: 15px;
         align-items: normal;
+        align-self: normal;
       }
     }
     .about-me {
-      flex-basis: 15%;
+      flex-basis: 20%;
       padding-right: 10px;
       &.export {
         flex-basis: 33%;
