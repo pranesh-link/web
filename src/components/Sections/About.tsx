@@ -118,7 +118,7 @@ export const About = (props: IAboutProps) => {
                       </CopyButton>
                     </DetailLabel>
                     <FlexBox alignItems="center" className="detail-info">
-                      {isMobile ? (
+                      {isMobile && detail.canCopy ? (
                         <a href={getHref(lowercase(detail.label), detail.info)}>
                           {detail.info}
                         </a>

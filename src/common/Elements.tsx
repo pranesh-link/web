@@ -234,6 +234,7 @@ export const SectionsWrapper = styled.section`
       margin-right: 10px;
       @media screen and (max-width: 767px) {
         margin-top: 15px;
+        align-items: normal;
       }
     }
     .about-me {
@@ -263,8 +264,11 @@ export const SectionsWrapper = styled.section`
     }
     .details {
       min-width: 55%;
+      .detail {
+        padding-bottom: 5px;
+      }
       .detail-info {
-        line-height: 1.5;
+        line-height: 2;
         span {
           flex-basis: 75%;
         }
