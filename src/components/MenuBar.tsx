@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { FlexBoxSection } from "../common/Elements";
 import { AppContext, RefTypes } from "../context";
 import { ProfileSectionType } from "../store/types";
+import { scrollTo } from "./ScrollTo";
 
 interface IMenuBarProps {
   isMobileMenu?: boolean;
@@ -14,13 +15,16 @@ const MenuBar = (props: IMenuBarProps) => {
 
   const [currentSection, setCurrentSection] = useState<string>("about");
 
-  const goTo = (ref: React.MutableRefObject<any>) => {
-    const additionalOffset = window.innerWidth < 767 ? -90 : 0;
-    const top =
-      ref.current.getBoundingClientRect().top +
-      additionalOffset +
-      window.pageYOffset;
-    window.scrollTo({ top, behavior: "smooth" });
+  const goTo = (section: string) => {
+    let offset = 0;
+    if (props.isMobileMenu) {
+      offset = 90;
+      // TODO fix custom offset
+      if (section === "skills" || section === "experience") {
+        offset = 110;
+      }
+    }
+    scrollTo(`#${section}`, offset);
   };
 
   const menuItems = Object.keys(data.sections).reduce(
@@ -43,10 +47,11 @@ const MenuBar = (props: IMenuBarProps) => {
     const resultPosition = menuItems.reduce(
       (result, curr, index) => {
         const { ref, section } = curr;
-        if (refs[ref as RefTypes]) {
-          let pos = refs[ref as RefTypes].current.getBoundingClientRect().top;
-          pos = window.innerWidth < 768 ? pos - 95 : pos;
-
+        const currentRef = refs[ref as RefTypes];
+        if (currentRef.current) {
+          let pos = currentRef.current.getBoundingClientRect().top;
+          pos = window.innerWidth < 768 ? pos - 95 : pos - 20;
+          console.log(section, pos);
           if (index === 0 || (pos <= 0 && pos > result.pos)) {
             return {
               section,
@@ -77,7 +82,7 @@ const MenuBar = (props: IMenuBarProps) => {
           <MenuBtn
             key={item.section}
             onClick={() => {
-              goTo(refs[item.ref as RefTypes]);
+              goTo(item.section);
               if (props.closeHamburgerMenu) {
                 props.closeHamburgerMenu();
               }

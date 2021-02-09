@@ -57,7 +57,7 @@ export const About = (props: IAboutProps) => {
     <FlexBoxSection
       className={classNames("profile-section", "about", { export: isExport })}
       justifyContent={isExport ? "normal" : "center"}
-      ref={refObj}
+      ref={isExport ? null : refObj}
       id="home"
     >
       <FlexBoxSection

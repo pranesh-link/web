@@ -205,7 +205,7 @@ export const SectionsWrapper = styled.section`
     }
 
     &.experience {
-      padding-top: 20px;
+      /* padding-top: 20px; */
       /* background-color: #f3f0de; */
       &.export {
         background-color: transparent;

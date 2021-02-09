@@ -11,7 +11,11 @@ interface IEducationProps {
 export const Education = (props: IEducationProps) => {
   const { education, refObj, isExport } = props;
   return (
-    <section className="profile-section" id="education" ref={refObj}>
+    <section
+      className="profile-section"
+      id="education"
+      ref={isExport ? null : refObj}
+    >
       <SecHeader className={classNames({ export: isExport })}>
         {education.title}
       </SecHeader>
