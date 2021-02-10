@@ -45,6 +45,7 @@ export const HamBurgerMenu = () => {
     <>
       <IconWrap>
         <Icon
+          alt=""
           src={HamBurgerIcon}
           onClick={() => {
             setIsOpen(true);

@@ -24,9 +24,9 @@ export const Contact = (props: IContactProps) => {
               href={link.link}
               target="_blank"
               key={link.label}
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
-              <img alt="" className={link.label} src={link.icon} />
+              <img alt={link.label} className={link.label} src={link.icon} />
             </a>
           ))
         : null}
