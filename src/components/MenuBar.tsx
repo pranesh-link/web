@@ -16,15 +16,7 @@ const MenuBar = (props: IMenuBarProps) => {
   const [currentSection, setCurrentSection] = useState<string>("about");
 
   const goTo = (section: string) => {
-    let offset = 0;
-    if (props.isMobileMenu) {
-      offset = 90;
-      // TODO fix custom offset
-      if (section === "skills" || section === "experience") {
-        offset = 110;
-      }
-    }
-    scrollTo(`#${section}`, 110);
+    scrollTo(`#${section}`, 90);
   };
 
   const menuItems = Object.keys(data.sections).reduce(
