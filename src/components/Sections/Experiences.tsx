@@ -26,7 +26,7 @@ export const Experiences = (props: IExperiencesProps) => {
       className={classNames("profile-section", "experience", {
         export: isExport,
       })}
-      id="experience"
+      id={isExport ? "" : "experience"}
       ref={isExport ? null : refObj}
     >
       <SecHeader className={classNames({ export: isExport })}>

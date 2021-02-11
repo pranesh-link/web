@@ -43,6 +43,7 @@ const MenuBar = (props: IMenuBarProps) => {
         if (currentRef.current) {
           let pos = currentRef.current.getBoundingClientRect().top;
           pos = window.innerWidth < 768 ? pos - 95 : pos - 30;
+          console.log(pos);
           if (index === 0 || (pos <= 0 && pos > result.pos)) {
             return {
               section,

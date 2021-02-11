@@ -27,7 +27,7 @@ export const Organizations = (props: IOrganizationsProps) => {
         className={classNames("profile-section", "organizations", {
           export: isExport,
         })}
-        id="organizations"
+        id={isExport ? "" : "organizations"}
         ref={isExport ? null : refObj}
       >
         <SecHeader className={classNames({ export: isExport })}>

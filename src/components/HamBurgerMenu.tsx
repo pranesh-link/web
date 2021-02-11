@@ -9,7 +9,13 @@ import MenuBar from "./MenuBar";
 import { Contact } from "./Sections/Contact";
 import CloseIcon from "../assets/close-icon.svg";
 
-export const HamBurgerMenu = () => {
+interface IHamburgerMenuProps {
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+}
+
+export const HamBurgerMenu = (props: IHamburgerMenuProps) => {
+  const { isOpen, setIsOpen } = props;
   const contentRef = React.useRef<HTMLDivElement>(null);
   const {
     data,
@@ -17,7 +23,6 @@ export const HamBurgerMenu = () => {
   } = React.useContext(AppContext);
   const { links } = data.sections;
 
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [hamburgerClicked, setHamburgerClicked] = useState<boolean>(false);
   const scrollbarSize =
     window.innerWidth - document.documentElement.clientWidth;
@@ -43,7 +48,7 @@ export const HamBurgerMenu = () => {
 
   return (
     <>
-      <IconWrap>
+      <IconWrap onTouchMove={() => setIsOpen(true)}>
         <Icon
           alt=""
           src={HamBurgerIcon}

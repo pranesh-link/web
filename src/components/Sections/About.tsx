@@ -58,7 +58,7 @@ export const About = (props: IAboutProps) => {
       className={classNames("profile-section", "about", { export: isExport })}
       justifyContent={isExport ? "normal" : "center"}
       ref={isExport ? null : refObj}
-      id="home"
+      id={isExport ? "" : "home"}
     >
       <FlexBoxSection
         direction="column"
@@ -156,7 +156,7 @@ export const About = (props: IAboutProps) => {
                 <span>
                   {isDownloading ? "Downloading..." : "Download profile"}
                 </span>
-                <img alt="" src={DownloadIcon} />
+                {!isDownloading && <img alt="" src={DownloadIcon} />}
               </DownloadProfileBtn>
             )}
           </FlexBoxSection>

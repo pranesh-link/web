@@ -13,7 +13,7 @@ export const Education = (props: IEducationProps) => {
   return (
     <section
       className="profile-section"
-      id="education"
+      id={isExport ? "" : "education"}
       ref={isExport ? null : refObj}
     >
       <SecHeader className={classNames({ export: isExport })}>

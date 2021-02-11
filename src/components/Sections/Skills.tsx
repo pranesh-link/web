@@ -45,7 +45,7 @@ export const Skills = (props: ISkillsProps) => {
   return (
     <section
       className="profile-section"
-      id="skills"
+      id={isExport ? "" : "skills"}
       ref={isExport ? null : refObj}
     >
       <SecHeader className={classNames({ export: isExport })}>

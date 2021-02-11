@@ -16,6 +16,10 @@ function App() {
   const orgRef = useRef(null);
 
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
+  const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState<boolean>(
+    false
+  );
+
   const isMobile = window.innerWidth < 768;
 
   let pdfExportComponent: PDFExport;
@@ -37,7 +41,11 @@ function App() {
           isMobile,
         }}
       >
-        <HamBurgerMenu />
+        <HamBurgerMenu
+          isOpen={isHamburgerMenuOpen}
+          setIsOpen={(isOpen) => setIsHamburgerMenuOpen(isOpen)}
+        />
+        {isMobile && <Swipe onTouchMove={() => setIsHamburgerMenuOpen(true)} />}
         <MenuBar />
         <ProfileSections
           exportProfile={() => {
@@ -86,4 +94,10 @@ const Wrapper = styled.section`
     left: -3000px;
     top: 0;
   }
+`;
+
+const Swipe = styled.div`
+  height: 100%;
+  width: 20px;
+  position: fixed;
 `;
