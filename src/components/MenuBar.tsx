@@ -16,7 +16,7 @@ const MenuBar = (props: IMenuBarProps) => {
   const [currentSection, setCurrentSection] = useState<string>("about");
 
   const goTo = (section: string) => {
-    scrollTo(`#${section}`, 90);
+    scrollTo(`#${section}`, props.isMobileMenu ? 90 : 20);
   };
 
   const menuItems = Object.keys(data.sections).reduce(
