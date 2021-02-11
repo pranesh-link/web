@@ -1,5 +1,5 @@
 import { PDFExport } from "@progress/kendo-react-pdf";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { HamBurgerMenu } from "./components/HamBurgerMenu";
 import MenuBar from "./components/MenuBar";
@@ -14,6 +14,8 @@ function App() {
   const educationRef = useRef(null);
   const contactRef = useRef(null);
   const orgRef = useRef(null);
+
+  useEffect(() => window.scrollTo(0, 0), []);
 
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState<boolean>(

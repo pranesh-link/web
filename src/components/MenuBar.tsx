@@ -18,7 +18,7 @@ const MenuBar = (props: IMenuBarProps) => {
   const goTo = (section: string) => {
     scrollTo(`#${section}`, props.isMobileMenu ? 90 : 20);
   };
-
+  let timeout: any;
   const menuItems = Object.keys(data.sections).reduce(
     (
       items: { title: string; ref: string; section: string }[],
@@ -58,12 +58,17 @@ const MenuBar = (props: IMenuBarProps) => {
     setCurrentSection(resultPosition.section);
   };
 
+  const debounce = (method: () => void, delay: number) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(function () {
+      method();
+    }, delay);
+  };
+
   useEffect(() => {
     handleScroll();
     window.addEventListener("scroll", () => {
-      setTimeout(() => {
-        handleScroll();
-      }, 1000);
+      debounce(handleScroll, 100);
     });
     return () => window.removeEventListener("scroll", handleScroll);
     // eslint-disable-next-line react-hooks/exhaustive-deps
