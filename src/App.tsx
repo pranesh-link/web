@@ -100,6 +100,6 @@ const Wrapper = styled.section`
 
 const Swipe = styled.div`
   height: 100%;
-  width: 20px;
+  width: 60px;
   position: fixed;
 `;
