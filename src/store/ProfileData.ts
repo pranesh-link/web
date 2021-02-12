@@ -22,7 +22,7 @@ export const ProfileData: IProfileData = {
       title: "Details",
       info: [
         {
-          label: "Location:",
+          label: "Lives in",
           info: "Bengaluru, India",
         },
         {

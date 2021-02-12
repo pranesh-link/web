@@ -152,6 +152,7 @@ export const About = (props: IAboutProps) => {
               <DownloadProfileBtn
                 onClick={props.exportProfile}
                 disabled={isDownloading}
+                className={classNames({ downloading: isDownloading })}
               >
                 <span>
                   {isDownloading ? "Downloading..." : "Download profile"}
@@ -169,12 +170,19 @@ export const About = (props: IAboutProps) => {
 const DownloadProfileBtn = styled(ActionBtn)`
   margin-top: 10px;
   background-color: #0c77b9;
-  max-width: 75%;
-  padding: 10px 5px;
+  width: 200px;
+  min-height: 55px;
+  padding: 10px 15px;
   color: #f0f0f0;
-  border-radius: 25px;
+  border-radius: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   &:hover {
     background-color: #005c84;
+  }
+  &.downloading {
+    justify-content: center;
   }
   @media screen and (max-width: 767px) {
     max-width: unset;
@@ -182,8 +190,8 @@ const DownloadProfileBtn = styled(ActionBtn)`
   img {
     margin-left: 10px;
     margin-right: 5px;
-    height: 15px;
-    width: 15px;
+    height: 35px;
+    width: 30px;
   }
 `;
 const CopyButton = styled.button`
