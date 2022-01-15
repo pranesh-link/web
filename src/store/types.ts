@@ -1,14 +1,16 @@
 export interface IProfileData {
-  //TODO change to relevant types
-  header: {
-    shortDesc: string;
-    name: string;
-  };
-  sections: {
-    [key in ProfileSectionType]: ISectionInfo;
-  };
+  header: IHeader;
+  sections: SectionsType;
 }
 
+export type SectionsType = {
+  [key in ProfileSectionType]: ISectionInfo;
+};
+
+export interface IHeader {
+  shortDesc: string;
+  name: string;
+}
 export interface ISectionInfo {
   title: string;
   info: InfoType;
