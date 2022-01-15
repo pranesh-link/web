@@ -83,6 +83,7 @@
   },
   "scripts": {
     "start": "GENERATE_SOURCEMAP=true node scripts/start.js",
+    "wStart": "set \"GENERATE_SOURCEMAP=false\" && node scripts/start.js",
     "build": "GENERATE_SOURCEMAP=false node scripts/build.js",
     "test": "node scripts/test.js"
   },
