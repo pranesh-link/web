@@ -1,4 +1,8 @@
 import { IProfileData } from "./types";
-import Profile from "./data";
+import Header from "./data-header";
+import Sections from "./data-sections";
 
-export const ProfileData: IProfileData = Profile;
+export const ProfileData: IProfileData = {
+  header: Header,
+  sections: Sections,
+};
