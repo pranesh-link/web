@@ -1,8 +1,8 @@
-import LinkedInImg from "../assets/logos/linkedin-logo.svg";
-import FacebookImg from "../assets/logos/facebook-logo.svg";
-import TwitterImg from "../assets/logos/twitter-logo.svg";
-import GithubImg from "../assets/logos/github-logo.png";
-import { ISectionInfo } from "./types";
+import LinkedInImg from "../../assets/logos/linkedin-logo.svg";
+import FacebookImg from "../../assets/logos/facebook-logo.svg";
+import TwitterImg from "../../assets/logos/twitter-logo.svg";
+import GithubImg from "../../assets/logos/github-logo.png";
+import { ISectionInfo } from "../types";
 
 const Links: ISectionInfo = {
   title: "Links",

@@ -1,4 +1,4 @@
-import { ISectionInfo } from "./types";
+import { ISectionInfo } from "../types";
 
 const Skills: ISectionInfo = {
   title: "Skills",

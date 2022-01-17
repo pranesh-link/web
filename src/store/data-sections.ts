@@ -1,10 +1,10 @@
-import AboutMe from "./data-about-me-section";
-import Education from "./data-education-section";
-import Details from "./data-details-section";
-import Organizations from "./data-organizations-section";
-import Skills from "./data-skills-section";
-import Experiences from "./data-experience-section";
-import Links from "./data-links-section";
+import AboutMe from "./data-sections/data-about-me-section";
+import Education from "./data-sections/data-education-section";
+import Details from "./data-sections/data-details-section";
+import Organizations from "./data-sections/data-organizations-section";
+import Skills from "./data-sections/data-skills-section";
+import Experiences from "./data-sections/data-experiences-section";
+import Links from "./data-sections/data-links-section";
 import { SectionsType } from "./types";
 
 const Sections: SectionsType = {
