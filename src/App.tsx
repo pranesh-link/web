@@ -74,7 +74,7 @@ function App() {
           <PDFExport
             scale={0.65}
             paperSize="A4"
-            margin={{ top: 50, bottom: 25 }}
+            margin={{ top: 40, bottom: 25 }}
             fileName="Pranesh_Profile"
             ref={(component: PDFExport) => (pdfExportComponent = component)}
           >

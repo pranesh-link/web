@@ -31,15 +31,8 @@ interface IAboutProps {
   exportProfile: () => void;
 }
 export const About = (props: IAboutProps) => {
-  const {
-    isMobile,
-    refObj,
-    aboutMe,
-    details,
-    isExport,
-    isDownloading,
-    links,
-  } = props;
+  const { isMobile, refObj, aboutMe, details, isExport, isDownloading, links } =
+    props;
   const [copied, setCopied] = useState<boolean>(false);
   const [copyInfoId, setCopyInfoId] = useState<string>("");
   const [showCopy, setShowCopy] = useState<boolean>(false);

@@ -41,7 +41,7 @@ const ProfileSections = (props: IProfileSectionsProps) => {
 
   return (
     <Wrapper isExport={isExport}>
-      <ShortDesc>{shortDesc}</ShortDesc>
+      {!isExport && <ShortDesc>{shortDesc}</ShortDesc>}
       <PageHeader>
         <hr className={classNames("header-sep", { export: isExport })} />
         <span>{name}</span>
