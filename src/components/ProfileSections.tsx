@@ -15,7 +15,7 @@ interface IProfileSectionsProps {
 }
 const ProfileSections = (props: IProfileSectionsProps) => {
   const {
-    isExport,
+    isExport = false,
     isDownloading,
     isMobile,
     data: { sections, header },
@@ -40,7 +40,7 @@ const ProfileSections = (props: IProfileSectionsProps) => {
   const { shortDesc, name } = header;
 
   return (
-    <Wrapper>
+    <Wrapper isExport={isExport}>
       <ShortDesc>{shortDesc}</ShortDesc>
       <PageHeader>
         <hr className={classNames("header-sep", { export: isExport })} />
@@ -90,8 +90,8 @@ const ProfileSections = (props: IProfileSectionsProps) => {
 
 export default ProfileSections;
 
-const Wrapper = styled.section`
-  background-color: #f0f0f0;
+const Wrapper = styled.section<{ isExport: boolean }>`
+  background-color: ${(props: any) => !props.isExport && "#f0f0f0"};
   .header-sep {
     min-width: 100px;
     opacity: 0.6;

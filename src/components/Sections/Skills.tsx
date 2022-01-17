@@ -13,7 +13,7 @@ interface ISkillsProps {
   skills: ISectionInfo;
 }
 export const Skills = (props: ISkillsProps) => {
-  const { refObj, skills, isExport } = props;
+  const { refObj, skills, isExport = false } = props;
 
   const getSkillsData = () => {
     const { info } = skills;
@@ -53,6 +53,7 @@ export const Skills = (props: ISkillsProps) => {
       </SecHeader>
       <SkillsInfoWrapper justifyContent={isExport ? "normal" : "center"}>
         <TABLE
+          isExport={isExport}
           columns={COLUMNS}
           data={skillsData}
           defaultPageSize={skillsData.length}
@@ -72,7 +73,7 @@ const SkillsInfoWrapper = styled(FlexBoxSection)`
   }
 `;
 
-const TABLE = styled(ReactTable)`
+const TABLE = styled(ReactTable)<{ isExport: boolean }>`
   &.ReactTable {
     border: none;
     flex-basis: 30%;
@@ -95,7 +96,7 @@ const TABLE = styled(ReactTable)`
       }
       .rt-tr {
         &.-odd {
-          background-color: #f0f0f0;
+          background-color: ${(props) => (props.isExport ? "#fff" : "#f0f0f0")};
         }
       }
     }
