@@ -17,7 +17,7 @@ export const ProjectInfo = (props: IProjectInfoProps) => {
     project,
     project: { title },
   } = props;
-  const { isExport } = React.useContext(AppContext);
+  const { isExport, isMobile } = React.useContext(AppContext);
 
   return (
     <SectionWrapper direction="column">
@@ -28,19 +28,47 @@ export const ProjectInfo = (props: IProjectInfoProps) => {
         direction="column"
         className={classNames("project-info", { export: isExport })}
       >
-        <FlexBoxSection direction="column" className="project-short-info">
-          {SHORT_INFOS.map((key, index) => (
-            <FlexBox
-              className={classNames("info-wrapper", { export: isExport })}
-              key={index}
-            >
-              <label className={classNames("info-label", { export: isExport })}>
-                {LABEL_TEXT[key]}
-              </label>
-              <div className="info">{project[key].info}</div>
-            </FlexBox>
-          ))}
-        </FlexBoxSection>
+        {isMobile ? (
+          <FlexBoxSection direction="column" className="project-short-info">
+            {SHORT_INFOS.map((key, index) => (
+              <FlexBox
+                className={classNames("info-wrapper", { export: isExport })}
+                key={index}
+              >
+                <label
+                  className={classNames("info-label", { export: isExport })}
+                >
+                  {LABEL_TEXT[key]}
+                </label>
+                <div className="info">{project[key].info}</div>
+              </FlexBox>
+            ))}
+          </FlexBoxSection>
+        ) : (
+          <FlexBox
+            className={classNames("info-wrapper", "project-short-info", {
+              export: isExport,
+            })}
+          >
+            <FlexBoxSection direction="column">
+              {SHORT_INFOS.map((key, index) => (
+                <label
+                  key={index}
+                  className={classNames("info-label", { export: isExport })}
+                >
+                  {LABEL_TEXT[key]}
+                </label>
+              ))}
+            </FlexBoxSection>
+            <FlexBoxSection direction="column" className="short-info">
+              {SHORT_INFOS.map((key, index) => (
+                <div key={index} className="info">
+                  {project[key].info}
+                </div>
+              ))}
+            </FlexBoxSection>
+          </FlexBox>
+        )}
         {EXPANDABLE_INFOS.map((key, index) => {
           const isExpanded = props.isExpanded[`${key}-${props.index}`];
           const { requiresShowHide, info } = project[key];

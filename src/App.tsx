@@ -18,9 +18,8 @@ function App() {
   useEffect(() => window.scrollTo(0, 0), []);
 
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
-  const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState<boolean>(
-    false
-  );
+  const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] =
+    useState<boolean>(false);
 
   const isMobile = window.innerWidth < 768;
 
@@ -75,7 +74,7 @@ function App() {
           <PDFExport
             scale={0.65}
             paperSize="A4"
-            margin="0cm"
+            margin={{ top: 50, bottom: 25 }}
             fileName="Pranesh_Profile"
             ref={(component: PDFExport) => (pdfExportComponent = component)}
           >

@@ -56,7 +56,7 @@ export const Skills = (props: ISkillsProps) => {
           columns={COLUMNS}
           data={skillsData}
           defaultPageSize={skillsData.length}
-          TheadComponent={(props) => null}
+          TheadComponent={() => null}
           className="-striped -highlight"
           NoDataComponent={NoData}
           showPagination={false}

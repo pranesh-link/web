@@ -30,6 +30,9 @@ export const FlexBoxSection = styled.section<{
   justify-content: ${(props) => props.justifyContent || "normal"};
   align-items: ${(props) => props.alignItems || "normal"};
   flex-wrap: ${(props) => props.flexWrap || "nowrap"};
+  &.short-info {
+    padding-left: 10px;
+  }
 `;
 
 export type FLEX_WRAP =

@@ -10,7 +10,7 @@ const Experiences: ISectionInfo = {
         {
           title: { info: "MCP" },
           client: { info: "Ciena" },
-          duration: { info: "Feb 2021-" },
+          duration: { info: "Feb 2021 -" },
           softwareTech: { info: "EmberJS" },
           description: {
             info: `Manage, Control and Plan (MCP) software converges the complete network operations lifecycle through network planning, 
@@ -25,7 +25,7 @@ const Experiences: ISectionInfo = {
           responsibilities: {
             info: `
                 <ul>
-                    <li>Development of web UI</li>.
+                    <li>Development of web UI</li>
                     <li>Unit test and integration tests</li>
                     <li>Code review with fellow colleagues</li>
                     <li>Educating team towards better coding standards</li>
@@ -74,7 +74,7 @@ const Experiences: ISectionInfo = {
         {
           title: { info: "Real Time On-boarding" },
           client: { info: "Standard Chartered Bank" },
-          duration: { info: "Jan 2017 – Mar 2020" },
+          duration: { info: "Jan 2017 - Mar 2020" },
           softwareTech: {
             info: "Ember CLI, AngularJS, CSS, HTML5, Cordova, Xcode",
           },
@@ -100,7 +100,7 @@ const Experiences: ISectionInfo = {
         {
           title: { info: "Retail Workbench" },
           client: { info: "Standard Chartered Bank" },
-          duration: { info: "May 2015 – Dec 2016" },
+          duration: { info: "May 2015 - Dec 2016" },
           softwareTech: {
             info: "Ember CLI, AngularJS, CSS, HTML5, Cordova, Xcode",
           },
@@ -122,9 +122,9 @@ const Experiences: ISectionInfo = {
           },
         },
         {
-          title: { info: "Breeze Mobile Web – Indonesia [SKN/DFS]" },
+          title: { info: "Breeze Mobile Web - Indonesia [SKN/DFS]" },
           client: { info: "Standard Chartered Bank Indonesia" },
-          duration: { info: "Feb 2015 – Apr 2015" },
+          duration: { info: "Feb 2015 - Apr 2015" },
           softwareTech: { info: "Ember CLI, CSS, HTML5, Cordova" },
           description: {
             info: `Breeze Mobile Web was developed with focus on giving a ease of use Banking experience anytime and at any place in their mobile devices. The
@@ -145,9 +145,9 @@ const Experiences: ISectionInfo = {
           },
         },
         {
-          title: { info: "Breeze Mobile Web – India" },
+          title: { info: "Breeze Mobile Web - India" },
           client: { info: "Standard Chartered Bank India" },
-          duration: { info: "Jan 2013 – Feb 2015" },
+          duration: { info: "Jan 2013 - Feb 2015" },
           softwareTech: { info: "Ember CLI, CSS, HTML5, Cordova" },
           description: {
             info: `Breeze Mobile Web India had an initial launch in August 2013 (Phase1) which met user’s basic banking needs.
