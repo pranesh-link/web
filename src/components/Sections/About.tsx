@@ -19,6 +19,7 @@ import ProfileImg from "../../assets/profile.jpeg";
 import * as clipboard from "clipboard-polyfill/text";
 import styled from "styled-components";
 import DownloadIcon from "../../assets/download-icon.svg";
+import { link } from "fs";
 
 interface IAboutProps {
   refObj: React.MutableRefObject<any>;
@@ -83,8 +84,25 @@ export const About = (props: IAboutProps) => {
                       setShowCopy(false);
                     }}
                   >
-                    <DetailLabel>
-                      {detail.label}
+                    <DetailSection>
+                      <img
+                        alt={detail.label}
+                        className={classNames("detail-icon", detail.label)}
+                        src={detail.icon}
+                      />
+                      <FlexBox alignItems="center" className="detail-info">
+                        {isMobile && detail.canCopy ? (
+                          <a
+                            href={getHref(lowercase(detail.label), detail.info)}
+                          >
+                            {detail.info}
+                          </a>
+                        ) : (
+                          <span id={lowercase(detail.label)}>
+                            {detail.info}
+                          </span>
+                        )}
+                      </FlexBox>
                       <CopyButton
                         data-id={lowercase(detail.label)}
                         data-clipboard-text={detail.info}
@@ -109,16 +127,7 @@ export const About = (props: IAboutProps) => {
                           ? "Copied!"
                           : "Copy"}
                       </CopyButton>
-                    </DetailLabel>
-                    <FlexBox alignItems="center" className="detail-info">
-                      {isMobile && detail.canCopy ? (
-                        <a href={getHref(lowercase(detail.label), detail.info)}>
-                          {detail.info}
-                        </a>
-                      ) : (
-                        <span id={lowercase(detail.label)}>{detail.info}</span>
-                      )}
-                    </FlexBox>
+                    </DetailSection>
                   </FlexBoxSection>
                 ))
               : null}
@@ -208,10 +217,14 @@ const CopyButton = styled.button`
   }
 `;
 
-const DetailLabel = styled.label`
+const DetailSection = styled.section`
   display: flex;
   align-items: center;
   cursor: pointer;
-  font-weight: bold;
   line-height: 1.5;
+  .detail-icon {
+    height: 25px;
+    width: 70px;
+    flex-basis: 25%;
+  }
 `;

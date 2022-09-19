@@ -272,7 +272,7 @@ export const SectionsWrapper = styled.section`
       .detail-info {
         line-height: 2;
         span {
-          flex-basis: 75%;
+          /* flex-basis: 75%; */
         }
       }
     }
