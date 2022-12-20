@@ -2,8 +2,8 @@ import classNames from "classnames";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FlexBoxSection } from "../common/Elements";
-import { AppContext, RefTypes } from "../context";
-import { ProfileSectionType } from "../store/types";
+import { AppContext } from "../context";
+import { ProfileSectionType, RefTypes } from "../store/types";
 import { scrollTo } from "./ScrollTo";
 
 interface IMenuBarProps {
@@ -25,9 +25,8 @@ const MenuBar = (props: IMenuBarProps) => {
       current: string
     ) => {
       if (data.sections[current as ProfileSectionType].ref) {
-        const { title, ref = "" } = data.sections[
-          current as ProfileSectionType
-        ];
+        const { title, ref = "" } =
+          data.sections[current as ProfileSectionType];
         items.push({ section: current, title, ref });
       }
       return items;
