@@ -10,6 +10,7 @@ import {
   CORS_MODE,
   DEFAULT_CONTEXT,
   HTTP_INCLUDE_CREDENTIALS,
+  JSON_BASE_URL,
   PROFILE_PDF_NAME,
   SECTIONS,
 } from "./common/constants";
@@ -30,7 +31,7 @@ function App() {
     useState<boolean>(false);
 
   const getJsonResponse = async (jsonToFetch: string) => {
-    const url = `/${jsonToFetch}.json`;
+    const url = `${JSON_BASE_URL}/${jsonToFetch}.json`;
     const response = await fetch(url, {
       mode: CORS_MODE,
       credentials: HTTP_INCLUDE_CREDENTIALS,

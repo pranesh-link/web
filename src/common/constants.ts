@@ -2,6 +2,8 @@ import React from "react";
 
 export const CORS_MODE = "cors";
 export const HTTP_INCLUDE_CREDENTIALS = "include";
+export const JSON_BASE_URL =
+  "http://profile-jsons.s3-website-us-west-1.amazonaws.com";
 
 export const DEFAULT_CONTEXT = {
   data: {
