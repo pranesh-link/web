@@ -10,6 +10,8 @@ import {
   CORS_MODE,
   DEFAULT_CONTEXT,
   HTTP_INCLUDE_CREDENTIALS,
+  PROFILE_PDF_NAME,
+  SECTIONS,
 } from "./common/constants";
 
 function App() {
@@ -55,25 +57,32 @@ function App() {
   };
 
   const DEFAULT_SECTIONS_DETAILS = DEFAULT_CONTEXT.data.sections.details;
+  const {
+    HEADER,
+    ABOUT_ME,
+    DETAILS,
+    EDUCATION,
+    ORGANIZATIONS,
+    SKILLS,
+    EXPERIENCE,
+    LINKS,
+  } = SECTIONS;
 
   const fetchProfileData = async () => {
-    const header = await fetchHeader("header", DEFAULT_CONTEXT.data.header);
-    const aboutMe = await fetchSections("aboutMe", DEFAULT_SECTIONS_DETAILS);
-    const details = await fetchSections("details", DEFAULT_SECTIONS_DETAILS);
-    const education = await fetchSections(
-      "education",
-      DEFAULT_SECTIONS_DETAILS
-    );
+    const header = await fetchHeader(HEADER, DEFAULT_CONTEXT.data.header);
+    const aboutMe = await fetchSections(ABOUT_ME, DEFAULT_SECTIONS_DETAILS);
+    const details = await fetchSections(DETAILS, DEFAULT_SECTIONS_DETAILS);
+    const education = await fetchSections(EDUCATION, DEFAULT_SECTIONS_DETAILS);
     const organizations = await fetchSections(
-      "organizations",
+      ORGANIZATIONS,
       DEFAULT_SECTIONS_DETAILS
     );
-    const skills = await fetchSections("skills", DEFAULT_SECTIONS_DETAILS);
+    const skills = await fetchSections(SKILLS, DEFAULT_SECTIONS_DETAILS);
     const experience = await fetchSections(
-      "experiences",
+      EXPERIENCE,
       DEFAULT_SECTIONS_DETAILS
     );
-    const links = await fetchSections("links", DEFAULT_SECTIONS_DETAILS);
+    const links = await fetchSections(LINKS, DEFAULT_SECTIONS_DETAILS);
 
     const sections = {
       aboutMe,
@@ -146,7 +155,7 @@ function App() {
             scale={0.65}
             paperSize="A4"
             margin="0cm"
-            fileName="Pranesh_Profile"
+            fileName={PROFILE_PDF_NAME}
             ref={(component: PDFExport) => (pdfExportComponent = component)}
           >
             <MenuBar />

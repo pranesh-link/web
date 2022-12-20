@@ -63,3 +63,14 @@ export const LABEL_TEXT: { [key: string]: string } = {
 
 export const SHORT_INFOS = ["client", "duration", "softwareTech"];
 export const EXPANDABLE_INFOS = ["description", "responsibilities"];
+export const SECTIONS = {
+  HEADER: "header",
+  ABOUT_ME: "aboutMe",
+  DETAILS: "details",
+  EDUCATION: "education",
+  ORGANIZATIONS: "organizations",
+  SKILLS: "skills",
+  EXPERIENCE: "experiences",
+  LINKS: "links",
+};
+export const PROFILE_PDF_NAME = "Pranesh_Profile";
