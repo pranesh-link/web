@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { FlexBox, FlexBoxSection } from "../common/Elements";
 import { IProject } from "../store/types";
 import classNames from "classnames";
-import { EXPANDABLE_INFOS, LABEL_TEXT, SHORT_INFOS } from "./Constants";
+import { EXPANDABLE_INFOS, LABEL_TEXT, SHORT_INFOS } from "../common/constants";
 import { AppContext } from "../context";
 
 interface IProjectInfoProps {
