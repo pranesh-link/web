@@ -136,7 +136,14 @@ export const About = (props: IAboutProps) => {
                         key={link.label}
                         rel="noreferrer"
                       >
-                        <img alt="" className={link.label} src={link.icon} />
+                        <img
+                          crossOrigin="anonymous"
+                          alt={link.label}
+                          className={link.label}
+                          src={`${link.icon}?dummy=${Math.floor(
+                            Math.random() * 1000
+                          )}`}
+                        />
                       </a>
                     ))
                   : null}
