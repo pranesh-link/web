@@ -76,3 +76,7 @@ export const SECTIONS = {
   LINKS: "links",
 };
 export const PROFILE_PDF_NAME = "Pranesh_Profile";
+export const TOAST_ERROR_MESSAGE = {
+  LINE1: "Something went wrong.",
+  LINE2: "Please close this error to reload the page.",
+};
