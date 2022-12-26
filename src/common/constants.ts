@@ -1,9 +1,10 @@
 import React from "react";
 
 export const CORS_MODE = "cors";
-export const HTTP_INCLUDE_CREDENTIALS = "include";
-export const JSON_BASE_URL =
+export const DEV_JSON_BASE_URL = "http://localhost:8080";
+export const PROD_JSON_BASE_URL =
   "http://profile-jsons.s3-website-us-west-1.amazonaws.com";
+export const TOAST_POSITION = "top-center";
 
 export const DEFAULT_CONTEXT = {
   data: {
@@ -76,7 +77,7 @@ export const SECTIONS = {
   LINKS: "links",
 };
 export const PROFILE_PDF_NAME = "Pranesh_Profile";
-export const TOAST_ERROR_MESSAGE = {
-  LINE1: "Something went wrong.",
-  LINE2: "Please close this error to reload the page.",
-};
+export const TOAST_ERROR_MESSAGE = [
+  "Something went wrong.",
+  "Please close this error to reload the page.",
+];

@@ -9,14 +9,17 @@ import { IHeader, IProfileData, ISectionInfo } from "./store/types";
 import {
   CORS_MODE,
   DEFAULT_CONTEXT,
-  HTTP_INCLUDE_CREDENTIALS,
-  JSON_BASE_URL,
+  DEV_JSON_BASE_URL,
+  PROD_JSON_BASE_URL,
   PROFILE_PDF_NAME,
   SECTIONS,
+  TOAST_ERROR_MESSAGE,
+  TOAST_POSITION,
 } from "./common/constants";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CloseIcon from "./assets/close-icon.svg";
+import { ColorRing } from "react-loader-spinner";
 
 function App() {
   const homeRef = useRef(null);
@@ -35,6 +38,11 @@ function App() {
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] =
     useState<boolean>(false);
 
+  const JSON_BASE_URL =
+    process.env.NODE_ENV === "development"
+      ? DEV_JSON_BASE_URL
+      : PROD_JSON_BASE_URL;
+
   const CloseButton = () => (
     <i className="material-icons" onClick={closeToast}>
       <img src={CloseIcon} alt="Close icon" width={"20px"} />
@@ -44,8 +52,9 @@ function App() {
   const ToastError = useMemo(
     () => (
       <ToastErrorWrapper>
-        <p>Something went wrong.</p>
-        <p>Please close this error to reload the page</p>
+        {TOAST_ERROR_MESSAGE.map((lineError: string) => (
+          <p>{lineError}</p>
+        ))}
       </ToastErrorWrapper>
     ),
     []
@@ -76,7 +85,6 @@ function App() {
         const url = `${JSON_BASE_URL}/${jsonToFetch}.json`;
         const response = await fetch(url, {
           mode: CORS_MODE,
-          credentials: HTTP_INCLUDE_CREDENTIALS,
         });
         data = await response.json();
       } catch (e) {
@@ -136,11 +144,21 @@ function App() {
 
   let pdfExportComponent: PDFExport;
 
-  return isFetchingData ? null : (
+  return isFetchingData ? (
+    <ColorRing
+      visible={true}
+      height="80"
+      width="80"
+      ariaLabel="blocks-loading"
+      wrapperStyle={{ position: "fixed", top: "45%", left: "47%" }}
+      wrapperClass="blocks-wrapper"
+      colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
+    />
+  ) : (
     <Wrapper>
       <ToastContainer
         autoClose={false}
-        position={"top-center"}
+        position={TOAST_POSITION}
         closeButton={CloseButton}
         limit={1}
       />
