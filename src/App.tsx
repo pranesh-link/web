@@ -19,6 +19,7 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CloseIcon from "./assets/close-icon.svg";
+import { ColorRing } from "react-loader-spinner";
 
 function App() {
   const homeRef = useRef(null);
@@ -143,7 +144,17 @@ function App() {
 
   let pdfExportComponent: PDFExport;
 
-  return isFetchingData ? null : (
+  return isFetchingData ? (
+    <ColorRing
+      visible={true}
+      height="80"
+      width="80"
+      ariaLabel="blocks-loading"
+      wrapperStyle={{ position: "fixed", top: "45%", left: "47%" }}
+      wrapperClass="blocks-wrapper"
+      colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
+    />
+  ) : (
     <Wrapper>
       <ToastContainer
         autoClose={false}
