@@ -62,9 +62,10 @@ export const LABEL_TEXT: { [key: string]: string } = {
   description: "Description",
   responsibilities: "Responsibilities",
   softwareTech: "Software/Technologies",
+  role: "Role",
 };
 
-export const SHORT_INFOS = ["client", "duration", "softwareTech"];
+export const SHORT_INFOS = ["client", "duration", "role", "softwareTech"];
 export const EXPANDABLE_INFOS = ["description", "responsibilities"];
 export const SECTIONS = {
   HEADER: "header",
