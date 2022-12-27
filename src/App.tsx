@@ -1,17 +1,11 @@
-import { PDFExport } from "@progress/kendo-react-pdf";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
-import { HamBurgerMenu } from "./components/HamBurgerMenu";
-import MenuBar from "./components/MenuBar";
-import ProfileSections from "./components/ProfileSections";
-import { AppProvider } from "./context";
 import { IHeader, IProfileData, ISectionInfo } from "./store/types";
 import {
   CORS_MODE,
   DEFAULT_CONTEXT,
   DEV_JSON_BASE_URL,
   PROD_JSON_BASE_URL,
-  PROFILE_PDF_NAME,
   SECTIONS,
   TOAST_ERROR_MESSAGE,
   TOAST_POSITION,
@@ -20,6 +14,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CloseIcon from "./assets/close-icon.svg";
 import { ColorRing } from "react-loader-spinner";
+import { Profile } from "./Profile";
 
 function App() {
   const homeRef = useRef(null);
@@ -132,7 +127,7 @@ function App() {
       setProfileData({ header, sections });
       setIsFetchingData(false);
     })();
-  }, []);
+  }, [JSON_BASE_URL]);
 
   useEffect(() => {
     if (hasError) {
@@ -141,8 +136,6 @@ function App() {
   }, [hasError, ToastError]);
 
   const isMobile = window.innerWidth < 768;
-
-  let pdfExportComponent: PDFExport;
 
   return isFetchingData ? (
     <ColorRing
@@ -163,66 +156,24 @@ function App() {
         limit={1}
       />
       {!hasError && (
-        <>
-          <AppProvider
-            value={{
-              data: profileData,
-              refs: {
-                homeRef,
-                skillsRef,
-                experienceRef,
-                educationRef,
-                contactRef,
-                orgRef,
-              },
-              isDownloading,
-              isMobile,
-            }}
-          >
-            <HamBurgerMenu
-              isOpen={isHamburgerMenuOpen}
-              setIsOpen={(isOpen) => setIsHamburgerMenuOpen(isOpen)}
-            />
-            {isMobile && (
-              <Swipe onTouchMove={() => setIsHamburgerMenuOpen(true)} />
-            )}
-            <MenuBar />
-            <ProfileSections
-              exportProfile={() => {
-                setIsDownloading(true);
-                pdfExportComponent.save(() => setIsDownloading(false));
-              }}
-            />
-          </AppProvider>
-          <AppProvider
-            value={{
-              data: profileData,
-              refs: {
-                homeRef,
-                orgRef,
-                skillsRef,
-                experienceRef,
-                educationRef,
-                contactRef,
-              },
-              isExport: true,
-              isMobile,
-            }}
-          >
-            <div className="export-wrapper">
-              <PDFExport
-                scale={0.65}
-                paperSize="A4"
-                margin="0cm"
-                fileName={PROFILE_PDF_NAME}
-                ref={(component: PDFExport) => (pdfExportComponent = component)}
-              >
-                <MenuBar />
-                <ProfileSections />
-              </PDFExport>
-            </div>
-          </AppProvider>
-        </>
+        <Profile
+          profileData={profileData}
+          homeRef={homeRef}
+          skillsRef={skillsRef}
+          experienceRef={experienceRef}
+          educationRef={educationRef}
+          contactRef={contactRef}
+          orgRef={orgRef}
+          isDownloading={isDownloading}
+          isMobile={isMobile}
+          isHamburgerMenuOpen={isHamburgerMenuOpen}
+          setIsDownloading={(isDownloading: boolean) =>
+            setIsDownloading(isDownloading)
+          }
+          setIsHamburgerMenuOpen={(isHamburgerMenuOpen: boolean) =>
+            setIsHamburgerMenuOpen(isHamburgerMenuOpen)
+          }
+        />
       )}
     </Wrapper>
   );
@@ -236,12 +187,6 @@ const Wrapper = styled.section`
     left: -3000px;
     top: 0;
   }
-`;
-
-const Swipe = styled.div`
-  height: 100%;
-  width: 60px;
-  position: fixed;
 `;
 
 const ToastErrorWrapper = styled.div`
