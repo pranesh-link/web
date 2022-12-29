@@ -87,7 +87,12 @@ export const Profile = (props: ProfileProps) => {
           <PDFExport
             scale={0.65}
             paperSize="A4"
-            margin="0cm"
+            creator="Pranesh"
+            author="Pranesh"
+            title="Pranesh_Profile"
+            margin={{ top: "20mm", bottom: "25mm" }}
+            forcePageBreak=".page-break"
+            keepTogether=".keep-together"
             fileName={PROFILE_PDF_NAME}
             ref={(component: PDFExport) => (pdfExportComponent = component)}
           >

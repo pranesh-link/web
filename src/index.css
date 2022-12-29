@@ -21,3 +21,8 @@ p {
   margin-block-start: 0;
   margin-block-end: 0;
 }
+
+li,
+.k-pdf-export li {
+  list-style: lower-roman;
+}

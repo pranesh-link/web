@@ -40,7 +40,7 @@ const ProfileSections = (props: IProfileSectionsProps) => {
   const { shortDesc, name } = header;
 
   return (
-    <Wrapper>
+    <Wrapper className={classNames({ export: isExport })}>
       <ShortDesc>{shortDesc}</ShortDesc>
       <PageHeader>
         <hr className={classNames("header-sep", { export: isExport })} />
@@ -91,7 +91,10 @@ const ProfileSections = (props: IProfileSectionsProps) => {
 export default ProfileSections;
 
 const Wrapper = styled.section`
-  background-color: #f0f0f0;
+  &:not(.export) {
+    background-color: #f0f0f0;
+  }
+
   .header-sep {
     min-width: 100px;
     opacity: 0.6;
