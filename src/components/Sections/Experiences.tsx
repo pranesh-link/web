@@ -29,7 +29,7 @@ export const Experiences = (props: IExperiencesProps) => {
       id={isExport ? "" : "experience"}
       ref={isExport ? null : refObj}
     >
-      <SecHeader className={classNames({ export: isExport })}>
+      <SecHeader className={classNames("page-break", { export: isExport })}>
         {experiences.title}
       </SecHeader>
       <SectionWrapper
@@ -38,8 +38,10 @@ export const Experiences = (props: IExperiencesProps) => {
         className={classNames({ export: isExport })}
       >
         {experience.map((experience, index) => (
-          <section key={index}>
-            <h3 className="org-name">{experience.organization}</h3>
+          <section key={index} className="organization">
+            <h3 className={classNames("org-name", { "page-break": index > 0 })}>
+              {experience.organization}
+            </h3>
             <section className="org-projects">
               {experience.projects.map((project, index) => (
                 <ProjectInfo

@@ -20,7 +20,7 @@ export const ProjectInfo = (props: IProjectInfoProps) => {
   const { isExport } = React.useContext(AppContext);
 
   return (
-    <SectionWrapper direction="column">
+    <SectionWrapper direction="column" className="keep-together">
       <ProjectName>
         <span>{title.info}</span>
       </ProjectName>
