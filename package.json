@@ -85,13 +85,14 @@
     "webpack": "4.44.2",
     "webpack-dev-server": "3.11.0",
     "webpack-manifest-plugin": "2.2.0",
+    "workbox-precaching": "^6.5.4",
     "workbox-webpack-plugin": "5.1.4"
   },
   "scripts": {
     "start": "GENERATE_SOURCEMAP=true node scripts/start.js",
-    "wStart": "set \"GENERATE_SOURCEMAP=false\" && node scripts/start.js",
+    "wStart": "rm .eslintcache && set \"GENERATE_SOURCEMAP=false\" && node scripts/start.js",
     "build": "GENERATE_SOURCEMAP=false node scripts/build.js",
-    "wBuild": "set \"GENERATE_SOURCEMAP=false\" && node scripts/build.js",
+    "wBuild": "rm .eslintcache && set \"GENERATE_SOURCEMAP=false\" && node scripts/build.js",
     "test": "node scripts/test.js"
   },
   "eslintConfig": {
