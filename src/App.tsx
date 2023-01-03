@@ -89,7 +89,6 @@ function App() {
   );
 
   const renderInstallButton = () => {
-    setIsInstallBannerOpen(true);
     if (isInstallPromptSupported) {
       if (isMobile) {
         return (
@@ -191,7 +190,8 @@ function App() {
       setProfileData({ header, sections });
       setIsFetchingData(false);
     })();
-  }, [JSON_BASE_URL]);
+    setIsInstallBannerOpen(isInstallPromptSupported);
+  }, [JSON_BASE_URL, isInstallPromptSupported]);
 
   useEffect(() => {
     if (hasError) {
