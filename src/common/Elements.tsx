@@ -1,3 +1,4 @@
+import { MouseEventHandler } from "react";
 import styled from "styled-components";
 
 export const ActionBtn = styled.button`
@@ -277,5 +278,78 @@ export const SectionsWrapper = styled.section`
   @media screen and (max-width: 767px) {
     padding-left: 20px;
     margin-top: 0;
+  }
+`;
+
+interface CloseButtonProps {
+  onClose: MouseEventHandler<HTMLButtonElement>;
+  icon: string;
+  width: string;
+}
+export const CloseButton = (props: CloseButtonProps) => (
+  <i className="material-icons" onClick={props.onClose}>
+    <img src={props.icon} alt="Close icon" width={props.width} />
+  </i>
+);
+
+export const AutoCloseToastMessage = styled.div`
+  font-family: Open Sans, sans-serif !important;
+  text-align: center;
+  font-style: italic;
+  letter-spacing: 0.5px;
+  color: #3f9c35;
+`;
+
+export const PWAWrapper = styled(FlexBox)<{ top?: string; bottom?: string }>`
+  position: fixed;
+  ${({ top }) =>
+    top &&
+    `
+    top: ${top};
+  `}
+  ${({ bottom }) =>
+    bottom &&
+    `
+    bottom: ${bottom};
+  `}
+  background: #8f00ff;
+  width: 100%;
+  padding: 25px 0;
+  p {
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.1em;
+  }
+  button {
+    color: #fff;
+    border: none;
+    background: none;
+    flex-basis: 15%;
+    cursor: pointer;
+    font-size: 1.2em;
+    font-weight: bold;
+    &.install {
+      background: #fff;
+      margin-right: 15px;
+      color: #8f00ff;
+      padding: 10px 0;
+      border-radius: 25px;
+      font-size: 1.2em;
+    }
+    &.not-now {
+      color: rgb(170, 187, 187, 0.8);
+    }
+  }
+`;
+
+export const MobilePWAWrapper = styled(PWAWrapper)`
+  p {
+    font-size: 14px;
+    padding: 0 10px;
+  }
+  button {
+    flex-basis: auto !important;
+    font-size: 15px !important;
+    padding: 10px !important;
   }
 `;
