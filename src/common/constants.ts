@@ -1,4 +1,5 @@
 import React from "react";
+import { IAppContext } from "../store/types";
 
 export const CORS_MODE = "cors";
 export const DEV_JSON_BASE_URL = "http://localhost:8080";
@@ -6,7 +7,7 @@ export const PROD_JSON_BASE_URL =
   "http://profile-jsons.s3-website-us-west-1.amazonaws.com";
 export const TOAST_POSITION = "top-center";
 
-export const DEFAULT_CONTEXT = {
+export const DEFAULT_CONTEXT: IAppContext = {
   data: {
     header: {
       shortDesc: "",
@@ -54,6 +55,7 @@ export const DEFAULT_CONTEXT = {
   isExport: false,
   isDownloading: false,
   isMobile: false,
+  isInstallBannerOpen: false,
 };
 
 export const LABEL_TEXT: { [key: string]: string } = {
@@ -82,3 +84,7 @@ export const TOAST_ERROR_MESSAGE = [
   "Something went wrong.",
   "Please close this error to reload the page.",
 ];
+export const PWA_INSTALL_MESSAGE =
+  "Installing almost uses no storage and provides a quick way to return to this app.";
+export const PWA_INSTALL = "Install";
+export const PWA_NOT_NOW = "Not now";

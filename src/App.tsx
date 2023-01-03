@@ -6,15 +6,25 @@ import {
   DEFAULT_CONTEXT,
   DEV_JSON_BASE_URL,
   PROD_JSON_BASE_URL,
+  PWA_INSTALL,
+  PWA_INSTALL_MESSAGE,
+  PWA_NOT_NOW,
   SECTIONS,
   TOAST_ERROR_MESSAGE,
   TOAST_POSITION,
 } from "./common/constants";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import CloseIcon from "./assets/close-icon.svg";
 import { ColorRing } from "react-loader-spinner";
 import { Profile } from "./Profile";
+import {
+  CloseButton,
+  FlexBox,
+  MobilePWAWrapper,
+  PWAWrapper,
+} from "./common/Elements";
+import usePWA from "react-pwa-install-prompt";
+import CloseIcon from "./assets/close-icon.svg";
 
 function App() {
   const homeRef = useRef(null);
@@ -24,7 +34,11 @@ function App() {
   const contactRef = useRef(null);
   const orgRef = useRef(null);
 
+  const { isInstallPromptSupported, promptInstall } = usePWA();
+
   const [hasError, setHasError] = useState<boolean>(false);
+  const [isInstallBannerOpen, setIsInstallBannerOpen] =
+    useState<boolean>(false);
   const [profileData, setProfileData] = useState<IProfileData>(
     DEFAULT_CONTEXT.data
   );
@@ -38,12 +52,6 @@ function App() {
       ? DEV_JSON_BASE_URL
       : PROD_JSON_BASE_URL;
 
-  const CloseButton = () => (
-    <i className="material-icons" onClick={closeToast}>
-      <img src={CloseIcon} alt="Close icon" width={"20px"} />
-    </i>
-  );
-
   const ToastError = useMemo(
     () => (
       <ToastErrorWrapper>
@@ -55,8 +63,64 @@ function App() {
     []
   );
 
-  const closeToast = () => {
-    window.location.reload();
+  const closeToast = () => window.location.reload();
+
+  const onClickInstall = async () => {
+    const didInstall = await promptInstall();
+    if (didInstall) {
+      setIsInstallBannerOpen(false);
+    }
+  };
+
+  const closeInstallBanner = () => setIsInstallBannerOpen(false);
+
+  const NotNowButton = (
+    <button className="not-now" onClick={closeInstallBanner}>
+      {PWA_NOT_NOW}
+    </button>
+  );
+
+  const PWAInstallMessage = <p>{PWA_INSTALL_MESSAGE}</p>;
+
+  const InstallButton = (
+    <button className="install" onClick={onClickInstall}>
+      {PWA_INSTALL}
+    </button>
+  );
+
+  const renderInstallButton = () => {
+    setIsInstallBannerOpen(true);
+    if (isInstallPromptSupported) {
+      if (isMobile) {
+        return (
+          <MobilePWAWrapper
+            bottom="0"
+            direction="column"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            {PWAInstallMessage}
+            <MobilePWAControls justifyContent="flex-end">
+              {NotNowButton}
+              {InstallButton}
+            </MobilePWAControls>
+          </MobilePWAWrapper>
+        );
+      } else {
+        return (
+          <PWAWrapper
+            top="0"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            {NotNowButton}
+            {PWAInstallMessage}
+            {InstallButton}
+          </PWAWrapper>
+        );
+      }
+    }
+    return null;
   };
 
   useEffect(() => {
@@ -152,7 +216,9 @@ function App() {
       <ToastContainer
         autoClose={false}
         position={TOAST_POSITION}
-        closeButton={CloseButton}
+        closeButton={
+          <CloseButton width="20px" icon={CloseIcon} onClose={closeToast} />
+        }
         limit={1}
       />
       {!hasError && (
@@ -166,6 +232,7 @@ function App() {
           orgRef={orgRef}
           isDownloading={isDownloading}
           isMobile={isMobile}
+          isInstallBannerOpen={isInstallBannerOpen}
           isHamburgerMenuOpen={isHamburgerMenuOpen}
           setIsDownloading={(isDownloading: boolean) =>
             setIsDownloading(isDownloading)
@@ -175,6 +242,7 @@ function App() {
           }
         />
       )}
+      {renderInstallButton()}
     </Wrapper>
   );
 }
@@ -195,4 +263,9 @@ const ToastErrorWrapper = styled.div`
       margin-bottom: 3px;
     }
   }
+`;
+
+const MobilePWAControls = styled(FlexBox)`
+  width: 100%;
+  margin-right: 50px;
 `;

@@ -81,4 +81,5 @@ export interface IAppContext {
   isExport?: boolean;
   isDownloading?: boolean;
   isMobile: boolean;
+  isInstallBannerOpen: boolean;
 }

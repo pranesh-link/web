@@ -18,6 +18,7 @@ interface ProfileProps {
   isDownloading: boolean;
   isMobile: boolean;
   isHamburgerMenuOpen: boolean;
+  isInstallBannerOpen: boolean;
   setIsDownloading: (isDownloading: boolean) => void;
   setIsHamburgerMenuOpen: (isHamburgerMenuOpen: boolean) => void;
 }
@@ -34,6 +35,7 @@ export const Profile = (props: ProfileProps) => {
     isDownloading,
     isMobile,
     isHamburgerMenuOpen,
+    isInstallBannerOpen,
     setIsDownloading,
     setIsHamburgerMenuOpen,
   } = props;
@@ -53,6 +55,7 @@ export const Profile = (props: ProfileProps) => {
           },
           isDownloading,
           isMobile,
+          isInstallBannerOpen,
         }}
       >
         <HamBurgerMenu
@@ -81,6 +84,7 @@ export const Profile = (props: ProfileProps) => {
           },
           isExport: true,
           isMobile,
+          isInstallBannerOpen,
         }}
       >
         <div className="export-wrapper">
