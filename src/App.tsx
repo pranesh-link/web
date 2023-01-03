@@ -6,6 +6,7 @@ import {
   DEFAULT_CONTEXT,
   DEV_JSON_BASE_URL,
   PROD_JSON_BASE_URL,
+  PWA_HIDE_BANNER_EXPIRY,
   PWA_INSTALL,
   PWA_INSTALL_MESSAGE,
   PWA_NOT_NOW,
@@ -25,6 +26,11 @@ import {
 } from "./common/Elements";
 import usePWA from "react-pwa-install-prompt";
 import CloseIcon from "./assets/close-icon.svg";
+import {
+  getLocalStorage,
+  isBannerHidden,
+  setLocalStorage,
+} from "./components/Utils";
 
 function App() {
   const homeRef = useRef(null);
@@ -37,8 +43,13 @@ function App() {
   const { isInstallPromptSupported, promptInstall } = usePWA();
 
   const [hasError, setHasError] = useState<boolean>(false);
-  const [isInstallBannerOpen, setIsInstallBannerOpen] =
-    useState<boolean>(false);
+  const [isInstallBannerOpen, setIsInstallBannerOpen] = useState<
+    boolean | null
+  >(getLocalStorage("isInstallBannerOpen"));
+  const [hasPWAInstalled, setHasPWAInstalled] = useState<boolean>(
+    getLocalStorage("hasPWAInstalled") || false
+  );
+
   const [profileData, setProfileData] = useState<IProfileData>(
     DEFAULT_CONTEXT.data
   );
@@ -69,10 +80,18 @@ function App() {
     const didInstall = await promptInstall();
     if (didInstall) {
       setIsInstallBannerOpen(false);
+      setLocalStorage("isInstallBannerOpen", false);
+      setHasPWAInstalled(true);
+      setLocalStorage("hasPWAInstalled", true);
     }
   };
 
-  const closeInstallBanner = () => setIsInstallBannerOpen(false);
+  const closeInstallBanner = () => {
+    const expiry = new Date().getTime() + PWA_HIDE_BANNER_EXPIRY * 1000;
+    setIsInstallBannerOpen(false);
+    setLocalStorage("isInstallBannerOpen", false);
+    setLocalStorage("pwaBannerHideTime", expiry);
+  };
 
   const NotNowButton = (
     <button className="not-now" onClick={closeInstallBanner}>
@@ -89,7 +108,7 @@ function App() {
   );
 
   const renderInstallButton = () => {
-    if (isInstallPromptSupported) {
+    if (!hasPWAInstalled && isInstallPromptSupported && isInstallBannerOpen) {
       if (isMobile) {
         return (
           <MobilePWAWrapper
@@ -190,7 +209,17 @@ function App() {
       setProfileData({ header, sections });
       setIsFetchingData(false);
     })();
-    setIsInstallBannerOpen(isInstallPromptSupported);
+    // Set install banner based on local storage key availability
+    const openBanner =
+      getLocalStorage("isInstallBannerOpen") === null
+        ? isInstallPromptSupported
+        : (isInstallPromptSupported &&
+            isInstallBannerOpen &&
+            !hasPWAInstalled) ||
+          !isBannerHidden(getLocalStorage("pwaBannerHideTime") || 0);
+    setLocalStorage("isInstallBannerOpen", openBanner);
+    setIsInstallBannerOpen(openBanner);
+    // eslint-disable-next-line
   }, [JSON_BASE_URL, isInstallPromptSupported]);
 
   useEffect(() => {
@@ -232,7 +261,11 @@ function App() {
           orgRef={orgRef}
           isDownloading={isDownloading}
           isMobile={isMobile}
-          isInstallBannerOpen={isInstallBannerOpen}
+          isInstallBannerOpen={
+            !hasPWAInstalled &&
+            isInstallPromptSupported &&
+            !!isInstallBannerOpen
+          }
           isHamburgerMenuOpen={isHamburgerMenuOpen}
           setIsDownloading={(isDownloading: boolean) =>
             setIsDownloading(isDownloading)

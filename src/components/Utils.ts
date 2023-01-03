@@ -47,3 +47,27 @@ export const getHref = (label: string, info: string) => {
   }
   return "";
 };
+
+export const setLocalStorage = (key: string, value: any) =>
+  localStorage.setItem(key, JSON.stringify({ value }));
+
+export const getLocalStorage = (key: string) => {
+  const itemStr = localStorage.getItem(key);
+
+  if (!itemStr) {
+    return null;
+  }
+  const item = JSON.parse(itemStr);
+  return item.value;
+};
+
+export const isBannerHidden = (hideTime: number) => {
+  if (hideTime > 0) {
+    const isHideTime = new Date().getTime() < hideTime;
+    if (!isHideTime) {
+      localStorage.removeItem("pwaBannerHideTime");
+    }
+    return new Date().getTime() < hideTime;
+  }
+  return false;
+};
