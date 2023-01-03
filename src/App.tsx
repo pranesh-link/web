@@ -6,9 +6,6 @@ import {
   DEFAULT_CONTEXT,
   DEV_JSON_BASE_URL,
   PROD_JSON_BASE_URL,
-  PWA_INSTALL,
-  PWA_INSTALL_MESSAGE,
-  PWA_NOT_NOW,
   SECTIONS,
   TOAST_ERROR_MESSAGE,
   TOAST_POSITION,
@@ -17,14 +14,11 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ColorRing } from "react-loader-spinner";
 import { Profile } from "./Profile";
-import {
-  CloseButton,
-  FlexBox,
-  MobilePWAWrapper,
-  PWAWrapper,
-} from "./common/Elements";
+import { CloseButton } from "./common/Elements";
 import usePWA from "react-pwa-install-prompt";
 import CloseIcon from "./assets/close-icon.svg";
+import { getLocalStorage, setLocalStorage } from "./components/Utils";
+import { PWABanner } from "./PWABanner";
 
 function App() {
   const homeRef = useRef(null);
@@ -34,11 +28,15 @@ function App() {
   const contactRef = useRef(null);
   const orgRef = useRef(null);
 
+  const [hasError, setHasError] = useState<boolean>(false);
   const { isInstallPromptSupported, promptInstall } = usePWA();
 
-  const [hasError, setHasError] = useState<boolean>(false);
-  const [isInstallBannerOpen, setIsInstallBannerOpen] =
-    useState<boolean>(false);
+  const [isInstallBannerOpen, setIsInstallBannerOpen] = useState<
+    boolean | null
+  >(getLocalStorage("isInstallBannerOpen"));
+  const [hasPWAInstalled, setHasPWAInstalled] = useState<boolean>(
+    getLocalStorage("hasPWAInstalled") || false
+  );
   const [profileData, setProfileData] = useState<IProfileData>(
     DEFAULT_CONTEXT.data
   );
@@ -69,57 +67,10 @@ function App() {
     const didInstall = await promptInstall();
     if (didInstall) {
       setIsInstallBannerOpen(false);
+      setLocalStorage("isInstallBannerOpen", false);
+      setHasPWAInstalled(true);
+      setLocalStorage("hasPWAInstalled", true);
     }
-  };
-
-  const closeInstallBanner = () => setIsInstallBannerOpen(false);
-
-  const NotNowButton = (
-    <button className="not-now" onClick={closeInstallBanner}>
-      {PWA_NOT_NOW}
-    </button>
-  );
-
-  const PWAInstallMessage = <p>{PWA_INSTALL_MESSAGE}</p>;
-
-  const InstallButton = (
-    <button className="install" onClick={onClickInstall}>
-      {PWA_INSTALL}
-    </button>
-  );
-
-  const renderInstallButton = () => {
-    if (isInstallPromptSupported) {
-      if (isMobile) {
-        return (
-          <MobilePWAWrapper
-            bottom="0"
-            direction="column"
-            alignItems="center"
-            justifyContent="space-between"
-          >
-            {PWAInstallMessage}
-            <MobilePWAControls justifyContent="flex-end">
-              {NotNowButton}
-              {InstallButton}
-            </MobilePWAControls>
-          </MobilePWAWrapper>
-        );
-      } else {
-        return (
-          <PWAWrapper
-            top="0"
-            alignItems="center"
-            justifyContent="space-between"
-          >
-            {NotNowButton}
-            {PWAInstallMessage}
-            {InstallButton}
-          </PWAWrapper>
-        );
-      }
-    }
-    return null;
   };
 
   useEffect(() => {
@@ -190,8 +141,7 @@ function App() {
       setProfileData({ header, sections });
       setIsFetchingData(false);
     })();
-    setIsInstallBannerOpen(isInstallPromptSupported);
-  }, [JSON_BASE_URL, isInstallPromptSupported]);
+  }, [JSON_BASE_URL]);
 
   useEffect(() => {
     if (hasError) {
@@ -232,7 +182,11 @@ function App() {
           orgRef={orgRef}
           isDownloading={isDownloading}
           isMobile={isMobile}
-          isInstallBannerOpen={isInstallBannerOpen}
+          isInstallBannerOpen={
+            !hasPWAInstalled &&
+            isInstallPromptSupported &&
+            !!isInstallBannerOpen
+          }
           isHamburgerMenuOpen={isHamburgerMenuOpen}
           setIsDownloading={(isDownloading: boolean) =>
             setIsDownloading(isDownloading)
@@ -242,7 +196,16 @@ function App() {
           }
         />
       )}
-      {renderInstallButton()}
+      <PWABanner
+        isMobile={isMobile}
+        isInstallBannerOpen={!!isInstallBannerOpen}
+        hasPWAInstalled={hasPWAInstalled}
+        isInstallPromptSupported={isInstallPromptSupported}
+        setIsInstallBannerOpen={(isInstallBannerOpen) =>
+          setIsInstallBannerOpen(isInstallBannerOpen)
+        }
+        onClickInstall={onClickInstall}
+      />
     </Wrapper>
   );
 }
@@ -263,9 +226,4 @@ const ToastErrorWrapper = styled.div`
       margin-bottom: 3px;
     }
   }
-`;
-
-const MobilePWAControls = styled(FlexBox)`
-  width: 100%;
-  margin-right: 50px;
 `;

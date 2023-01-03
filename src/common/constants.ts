@@ -88,3 +88,4 @@ export const PWA_INSTALL_MESSAGE =
   "Installing almost uses no storage and provides a quick way to return to this app.";
 export const PWA_INSTALL = "Install";
 export const PWA_NOT_NOW = "Not now";
+export const PWA_HIDE_BANNER_EXPIRY = 86400;
