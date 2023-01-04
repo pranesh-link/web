@@ -733,6 +733,7 @@ module.exports = function (webpackEnv) {
       new WorkboxPlugin.GenerateSW({
         // these options encourage the ServiceWorkers to get in there fast
         // and not allow any straggling "old" SWs to hang around
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
         clientsClaim: true,
         skipWaiting: true,
       }),

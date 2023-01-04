@@ -1,9 +1,16 @@
 import {
+  CORS_MODE,
+  DEV_JSON_BASE_URL,
+  PROD_JSON_BASE_URL,
+} from "../common/constants";
+import {
   IDetailInfo,
+  IHeader,
   ILink,
   InfoType,
   IOrganization,
   IOrgProject,
+  ISectionInfo,
   ISkill,
 } from "../store/types";
 
@@ -70,4 +77,25 @@ export const isBannerHidden = (hideTime: number) => {
     return new Date().getTime() < hideTime;
   }
   return false;
+};
+
+export const getJsonResponse = async (
+  jsonToFetch: string,
+  data: IHeader | ISectionInfo
+) => {
+  const JSON_BASE_URL =
+    process.env.NODE_ENV === "development"
+      ? DEV_JSON_BASE_URL
+      : PROD_JSON_BASE_URL;
+  let hasError = false;
+  try {
+    const url = `${JSON_BASE_URL}/${jsonToFetch}.json`;
+    const response = await fetch(url, {
+      mode: CORS_MODE,
+    });
+    data = await response.json();
+  } catch (e) {
+    hasError = true;
+  }
+  return { data, hasError };
 };
