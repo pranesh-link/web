@@ -65,3 +65,22 @@ export type ProfileSectionType =
   | "education"
   | "links"
   | "organizations";
+
+export type RefTypes =
+  | "homeRef"
+  | "skillsRef"
+  | "experienceRef"
+  | "educationRef"
+  | "contactRef"
+  | "orgRef";
+
+export interface IAppContext {
+  data: IProfileData;
+  refs: {
+    [key in RefTypes]: React.MutableRefObject<any>;
+  };
+  isExport?: boolean;
+  isDownloading?: boolean;
+  isMobile: boolean;
+  isInstallBannerOpen: boolean;
+}

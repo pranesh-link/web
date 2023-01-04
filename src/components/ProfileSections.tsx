@@ -18,6 +18,7 @@ const ProfileSections = (props: IProfileSectionsProps) => {
     isExport = false,
     isDownloading,
     isMobile,
+    isInstallBannerOpen,
     data: { sections, header },
     refs: {
       homeRef,
@@ -40,7 +41,13 @@ const ProfileSections = (props: IProfileSectionsProps) => {
   const { shortDesc, name } = header;
 
   return (
-    <Wrapper isExport={isExport}>
+    <Wrapper
+      className={classNames({
+        export: isExport,
+        "add-margin-top": !isMobile && isInstallBannerOpen,
+        "add-margin-bottom": isMobile && isInstallBannerOpen,
+      })}
+    >
       {!isExport && <ShortDesc>{shortDesc}</ShortDesc>}
       <PageHeader>
         <hr className={classNames("header-sep", { export: isExport })} />
@@ -90,8 +97,17 @@ const ProfileSections = (props: IProfileSectionsProps) => {
 
 export default ProfileSections;
 
-const Wrapper = styled.section<{ isExport: boolean }>`
-  background-color: ${(props: any) => !props.isExport && "#f0f0f0"};
+const Wrapper = styled.section`
+  &:not(.export) {
+    background-color: #f0f0f0;
+    &.add-margin-top {
+      margin-top: 90px;
+    }
+    &.add-margin-bottom {
+      margin-bottom: 90px;
+    }
+  }
+
   .header-sep {
     min-width: 100px;
     opacity: 0.6;

@@ -73,7 +73,7 @@ const SkillsInfoWrapper = styled(FlexBoxSection)`
   }
 `;
 
-const TABLE = styled(ReactTable)<{ isExport: boolean }>`
+const TABLE = styled(ReactTable)<{ isExport?: boolean }>`
   &.ReactTable {
     border: none;
     flex-basis: 30%;
@@ -96,7 +96,8 @@ const TABLE = styled(ReactTable)<{ isExport: boolean }>`
       }
       .rt-tr {
         &.-odd {
-          background-color: ${(props) => (props.isExport ? "#fff" : "#f0f0f0")};
+          background-color: ${(props) =>
+            props.isExport ? "#ffff" : "#f0f0f0;"};
         }
       }
     }

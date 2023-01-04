@@ -1,11 +1,25 @@
-import { PDFExport } from "@progress/kendo-react-pdf";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
-import { HamBurgerMenu } from "./components/HamBurgerMenu";
-import MenuBar from "./components/MenuBar";
-import ProfileSections from "./components/ProfileSections";
-import { AppProvider } from "./context";
-import { ProfileData } from "./store/ProfileData";
+import { IHeader, IProfileData, ISectionInfo } from "./store/types";
+import {
+  DEFAULT_CONTEXT,
+  SECTIONS,
+  TOAST_ERROR_MESSAGE,
+  TOAST_POSITION,
+} from "./common/constants";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ColorRing } from "react-loader-spinner";
+import { Profile } from "./Profile";
+import { CloseButton } from "./common/Elements";
+import usePWA from "react-pwa-install-prompt";
+import CloseIcon from "./assets/close-icon.svg";
+import {
+  getJsonResponse,
+  getLocalStorage,
+  setLocalStorage,
+} from "./components/Utils";
+import { PWABanner } from "./PWABanner";
 
 function App() {
   const homeRef = useRef(null);
@@ -15,74 +29,169 @@ function App() {
   const contactRef = useRef(null);
   const orgRef = useRef(null);
 
-  useEffect(() => window.scrollTo(0, 0), []);
+  const [hasError, setHasError] = useState<boolean>(false);
+  const { isInstallPromptSupported, promptInstall } = usePWA();
 
+  const [isInstallBannerOpen, setIsInstallBannerOpen] = useState<
+    boolean | null
+  >(getLocalStorage("isInstallBannerOpen"));
+  const [hasPWAInstalled, setHasPWAInstalled] = useState<boolean>(
+    getLocalStorage("hasPWAInstalled") || false
+  );
+  const [profileData, setProfileData] = useState<IProfileData>(
+    DEFAULT_CONTEXT.data
+  );
+  const [isFetchingData, setIsFetchingData] = useState<boolean>(true);
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] =
     useState<boolean>(false);
 
+  const ToastError = useMemo(
+    () => (
+      <ToastErrorWrapper>
+        {TOAST_ERROR_MESSAGE.map((lineError: string) => (
+          <p>{lineError}</p>
+        ))}
+      </ToastErrorWrapper>
+    ),
+    []
+  );
+
+  const closeToast = () => window.location.reload();
+
+  const onClickInstall = async () => {
+    const didInstall = await promptInstall();
+    if (didInstall) {
+      setIsInstallBannerOpen(false);
+      setLocalStorage("isInstallBannerOpen", false);
+      setHasPWAInstalled(true);
+      setLocalStorage("hasPWAInstalled", true);
+    }
+  };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const {
+      HEADER,
+      ABOUT_ME,
+      DETAILS,
+      EDUCATION,
+      ORGANIZATIONS,
+      SKILLS,
+      EXPERIENCE,
+      LINKS,
+    } = SECTIONS;
+
+    const fetchSections = async (jsonToFetch: string, data: ISectionInfo) => {
+      const response = await getJsonResponse(jsonToFetch, data);
+      setHasError(response.hasError);
+      return response.data as ISectionInfo;
+    };
+
+    const fetchHeader = async (jsonToFetch: string, data: IHeader) => {
+      const response = await getJsonResponse(jsonToFetch, data);
+      setHasError(response.hasError);
+      return response.data as IHeader;
+    };
+
+    const DEFAULT_SECTIONS_DETAILS = DEFAULT_CONTEXT.data.sections.details;
+
+    (async () => {
+      const header = await fetchHeader(HEADER, DEFAULT_CONTEXT.data.header);
+      const aboutMe = await fetchSections(ABOUT_ME, DEFAULT_SECTIONS_DETAILS);
+      const details = await fetchSections(DETAILS, DEFAULT_SECTIONS_DETAILS);
+      const education = await fetchSections(
+        EDUCATION,
+        DEFAULT_SECTIONS_DETAILS
+      );
+      const organizations = await fetchSections(
+        ORGANIZATIONS,
+        DEFAULT_SECTIONS_DETAILS
+      );
+      const skills = await fetchSections(SKILLS, DEFAULT_SECTIONS_DETAILS);
+      const experience = await fetchSections(
+        EXPERIENCE,
+        DEFAULT_SECTIONS_DETAILS
+      );
+      const links = await fetchSections(LINKS, DEFAULT_SECTIONS_DETAILS);
+
+      const sections = {
+        aboutMe,
+        details,
+        education,
+        organizations,
+        skills,
+        experience,
+        links,
+      };
+      setProfileData({ header, sections });
+      setIsFetchingData(false);
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (hasError) {
+      toast.error(ToastError);
+    }
+  }, [hasError, ToastError]);
+
   const isMobile = window.innerWidth < 768;
 
-  let pdfExportComponent: PDFExport;
-
-  return (
+  return isFetchingData ? (
+    <ColorRing
+      visible={true}
+      height="80"
+      width="80"
+      ariaLabel="blocks-loading"
+      wrapperStyle={{ position: "fixed", top: "45%", left: "47%" }}
+      wrapperClass="blocks-wrapper"
+      colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
+    />
+  ) : (
     <Wrapper>
-      <AppProvider
-        value={{
-          data: ProfileData,
-          refs: {
-            homeRef,
-            skillsRef,
-            experienceRef,
-            educationRef,
-            contactRef,
-            orgRef,
-          },
-          isDownloading,
-          isMobile,
-        }}
-      >
-        <HamBurgerMenu
-          isOpen={isHamburgerMenuOpen}
-          setIsOpen={(isOpen) => setIsHamburgerMenuOpen(isOpen)}
+      <ToastContainer
+        autoClose={false}
+        position={TOAST_POSITION}
+        closeButton={
+          <CloseButton width="20px" icon={CloseIcon} onClose={closeToast} />
+        }
+        limit={1}
+      />
+      {!hasError && (
+        <Profile
+          profileData={profileData}
+          homeRef={homeRef}
+          skillsRef={skillsRef}
+          experienceRef={experienceRef}
+          educationRef={educationRef}
+          contactRef={contactRef}
+          orgRef={orgRef}
+          isDownloading={isDownloading}
+          isMobile={isMobile}
+          isInstallBannerOpen={
+            !hasPWAInstalled &&
+            isInstallPromptSupported &&
+            !!isInstallBannerOpen
+          }
+          isHamburgerMenuOpen={isHamburgerMenuOpen}
+          setIsDownloading={(isDownloading: boolean) =>
+            setIsDownloading(isDownloading)
+          }
+          setIsHamburgerMenuOpen={(isHamburgerMenuOpen: boolean) =>
+            setIsHamburgerMenuOpen(isHamburgerMenuOpen)
+          }
         />
-        {isMobile && <Swipe onTouchMove={() => setIsHamburgerMenuOpen(true)} />}
-        <MenuBar />
-        <ProfileSections
-          exportProfile={() => {
-            setIsDownloading(true);
-            pdfExportComponent.save(() => setIsDownloading(false));
-          }}
-        />
-      </AppProvider>
-      <AppProvider
-        value={{
-          data: ProfileData,
-          refs: {
-            homeRef,
-            orgRef,
-            skillsRef,
-            experienceRef,
-            educationRef,
-            contactRef,
-          },
-          isExport: true,
-          isMobile,
-        }}
-      >
-        <div className="export-wrapper">
-          <PDFExport
-            scale={0.65}
-            paperSize="A4"
-            margin={{ top: 40, bottom: 25 }}
-            fileName="Pranesh_Profile"
-            ref={(component: PDFExport) => (pdfExportComponent = component)}
-          >
-            <MenuBar />
-            <ProfileSections />
-          </PDFExport>
-        </div>
-      </AppProvider>
+      )}
+      <PWABanner
+        isMobile={isMobile}
+        isInstallBannerOpen={!!isInstallBannerOpen}
+        hasPWAInstalled={hasPWAInstalled}
+        isInstallPromptSupported={isInstallPromptSupported}
+        setIsInstallBannerOpen={(isInstallBannerOpen) =>
+          setIsInstallBannerOpen(isInstallBannerOpen)
+        }
+        onClickInstall={onClickInstall}
+      />
     </Wrapper>
   );
 }
@@ -97,8 +206,10 @@ const Wrapper = styled.section`
   }
 `;
 
-const Swipe = styled.div`
-  height: 100%;
-  width: 60px;
-  position: fixed;
+const ToastErrorWrapper = styled.div`
+  p {
+    &:first-child {
+      margin-bottom: 3px;
+    }
+  }
 `;

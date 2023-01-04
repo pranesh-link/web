@@ -1,5 +1,8 @@
 var CACHE_NAME = "pwa-task-manager";
 var urlsToCache = ["/", "/index.html"];
+import { precacheAndRoute } from "workbox-precaching";
+
+precacheAndRoute(self.__WB_MANIFEST);
 
 // Install a service worker
 self.addEventListener("install", (event) => {

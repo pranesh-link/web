@@ -1,9 +1,16 @@
 import {
+  CORS_MODE,
+  DEV_JSON_BASE_URL,
+  PROD_JSON_BASE_URL,
+} from "../common/constants";
+import {
   IDetailInfo,
+  IHeader,
   ILink,
   InfoType,
   IOrganization,
   IOrgProject,
+  ISectionInfo,
   ISkill,
 } from "../store/types";
 
@@ -46,4 +53,49 @@ export const getHref = (label: string, info: string) => {
       return `mailto:${info}`;
   }
   return "";
+};
+
+export const setLocalStorage = (key: string, value: any) =>
+  localStorage.setItem(key, JSON.stringify({ value }));
+
+export const getLocalStorage = (key: string) => {
+  const itemStr = localStorage.getItem(key);
+
+  if (!itemStr) {
+    return null;
+  }
+  const item = JSON.parse(itemStr);
+  return item.value;
+};
+
+export const isBannerHidden = (hideTime: number) => {
+  if (hideTime > 0) {
+    const isHideTime = new Date().getTime() < hideTime;
+    if (!isHideTime) {
+      localStorage.removeItem("pwaBannerHideTime");
+    }
+    return new Date().getTime() < hideTime;
+  }
+  return false;
+};
+
+export const getJsonResponse = async (
+  jsonToFetch: string,
+  data: IHeader | ISectionInfo
+) => {
+  const JSON_BASE_URL =
+    process.env.NODE_ENV === "development"
+      ? DEV_JSON_BASE_URL
+      : PROD_JSON_BASE_URL;
+  let hasError = false;
+  try {
+    const url = `${JSON_BASE_URL}/${jsonToFetch}.json`;
+    const response = await fetch(url, {
+      mode: CORS_MODE,
+    });
+    data = await response.json();
+  } catch (e) {
+    hasError = true;
+  }
+  return { data, hasError };
 };
