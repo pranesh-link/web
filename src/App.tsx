@@ -2,10 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
 import { IHeader, IProfileData, ISectionInfo } from "./store/types";
 import {
-  CORS_MODE,
   DEFAULT_CONTEXT,
-  DEV_JSON_BASE_URL,
-  PROD_JSON_BASE_URL,
   SECTIONS,
   TOAST_ERROR_MESSAGE,
   TOAST_POSITION,
@@ -17,7 +14,11 @@ import { Profile } from "./Profile";
 import { CloseButton } from "./common/Elements";
 import usePWA from "react-pwa-install-prompt";
 import CloseIcon from "./assets/close-icon.svg";
-import { getLocalStorage, setLocalStorage } from "./components/Utils";
+import {
+  getJsonResponse,
+  getLocalStorage,
+  setLocalStorage,
+} from "./components/Utils";
 import { PWABanner } from "./PWABanner";
 
 function App() {
@@ -44,11 +45,6 @@ function App() {
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] =
     useState<boolean>(false);
-
-  const JSON_BASE_URL =
-    process.env.NODE_ENV === "development"
-      ? DEV_JSON_BASE_URL
-      : PROD_JSON_BASE_URL;
 
   const ToastError = useMemo(
     () => (
@@ -86,27 +82,17 @@ function App() {
       LINKS,
     } = SECTIONS;
 
-    const getJsonResponse = async (
-      jsonToFetch: string,
-      data: IHeader | ISectionInfo
-    ) => {
-      try {
-        const url = `${JSON_BASE_URL}/${jsonToFetch}.json`;
-        const response = await fetch(url, {
-          mode: CORS_MODE,
-        });
-        data = await response.json();
-      } catch (e) {
-        setHasError(true);
-      }
-      return data;
+    const fetchSections = async (jsonToFetch: string, data: ISectionInfo) => {
+      const response = await getJsonResponse(jsonToFetch, data);
+      setHasError(response.hasError);
+      return response.data as ISectionInfo;
     };
 
-    const fetchSections = async (jsonToFetch: string, data: ISectionInfo) =>
-      (await getJsonResponse(jsonToFetch, data)) as ISectionInfo;
-
-    const fetchHeader = async (jsonToFetch: string, data: IHeader) =>
-      (await getJsonResponse(jsonToFetch, data)) as IHeader;
+    const fetchHeader = async (jsonToFetch: string, data: IHeader) => {
+      const response = await getJsonResponse(jsonToFetch, data);
+      setHasError(response.hasError);
+      return response.data as IHeader;
+    };
 
     const DEFAULT_SECTIONS_DETAILS = DEFAULT_CONTEXT.data.sections.details;
 
@@ -141,7 +127,7 @@ function App() {
       setProfileData({ header, sections });
       setIsFetchingData(false);
     })();
-  }, [JSON_BASE_URL]);
+  }, []);
 
   useEffect(() => {
     if (hasError) {
