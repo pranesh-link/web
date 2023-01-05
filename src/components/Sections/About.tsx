@@ -19,21 +19,21 @@ import ProfileImg from "../../assets/profile.jpeg";
 import * as clipboard from "clipboard-polyfill/text";
 import styled from "styled-components";
 import DownloadIcon from "../../assets/download-icon.svg";
-import { link } from "fs";
+import { AppContext } from "../../context";
+import DownloadedIcon from "../../assets/white-tick-icon.svg";
+import CopyIcon from "../../assets/copy-icon.svg";
 
 interface IAboutProps {
   refObj: React.MutableRefObject<any>;
-  isExport?: boolean;
-  isMobile: boolean;
   aboutMe: ISectionInfo;
   details: ISectionInfo;
   links: ISectionInfo;
-  isDownloading?: boolean;
   exportProfile: () => void;
 }
 export const About = (props: IAboutProps) => {
-  const { isMobile, refObj, aboutMe, details, isExport, isDownloading, links } =
-    props;
+  const { refObj, aboutMe, details, links } = props;
+  const { hasDownloadedProfile, isMobile, isExport, isDownloading } =
+    React.useContext(AppContext);
   const [copied, setCopied] = useState<boolean>(false);
   const [copyInfoId, setCopyInfoId] = useState<string>("");
   const [showCopy, setShowCopy] = useState<boolean>(false);
@@ -81,15 +81,17 @@ export const About = (props: IAboutProps) => {
                     }}
                     onMouseLeave={() => {
                       setCopyInfoId("");
-                      setShowCopy(false);
+                      // setShowCopy(false);
                     }}
                   >
                     <DetailSection>
-                      <img
-                        alt={detail.label}
-                        className={classNames("detail-icon", detail.label)}
-                        src={detail.icon}
-                      />
+                      <FlexBox>
+                        <img
+                          alt={detail.label}
+                          className={classNames("detail-icon", detail.label)}
+                          src={detail.icon}
+                        />
+                      </FlexBox>
                       <FlexBox alignItems="center" className="detail-info">
                         {isMobile && detail.canCopy ? (
                           <a
@@ -123,9 +125,16 @@ export const About = (props: IAboutProps) => {
                           copied: copied && copyInfoId === detail.label,
                         })}
                       >
-                        {copied && copyInfoId === detail.label
-                          ? "Copied!"
-                          : "Copy"}
+                        {copied && copyInfoId === detail.label ? (
+                          "Copied!"
+                        ) : (
+                          <img
+                            alt=""
+                            width="20px"
+                            height="20px"
+                            src={CopyIcon}
+                          />
+                        )}
                       </CopyButton>
                     </DetailSection>
                   </FlexBoxSection>
@@ -160,13 +169,22 @@ export const About = (props: IAboutProps) => {
             ) : (
               <DownloadProfileBtn
                 onClick={props.exportProfile}
-                disabled={isDownloading}
+                disabled={isDownloading || hasDownloadedProfile}
                 className={classNames({ downloading: isDownloading })}
               >
                 <span>
-                  {isDownloading ? "Downloading..." : "Download profile"}
+                  {isDownloading
+                    ? "Downloading..."
+                    : hasDownloadedProfile
+                    ? "Downloaded"
+                    : "Download"}
                 </span>
-                {!isDownloading && <img alt="" src={DownloadIcon} />}
+                {!isDownloading && !hasDownloadedProfile && (
+                  <img alt="" src={DownloadIcon} />
+                )}
+                {hasDownloadedProfile && (
+                  <img alt="" className="downloaded" src={DownloadedIcon} />
+                )}
               </DownloadProfileBtn>
             )}
           </FlexBoxSection>
@@ -178,12 +196,12 @@ export const About = (props: IAboutProps) => {
 
 const DownloadProfileBtn = styled(ActionBtn)`
   margin-top: 10px;
-  background-color: #0c77b9;
-  width: 200px;
+  max-width: 150px;
+  background-color: #2161ff;
   min-height: 55px;
   padding: 10px 15px;
   color: #f0f0f0;
-  border-radius: 50px;
+  border-radius: 7px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -201,11 +219,18 @@ const DownloadProfileBtn = styled(ActionBtn)`
     margin-right: 5px;
     height: 35px;
     width: 30px;
+    &.downloaded {
+      height: 30px;
+      width: 20px;
+      margin-bottom: 3px;
+      margin-right: 0;
+    }
   }
 `;
+
 const CopyButton = styled.button`
   border: none;
-  background-color: #434242;
+  /* background-color: #434242; */
   color: #f0f0f0;
   cursor: pointer;
   outline: none;
@@ -231,7 +256,6 @@ const DetailSection = styled.section`
   line-height: 1.5;
   .detail-icon {
     height: 25px;
-    width: 70px;
-    flex-basis: 25%;
+    min-width: 50px;
   }
 `;

@@ -16,7 +16,6 @@ interface IProfileSectionsProps {
 const ProfileSections = (props: IProfileSectionsProps) => {
   const {
     isExport = false,
-    isDownloading,
     isMobile,
     isInstallBannerOpen,
     data: { sections, header },
@@ -59,9 +58,6 @@ const ProfileSections = (props: IProfileSectionsProps) => {
       </FlexBox>
       <SectionsWrapper className={classNames({ export: isExport })}>
         <About
-          isDownloading={isDownloading}
-          isExport={isExport}
-          isMobile={isMobile}
           aboutMe={aboutMe}
           links={links}
           details={details}

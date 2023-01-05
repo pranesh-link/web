@@ -6,6 +6,7 @@ import ProfileSections from "./components/ProfileSections";
 import { AppProvider } from "./context";
 import { IProfileData } from "./store/types";
 import styled from "styled-components";
+import { useEffect, useState } from "react";
 
 interface ProfileProps {
   profileData: IProfileData;
@@ -39,7 +40,14 @@ export const Profile = (props: ProfileProps) => {
     setIsDownloading,
     setIsHamburgerMenuOpen,
   } = props;
+  const [hasDownloadedProfile, setHasDownloadedProfile] =
+    useState<boolean>(false);
+  let timer: NodeJS.Timeout;
+  useEffect(() => {
+    return () => clearTimeout(timer);
+  }, []);
   let pdfExportComponent: PDFExport;
+
   return (
     <>
       <AppProvider
@@ -56,6 +64,7 @@ export const Profile = (props: ProfileProps) => {
           isDownloading,
           isMobile,
           isInstallBannerOpen,
+          hasDownloadedProfile,
         }}
       >
         <HamBurgerMenu
@@ -67,7 +76,11 @@ export const Profile = (props: ProfileProps) => {
         <ProfileSections
           exportProfile={() => {
             setIsDownloading(true);
-            pdfExportComponent.save(() => setIsDownloading(false));
+            pdfExportComponent.save(() => {
+              setIsDownloading(false);
+              setHasDownloadedProfile(true);
+              timer = setTimeout(() => setHasDownloadedProfile(false), 3000);
+            });
           }}
         />
       </AppProvider>

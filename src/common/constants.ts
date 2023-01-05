@@ -56,6 +56,7 @@ export const DEFAULT_CONTEXT: IAppContext = {
   isDownloading: false,
   isMobile: false,
   isInstallBannerOpen: false,
+  hasDownloadedProfile: false,
 };
 
 export const LABEL_TEXT: { [key: string]: string } = {

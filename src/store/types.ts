@@ -83,4 +83,5 @@ export interface IAppContext {
   isDownloading?: boolean;
   isMobile: boolean;
   isInstallBannerOpen: boolean;
+  hasDownloadedProfile?: boolean;
 }

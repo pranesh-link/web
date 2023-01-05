@@ -49,8 +49,8 @@ function App() {
   const ToastError = useMemo(
     () => (
       <ToastErrorWrapper>
-        {TOAST_ERROR_MESSAGE.map((lineError: string) => (
-          <p>{lineError}</p>
+        {TOAST_ERROR_MESSAGE.map((lineError: string, index: number) => (
+          <p key={index}>{lineError}</p>
         ))}
       </ToastErrorWrapper>
     ),
