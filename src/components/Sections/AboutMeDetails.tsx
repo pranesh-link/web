@@ -40,7 +40,11 @@ export const AboutMeDetails = (props: AboutMeDetailsProps) => {
       key={index}
       alt={detail.label}
       className={classNames("detail-icon", detail.label, { export: isExport })}
-      src={isExport ? detail.pdfExportIcon : getIconUrl(detail.icon)}
+      src={
+        isExport
+          ? `${detail.pdfExportIcon}?dummy=${Math.floor(Math.random() * 1000)}`
+          : getIconUrl(detail.icon)
+      }
     />
   );
 
