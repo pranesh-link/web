@@ -40,6 +40,11 @@ export const FlexBoxSection = styled.section<{
   }
 `;
 
+export const Grid = styled.div<{ gridTemplateColumns?: string }>`
+  display: grid;
+  grid-template-columns: ${(props) => props.gridTemplateColumns || "1fr"};
+`;
+
 export type FLEX_WRAP =
   | "wrap"
   | "nowrap"

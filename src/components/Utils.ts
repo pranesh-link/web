@@ -79,14 +79,18 @@ export const isBannerHidden = (hideTime: number) => {
   return false;
 };
 
+export const getJsonBaseUrl = () =>
+  process.env.NODE_ENV === "development"
+    ? DEV_JSON_BASE_URL
+    : PROD_JSON_BASE_URL;
+
+export const getIconUrl = (url: string) => `${getJsonBaseUrl()}/${url}`;
+
 export const getJsonResponse = async (
   jsonToFetch: string,
   data: IHeader | ISectionInfo
 ) => {
-  const JSON_BASE_URL =
-    process.env.NODE_ENV === "development"
-      ? DEV_JSON_BASE_URL
-      : PROD_JSON_BASE_URL;
+  const JSON_BASE_URL = getJsonBaseUrl();
   let hasError = false;
   try {
     const url = `${JSON_BASE_URL}/${jsonToFetch}.json`;
