@@ -87,7 +87,7 @@ export const About = (props: IAboutProps) => {
                         crossOrigin="anonymous"
                         alt={link.label}
                         className={link.label}
-                        src={`${link.icon}?dummy=${Math.floor(
+                        src={`${link.pdfExportIcon}?dummy=${Math.floor(
                           Math.random() * 1000
                         )}`}
                       />

@@ -43,6 +43,8 @@ export interface ILink {
   icon: string;
   link: string;
   label: string;
+  pdfExportIcon: string;
+  isExportOnly?: boolean;
 }
 
 export interface IOrgProject {
