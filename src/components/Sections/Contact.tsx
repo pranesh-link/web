@@ -1,7 +1,7 @@
 import React from "react";
 import { FlexBoxSection } from "../../common/Elements";
 import { ISectionInfo } from "../../store/types";
-import { valueIsArray, valueIsLinkInfo } from "../Utils";
+import { getIconUrl, valueIsArray, valueIsLinkInfo } from "../Utils";
 
 interface IContactProps {
   refObj: React.MutableRefObject<any>;
@@ -9,6 +9,7 @@ interface IContactProps {
 }
 export const Contact = (props: IContactProps) => {
   const { links, refObj } = props;
+
   return (
     <FlexBoxSection
       justifyContent="center"
@@ -26,7 +27,11 @@ export const Contact = (props: IContactProps) => {
               key={link.label}
               rel="noopener noreferrer"
             >
-              <img alt={link.label} className={link.label} src={link.icon} />
+              <img
+                alt={link.label}
+                className={link.label}
+                src={getIconUrl(link.icon)}
+              />
             </a>
           ))
         : null}

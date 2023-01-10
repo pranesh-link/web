@@ -15,8 +15,7 @@ interface IProfileSectionsProps {
 }
 const ProfileSections = (props: IProfileSectionsProps) => {
   const {
-    isExport,
-    isDownloading,
+    isExport = false,
     isMobile,
     isInstallBannerOpen,
     data: { sections, header },
@@ -48,7 +47,7 @@ const ProfileSections = (props: IProfileSectionsProps) => {
         "add-margin-bottom": isMobile && isInstallBannerOpen,
       })}
     >
-      <ShortDesc>{shortDesc}</ShortDesc>
+      {!isExport && <ShortDesc>{shortDesc}</ShortDesc>}
       <PageHeader>
         <hr className={classNames("header-sep", { export: isExport })} />
         <span>{name}</span>
@@ -59,9 +58,6 @@ const ProfileSections = (props: IProfileSectionsProps) => {
       </FlexBox>
       <SectionsWrapper className={classNames({ export: isExport })}>
         <About
-          isDownloading={isDownloading}
-          isExport={isExport}
-          isMobile={isMobile}
           aboutMe={aboutMe}
           links={links}
           details={details}

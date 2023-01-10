@@ -12,12 +12,14 @@ export const FlexBox = styled.div<{
   justifyContent?: JUSTIFY_CONTENT;
   alignItems?: string;
   flexWrap?: FLEX_WRAP;
+  flexBasis?: string;
 }>`
   display: flex;
   flex-direction: ${(props) => props.direction || "row"};
   justify-content: ${(props) => props.justifyContent || "normal"};
   align-items: ${(props) => props.alignItems || "normal"};
   flex-wrap: ${(props) => props.flexWrap || "nowrap"};
+  flex-basis: ${(props) => props.flexBasis || "auto"};
 `;
 
 export const FlexBoxSection = styled.section<{
@@ -25,12 +27,22 @@ export const FlexBoxSection = styled.section<{
   justifyContent?: JUSTIFY_CONTENT;
   alignItems?: string;
   flexWrap?: FLEX_WRAP;
+  flexBasis?: string;
 }>`
   display: flex;
   flex-direction: ${(props) => props.direction || "row"};
   justify-content: ${(props) => props.justifyContent || "normal"};
   align-items: ${(props) => props.alignItems || "normal"};
   flex-wrap: ${(props) => props.flexWrap || "nowrap"};
+  flex-basis: ${(props) => props.flexBasis || "auto"};
+  &.short-info {
+    padding-left: 10px;
+  }
+`;
+
+export const Grid = styled.div<{ gridTemplateColumns?: string }>`
+  display: grid;
+  grid-template-columns: ${(props) => props.gridTemplateColumns || "1fr"};
 `;
 
 export type FLEX_WRAP =
@@ -270,7 +282,7 @@ export const SectionsWrapper = styled.section`
       .detail-info {
         line-height: 2;
         span {
-          flex-basis: 75%;
+          /* flex-basis: 75%; */
         }
       }
     }

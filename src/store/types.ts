@@ -36,6 +36,7 @@ export interface IOrganization {
 
 export interface IDetailInfo extends ISkill {
   canCopy?: boolean;
+  icon: string;
 }
 
 export interface ILink {
@@ -82,4 +83,5 @@ export interface IAppContext {
   isDownloading?: boolean;
   isMobile: boolean;
   isInstallBannerOpen: boolean;
+  hasDownloadedProfile?: boolean;
 }

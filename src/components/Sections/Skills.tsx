@@ -13,7 +13,7 @@ interface ISkillsProps {
   skills: ISectionInfo;
 }
 export const Skills = (props: ISkillsProps) => {
-  const { refObj, skills, isExport } = props;
+  const { refObj, skills, isExport = false } = props;
 
   const getSkillsData = () => {
     const { info } = skills;
@@ -57,7 +57,7 @@ export const Skills = (props: ISkillsProps) => {
           columns={COLUMNS}
           data={skillsData}
           defaultPageSize={skillsData.length}
-          TheadComponent={(props) => null}
+          TheadComponent={() => null}
           className="-striped -highlight"
           NoDataComponent={NoData}
           showPagination={false}
