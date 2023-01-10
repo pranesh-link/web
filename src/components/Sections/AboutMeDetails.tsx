@@ -40,7 +40,7 @@ export const AboutMeDetails = (props: AboutMeDetailsProps) => {
       key={index}
       alt={detail.label}
       className={classNames("detail-icon", detail.label, { export: isExport })}
-      src={getIconUrl(detail.icon)}
+      src={isExport ? detail.pdfExportIcon : getIconUrl(detail.icon)}
     />
   );
 

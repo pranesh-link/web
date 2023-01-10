@@ -37,6 +37,7 @@ export interface IOrganization {
 export interface IDetailInfo extends ISkill {
   canCopy?: boolean;
   icon: string;
+  pdfExportIcon: string;
 }
 
 export interface ILink {
