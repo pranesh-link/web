@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { IHeader, IProfileData, ISectionInfo } from "./store/types";
 import {
   DEFAULT_CONTEXT,
+  IS_MOBILE,
   SECTIONS,
   TOAST_ERROR_MESSAGE,
   TOAST_POSITION,
@@ -135,8 +136,6 @@ function App() {
     }
   }, [hasError, ToastError]);
 
-  const isMobile = window.innerWidth < 768;
-
   return isFetchingData ? (
     <ColorRing
       visible={true}
@@ -167,7 +166,7 @@ function App() {
           contactRef={contactRef}
           orgRef={orgRef}
           isDownloading={isDownloading}
-          isMobile={isMobile}
+          isMobile={IS_MOBILE}
           isInstallBannerOpen={
             !hasPWAInstalled &&
             isInstallPromptSupported &&
@@ -183,7 +182,7 @@ function App() {
         />
       )}
       <PWABanner
-        isMobile={isMobile}
+        isMobile={IS_MOBILE}
         isInstallBannerOpen={!!isInstallBannerOpen}
         hasPWAInstalled={hasPWAInstalled}
         isInstallPromptSupported={isInstallPromptSupported}

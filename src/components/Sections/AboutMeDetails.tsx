@@ -39,7 +39,7 @@ export const AboutMeDetails = (props: AboutMeDetailsProps) => {
     <img
       key={index}
       alt={detail.label}
-      className={classNames("detail-icon", detail.label)}
+      className={classNames("detail-icon", detail.label, { export: isExport })}
       src={getIconUrl(detail.icon)}
     />
   );
@@ -87,7 +87,13 @@ export const AboutMeDetails = (props: AboutMeDetailsProps) => {
         setShowCopy(false);
       }}
     >
-      <span id={lowercase(detail.label)}>{detail.info}</span>
+      {isMobile && detail.canCopy ? (
+        <a href={getHref(lowercase(detail.label), detail.info)}>
+          {detail.info}
+        </a>
+      ) : (
+        <span id={lowercase(detail.label)}>{detail.info}</span>
+      )}
       {getCopyButton(detail)}
     </Grid>
   );
@@ -113,25 +119,21 @@ export const AboutMeDetails = (props: AboutMeDetailsProps) => {
     return valueIsArray(details.info) && valueIsDetailInfo(details.info) ? (
       <DetailSection className="details" direction="column">
         {details.info.map((detail, index) => (
-          <FlexBox direction="column" className="mobile-detail">
-            <FlexBox>
-              {getDetailIcon(detail, index)}
-              {getCopyButton(detail)}
-            </FlexBox>
-            {detail.canCopy ? (
-              <a href={getHref(lowercase(detail.label), detail.info)}>
-                {detail.info}
-              </a>
-            ) : (
-              <span id={lowercase(detail.label)}>{detail.info}</span>
-            )}
+          <FlexBox key={index} direction="column" className="mobile-detail">
+            <FlexBox>{getDetailIcon(detail, index)}</FlexBox>
+            <>{getGridDetailInfo(detail, index)}</>
           </FlexBox>
         ))}
       </DetailSection>
     ) : null;
   };
 
-  return isMobile ? getMobileDetails(details) : getDesktopDetails(details);
+  let displayDetails = getDesktopDetails(details);
+
+  if (isMobile && !isExport) {
+    displayDetails = getMobileDetails(details);
+  }
+  return displayDetails;
 };
 
 const DetailSection = styled(FlexBoxSection)`
@@ -144,6 +146,11 @@ const DetailSection = styled(FlexBoxSection)`
     @media screen and (max-width: 767px) {
       min-width: unset;
       margin: 0;
+    }
+    &.export {
+      min-width: 0;
+      width: 25px;
+      margin-right: 10px;
     }
   }
   .mobile-detail {

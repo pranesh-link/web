@@ -6,6 +6,10 @@ export const DEV_JSON_BASE_URL = "http://localhost:8080";
 export const PROD_JSON_BASE_URL =
   "http://profile-jsons.s3-website-us-west-1.amazonaws.com";
 export const TOAST_POSITION = "top-center";
+export const IS_MOBILE =
+  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  );
 
 export const DEFAULT_CONTEXT: IAppContext = {
   data: {

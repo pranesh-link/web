@@ -20,19 +20,23 @@ export const Contact = (props: IContactProps) => {
     >
       {valueIsArray(links.info) && valueIsLinkInfo(links.info)
         ? links.info.map((link) => (
-            <a
-              className="link"
-              href={link.link}
-              target="_blank"
-              key={link.label}
-              rel="noopener noreferrer"
-            >
-              <img
-                alt={link.label}
-                className={link.label}
-                src={getIconUrl(link.icon)}
-              />
-            </a>
+            <>
+              {!link.isExportOnly && (
+                <a
+                  className="link"
+                  href={link.link}
+                  target="_blank"
+                  key={link.label}
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    alt={link.label}
+                    className={link.label}
+                    src={getIconUrl(link.icon)}
+                  />
+                </a>
+              )}
+            </>
           ))
         : null}
     </FlexBoxSection>
