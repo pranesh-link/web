@@ -37,6 +37,7 @@ export const AboutMeDetails = (props: AboutMeDetailsProps) => {
 
   const getDetailIcon = (detail: IDetailInfo, index: number) => (
     <img
+      crossOrigin="anonymous"
       key={index}
       alt={detail.label}
       className={classNames("detail-icon", detail.label, { export: isExport })}
