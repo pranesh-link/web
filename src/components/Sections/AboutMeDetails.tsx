@@ -105,7 +105,11 @@ export const AboutMeDetails = (props: AboutMeDetailsProps) => {
 
   const getDesktopDetails = (details: ISectionInfo) => {
     return valueIsArray(details.info) && valueIsDetailInfo(details.info) ? (
-      <DetailSection className="details">
+      <DetailSection
+        className="details"
+        isMobile={isMobile}
+        isExport={isExport}
+      >
         <FlexBoxSection direction="column" justifyContent="space-between">
           {details.info.map((detail, index) => (
             <>{getDetailIcon(detail, index)}</>
@@ -122,7 +126,12 @@ export const AboutMeDetails = (props: AboutMeDetailsProps) => {
 
   const getMobileDetails = (details: ISectionInfo) => {
     return valueIsArray(details.info) && valueIsDetailInfo(details.info) ? (
-      <DetailSection className="details" direction="column">
+      <DetailSection
+        className="details"
+        direction="column"
+        isMobile={isMobile}
+        isExport={isExport}
+      >
         {details.info.map((detail, index) => (
           <FlexBox key={index} direction="column" className="mobile-detail">
             <FlexBox>{getDetailIcon(detail, index)}</FlexBox>
@@ -141,17 +150,17 @@ export const AboutMeDetails = (props: AboutMeDetailsProps) => {
   return displayDetails;
 };
 
-const DetailSection = styled(FlexBoxSection)`
+const DetailSection = styled(FlexBoxSection)<{
+  isMobile: boolean;
+  isExport?: boolean;
+}>`
   cursor: pointer;
   line-height: 1.5;
   .detail-icon {
     height: 25px;
-    min-width: 50px;
-    margin: 10px 0;
-    @media screen and (max-width: 767px) {
-      min-width: unset;
-      margin: 0;
-    }
+    min-width: ${(props) =>
+      props.isMobile && !props.isExport ? "unset" : "50px"};
+    margin: ${(props) => (props.isMobile && !props.isExport ? "0" : "10px 0")};
     &.export {
       min-width: 0;
       width: 25px;
