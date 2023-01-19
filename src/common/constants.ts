@@ -1,7 +1,7 @@
 import React from "react";
 import { IAppContext } from "../store/types";
 
-export const CORS_MODE = "no-cors";
+export const CORS_MODE = "cors";
 export const DEV_JSON_BASE_URL = "http://localhost:8080";
 export const PROD_JSON_BASE_URL = "https://profile-jsons.pranesh.link";
 export const TOAST_POSITION = "top-center";
