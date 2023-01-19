@@ -17,3 +17,5 @@ phases:
     commands:
       - aws s3 rm s3://pranesh-react-app --recursive
       - aws s3 sync ./build s3://pranesh-react-app --acl public-read
+      - aws s3 rm s3://www.pranesh.link --recursive
+      - aws s3 sync ./build s3://www.pranesh.link --acl public-read
