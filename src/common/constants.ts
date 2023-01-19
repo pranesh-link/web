@@ -3,8 +3,7 @@ import { IAppContext } from "../store/types";
 
 export const CORS_MODE = "cors";
 export const DEV_JSON_BASE_URL = "http://localhost:8080";
-export const PROD_JSON_BASE_URL =
-  "http://profile-jsons.s3-website-us-west-1.amazonaws.com";
+export const PROD_JSON_BASE_URL = "https://profile-jsons.pranesh.link";
 export const TOAST_POSITION = "top-center";
 export const IS_MOBILE =
   /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
