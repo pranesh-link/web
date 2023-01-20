@@ -1,6 +1,6 @@
 import React from "react";
-import { IAppContext } from "./store/types";
-import { DEFAULT_CONTEXT } from "./common/constants";
+import { IAppContext } from "./types";
+import { DEFAULT_CONTEXT } from "../../common/constants";
 
 const AppContext = React.createContext<IAppContext>(DEFAULT_CONTEXT);
 

@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { FlexBox, FlexBoxSection, Grid } from "../../common/Elements";
+import { FlexBox, FlexBoxSection, Grid } from "../../../common/Elements";
 import {
   getHref,
   getIconUrl,
@@ -7,12 +7,12 @@ import {
   valueIsArray,
   valueIsDetailInfo,
 } from "../Utils";
-import { AppContext } from "../../context";
-import { IDetailInfo, ISectionInfo } from "../../store/types";
+import { AppContext } from "../../../store/profile/context";
+import { IDetailInfo, ISectionInfo } from "../../../store/profile/types";
 import { useContext } from "react";
 import styled from "styled-components";
 import * as clipboard from "clipboard-polyfill/text";
-import CopyIcon from "../../assets/copy-icon.svg";
+import CopyIcon from "../../../assets/copy-icon.svg";
 
 interface AboutMeDetailsProps {
   details: ISectionInfo;
@@ -34,20 +34,6 @@ export const AboutMeDetails = (props: AboutMeDetailsProps) => {
     setCopyInfoId,
     setCopied,
   } = props;
-
-  const getDetailIcon = (detail: IDetailInfo, index: number) => (
-    <img
-      crossOrigin="anonymous"
-      key={index}
-      alt={detail.label}
-      className={classNames("detail-icon", detail.label, { export: isExport })}
-      src={
-        isExport
-          ? `${detail.pdfExportIcon}?dummy=${Math.floor(Math.random() * 1000)}`
-          : getIconUrl(detail.icon)
-      }
-    />
-  );
 
   const getCopyButton = (detail: IDetailInfo) => (
     <CopyButton
@@ -79,20 +65,8 @@ export const AboutMeDetails = (props: AboutMeDetailsProps) => {
   );
 
   const getGridDetailInfo = (detail: IDetailInfo, index: number) => (
-    <Grid
-      gridTemplateColumns="1fr 1fr"
-      className="detail-info"
-      key={index}
-      onMouseEnter={() => {
-        setCopyInfoId(detail.label);
-        setShowCopy(true);
-      }}
-      onMouseLeave={() => {
-        setCopyInfoId("");
-        setShowCopy(false);
-      }}
-    >
-      {isMobile && detail.canCopy ? (
+    <>
+      {(isMobile || isExport) && detail.canCopy ? (
         <a href={getHref(lowercase(detail.label), detail.info)}>
           {detail.info}
         </a>
@@ -100,7 +74,7 @@ export const AboutMeDetails = (props: AboutMeDetailsProps) => {
         <span id={lowercase(detail.label)}>{detail.info}</span>
       )}
       {getCopyButton(detail)}
-    </Grid>
+    </>
   );
 
   const getDesktopDetails = (details: ISectionInfo) => {
@@ -112,12 +86,40 @@ export const AboutMeDetails = (props: AboutMeDetailsProps) => {
       >
         <FlexBoxSection direction="column" justifyContent="space-between">
           {details.info.map((detail, index) => (
-            <>{getDetailIcon(detail, index)}</>
+            <img
+              crossOrigin="anonymous"
+              key={index}
+              alt={detail.label}
+              className={classNames("detail-icon", detail.label, {
+                export: isExport,
+              })}
+              src={
+                isExport
+                  ? `${detail.pdfExportIcon}?dummy=${Math.floor(
+                      Math.random() * 1000
+                    )}`
+                  : getIconUrl(detail.icon)
+              }
+            />
           ))}
         </FlexBoxSection>
         <FlexBoxSection direction="column">
           {details.info.map((detail, index) => (
-            <>{getGridDetailInfo(detail, index)}</>
+            <Grid
+              gridTemplateColumns="1fr 1fr"
+              className="detail-info"
+              key={index}
+              onMouseEnter={() => {
+                setCopyInfoId(detail.label);
+                setShowCopy(true);
+              }}
+              onMouseLeave={() => {
+                setCopyInfoId("");
+                setShowCopy(false);
+              }}
+            >
+              {getGridDetailInfo(detail, index)}
+            </Grid>
           ))}
         </FlexBoxSection>
       </DetailSection>
@@ -134,8 +136,38 @@ export const AboutMeDetails = (props: AboutMeDetailsProps) => {
       >
         {details.info.map((detail, index) => (
           <FlexBox key={index} direction="column" className="mobile-detail">
-            <FlexBox>{getDetailIcon(detail, index)}</FlexBox>
-            <>{getGridDetailInfo(detail, index)}</>
+            <FlexBox>
+              <img
+                crossOrigin="anonymous"
+                key={index}
+                alt={detail.label}
+                className={classNames("detail-icon", detail.label, {
+                  export: isExport,
+                })}
+                src={
+                  isExport
+                    ? `${detail.pdfExportIcon}?dummy=${Math.floor(
+                        Math.random() * 1000
+                      )}`
+                    : getIconUrl(detail.icon)
+                }
+              />
+            </FlexBox>
+            <Grid
+              gridTemplateColumns="1fr 1fr"
+              className="detail-info"
+              key={index}
+              onMouseEnter={() => {
+                setCopyInfoId(detail.label);
+                setShowCopy(true);
+              }}
+              onMouseLeave={() => {
+                setCopyInfoId("");
+                setShowCopy(false);
+              }}
+            >
+              {getGridDetailInfo(detail, index)}
+            </Grid>
           </FlexBox>
         ))}
       </DetailSection>
@@ -177,7 +209,6 @@ const DetailSection = styled(FlexBoxSection)<{
 
 const CopyButton = styled.button`
   border: none;
-  /* background-color: #434242; */
   color: #f0f0f0;
   cursor: pointer;
   outline: none;

@@ -2,7 +2,7 @@ import {
   CORS_MODE,
   DEV_JSON_BASE_URL,
   PROD_JSON_BASE_URL,
-} from "../common/constants";
+} from "../../common/constants";
 import {
   IDetailInfo,
   IHeader,
@@ -12,7 +12,7 @@ import {
   IOrgProject,
   ISectionInfo,
   ISkill,
-} from "../store/types";
+} from "../../store/profile/types";
 
 export const valueIsString = (item: InfoType): item is string => {
   return typeof item === "string";

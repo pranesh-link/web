@@ -1,9 +1,9 @@
 import classNames from "classnames";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { FlexBoxSection } from "../common/Elements";
-import { AppContext } from "../context";
-import { ProfileSectionType, RefTypes } from "../store/types";
+import { FlexBoxSection } from "../../common/Elements";
+import { AppContext } from "../../store/profile/context";
+import { ProfileSectionType, RefTypes } from "../../store/profile/types";
 import { scrollTo } from "./ScrollTo";
 
 interface IMenuBarProps {

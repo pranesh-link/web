@@ -1,6 +1,6 @@
 import React from "react";
-import { FlexBoxSection } from "../../common/Elements";
-import { ISectionInfo } from "../../store/types";
+import { FlexBoxSection } from "../../../common/Elements";
+import { ISectionInfo } from "../../../store/profile/types";
 import { getIconUrl, valueIsArray, valueIsLinkInfo } from "../Utils";
 
 interface IContactProps {
@@ -19,8 +19,8 @@ export const Contact = (props: IContactProps) => {
       ref={refObj}
     >
       {valueIsArray(links.info) && valueIsLinkInfo(links.info)
-        ? links.info.map((link) => (
-            <>
+        ? links.info.map((link, index) => (
+            <div key={index}>
               {!link.isExportOnly && (
                 <a
                   className="link"
@@ -36,7 +36,7 @@ export const Contact = (props: IContactProps) => {
                   />
                 </a>
               )}
-            </>
+            </div>
           ))
         : null}
     </FlexBoxSection>

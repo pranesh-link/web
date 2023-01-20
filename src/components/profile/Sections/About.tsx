@@ -5,14 +5,14 @@ import {
   SecHeader,
   Desc,
   ActionBtn,
-} from "../../common/Elements";
-import { ISectionInfo } from "../../store/types";
+} from "../../../common/Elements";
+import { ISectionInfo } from "../../../store/profile/types";
 import { valueIsArray, valueIsLinkInfo } from "../Utils";
-import ProfileImg from "../../assets/profile.jpeg";
+import ProfileImg from "../../../assets/profile.jpeg";
 import styled from "styled-components";
-import DownloadIcon from "../../assets/download-icon.svg";
-import { AppContext } from "../../context";
-import DownloadedIcon from "../../assets/white-tick-icon.svg";
+import DownloadIcon from "../../../assets/download-icon.svg";
+import { AppContext } from "../../../store/profile/context";
+import DownloadedIcon from "../../../assets/white-tick-icon.svg";
 import { AboutMeDetails } from "./AboutMeDetails";
 
 interface IAboutProps {
@@ -24,7 +24,7 @@ interface IAboutProps {
 }
 export const About = (props: IAboutProps) => {
   const { refObj, aboutMe, details, links } = props;
-  const { hasDownloadedProfile, isExport, isDownloading } =
+  const { hasDownloadedProfile, isExport, isMobile, isDownloading } =
     React.useContext(AppContext);
   const [copied, setCopied] = useState<boolean>(false);
   const [copyInfoId, setCopyInfoId] = useState<string>("");
@@ -97,6 +97,7 @@ export const About = (props: IAboutProps) => {
             </FlexBoxSection>
           ) : (
             <DownloadProfileBtn
+              isMobile={isMobile}
               onClick={props.exportProfile}
               disabled={isDownloading || hasDownloadedProfile}
               className={classNames({ downloading: isDownloading })}
@@ -122,8 +123,8 @@ export const About = (props: IAboutProps) => {
   );
 };
 
-const DownloadProfileBtn = styled(ActionBtn)`
-  margin: 10px 0 0 10px;
+const DownloadProfileBtn = styled(ActionBtn)<{ isMobile: boolean }>`
+  margin: ${(props) => (props.isMobile ? "10px 0 0 0" : "10px 0 0 10px")};
   max-width: 150px;
   background-color: #2161ff;
   min-height: 55px;
@@ -138,10 +139,6 @@ const DownloadProfileBtn = styled(ActionBtn)`
   }
   &.downloading {
     justify-content: center;
-  }
-  @media screen and (max-width: 767px) {
-    max-width: unset;
-    margin: 10px 0 0 0;
   }
   img {
     margin-left: 10px;

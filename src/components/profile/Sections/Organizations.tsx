@@ -1,8 +1,8 @@
 import classNames from "classnames";
 import React from "react";
 import styled from "styled-components";
-import { FlexBoxSection, SecHeader } from "../../common/Elements";
-import { ISectionInfo } from "../../store/types";
+import { FlexBoxSection, SecHeader } from "../../../common/Elements";
+import { ISectionInfo } from "../../../store/profile/types";
 import { valueIsArray, valueIsOrgInfo } from "../Utils";
 
 interface IOrganizationsProps {
