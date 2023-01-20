@@ -1,10 +1,10 @@
 import { PDFExport } from "@progress/kendo-react-pdf";
-import { PROFILE_PDF_NAME } from "./common/constants";
-import { HamBurgerMenu } from "./components/HamBurgerMenu";
-import MenuBar from "./components/MenuBar";
-import ProfileSections from "./components/ProfileSections";
-import { AppProvider } from "./context";
-import { IProfileData } from "./store/types";
+import { PROFILE_PDF_NAME } from "../../common/constants";
+import { HamBurgerMenu } from "./HamBurgerMenu";
+import MenuBar from "./MenuBar";
+import ProfileSections from "./ProfileSections";
+import { AppProvider } from "../../store/profile/context";
+import { IProfileData } from "../../store/profile/types";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 

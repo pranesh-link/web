@@ -1,5 +1,5 @@
 import React from "react";
-import { IAppContext } from "../store/types";
+import { IAppContext } from "../store/profile/types";
 
 export const CORS_MODE = "cors";
 export const DEV_JSON_BASE_URL = "http://localhost:8080";

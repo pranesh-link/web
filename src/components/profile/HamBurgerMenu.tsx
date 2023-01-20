@@ -2,12 +2,16 @@ import classNames from "classnames";
 import React, { useEffect, useState } from "react";
 import { Transition } from "react-transition-group";
 import styled from "styled-components";
-import HamBurgerIcon from "../assets/burgericon.svg";
-import { FlexBox, FlexBoxSection, SectionsWrapper } from "../common/Elements";
-import { AppContext } from "../context";
+import HamBurgerIcon from "../../assets/burgericon.svg";
+import {
+  FlexBox,
+  FlexBoxSection,
+  SectionsWrapper,
+} from "../../common/Elements";
+import { AppContext } from "../../store/profile/context";
 import MenuBar from "./MenuBar";
 import { Contact } from "./Sections/Contact";
-import CloseIcon from "../assets/close-icon.svg";
+import CloseIcon from "../../assets/close-icon.svg";
 
 interface IHamburgerMenuProps {
   isOpen: boolean;

@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import React from "react";
-import { SecHeader, Desc } from "../../common/Elements";
-import { ISectionInfo } from "../../store/types";
+import { SecHeader, Desc } from "../../../common/Elements";
+import { ISectionInfo } from "../../../store/profile/types";
 
 interface IEducationProps {
   education: ISectionInfo;

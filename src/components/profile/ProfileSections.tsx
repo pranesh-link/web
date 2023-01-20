@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { FlexBox, SectionsWrapper } from "../common/Elements";
-import { AppContext } from "../context";
+import { FlexBox, SectionsWrapper } from "../../common/Elements";
+import { AppContext } from "../../store/profile/context";
 import { Experiences } from "./Sections/Experiences";
 import { Skills } from "./Sections/Skills";
 import { About } from "./Sections/About";
@@ -85,7 +85,7 @@ const ProfileSections = (props: IProfileSectionsProps) => {
           experiences={experience}
           refObj={experienceRef}
         />
-        <Contact links={links} refObj={contactRef} />
+        {!isExport && <Contact links={links} refObj={contactRef} />}
       </SectionsWrapper>
     </Wrapper>
   );

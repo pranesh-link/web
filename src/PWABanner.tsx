@@ -4,7 +4,7 @@ import {
   getLocalStorage,
   isBannerHidden,
   setLocalStorage,
-} from "./components/Utils";
+} from "./components/profile/Utils";
 import { useEffect } from "react";
 import {
   PWA_HIDE_BANNER_EXPIRY,

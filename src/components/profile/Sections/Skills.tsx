@@ -2,9 +2,9 @@ import ReactTable from "react-table";
 import styled from "styled-components";
 import "react-table/react-table.css";
 import React from "react";
-import { ISkill, ISectionInfo } from "../../store/types";
+import { ISkill, ISectionInfo } from "../../../store/profile/types";
 import { valueIsArray, valueIsSkillInfo } from "../Utils";
-import { FlexBoxSection, SecHeader } from "../../common/Elements";
+import { FlexBoxSection, SecHeader } from "../../../common/Elements";
 import classNames from "classnames";
 
 interface ISkillsProps {
