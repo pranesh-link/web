@@ -72,6 +72,7 @@ export const ProfilePage = (props: ProfilePageProps) => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    document.title = "Pranesh - Profile";
     const {
       HEADER,
       ABOUT_ME,
