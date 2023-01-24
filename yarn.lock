@@ -2537,12 +2537,12 @@
     schema-utils "^2.6.5"
     source-map "^0.7.3"
 
-"@progress/kendo-drawing@1.5.7":
-  version "1.5.7"
-  resolved "https://registry.yarnpkg.com/@progress/kendo-drawing/-/kendo-drawing-1.5.7.tgz#03c8edadf85a7880234657e87599106b76fbc88e"
-  integrity sha512-0Vej4gGWkTPQSXfcqa/uDVafME0w7P4nTUl/Nm389VHdZYP2J8m/AYbQkFQxCvhcgA3mpTpsSs597skGONta1A==
+"@progress/kendo-drawing@1.17.3":
+  version "1.17.3"
+  resolved "https://registry.yarnpkg.com/@progress/kendo-drawing/-/kendo-drawing-1.17.3.tgz#cd561e4779ae797cb863c5461026c75e28de3705"
+  integrity sha512-bo0D2lUebGCbF4eeF/m3mCkEZQWVveUuKNaOXeUG5pZJBIvOGJVuMG8MVf46C/TJ7bs/gJQ0OHete9P0ih4zzg==
   dependencies:
-    pako "^1.0.5"
+    "@progress/pako-esm" "^1.0.1"
 
 "@progress/kendo-file-saver@^1.0.1":
   version "1.1.0"
@@ -2555,6 +2555,11 @@
   integrity sha512-T4wOEP4HSPpGkxQBFiN9I926HX35zhL8fKDkHwZgFqcFL1E/TCzIucV1ZCeUORRI6sfRlyTOsw3Vl1NTGRRdcw==
   dependencies:
     "@progress/kendo-file-saver" "^1.0.1"
+
+"@progress/pako-esm@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@progress/pako-esm/-/pako-esm-1.0.1.tgz#eeb7d2c3f8e865198edf23fb42645bd8cb513a11"
+  integrity sha512-O4A3b1EuE9Xe1pC3Xz9Tcn1M/CYrL71f4y/5TXeytOVTkmkzBgYW97fYP2f+54H0e0erWRaqV/kUUB/a8Uxfbw==
 
 "@remix-run/router@1.3.0":
   version "1.3.0"
@@ -9268,7 +9273,7 @@ p-try@^2.0.0:
   resolved "https://registry.yarnpkg.com/p-try/-/p-try-2.2.0.tgz#cb2868540e313d61de58fafbe35ce9004d5540e6"
   integrity sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==
 
-pako@^1.0.5, pako@~1.0.5:
+pako@~1.0.5:
   version "1.0.11"
   resolved "https://registry.yarnpkg.com/pako/-/pako-1.0.11.tgz#6c9599d340d54dfd3946380252a35705a6b992bf"
   integrity sha512-4hLB8Py4zZce5s4yd9XzopqwVv/yGNhV1Bl8NTmCq1763HeK2+EwVTv+leGeL13Dnh2wfbqowVPXCIO0z4taYw==
