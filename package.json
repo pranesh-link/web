@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@babel/core": "7.12.3",
+    "@babel/core": "7.20.12",
     "@pmmmwh/react-refresh-webpack-plugin": "0.4.2",
     "@progress/kendo-drawing": "1.17.3",
     "@progress/kendo-react-pdf": "2.0.0",
