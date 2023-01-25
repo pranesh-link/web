@@ -7,7 +7,7 @@
     "@pmmmwh/react-refresh-webpack-plugin": "0.4.2",
     "@progress/kendo-drawing": "1.17.3",
     "@progress/kendo-react-pdf": "2.0.0",
-    "@svgr/webpack": "5.4.0",
+    "@svgr/webpack": "6.5.1",
     "@testing-library/jest-dom": "5.11.4",
     "@testing-library/react": "11.1.0",
     "@testing-library/user-event": "12.1.10",
