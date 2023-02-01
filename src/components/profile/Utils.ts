@@ -103,3 +103,12 @@ export const getJsonResponse = async (
   }
   return { data, hasError };
 };
+
+export const getIconUrlByExportFlag = (
+  iconUrl?: string,
+  pdfExportIconUrl?: string,
+  isExport?: boolean
+) =>
+  isExport
+    ? `${pdfExportIconUrl}?dummy=${Math.floor(Math.random() * 1000)}`
+    : getIconUrl(iconUrl || "");

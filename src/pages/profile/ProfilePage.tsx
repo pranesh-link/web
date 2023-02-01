@@ -9,6 +9,7 @@ import {
   SECTIONS,
   TOAST_POSITION,
   IS_MOBILE,
+  PAGE_TITLES,
 } from "../../common/constants";
 import {
   getLocalStorage,
@@ -72,7 +73,7 @@ export const ProfilePage = (props: ProfilePageProps) => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    document.title = "Pranesh - Profile";
+    document.title = PAGE_TITLES.profile;
     const {
       HEADER,
       ABOUT_ME,

@@ -15,6 +15,8 @@ export interface ISectionInfo {
   title: string;
   info: InfoType;
   ref?: string;
+  icon?: string;
+  pdfExportIcon?: string;
 }
 
 export type InfoType =

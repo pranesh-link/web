@@ -3,6 +3,7 @@ import { FlexBox, FlexBoxSection, Grid } from "../../../common/Elements";
 import {
   getHref,
   getIconUrl,
+  getIconUrlByExportFlag,
   lowercase,
   valueIsArray,
   valueIsDetailInfo,
@@ -93,13 +94,11 @@ export const AboutMeDetails = (props: AboutMeDetailsProps) => {
               className={classNames("detail-icon", detail.label, {
                 export: isExport,
               })}
-              src={
+              src={getIconUrlByExportFlag(
+                detail.icon,
+                detail.pdfExportIcon,
                 isExport
-                  ? `${detail.pdfExportIcon}?dummy=${Math.floor(
-                      Math.random() * 1000
-                    )}`
-                  : getIconUrl(detail.icon)
-              }
+              )}
             />
           ))}
         </FlexBoxSection>
