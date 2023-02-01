@@ -85,23 +85,25 @@ export const AboutMeDetails = (props: AboutMeDetailsProps) => {
         isMobile={isMobile}
         isExport={isExport}
       >
-        <FlexBoxSection direction="column" justifyContent="space-between">
-          {details.info.map((detail, index) => (
-            <img
-              crossOrigin="anonymous"
-              key={index}
-              alt={detail.label}
-              className={classNames("detail-icon", detail.label, {
-                export: isExport,
-              })}
-              src={getIconUrlByExportFlag(
-                detail.icon,
-                detail.pdfExportIcon,
-                isExport
-              )}
-            />
-          ))}
-        </FlexBoxSection>
+        {!isExport && (
+          <FlexBoxSection direction="column" justifyContent="space-between">
+            {details.info.map((detail, index) => (
+              <img
+                crossOrigin="anonymous"
+                key={index}
+                alt={detail.label}
+                className={classNames("detail-icon", detail.label, {
+                  export: isExport,
+                })}
+                src={getIconUrlByExportFlag(
+                  detail.icon,
+                  detail.pdfExportIcon,
+                  isExport
+                )}
+              />
+            ))}
+          </FlexBoxSection>
+        )}
         <FlexBoxSection direction="column">
           {details.info.map((detail, index) => (
             <Grid
@@ -135,23 +137,6 @@ export const AboutMeDetails = (props: AboutMeDetailsProps) => {
       >
         {details.info.map((detail, index) => (
           <FlexBox key={index} direction="column" className="mobile-detail">
-            <FlexBox>
-              <img
-                crossOrigin="anonymous"
-                key={index}
-                alt={detail.label}
-                className={classNames("detail-icon", detail.label, {
-                  export: isExport,
-                })}
-                src={
-                  isExport
-                    ? `${detail.pdfExportIcon}?dummy=${Math.floor(
-                        Math.random() * 1000
-                      )}`
-                    : getIconUrl(detail.icon)
-                }
-              />
-            </FlexBox>
             <Grid
               gridTemplateColumns="1fr 1fr"
               className="detail-info"
