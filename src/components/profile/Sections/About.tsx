@@ -7,7 +7,11 @@ import {
   ActionBtn,
 } from "../../../common/Elements";
 import { ISectionInfo } from "../../../store/profile/types";
-import { valueIsArray, valueIsLinkInfo } from "../Utils";
+import {
+  getIconUrlByExportFlag,
+  valueIsArray,
+  valueIsLinkInfo,
+} from "../Utils";
 import ProfileImg from "../../../assets/profile.jpeg";
 import styled from "styled-components";
 import DownloadIcon from "../../../assets/download-icon.svg";
@@ -56,7 +60,15 @@ export const About = (props: IAboutProps) => {
       <FlexBoxSection alignItems="center" className="image-details-wrap">
         <FlexBoxSection className="image">
           <p className="image-wrap">
-            <img alt="" className="profile-image" src={ProfileImg} />
+            <img
+              alt=""
+              className="profile-image"
+              src={getIconUrlByExportFlag(
+                aboutMe.icon,
+                aboutMe.pdfExportIcon,
+                isExport
+              )}
+            />
           </p>
         </FlexBoxSection>
         <FlexBoxSection direction="column">
