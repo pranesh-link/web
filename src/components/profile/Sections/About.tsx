@@ -12,7 +12,6 @@ import {
   valueIsArray,
   valueIsLinkInfo,
 } from "../Utils";
-import ProfileImg from "../../../assets/profile.jpeg";
 import styled from "styled-components";
 import DownloadIcon from "../../../assets/download-icon.svg";
 import { AppContext } from "../../../store/profile/context";

@@ -20,7 +20,7 @@ import { IProfileData, ISectionInfo, IHeader } from "../../store/profile/types";
 import styled from "styled-components";
 import { CloseButton } from "../../common/Elements";
 import CloseIcon from "../../assets/close-icon.svg";
-import { ColorRing } from "react-loader-spinner";
+import LoaderIcon from "../../assets/loader-icon.svg";
 
 interface ProfilePageProps {}
 export const ProfilePage = (props: ProfilePageProps) => {
@@ -138,15 +138,7 @@ export const ProfilePage = (props: ProfilePageProps) => {
     }
   }, [hasError, ToastError]);
   return isFetchingData ? (
-    <ColorRing
-      visible={true}
-      height="80"
-      width="80"
-      ariaLabel="blocks-loading"
-      wrapperStyle={{ position: "fixed", top: "45%", left: "47%" }}
-      wrapperClass="blocks-wrapper"
-      colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
-    />
+    <LoaderImg isMobile={IS_MOBILE} src={LoaderIcon} />
   ) : (
     <Wrapper>
       <ToastContainer
@@ -208,6 +200,23 @@ const ToastErrorWrapper = styled.div`
   p {
     &:first-child {
       margin-bottom: 3px;
+    }
+  }
+`;
+
+const LoaderImg = styled.img<{ isMobile: boolean }>`
+  width: ${(props) => (props.isMobile ? "75px" : "100px")};
+  position: absolute;
+  top: 40%;
+  left: ${(props) => (props.isMobile ? "40%" : "45%")};
+  animation: loader-spin infinite 1s linear;
+
+  @keyframes loader-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
     }
   }
 `;
