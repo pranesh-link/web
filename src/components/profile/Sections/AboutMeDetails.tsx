@@ -2,7 +2,6 @@ import classNames from "classnames";
 import { FlexBox, FlexBoxSection, Grid } from "../../../common/Elements";
 import {
   getHref,
-  getIconUrl,
   getIconUrlByExportFlag,
   lowercase,
   valueIsArray,
