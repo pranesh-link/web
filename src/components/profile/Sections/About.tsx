@@ -54,7 +54,10 @@ export const About = (props: IAboutProps) => {
         className={classNames("about-me", { export: isExport })}
       >
         <SecHeader className="about-me-title">{aboutMe.title}</SecHeader>
-        <Desc className="about">{aboutMe.info}</Desc>
+        <Desc
+          className="about"
+          dangerouslySetInnerHTML={{ __html: aboutMe.info as string }}
+        />
       </FlexBoxSection>
       <FlexBoxSection alignItems="center" className="image-details-wrap">
         <FlexBoxSection className="image">
