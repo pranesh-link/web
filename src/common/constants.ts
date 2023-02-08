@@ -1,5 +1,6 @@
 import React from "react";
 import { IAppContext } from "../store/profile/types";
+import { IMaintenance } from "../store/common/types";
 
 export const CORS_MODE = "cors";
 export const DEV_JSON_BASE_URL = "http://localhost:8080";
@@ -97,4 +98,10 @@ export const SECTIONS = {
 
 export const PAGE_TITLES = {
   profile: "Pranesh",
+};
+
+export const DEFAULT_MAINTENANCE_DATA: IMaintenance = {
+  isUnderMaintenance: false,
+  message: "",
+  image: "",
 };

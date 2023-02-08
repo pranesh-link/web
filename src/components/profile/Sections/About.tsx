@@ -11,7 +11,7 @@ import {
   getIconUrlByExportFlag,
   valueIsArray,
   valueIsLinkInfo,
-} from "../Utils";
+} from "../../../common/Utils";
 import styled from "styled-components";
 import DownloadIcon from "../../../assets/download-icon.svg";
 import { AppContext } from "../../../store/profile/context";

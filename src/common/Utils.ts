@@ -1,8 +1,4 @@
-import {
-  CORS_MODE,
-  DEV_JSON_BASE_URL,
-  PROD_JSON_BASE_URL,
-} from "../../common/constants";
+import { CORS_MODE, DEV_JSON_BASE_URL, PROD_JSON_BASE_URL } from "./constants";
 import {
   IDetailInfo,
   IHeader,
@@ -12,7 +8,7 @@ import {
   IOrgProject,
   ISectionInfo,
   ISkill,
-} from "../../store/profile/types";
+} from "../store/profile/types";
 
 export const valueIsString = (item: InfoType): item is string => {
   return typeof item === "string";
@@ -86,12 +82,10 @@ export const getJsonBaseUrl = () =>
 
 export const getIconUrl = (url: string) => `${getJsonBaseUrl()}/${url}`;
 
-export const getJsonResponse = async (
-  jsonToFetch: string,
-  data: IHeader | ISectionInfo
-) => {
+export const getJsonResponse = async (jsonToFetch: string, data?: any) => {
   const JSON_BASE_URL = getJsonBaseUrl();
   let hasError = false;
+  data = data || {};
   try {
     const url = `${JSON_BASE_URL}/${jsonToFetch}.json`;
     const response = await fetch(url, {
@@ -102,6 +96,13 @@ export const getJsonResponse = async (
     hasError = true;
   }
   return { data, hasError };
+};
+
+export const getProfileJsonResponse = async (
+  jsonToFetch: string,
+  data: IHeader | ISectionInfo
+) => {
+  return getJsonResponse(jsonToFetch, data);
 };
 
 export const getIconUrlByExportFlag = (

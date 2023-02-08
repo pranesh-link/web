@@ -3,7 +3,7 @@ import styled from "styled-components";
 import "react-table/react-table.css";
 import React from "react";
 import { ISkill, ISectionInfo } from "../../../store/profile/types";
-import { valueIsArray, valueIsSkillInfo } from "../Utils";
+import { valueIsArray, valueIsSkillInfo } from "../../../common/Utils";
 import { FlexBoxSection, SecHeader } from "../../../common/Elements";
 import classNames from "classnames";
 
