@@ -14,8 +14,8 @@ import {
 import {
   getLocalStorage,
   setLocalStorage,
-  getJsonResponse,
-} from "../../components/profile/Utils";
+  getProfileJsonResponse,
+} from "../../common/Utils";
 import { IProfileData, ISectionInfo, IHeader } from "../../store/profile/types";
 import styled from "styled-components";
 import { CloseButton } from "../../common/Elements";
@@ -86,13 +86,13 @@ export const ProfilePage = (props: ProfilePageProps) => {
     } = SECTIONS;
 
     const fetchSections = async (jsonToFetch: string, data: ISectionInfo) => {
-      const response = await getJsonResponse(jsonToFetch, data);
+      const response = await getProfileJsonResponse(jsonToFetch, data);
       setHasError(response.hasError);
       return response.data as ISectionInfo;
     };
 
     const fetchHeader = async (jsonToFetch: string, data: IHeader) => {
-      const response = await getJsonResponse(jsonToFetch, data);
+      const response = await getProfileJsonResponse(jsonToFetch, data);
       setHasError(response.hasError);
       return response.data as IHeader;
     };

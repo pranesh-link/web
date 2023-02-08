@@ -6,7 +6,7 @@ import {
   lowercase,
   valueIsArray,
   valueIsDetailInfo,
-} from "../Utils";
+} from "../../../common/Utils";
 import { AppContext } from "../../../store/profile/context";
 import { IDetailInfo, ISectionInfo } from "../../../store/profile/types";
 import { useContext } from "react";

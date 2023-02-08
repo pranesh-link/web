@@ -1,7 +1,13 @@
 import React from "react";
 import { FlexBoxSection } from "../../../common/Elements";
 import { ISectionInfo } from "../../../store/profile/types";
-import { getIconUrl, valueIsArray, valueIsLinkInfo } from "../Utils";
+import {
+  getIconUrl,
+  valueIsArray,
+  valueIsLinkInfo,
+} from "../../../common/Utils";
+import classNames from "classnames";
+import styled from "styled-components";
 
 interface IContactProps {
   refObj: React.MutableRefObject<any>;
@@ -11,7 +17,7 @@ export const Contact = (props: IContactProps) => {
   const { links, refObj } = props;
 
   return (
-    <FlexBoxSection
+    <ContactsSection
       justifyContent="center"
       alignItems="center"
       className="profile-section links"
@@ -20,7 +26,10 @@ export const Contact = (props: IContactProps) => {
     >
       {valueIsArray(links.info) && valueIsLinkInfo(links.info)
         ? links.info.map((link, index) => (
-            <div key={index}>
+            <div
+              key={index}
+              className={classNames({ "hide-profile-url": link.isExportOnly })}
+            >
               {!link.isExportOnly && (
                 <a
                   className="link"
@@ -39,6 +48,12 @@ export const Contact = (props: IContactProps) => {
             </div>
           ))
         : null}
-    </FlexBoxSection>
+    </ContactsSection>
   );
 };
+
+const ContactsSection = styled(FlexBoxSection)`
+  .hide-profile-url {
+    display: none;
+  }
+`;
