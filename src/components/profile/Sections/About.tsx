@@ -4,18 +4,17 @@ import {
   FlexBoxSection,
   SecHeader,
   Desc,
-  ActionBtn,
+  FlexBox,
 } from "../../../common/Elements";
 import { ISectionInfo } from "../../../store/profile/types";
 import {
+  getIconUrl,
   getIconUrlByExportFlag,
   valueIsArray,
   valueIsLinkInfo,
 } from "../../../common/Utils";
 import styled from "styled-components";
-import DownloadIcon from "../../../assets/download-icon.svg";
 import { AppContext } from "../../../store/profile/context";
-import DownloadedIcon from "../../../assets/white-tick-icon.svg";
 import { AboutMeDetails } from "./AboutMeDetails";
 
 interface IAboutProps {
@@ -27,8 +26,13 @@ interface IAboutProps {
 }
 export const About = (props: IAboutProps) => {
   const { refObj, aboutMe, details, links } = props;
-  const { hasDownloadedProfile, isExport, isMobile, isDownloading } =
-    React.useContext(AppContext);
+  const {
+    hasDownloadedProfile,
+    isExport,
+    isMobile,
+    isDownloading,
+    data: { download },
+  } = React.useContext(AppContext);
   const [copied, setCopied] = useState<boolean>(false);
   const [copyInfoId, setCopyInfoId] = useState<string>("");
   const [showCopy, setShowCopy] = useState<boolean>(false);
@@ -110,26 +114,58 @@ export const About = (props: IAboutProps) => {
                 : null}
             </FlexBoxSection>
           ) : (
-            <DownloadProfileBtn
+            <InterestedInProfile
               isMobile={isMobile}
-              onClick={props.exportProfile}
-              disabled={isDownloading || hasDownloadedProfile}
-              className={classNames({ downloading: isDownloading })}
+              className={classNames({
+                "downloaded-profile": hasDownloadedProfile,
+              })}
+              alignItems="center"
             >
-              <span>
-                {isDownloading
-                  ? "Downloading..."
-                  : hasDownloadedProfile
-                  ? "Downloaded"
-                  : "Download"}
-              </span>
               {!isDownloading && !hasDownloadedProfile && (
-                <img alt="" src={DownloadIcon} />
+                <>
+                  <img
+                    className="download"
+                    alt="Click here"
+                    height="25px"
+                    onClick={props.exportProfile}
+                    src={getIconUrl(download.download.icon)}
+                    loading="lazy"
+                  />
+                  <span className="download-text">
+                    {download.download.message}
+                  </span>
+                </>
+              )}
+              {isDownloading && (
+                <>
+                  <img
+                    className="downloading"
+                    alt="Downloading"
+                    height="35px"
+                    src={getIconUrl(download.downloading.icon)}
+                    loading="lazy"
+                  />
+                  <FlexBox alignItems="center" className="downloading-text">
+                    <span>{download.downloading.message}</span>
+                    <span className="progress-animation" />
+                  </FlexBox>
+                </>
               )}
               {hasDownloadedProfile && (
-                <img alt="" className="downloaded" src={DownloadedIcon} />
+                <>
+                  <img
+                    className="downloaded"
+                    alt="Downloaded"
+                    height="40px"
+                    src={getIconUrl(download.downloaded.icon)}
+                    loading="lazy"
+                  />
+                  <span className="downloaded-text">
+                    {download.downloaded.message}
+                  </span>
+                </>
               )}
-            </DownloadProfileBtn>
+            </InterestedInProfile>
           )}
         </FlexBoxSection>
       </FlexBoxSection>
@@ -137,33 +173,98 @@ export const About = (props: IAboutProps) => {
   );
 };
 
-const DownloadProfileBtn = styled(ActionBtn)<{ isMobile: boolean }>`
+const InterestedInProfile = styled(FlexBox)<{ isMobile: boolean }>`
   margin: ${(props) => (props.isMobile ? "10px 0 0 0" : "10px 0 0 10px")};
-  max-width: 150px;
-  background-color: #2161ff;
-  min-height: 55px;
-  padding: 10px 15px;
-  color: #f0f0f0;
-  border-radius: 7px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  &:hover {
-    background-color: #005c84;
+  min-height: 50px;
+  font-weight: bold;
+  &.downloaded-profile {
+    margin-left: ${(props) => (props.isMobile ? "0" : "5px")};
   }
-  &.downloading {
-    justify-content: center;
-  }
-  img {
-    margin-left: 10px;
+
+  .download {
+    min-width: 100px;
     margin-right: 5px;
-    height: 35px;
-    width: 30px;
-    &.downloaded {
-      height: 30px;
-      width: 20px;
-      margin-bottom: 3px;
-      margin-right: 0;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .downloading {
+    min-width: 35px;
+  }
+
+  .downloaded {
+    min-width: 40px;
+  }
+
+  .download-text,
+  .downloading-text,
+  .downloaded-text {
+    overflow: hidden;
+    white-space: nowrap;
+    width: 0;
+    animation: typing;
+    animation-duration: 3s;
+    animation-timing-function: steps(30, end);
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes typing {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
+  }
+  .downloading-text {
+    margin-left: 5px;
+    .progress-animation {
+      position: relative;
+      width: 7px;
+      height: 7px;
+      border-radius: 5px;
+      background-color: #3f9c35;
+      color: #3f9c35;
+      animation: flashing 1s infinite linear alternate;
+      animation-delay: 0.5s;
+      margin: 5px 0 0 20px;
+      &::before,
+      &::after {
+        content: "";
+        display: inline-block;
+        position: absolute;
+        top: 0;
+      }
+      &::before {
+        left: -15px;
+        width: 7px;
+        height: 7px;
+        border-radius: 5px;
+        background-color: #3f9c35;
+        color: #3f9c35;
+        animation: flashing 1s infinite alternate;
+        animation-delay: 0s;
+      }
+      &::after {
+        left: 15px;
+        width: 7px;
+        height: 7px;
+        border-radius: 5px;
+        background-color: #3f9c35;
+        color: #3f9c35;
+        animation: flashing 1s infinite alternate;
+        animation-delay: 1s;
+      }
+
+      @keyframes flashing {
+        0% {
+          background-color: #3f9c35;
+        }
+        50%,
+        100% {
+          background-color: rgba(152, 128, 255, 0.2);
+        }
+      }
     }
   }
 `;

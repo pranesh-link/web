@@ -327,6 +327,15 @@ export const PWAWrapper = styled(FlexBox)<{ top?: string; bottom?: string }>`
   background: #8f00ff;
   width: 100%;
   padding: 25px 0;
+  animation: ease-in-h 1s ease 1;
+  @keyframes ease-in-h {
+    from {
+      height: 0;
+    }
+    to {
+      height: auto;
+    }
+  }
   p {
     color: #fff;
     font-weight: 600;

@@ -71,7 +71,9 @@ export const AboutMeDetails = (props: AboutMeDetailsProps) => {
           {detail.info}
         </a>
       ) : (
-        <span id={lowercase(detail.label)}>{detail.info}</span>
+        <span id={lowercase(detail.label)}>
+          <b>{detail.info}</b>
+        </span>
       )}
       {getCopyButton(detail)}
     </>

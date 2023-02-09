@@ -4,25 +4,45 @@ import { useEffect, useState } from "react";
 import { getJsonResponse, getProfileJsonResponse } from "./common/Utils";
 import { MaintenancePage } from "./pages/maintenance/MaintenancePage";
 import { DEFAULT_CONTEXT, DEFAULT_MAINTENANCE_DATA } from "./common/constants";
+import { ISectionInfo } from "./store/profile/types";
 
 function App() {
   const queryParams = new URLSearchParams(window.location.search);
   const isAdmin = queryParams.get("admin");
   const [maintenance, setMaintenance] = useState(DEFAULT_MAINTENANCE_DATA);
   const [links, setLinks] = useState(DEFAULT_CONTEXT.data.sections.links);
+  const [pwa, setPwa] = useState(DEFAULT_CONTEXT.pwa);
+  const [hasError, setHasError] = useState(false);
+
+  const fetchSections = async (jsonToFetch: string, data: ISectionInfo) => {
+    const response = await getProfileJsonResponse(jsonToFetch, data);
+    setHasError(response.hasError);
+    return response.data as ISectionInfo;
+  };
+
+  const fetchData = async (jsonToFetch: string) => {
+    const response = await getJsonResponse(jsonToFetch);
+    setHasError(response.hasError);
+    return response.data;
+  };
+
   useEffect(() => {
     (async () => {
-      const maintenanceInfo = await getJsonResponse("maintenance");
-      const linksInfo = await getProfileJsonResponse("links", links);
-      setMaintenance(maintenanceInfo.data);
-      setLinks(linksInfo.data);
+      const [maintenanceInfo, linksInfo, pwaInfo] = await Promise.all([
+        fetchData("maintenance"),
+        fetchSections("links", links),
+        fetchData("pwa"),
+      ]);
+      setMaintenance(maintenanceInfo);
+      setLinks(linksInfo);
+      setPwa(pwaInfo);
     })();
-  }, [links]);
+  }, []);
 
   return (
     <BrowserRouter>
       <Routes>
-        {maintenance.isUnderMaintenance && !isAdmin ? (
+        {!hasError && maintenance?.isUnderMaintenance && !isAdmin ? (
           <>
             <Route path="*" element={<Navigate to="/maintenance" />} />
             <Route
@@ -41,7 +61,7 @@ function App() {
               path="/profile"
               element={
                 <>
-                  <ProfilePage />
+                  <ProfilePage hasError={hasError} pwa={pwa} />
                 </>
               }
             />

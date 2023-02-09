@@ -98,9 +98,27 @@ const Wrapper = styled.section`
     background-color: #f0f0f0;
     &.add-margin-top {
       margin-top: 90px;
+      animation: ease-in-m-t 2s ease-in 1;
+      @keyframes ease-in-m-t {
+        from {
+          margin-top: 0;
+        }
+        to {
+          margin-top: 90px;
+        }
+      }
     }
     &.add-margin-bottom {
       margin-bottom: 90px;
+      animation: ease-in-m-b 2s ease-in 1;
+      @keyframes ease-in-m-b {
+        from {
+          margin-bottom: 0;
+        }
+        to {
+          margin-bottom: 90px;
+        }
+      }
     }
   }
 

@@ -6,14 +6,11 @@ import {
   setLocalStorage,
 } from "./common/Utils";
 import { useEffect } from "react";
-import {
-  PWA_HIDE_BANNER_EXPIRY,
-  PWA_NOT_NOW,
-  PWA_INSTALL_MESSAGE,
-  PWA_INSTALL,
-} from "./common/constants";
+import { PWA_HIDE_BANNER_EXPIRY } from "./common/constants";
+import { IPWA } from "./store/profile/types";
 
 interface PWABannerProps {
+  pwa: IPWA;
   isMobile: boolean;
   isInstallBannerOpen: boolean;
   hasPWAInstalled: boolean;
@@ -29,10 +26,11 @@ export const PWABanner = (props: PWABannerProps) => {
     setIsInstallBannerOpen,
     onClickInstall,
     isInstallPromptSupported,
+    pwa: { messages, bannerExpiryTime },
   } = props;
 
   const closeInstallBanner = () => {
-    const expiry = new Date().getTime() + PWA_HIDE_BANNER_EXPIRY * 1000;
+    const expiry = new Date().getTime() + bannerExpiryTime * 1000;
     setIsInstallBannerOpen(false);
     setLocalStorage("isInstallBannerOpen", false);
     setLocalStorage("pwaBannerHideTime", expiry);
@@ -40,15 +38,15 @@ export const PWABanner = (props: PWABannerProps) => {
 
   const NotNowButton = (
     <button className="not-now" onClick={closeInstallBanner}>
-      {PWA_NOT_NOW}
+      {messages.no}
     </button>
   );
 
-  const PWAInstallMessage = <p>{PWA_INSTALL_MESSAGE}</p>;
+  const PWAInstallMessage = <p>{messages.install}</p>;
 
   const InstallButton = (
     <button className="install" onClick={async () => await onClickInstall()}>
-      {PWA_INSTALL}
+      {messages.yes}
     </button>
   );
 

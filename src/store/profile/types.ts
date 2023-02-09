@@ -1,6 +1,7 @@
 export interface IProfileData {
   header: IHeader;
   sections: SectionsType;
+  download: DownloadType;
 }
 
 export type SectionsType = {
@@ -17,6 +18,24 @@ export interface ISectionInfo {
   ref?: string;
   icon?: string;
   pdfExportIcon?: string;
+}
+
+type DownloadStages = "download" | "downloading" | "downloaded";
+
+export type DownloadType = {
+  [key in DownloadStages]: {
+    message: string;
+    icon: string;
+  };
+};
+
+export interface IPWA {
+  messages: {
+    install: string;
+    yes: string;
+    no: string;
+  };
+  bannerExpiryTime: number;
 }
 
 export type InfoType =
@@ -84,6 +103,7 @@ export interface IAppContext {
   refs: {
     [key in RefTypes]: React.MutableRefObject<any>;
   };
+  pwa: IPWA;
   isExport?: boolean;
   isDownloading?: boolean;
   isMobile: boolean;

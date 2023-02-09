@@ -79,7 +79,7 @@ export const Profile = (props: ProfileProps) => {
             pdfExportComponent.save(() => {
               setIsDownloading(false);
               setHasDownloadedProfile(true);
-              timer = setTimeout(() => setHasDownloadedProfile(false), 3000);
+              timer = setTimeout(() => setHasDownloadedProfile(false), 5000);
             });
           }}
         />
