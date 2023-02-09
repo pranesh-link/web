@@ -123,27 +123,49 @@ export const ProfilePage = (props: ProfilePageProps) => {
     const DEFAULT_SECTIONS_DETAILS = DEFAULT_CONTEXT.data.sections.details;
 
     (async () => {
-      const header = await fetchHeader(HEADER, DEFAULT_CONTEXT.data.header);
-      const aboutMe = await fetchSections(ABOUT_ME, DEFAULT_SECTIONS_DETAILS);
-      const details = await fetchSections(DETAILS, DEFAULT_SECTIONS_DETAILS);
-      const education = await fetchSections(
-        EDUCATION,
-        DEFAULT_SECTIONS_DETAILS
-      );
-      const organizations = await fetchSections(
-        ORGANIZATIONS,
-        DEFAULT_SECTIONS_DETAILS
-      );
-      const skills = await fetchSections(SKILLS, DEFAULT_SECTIONS_DETAILS);
-      const experience = await fetchSections(
-        EXPERIENCE,
-        DEFAULT_SECTIONS_DETAILS
-      );
-      const links = await fetchSections(LINKS, DEFAULT_SECTIONS_DETAILS);
-      const download = await fetchDownloadInfo(
-        DOWNLOAD,
-        DEFAULT_CONTEXT.data.download
-      );
+      // const header = await fetchHeader(HEADER, DEFAULT_CONTEXT.data.header);
+      // const aboutMe = await fetchSections(ABOUT_ME, DEFAULT_SECTIONS_DETAILS);
+      // const details = await fetchSections(DETAILS, DEFAULT_SECTIONS_DETAILS);
+      // const education = await fetchSections(
+      //   EDUCATION,
+      //   DEFAULT_SECTIONS_DETAILS
+      // );
+      // const organizations = await fetchSections(
+      //   ORGANIZATIONS,
+      //   DEFAULT_SECTIONS_DETAILS
+      // );
+      // const skills = await fetchSections(SKILLS, DEFAULT_SECTIONS_DETAILS);
+      // const experience = await fetchSections(
+      //   EXPERIENCE,
+      //   DEFAULT_SECTIONS_DETAILS
+      // );
+      // const links = await fetchSections(LINKS, DEFAULT_SECTIONS_DETAILS);
+      // const download = await fetchDownloadInfo(
+      //   DOWNLOAD,
+      //   DEFAULT_CONTEXT.data.download
+      // );
+
+      const [
+        header,
+        aboutMe,
+        details,
+        education,
+        organizations,
+        skills,
+        experience,
+        links,
+        download,
+      ] = await Promise.all([
+        fetchHeader(HEADER, DEFAULT_CONTEXT.data.header),
+        fetchSections(ABOUT_ME, DEFAULT_SECTIONS_DETAILS),
+        fetchSections(DETAILS, DEFAULT_SECTIONS_DETAILS),
+        fetchSections(EDUCATION, DEFAULT_SECTIONS_DETAILS),
+        fetchSections(ORGANIZATIONS, DEFAULT_SECTIONS_DETAILS),
+        fetchSections(SKILLS, DEFAULT_SECTIONS_DETAILS),
+        fetchSections(EXPERIENCE, DEFAULT_SECTIONS_DETAILS),
+        fetchSections(LINKS, DEFAULT_SECTIONS_DETAILS),
+        fetchDownloadInfo(DOWNLOAD, DEFAULT_CONTEXT.data.download),
+      ]);
 
       const sections = {
         aboutMe,

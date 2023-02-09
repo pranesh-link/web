@@ -28,9 +28,11 @@ function App() {
 
   useEffect(() => {
     (async () => {
-      const maintenanceInfo = await fetchData("maintenance");
-      const linksInfo = await fetchSections("links", links);
-      const pwaInfo = await fetchData("pwa");
+      const [maintenanceInfo, linksInfo, pwaInfo] = await Promise.all([
+        fetchData("maintenance"),
+        fetchSections("links", links),
+        fetchData("pwa"),
+      ]);
       setMaintenance(maintenanceInfo);
       setLinks(linksInfo);
       setPwa(pwaInfo);
