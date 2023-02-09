@@ -22,13 +22,16 @@ import {
   ISectionInfo,
   IHeader,
   DownloadType,
+  IPWA,
 } from "../../store/profile/types";
 import styled from "styled-components";
 import { CloseButton } from "../../common/Elements";
 import CloseIcon from "../../assets/close-icon.svg";
 import LoaderIcon from "../../assets/loader-icon.svg";
 
-interface ProfilePageProps {}
+interface ProfilePageProps {
+  pwa: IPWA;
+}
 export const ProfilePage = (props: ProfilePageProps) => {
   const homeRef = useRef(null);
   const skillsRef = useRef(null);
@@ -37,6 +40,7 @@ export const ProfilePage = (props: ProfilePageProps) => {
   const contactRef = useRef(null);
   const orgRef = useRef(null);
 
+  const { pwa } = props;
   const [hasError, setHasError] = useState<boolean>(false);
   const { isInstallPromptSupported, promptInstall } = usePWA();
 
@@ -195,6 +199,7 @@ export const ProfilePage = (props: ProfilePageProps) => {
         />
       )}
       <PWABanner
+        pwa={pwa}
         isMobile={IS_MOBILE}
         isInstallBannerOpen={!!isInstallBannerOpen}
         hasPWAInstalled={hasPWAInstalled}

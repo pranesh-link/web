@@ -29,6 +29,21 @@ export type DownloadType = {
   };
 };
 
+export interface IPWA {
+  messages: {
+    install: string;
+    yes: string;
+    no: string;
+  };
+  bannerExpiryTime: number;
+}
+
+export interface IError {
+  api: {
+    messages: string[];
+  };
+}
+
 export type InfoType =
   | string
   | (ISkill | IOrgProject | ILink | IDetailInfo | IOrganization)[];
@@ -94,6 +109,8 @@ export interface IAppContext {
   refs: {
     [key in RefTypes]: React.MutableRefObject<any>;
   };
+  pwa: IPWA;
+  errors: IError;
   isExport?: boolean;
   isDownloading?: boolean;
   isMobile: boolean;

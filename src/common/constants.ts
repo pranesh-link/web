@@ -11,11 +11,6 @@ export const TOAST_ERROR_MESSAGE = [
   "Something went wrong.",
   "Please close this error to reload the page.",
 ];
-export const PWA_INSTALL_MESSAGE =
-  "Installing almost uses no storage and provides a quick way to return to this app.";
-export const PWA_INSTALL = "Install";
-export const PWA_NOT_NOW = "Not now";
-export const PWA_HIDE_BANNER_EXPIRY = 86400;
 export const SHORT_INFOS = ["client", "duration", "role", "softwareTech"];
 export const EXPANDABLE_INFOS = ["description", "responsibilities"];
 
@@ -73,6 +68,19 @@ export const DEFAULT_CONTEXT: IAppContext = {
         message: "",
         icon: "",
       },
+    },
+  },
+  pwa: {
+    messages: {
+      install: "",
+      yes: "",
+      no: "",
+    },
+    bannerExpiryTime: 0,
+  },
+  errors: {
+    api: {
+      messages: [],
     },
   },
   refs: {

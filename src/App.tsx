@@ -10,12 +10,16 @@ function App() {
   const isAdmin = queryParams.get("admin");
   const [maintenance, setMaintenance] = useState(DEFAULT_MAINTENANCE_DATA);
   const [links, setLinks] = useState(DEFAULT_CONTEXT.data.sections.links);
+  const [pwa, setPwa] = useState(DEFAULT_CONTEXT.pwa);
+
   useEffect(() => {
     (async () => {
       const maintenanceInfo = await getJsonResponse("maintenance");
       const linksInfo = await getProfileJsonResponse("links", links);
+      const pwaInfo = await getJsonResponse("pwa");
       setMaintenance(maintenanceInfo.data);
       setLinks(linksInfo.data);
+      setPwa(pwaInfo.data);
     })();
   }, [links]);
 
@@ -41,7 +45,7 @@ function App() {
               path="/profile"
               element={
                 <>
-                  <ProfilePage />
+                  <ProfilePage pwa={pwa} />
                 </>
               }
             />
