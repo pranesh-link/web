@@ -38,12 +38,6 @@ export interface IPWA {
   bannerExpiryTime: number;
 }
 
-export interface IError {
-  api: {
-    messages: string[];
-  };
-}
-
 export type InfoType =
   | string
   | (ISkill | IOrgProject | ILink | IDetailInfo | IOrganization)[];
@@ -110,7 +104,6 @@ export interface IAppContext {
     [key in RefTypes]: React.MutableRefObject<any>;
   };
   pwa: IPWA;
-  errors: IError;
   isExport?: boolean;
   isDownloading?: boolean;
   isMobile: boolean;

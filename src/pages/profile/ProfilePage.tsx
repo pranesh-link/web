@@ -28,10 +28,13 @@ import styled from "styled-components";
 import { CloseButton } from "../../common/Elements";
 import CloseIcon from "../../assets/close-icon.svg";
 import LoaderIcon from "../../assets/loader-icon.svg";
+import "react-toastify/dist/ReactToastify.css";
 
 interface ProfilePageProps {
   pwa: IPWA;
+  hasError: boolean;
 }
+
 export const ProfilePage = (props: ProfilePageProps) => {
   const homeRef = useRef(null);
   const skillsRef = useRef(null);
@@ -40,8 +43,8 @@ export const ProfilePage = (props: ProfilePageProps) => {
   const contactRef = useRef(null);
   const orgRef = useRef(null);
 
-  const { pwa } = props;
-  const [hasError, setHasError] = useState<boolean>(false);
+  const { pwa, hasError } = props;
+  const [hasErrorInProfile, setHasErrorInProfile] = useState<boolean>(hasError);
   const { isInstallPromptSupported, promptInstall } = usePWA();
 
   const [isInstallBannerOpen, setIsInstallBannerOpen] = useState<
@@ -98,13 +101,13 @@ export const ProfilePage = (props: ProfilePageProps) => {
 
     const fetchSections = async (jsonToFetch: string, data: ISectionInfo) => {
       const response = await getProfileJsonResponse(jsonToFetch, data);
-      setHasError(response.hasError);
+      setHasErrorInProfile(response.hasError);
       return response.data as ISectionInfo;
     };
 
     const fetchHeader = async (jsonToFetch: string, data: IHeader) => {
       const response = await getProfileJsonResponse(jsonToFetch, data);
-      setHasError(response.hasError);
+      setHasErrorInProfile(response.hasError);
       return response.data as IHeader;
     };
 
@@ -113,7 +116,7 @@ export const ProfilePage = (props: ProfilePageProps) => {
       data: DownloadType
     ) => {
       const response = await getJsonResponse(jsonToFetch, data);
-      setHasError(response.hasError);
+      setHasErrorInProfile(response.hasError);
       return response.data as DownloadType;
     };
 
@@ -157,10 +160,10 @@ export const ProfilePage = (props: ProfilePageProps) => {
   }, []);
 
   useEffect(() => {
-    if (hasError) {
+    if (hasErrorInProfile) {
       toast.error(ToastError);
     }
-  }, [hasError, ToastError]);
+  }, [hasErrorInProfile, ToastError]);
   return isFetchingData ? (
     <LoaderImg isMobile={IS_MOBILE} src={LoaderIcon} />
   ) : (
@@ -173,7 +176,7 @@ export const ProfilePage = (props: ProfilePageProps) => {
         }
         limit={1}
       />
-      {!hasError && (
+      {!hasErrorInProfile && (
         <Profile
           profileData={profileData}
           homeRef={homeRef}
@@ -198,17 +201,19 @@ export const ProfilePage = (props: ProfilePageProps) => {
           }
         />
       )}
-      <PWABanner
-        pwa={pwa}
-        isMobile={IS_MOBILE}
-        isInstallBannerOpen={!!isInstallBannerOpen}
-        hasPWAInstalled={hasPWAInstalled}
-        isInstallPromptSupported={isInstallPromptSupported}
-        setIsInstallBannerOpen={(isInstallBannerOpen) =>
-          setIsInstallBannerOpen(isInstallBannerOpen)
-        }
-        onClickInstall={onClickInstall}
-      />
+      {!hasErrorInProfile && (
+        <PWABanner
+          pwa={pwa}
+          isMobile={IS_MOBILE}
+          isInstallBannerOpen={!!isInstallBannerOpen}
+          hasPWAInstalled={hasPWAInstalled}
+          isInstallPromptSupported={isInstallPromptSupported}
+          setIsInstallBannerOpen={(isInstallBannerOpen) =>
+            setIsInstallBannerOpen(isInstallBannerOpen)
+          }
+          onClickInstall={onClickInstall}
+        />
+      )}
     </Wrapper>
   );
 };

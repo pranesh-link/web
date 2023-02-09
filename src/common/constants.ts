@@ -78,11 +78,6 @@ export const DEFAULT_CONTEXT: IAppContext = {
     },
     bannerExpiryTime: 0,
   },
-  errors: {
-    api: {
-      messages: [],
-    },
-  },
   refs: {
     homeRef: React.createRef(),
     skillsRef: React.createRef(),
