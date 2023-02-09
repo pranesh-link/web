@@ -60,6 +60,20 @@ export const DEFAULT_CONTEXT: IAppContext = {
         info: "",
       },
     },
+    download: {
+      download: {
+        message: "",
+        icon: "",
+      },
+      downloading: {
+        message: "",
+        icon: "",
+      },
+      downloaded: {
+        message: "",
+        icon: "",
+      },
+    },
   },
   refs: {
     homeRef: React.createRef(),
@@ -94,6 +108,7 @@ export const SECTIONS = {
   SKILLS: "skills",
   EXPERIENCE: "experiences",
   LINKS: "links",
+  DOWNLOAD: "download",
 };
 
 export const PAGE_TITLES = {

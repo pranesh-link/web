@@ -4,20 +4,17 @@ import {
   FlexBoxSection,
   SecHeader,
   Desc,
-  ActionBtn,
   FlexBox,
 } from "../../../common/Elements";
 import { ISectionInfo } from "../../../store/profile/types";
 import {
+  getIconUrl,
   getIconUrlByExportFlag,
   valueIsArray,
   valueIsLinkInfo,
 } from "../../../common/Utils";
 import styled from "styled-components";
 import { AppContext } from "../../../store/profile/context";
-import DownloadAnimatedIcon from "../../../assets/animated-download-icon.gif";
-import DownloadingIcon from "../../../assets/downloading-icon.gif";
-import DownloadedIcon from "../../../assets/downloaded-icon.gif";
 import { AboutMeDetails } from "./AboutMeDetails";
 
 interface IAboutProps {
@@ -29,8 +26,13 @@ interface IAboutProps {
 }
 export const About = (props: IAboutProps) => {
   const { refObj, aboutMe, details, links } = props;
-  const { hasDownloadedProfile, isExport, isMobile, isDownloading } =
-    React.useContext(AppContext);
+  const {
+    hasDownloadedProfile,
+    isExport,
+    isMobile,
+    isDownloading,
+    data: { download },
+  } = React.useContext(AppContext);
   const [copied, setCopied] = useState<boolean>(false);
   const [copyInfoId, setCopyInfoId] = useState<string>("");
   const [showCopy, setShowCopy] = useState<boolean>(false);
@@ -121,14 +123,17 @@ export const About = (props: IAboutProps) => {
             >
               {!isDownloading && !hasDownloadedProfile && (
                 <>
-                  <span>Interested in profile ?</span>
                   <img
                     className="download"
-                    alt="Download"
+                    alt="Click here"
                     height="25px"
                     onClick={props.exportProfile}
-                    src={DownloadAnimatedIcon}
+                    src={getIconUrl(download.download.icon)}
+                    loading="lazy"
                   />
+                  <span className="download-text">
+                    {download.download.message}
+                  </span>
                 </>
               )}
               {isDownloading && (
@@ -137,11 +142,12 @@ export const About = (props: IAboutProps) => {
                     className="downloading"
                     alt="Downloading"
                     height="35px"
-                    src={DownloadingIcon}
+                    src={getIconUrl(download.downloading.icon)}
+                    loading="lazy"
                   />
                   <FlexBox alignItems="center" className="downloading-text">
-                    Downloading
-                    <span className="progress-animation"></span>
+                    <span>{download.downloading.message}</span>
+                    <span className="progress-animation" />
                   </FlexBox>
                 </>
               )}
@@ -151,9 +157,12 @@ export const About = (props: IAboutProps) => {
                     className="downloaded"
                     alt="Downloaded"
                     height="40px"
-                    src={DownloadedIcon}
+                    src={getIconUrl(download.downloaded.icon)}
+                    loading="lazy"
                   />
-                  <span>Downloaded profile!</span>
+                  <span className="downloaded-text">
+                    {download.downloaded.message}
+                  </span>
                 </>
               )}
             </InterestedInProfile>
@@ -171,9 +180,41 @@ const InterestedInProfile = styled(FlexBox)<{ isMobile: boolean }>`
   &.downloaded-profile {
     margin-left: ${(props) => (props.isMobile ? "0" : "5px")};
   }
+
   .download {
-    margin-left: 5px;
+    min-width: 100px;
+    margin-right: 5px;
+    border-radius: 5px;
     cursor: pointer;
+  }
+
+  .downloading {
+    min-width: 35px;
+  }
+
+  .downloaded {
+    min-width: 40px;
+  }
+
+  .download-text,
+  .downloading-text,
+  .downloaded-text {
+    overflow: hidden;
+    white-space: nowrap;
+    width: 0;
+    animation: typing;
+    animation-duration: 3s;
+    animation-timing-function: steps(30, end);
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes typing {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
   }
   .downloading-text {
     margin-left: 5px;
@@ -184,7 +225,7 @@ const InterestedInProfile = styled(FlexBox)<{ isMobile: boolean }>`
       border-radius: 5px;
       background-color: #3f9c35;
       color: #3f9c35;
-      animation: dot-flashing 2s infinite linear alternate;
+      animation: flashing 1s infinite linear alternate;
       animation-delay: 0.5s;
       margin: 5px 0 0 20px;
       &::before,
@@ -201,7 +242,7 @@ const InterestedInProfile = styled(FlexBox)<{ isMobile: boolean }>`
         border-radius: 5px;
         background-color: #3f9c35;
         color: #3f9c35;
-        animation: dot-flashing 2s infinite alternate;
+        animation: flashing 1s infinite alternate;
         animation-delay: 0s;
       }
       &::after {
@@ -211,11 +252,11 @@ const InterestedInProfile = styled(FlexBox)<{ isMobile: boolean }>`
         border-radius: 5px;
         background-color: #3f9c35;
         color: #3f9c35;
-        animation: dot-flashing 2s infinite alternate;
+        animation: flashing 1s infinite alternate;
         animation-delay: 1s;
       }
 
-      @keyframes dot-flashing {
+      @keyframes flashing {
         0% {
           background-color: #3f9c35;
         }

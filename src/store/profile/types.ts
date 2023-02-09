@@ -1,6 +1,7 @@
 export interface IProfileData {
   header: IHeader;
   sections: SectionsType;
+  download: DownloadType;
 }
 
 export type SectionsType = {
@@ -18,6 +19,15 @@ export interface ISectionInfo {
   icon?: string;
   pdfExportIcon?: string;
 }
+
+type DownloadStages = "download" | "downloading" | "downloaded";
+
+export type DownloadType = {
+  [key in DownloadStages]: {
+    message: string;
+    icon: string;
+  };
+};
 
 export type InfoType =
   | string

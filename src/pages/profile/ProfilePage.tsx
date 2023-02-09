@@ -15,8 +15,14 @@ import {
   getLocalStorage,
   setLocalStorage,
   getProfileJsonResponse,
+  getJsonResponse,
 } from "../../common/Utils";
-import { IProfileData, ISectionInfo, IHeader } from "../../store/profile/types";
+import {
+  IProfileData,
+  ISectionInfo,
+  IHeader,
+  DownloadType,
+} from "../../store/profile/types";
 import styled from "styled-components";
 import { CloseButton } from "../../common/Elements";
 import CloseIcon from "../../assets/close-icon.svg";
@@ -83,6 +89,7 @@ export const ProfilePage = (props: ProfilePageProps) => {
       SKILLS,
       EXPERIENCE,
       LINKS,
+      DOWNLOAD,
     } = SECTIONS;
 
     const fetchSections = async (jsonToFetch: string, data: ISectionInfo) => {
@@ -95,6 +102,15 @@ export const ProfilePage = (props: ProfilePageProps) => {
       const response = await getProfileJsonResponse(jsonToFetch, data);
       setHasError(response.hasError);
       return response.data as IHeader;
+    };
+
+    const fetchDownloadInfo = async (
+      jsonToFetch: string,
+      data: DownloadType
+    ) => {
+      const response = await getJsonResponse(jsonToFetch, data);
+      setHasError(response.hasError);
+      return response.data as DownloadType;
     };
 
     const DEFAULT_SECTIONS_DETAILS = DEFAULT_CONTEXT.data.sections.details;
@@ -117,6 +133,10 @@ export const ProfilePage = (props: ProfilePageProps) => {
         DEFAULT_SECTIONS_DETAILS
       );
       const links = await fetchSections(LINKS, DEFAULT_SECTIONS_DETAILS);
+      const download = await fetchDownloadInfo(
+        DOWNLOAD,
+        DEFAULT_CONTEXT.data.download
+      );
 
       const sections = {
         aboutMe,
@@ -127,7 +147,7 @@ export const ProfilePage = (props: ProfilePageProps) => {
         experience,
         links,
       };
-      setProfileData({ header, sections });
+      setProfileData({ header, sections, download });
       setIsFetchingData(false);
     })();
   }, []);

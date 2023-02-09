@@ -1,5 +1,6 @@
 import { CORS_MODE, DEV_JSON_BASE_URL, PROD_JSON_BASE_URL } from "./constants";
 import {
+  DownloadType,
   IDetailInfo,
   IHeader,
   ILink,
