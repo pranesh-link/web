@@ -45,6 +45,7 @@ export const Profile = (props: ProfileProps) => {
   let timer: NodeJS.Timeout;
   useEffect(() => {
     return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   let pdfExportComponent: PDFExport;
 

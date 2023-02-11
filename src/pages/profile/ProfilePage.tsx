@@ -25,7 +25,7 @@ import {
   IPWA,
 } from "../../store/profile/types";
 import styled from "styled-components";
-import { CloseButton } from "../../common/Elements";
+import { CloseButton, LoaderImg } from "../../common/Elements";
 import CloseIcon from "../../assets/close-icon.svg";
 import LoaderIcon from "../../assets/loader-icon.svg";
 import "react-toastify/dist/ReactToastify.css";
@@ -35,7 +35,7 @@ interface ProfilePageProps {
   hasError: boolean;
 }
 
-export const ProfilePage = (props: ProfilePageProps) => {
+const ProfilePage = (props: ProfilePageProps) => {
   const homeRef = useRef(null);
   const skillsRef = useRef(null);
   const experienceRef = useRef(null);
@@ -123,28 +123,6 @@ export const ProfilePage = (props: ProfilePageProps) => {
     const DEFAULT_SECTIONS_DETAILS = DEFAULT_CONTEXT.data.sections.details;
 
     (async () => {
-      // const header = await fetchHeader(HEADER, DEFAULT_CONTEXT.data.header);
-      // const aboutMe = await fetchSections(ABOUT_ME, DEFAULT_SECTIONS_DETAILS);
-      // const details = await fetchSections(DETAILS, DEFAULT_SECTIONS_DETAILS);
-      // const education = await fetchSections(
-      //   EDUCATION,
-      //   DEFAULT_SECTIONS_DETAILS
-      // );
-      // const organizations = await fetchSections(
-      //   ORGANIZATIONS,
-      //   DEFAULT_SECTIONS_DETAILS
-      // );
-      // const skills = await fetchSections(SKILLS, DEFAULT_SECTIONS_DETAILS);
-      // const experience = await fetchSections(
-      //   EXPERIENCE,
-      //   DEFAULT_SECTIONS_DETAILS
-      // );
-      // const links = await fetchSections(LINKS, DEFAULT_SECTIONS_DETAILS);
-      // const download = await fetchDownloadInfo(
-      //   DOWNLOAD,
-      //   DEFAULT_CONTEXT.data.download
-      // );
-
       const [
         header,
         aboutMe,
@@ -240,6 +218,8 @@ export const ProfilePage = (props: ProfilePageProps) => {
   );
 };
 
+export default ProfilePage;
+
 const Wrapper = styled.section`
   .export-wrapper {
     position: absolute;
@@ -252,23 +232,6 @@ const ToastErrorWrapper = styled.div`
   p {
     &:first-child {
       margin-bottom: 3px;
-    }
-  }
-`;
-
-const LoaderImg = styled.img<{ isMobile: boolean }>`
-  width: ${(props) => (props.isMobile ? "75px" : "100px")};
-  position: absolute;
-  top: 40%;
-  left: ${(props) => (props.isMobile ? "40%" : "45%")};
-  animation: loader-spin infinite 1s linear;
-
-  @keyframes loader-spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
     }
   }
 `;

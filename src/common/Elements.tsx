@@ -374,3 +374,20 @@ export const MobilePWAWrapper = styled(PWAWrapper)`
     padding: 10px !important;
   }
 `;
+
+export const LoaderImg = styled.img<{ isMobile: boolean }>`
+  width: ${(props) => (props.isMobile ? "75px" : "100px")};
+  position: absolute;
+  top: 40%;
+  left: ${(props) => (props.isMobile ? "40%" : "45%")};
+  animation: loader-spin infinite 1s linear;
+
+  @keyframes loader-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+`;

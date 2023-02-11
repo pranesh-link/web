@@ -6,7 +6,6 @@ import {
   setLocalStorage,
 } from "./common/Utils";
 import { useEffect } from "react";
-import { PWA_HIDE_BANNER_EXPIRY } from "./common/constants";
 import { IPWA } from "./store/profile/types";
 
 interface PWABannerProps {
