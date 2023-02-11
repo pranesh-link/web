@@ -13,56 +13,44 @@ import { useContext } from "react";
 import styled from "styled-components";
 import * as clipboard from "clipboard-polyfill/text";
 import CopyIcon from "../../../assets/copy-icon.svg";
+import { COPIED, COPIED_TEXT, NOT_COPIED } from "../../../common/constants";
 
 interface AboutMeDetailsProps {
   details: ISectionInfo;
   showCopy: boolean;
-  copyInfoId: string;
-  copied: boolean;
+  copyState: Record<string, { state: string }>;
   setShowCopy: (showCopy: boolean) => void;
-  setCopyInfoId: (copyInfoId: string) => void;
-  setCopied: (copied: boolean) => void;
+  setCopyState: (copyInfoId: string, state: string) => void;
 }
 export const AboutMeDetails = (props: AboutMeDetailsProps) => {
   const { isMobile, isExport } = useContext(AppContext);
-  const {
-    details,
-    showCopy,
-    copyInfoId,
-    copied,
-    setShowCopy,
-    setCopyInfoId,
-    setCopied,
-  } = props;
+  const { details, showCopy, copyState, setShowCopy, setCopyState } = props;
 
-  const getCopyButton = (detail: IDetailInfo) => (
-    <CopyButton
-      data-id={lowercase(detail.label)}
-      data-clipboard-text={detail.info}
-      onClick={() => {
-        clipboard.writeText(detail.info).then(() => {
-          setCopyInfoId(detail.label);
-          setCopied(true);
-        });
-      }}
-      className={classNames({
-        hide: !(
-          !isExport &&
-          detail.canCopy &&
-          showCopy &&
-          copyInfoId === detail.label
-        ),
-        mobile: !isExport && isMobile && detail.canCopy,
-        copied: copied && copyInfoId === detail.label,
-      })}
-    >
-      {copied && copyInfoId === detail.label ? (
-        "Copied!"
-      ) : (
-        <img alt="" src={CopyIcon} />
-      )}
-    </CopyButton>
-  );
+  const getCopyButton = (detail: IDetailInfo) => {
+    const copied = copyState?.[detail.label]?.state === COPIED;
+    return (
+      <CopyButton
+        data-id={lowercase(detail.label)}
+        data-clipboard-text={detail.info}
+        onClick={() => {
+          clipboard.writeText(detail.info).then(() => {
+            setCopyState(detail.label, COPIED);
+          });
+        }}
+        className={classNames({
+          hide:
+            isExport ||
+            !detail.canCopy ||
+            !showCopy ||
+            !Boolean(copyState[detail.label]),
+          mobile: !isExport && isMobile && detail.canCopy,
+          copied,
+        })}
+      >
+        {copied ? COPIED_TEXT : <img alt="" src={CopyIcon} />}
+      </CopyButton>
+    );
+  };
 
   const getGridDetailInfo = (detail: IDetailInfo, index: number) => (
     <>
@@ -112,11 +100,11 @@ export const AboutMeDetails = (props: AboutMeDetailsProps) => {
               className="detail-info"
               key={index}
               onMouseEnter={() => {
-                setCopyInfoId(detail.label);
+                setCopyState(detail.label, NOT_COPIED);
                 setShowCopy(true);
               }}
               onMouseLeave={() => {
-                setCopyInfoId("");
+                setCopyState("", NOT_COPIED);
                 setShowCopy(false);
               }}
             >
@@ -143,11 +131,11 @@ export const AboutMeDetails = (props: AboutMeDetailsProps) => {
               className="detail-info"
               key={index}
               onMouseEnter={() => {
-                setCopyInfoId(detail.label);
+                setCopyState(detail.label, NOT_COPIED);
                 setShowCopy(true);
               }}
               onMouseLeave={() => {
-                setCopyInfoId("");
+                setCopyState("", NOT_COPIED);
                 setShowCopy(false);
               }}
             >
