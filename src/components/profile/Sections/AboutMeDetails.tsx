@@ -71,7 +71,7 @@ export const AboutMeDetails = (props: AboutMeDetailsProps) => {
           {detail.info}
         </a>
       ) : (
-        <span id={lowercase(detail.label)}>
+        <span className="detail-info-text" id={lowercase(detail.label)}>
           <b>{detail.info}</b>
         </span>
       )}
@@ -189,6 +189,9 @@ const DetailSection = styled(FlexBoxSection)<{
   }
   .detail-info {
     padding: 7px 0;
+  }
+  .detail-info-text {
+    cursor: auto;
   }
 `;
 
