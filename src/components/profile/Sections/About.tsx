@@ -10,12 +10,15 @@ import { ISectionInfo } from "../../../store/profile/types";
 import {
   getIconUrl,
   getIconUrlByExportFlag,
+  getObjectKeyValuesByIndex,
+  isEmptyObject,
   valueIsArray,
   valueIsLinkInfo,
 } from "../../../common/Utils";
 import styled from "styled-components";
 import { AppContext } from "../../../store/profile/context";
 import { AboutMeDetails } from "./AboutMeDetails";
+import { COPIED, NOT_COPIED } from "../../../common/constants";
 
 interface IAboutProps {
   refObj: React.MutableRefObject<any>;
@@ -33,18 +36,24 @@ export const About = (props: IAboutProps) => {
     isDownloading,
     data: { download },
   } = React.useContext(AppContext);
-  const [copied, setCopied] = useState<boolean>(false);
-  const [copyInfoId, setCopyInfoId] = useState<string>("");
+  const [copyState, setCopyState] = useState<Record<string, { state: string }>>(
+    {}
+  );
   const [showCopy, setShowCopy] = useState<boolean>(false);
 
   useEffect(() => {
-    if (copied) {
+    const [key, value] = getObjectKeyValuesByIndex(copyState, 0);
+    if (!isEmptyObject(copyState) && value.state === COPIED) {
       setTimeout(() => {
-        setCopied(false);
-        setCopyInfoId("");
+        setCopyState({
+          [key]: {
+            state: NOT_COPIED,
+          },
+        });
+        setShowCopy(true);
       }, 2000);
     }
-  }, [copied]);
+  }, [copyState]);
 
   return (
     <FlexBoxSection
@@ -79,13 +88,21 @@ export const About = (props: IAboutProps) => {
         </FlexBoxSection>
         <FlexBoxSection direction="column">
           <AboutMeDetails
-            copied={copied}
-            copyInfoId={copyInfoId}
+            copyState={copyState}
             details={details}
             showCopy={showCopy}
-            setCopied={(copied: boolean) => setCopied(copied)}
             setShowCopy={(showCopy: boolean) => setShowCopy(showCopy)}
-            setCopyInfoId={(copyInfoId: string) => setCopyInfoId(copyInfoId)}
+            setCopyState={(copyInfoId: string, state: string) => {
+              setCopyState(
+                copyInfoId
+                  ? {
+                      [copyInfoId]: {
+                        state,
+                      },
+                    }
+                  : {}
+              );
+            }}
           />
           {isExport ? (
             <FlexBoxSection

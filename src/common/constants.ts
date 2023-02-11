@@ -13,6 +13,9 @@ export const TOAST_ERROR_MESSAGE = [
 ];
 export const SHORT_INFOS = ["client", "duration", "role", "softwareTech"];
 export const EXPANDABLE_INFOS = ["description", "responsibilities"];
+export const COPIED = "copied";
+export const NOT_COPIED = "not-copied";
+export const COPIED_TEXT = "Copied!";
 
 export const IS_MOBILE =
   /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(

@@ -250,7 +250,7 @@ export const SectionsWrapper = styled.section`
       }
     }
     .about-me {
-      flex-basis: 20%;
+      flex-basis: 25%;
       padding-right: 10px;
       &.export {
         flex-basis: 33%;

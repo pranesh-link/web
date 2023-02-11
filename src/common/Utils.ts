@@ -113,3 +113,10 @@ export const getIconUrlByExportFlag = (
   isExport
     ? `${pdfExportIconUrl}?dummy=${Math.floor(Math.random() * 1000)}`
     : getIconUrl(iconUrl || "");
+
+export const isEmptyObject = (obj: Object) => Object.keys(obj).length === 0;
+
+export const getObjectKeyValuesByIndex = (obj: Object, index: number) => [
+  Object.keys(obj)[index],
+  Object.values(obj)[index],
+];
