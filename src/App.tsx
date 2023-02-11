@@ -1,17 +1,22 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { ProfilePage } from "./pages/profile/ProfilePage";
-import { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { getJsonResponse, getProfileJsonResponse } from "./common/Utils";
-import { MaintenancePage } from "./pages/maintenance/MaintenancePage";
-import { DEFAULT_CONTEXT, DEFAULT_MAINTENANCE_DATA } from "./common/constants";
+import {
+  DEFAULT_CONTEXT,
+  DEFAULT_MAINTENANCE_DATA,
+  DEFAULT_PWA,
+  IS_MOBILE,
+} from "./common/constants";
 import { ISectionInfo } from "./store/profile/types";
+import { LoaderImg } from "./common/Elements";
+import LoaderIcon from "./assets/loader-icon.svg";
 
 function App() {
   const queryParams = new URLSearchParams(window.location.search);
   const isAdmin = queryParams.get("admin");
   const [maintenance, setMaintenance] = useState(DEFAULT_MAINTENANCE_DATA);
   const [links, setLinks] = useState(DEFAULT_CONTEXT.data.sections.links);
-  const [pwa, setPwa] = useState(DEFAULT_CONTEXT.pwa);
+  const [pwa, setPwa] = useState(DEFAULT_PWA);
   const [hasError, setHasError] = useState(false);
 
   const fetchSections = async (jsonToFetch: string, data: ISectionInfo) => {
@@ -37,38 +42,54 @@ function App() {
       setLinks(linksInfo);
       setPwa(pwaInfo);
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const ProfilePageComponent = React.lazy(
+    () => import("./pages/profile/ProfilePage")
+  );
+
+  const MaintenancePageComponent = React.lazy(
+    () => import("./pages/maintenance/MaintenancePage")
+  );
+
   return (
-    <BrowserRouter>
-      <Routes>
-        {!hasError && maintenance?.isUnderMaintenance && !isAdmin ? (
-          <>
-            <Route path="*" element={<Navigate to="/maintenance" />} />
-            <Route
-              path="/maintenance"
-              element={
-                <>
-                  <MaintenancePage maintenance={maintenance} links={links} />
-                </>
-              }
-            />
-          </>
-        ) : (
-          <>
-            <Route path="*" element={<Navigate to="/profile" />} />
-            <Route
-              path="/profile"
-              element={
-                <>
-                  <ProfilePage hasError={hasError} pwa={pwa} />
-                </>
-              }
-            />
-          </>
-        )}
-      </Routes>
-    </BrowserRouter>
+    <div>
+      <Suspense fallback={<LoaderImg isMobile={IS_MOBILE} src={LoaderIcon} />}>
+        <BrowserRouter>
+          <Routes>
+            {!hasError && maintenance?.isUnderMaintenance && !isAdmin ? (
+              <>
+                <Route path="*" element={<Navigate to="/maintenance" />} />
+                <Route
+                  path="/maintenance"
+                  element={
+                    <>
+                      <MaintenancePageComponent
+                        maintenance={maintenance}
+                        links={links}
+                      />
+                    </>
+                  }
+                />
+              </>
+            ) : (
+              <>
+                <Route path="*" element={<Navigate to="/profile" />} />
+                <Route
+                  path="/profile"
+                  element={
+                    <>
+                      <ProfilePageComponent hasError={hasError} pwa={pwa} />
+                    </>
+                  }
+                />
+              </>
+            )}
+          </Routes>
+        </BrowserRouter>
+      </Suspense>
+    </div>
   );
 }
 

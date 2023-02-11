@@ -1,5 +1,5 @@
 import React from "react";
-import { IAppContext } from "../store/profile/types";
+import { IAppContext, IPWA } from "../store/profile/types";
 import { IMaintenance } from "../store/common/types";
 
 export const CORS_MODE = "cors";
@@ -19,6 +19,14 @@ export const IS_MOBILE =
     navigator.userAgent
   );
 
+export const DEFAULT_PWA: IPWA = {
+  messages: {
+    install: "",
+    yes: "",
+    no: "",
+  },
+  bannerExpiryTime: 0,
+};
 export const DEFAULT_CONTEXT: IAppContext = {
   data: {
     header: {
@@ -69,14 +77,6 @@ export const DEFAULT_CONTEXT: IAppContext = {
         icon: "",
       },
     },
-  },
-  pwa: {
-    messages: {
-      install: "",
-      yes: "",
-      no: "",
-    },
-    bannerExpiryTime: 0,
   },
   refs: {
     homeRef: React.createRef(),

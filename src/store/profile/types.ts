@@ -103,7 +103,6 @@ export interface IAppContext {
   refs: {
     [key in RefTypes]: React.MutableRefObject<any>;
   };
-  pwa: IPWA;
   isExport?: boolean;
   isDownloading?: boolean;
   isMobile: boolean;

@@ -10,7 +10,7 @@ interface IMaintenanceProps {
   maintenance: IMaintenance;
   links: ISectionInfo;
 }
-export const MaintenancePage = (props: IMaintenanceProps) => {
+const MaintenancePage = (props: IMaintenanceProps) => {
   const { maintenance, links } = props;
   return (
     <MaintenanceArticle isMobile={IS_MOBILE}>
@@ -74,3 +74,5 @@ const MaintenanceArticle = styled.article<{ isMobile: boolean }>`
     text-align: center;
   }
 `;
+
+export default MaintenancePage;
