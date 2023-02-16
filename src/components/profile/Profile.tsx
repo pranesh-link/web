@@ -126,6 +126,7 @@ export const Profile = (props: ProfileProps) => {
             fileName={PROFILE_PDF_NAME}
             ref={(component: PDFExport) => (pdfExportComponent = component)}
           >
+            <MenuBar />
             <ProfileSections />
           </PDFExport>
         </div>
