@@ -7,6 +7,7 @@ import { AppProvider } from "../../store/profile/context";
 import { IProfileData } from "../../store/profile/types";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
+import { CommonDataType } from "../../store/common/types";
 
 interface ProfileProps {
   profileData: IProfileData;
@@ -16,10 +17,12 @@ interface ProfileProps {
   educationRef: React.MutableRefObject<any>;
   contactRef: React.MutableRefObject<any>;
   orgRef: React.MutableRefObject<any>;
+  commonData: CommonDataType;
   isDownloading: boolean;
   isMobile: boolean;
   isHamburgerMenuOpen: boolean;
   isInstallBannerOpen: boolean;
+  isExport: boolean;
   setIsDownloading: (isDownloading: boolean) => void;
   setIsHamburgerMenuOpen: (isHamburgerMenuOpen: boolean) => void;
 }
@@ -27,6 +30,7 @@ interface ProfileProps {
 export const Profile = (props: ProfileProps) => {
   const {
     profileData,
+    commonData,
     homeRef,
     skillsRef,
     experienceRef,
@@ -37,6 +41,7 @@ export const Profile = (props: ProfileProps) => {
     isMobile,
     isHamburgerMenuOpen,
     isInstallBannerOpen,
+    isExport,
     setIsDownloading,
     setIsHamburgerMenuOpen,
   } = props;
@@ -62,6 +67,8 @@ export const Profile = (props: ProfileProps) => {
             contactRef,
             orgRef,
           },
+          commonData,
+          isExport,
           isDownloading,
           isMobile,
           isInstallBannerOpen,
@@ -88,6 +95,7 @@ export const Profile = (props: ProfileProps) => {
       <AppProvider
         value={{
           data: profileData,
+          commonData,
           refs: {
             homeRef,
             orgRef,
