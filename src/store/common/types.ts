@@ -4,5 +4,13 @@ export interface IMaintenance {
   image: string;
 }
 
-type IconType = Record<string, { icon: string; pdfExportIcon: string }>;
-export type CommonDataType = Record<string, IconType>;
+export interface IIcon {
+  icon: string;
+  pdfExportIcon: string;
+}
+export interface ICommonData {
+  icons: {
+    star: IIcon;
+    starUnfilled: IIcon;
+  };
+}

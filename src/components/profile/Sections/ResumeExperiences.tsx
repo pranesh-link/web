@@ -37,24 +37,12 @@ export const ResumeExperiences = () => {
       >
         {experiences.info.map((experience, index) => (
           <section key={index} className="organization">
-            <div className="duration">{experience.duration}</div>
-            <h3 className={classNames("org-name", { "page-break": index > 0 })}>
+            <h3 className={classNames("org-name", { "page-break": false })}>
               {experience.organization}
+              <span className="duration">, {experience.duration}</span>
             </h3>
+
             <h3 className="designation">{experience.designation}</h3>
-            {/*TEMPORARY COMMENTING OUT */}
-            {/* <FlexBox className="projects">
-              <label className={classNames("projects-label", { export: true })}>
-                Projects
-              </label>
-              {experience.projects.map((project, index) => (
-                <span>
-                  {project.title}
-                  {index !== experience.projects.length - 1 && ","}
-                  &nbsp;
-                </span>
-              ))}
-            </FlexBox> */}
             <div
               className="responsibilities"
               dangerouslySetInnerHTML={{ __html: experience.responsibilities }}
@@ -79,14 +67,13 @@ const SectionWrapper = styled(FlexBoxSection)<{ icon: string }>`
     margin-block: 5px;
   }
   .duration {
-    font-size: 15px;
-    padding-top: 10px;
+    font-size: 13px;
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: bold;
   }
   .designation {
     font-size: 18px;
-    margin-block-start: 0;
+    margin-block: 5px;
   }
   .projects-label {
     text-transform: uppercase;
@@ -100,6 +87,7 @@ const SectionWrapper = styled(FlexBoxSection)<{ icon: string }>`
     ul {
       padding-inline-start: 5px;
       list-style-type: none;
+      margin-block: 5px;
       li {
         display: flex;
         padding-bottom: 7px;

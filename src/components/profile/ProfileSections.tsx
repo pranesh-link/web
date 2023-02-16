@@ -10,7 +10,6 @@ import { Contact } from "./Sections/Contact";
 import classNames from "classnames";
 import { Organizations } from "./Sections/Organizations";
 import { ResumeExperiences } from "./Sections/ResumeExperiences";
-import { ResumeSkills } from "./Sections/ResumeSkills";
 
 interface IProfileSectionsProps {
   exportProfile?: () => void;
@@ -58,7 +57,11 @@ const ProfileSections = (props: IProfileSectionsProps) => {
       <FlexBox direction="column" alignItems="center">
         <Separator className={classNames({ export: isExport })} />
       </FlexBox>
-      <SectionsWrapper className={classNames({ export: isExport })}>
+      <SectionsWrapper
+        isMobile={isMobile}
+        isExport={isExport}
+        className={classNames({ export: isExport })}
+      >
         <About
           aboutMe={aboutMe}
           links={links}

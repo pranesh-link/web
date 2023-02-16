@@ -30,6 +30,7 @@ export const DEFAULT_PWA: IPWA = {
   },
   bannerExpiryTime: 0,
 };
+
 export const DEFAULT_CONTEXT: IAppContext = {
   data: {
     header: {
@@ -93,7 +94,12 @@ export const DEFAULT_CONTEXT: IAppContext = {
     contactRef: React.createRef(),
     orgRef: React.createRef(),
   },
-  commonData: {},
+  commonData: {
+    icons: {
+      star: { icon: "", pdfExportIcon: "" },
+      "star-unfilled": { icon: "", pdfExportIcon: "" },
+    },
+  },
   isExport: false,
   isDownloading: false,
   isMobile: false,

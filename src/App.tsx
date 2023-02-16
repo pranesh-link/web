@@ -10,7 +10,7 @@ import {
 import { ISectionInfo } from "./store/profile/types";
 import { LoaderImg } from "./common/Elements";
 import LoaderIcon from "./assets/loader-icon.svg";
-import { CommonDataType } from "./store/common/types";
+import { ICommonData } from "./store/common/types";
 
 function App() {
   const queryParams = new URLSearchParams(window.location.search);
@@ -19,7 +19,9 @@ function App() {
   const [maintenance, setMaintenance] = useState(DEFAULT_MAINTENANCE_DATA);
   const [links, setLinks] = useState(DEFAULT_CONTEXT.data.sections.links);
   const [pwa, setPwa] = useState(DEFAULT_PWA);
-  const [commonData, setCommonData] = useState<CommonDataType>({});
+  const [commonData, setCommonData] = useState<ICommonData>(
+    DEFAULT_CONTEXT.commonData
+  );
   const [hasError, setHasError] = useState(false);
 
   const fetchSections = async (jsonToFetch: string, data: ISectionInfo) => {

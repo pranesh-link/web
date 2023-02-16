@@ -1,10 +1,9 @@
-import { CommonDataType } from "../common/types";
+import { ICommonData } from "../common/types";
 
 export interface IProfileData {
   header: IHeader;
   sections: SectionsType;
   download: DownloadType;
-  // resumeExperience: IResumeExperience;
 }
 
 export type SectionsType = {
@@ -64,7 +63,7 @@ export type InfoType =
 
 export interface ISkill {
   label: string;
-  info: string;
+  star: number;
 }
 
 export interface IOrganization {
@@ -76,6 +75,7 @@ export interface IOrganization {
 }
 
 export interface IDetailInfo extends ISkill {
+  info: string;
   canCopy?: boolean;
   icon: string;
   pdfExportIcon: string;
@@ -124,7 +124,7 @@ export interface IAppContext {
   refs: {
     [key in RefTypes]: React.MutableRefObject<any>;
   };
-  commonData: CommonDataType;
+  commonData: ICommonData;
   isExport?: boolean;
   isDownloading?: boolean;
   isMobile: boolean;

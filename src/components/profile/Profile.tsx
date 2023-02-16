@@ -7,7 +7,7 @@ import { AppProvider } from "../../store/profile/context";
 import { IProfileData } from "../../store/profile/types";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { CommonDataType } from "../../store/common/types";
+import { ICommonData } from "../../store/common/types";
 
 interface ProfileProps {
   profileData: IProfileData;
@@ -17,7 +17,7 @@ interface ProfileProps {
   educationRef: React.MutableRefObject<any>;
   contactRef: React.MutableRefObject<any>;
   orgRef: React.MutableRefObject<any>;
-  commonData: CommonDataType;
+  commonData: ICommonData;
   isDownloading: boolean;
   isMobile: boolean;
   isHamburgerMenuOpen: boolean;

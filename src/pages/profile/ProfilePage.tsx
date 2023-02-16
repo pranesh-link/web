@@ -29,13 +29,13 @@ import { CloseButton, LoaderImg } from "../../common/Elements";
 import CloseIcon from "../../assets/close-icon.svg";
 import LoaderIcon from "../../assets/loader-icon.svg";
 import "react-toastify/dist/ReactToastify.css";
-import { CommonDataType } from "../../store/common/types";
+import { ICommonData } from "../../store/common/types";
 
 interface ProfilePageProps {
   pwa: IPWA;
   hasError: boolean;
   isExport: boolean;
-  commonData: CommonDataType;
+  commonData: ICommonData;
 }
 
 const ProfilePage = (props: ProfilePageProps) => {

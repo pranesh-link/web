@@ -127,7 +127,7 @@ export const AboutMeDetails = (props: AboutMeDetailsProps) => {
         {details.info.map((detail, index) => (
           <FlexBox key={index} direction="column" className="mobile-detail">
             <Grid
-              gridTemplateColumns="1fr 1fr"
+              gridTemplateColumns={detail.canCopy ? "2fr 1fr" : "1fr"}
               className="detail-info"
               key={index}
               onMouseEnter={() => {
@@ -198,10 +198,10 @@ const CopyButton = styled.button`
     height: 20px;
   }
   &.hide {
-    visibility: hidden;
+    display: none;
   }
   &.mobile {
-    visibility: visible;
+    display: inline-block;
     img {
       width: 15px;
       height: 15px;
