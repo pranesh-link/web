@@ -65,6 +65,10 @@ export const DEFAULT_CONTEXT: IAppContext = {
         title: "",
         info: "",
       },
+      resumeExperiences: {
+        title: "",
+        info: [],
+      },
     },
     download: {
       download: {
@@ -89,6 +93,7 @@ export const DEFAULT_CONTEXT: IAppContext = {
     contactRef: React.createRef(),
     orgRef: React.createRef(),
   },
+  commonData: {},
   isExport: false,
   isDownloading: false,
   isMobile: false,
@@ -115,6 +120,7 @@ export const SECTIONS = {
   EXPERIENCE: "experiences",
   LINKS: "links",
   DOWNLOAD: "download",
+  RESUME_EXPERIENCES: "resume-experiences",
 };
 
 export const PAGE_TITLES = {
