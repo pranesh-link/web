@@ -1,11 +1,7 @@
 import styled from "styled-components";
 import React, { useContext } from "react";
 import { ISkill, ISectionInfo } from "../../../store/profile/types";
-import {
-  getIconUrlByExportFlag,
-  valueIsArray,
-  valueIsSkillInfo,
-} from "../../../common/Utils";
+import { valueIsArray, valueIsSkillInfo } from "../../../common/Utils";
 import {
   FlexBox,
   FlexBoxSection,
@@ -15,6 +11,8 @@ import {
 import classNames from "classnames";
 import { AppContext } from "../../../store/profile/context";
 import { IIcon } from "../../../store/common/types";
+import StarIcon from "../../../assets/star.svg";
+import StarUnfilledIcon from "../../../assets/star-unfilled.svg";
 
 interface ISkillsProps {
   isExport?: boolean;
@@ -30,15 +28,13 @@ export const Skills = (props: ISkillsProps) => {
     isMobile,
   } = useContext(AppContext);
 
-  const getSkillStars = (star: IIcon, text: string, index: number) => {
-    return (
-      <img
-        key={index}
-        alt={text}
-        className="star"
-        src={getIconUrlByExportFlag(star.icon, star.pdfExportIcon, isExport)}
-      />
-    );
+  const getSkillStars = (
+    star: IIcon,
+    text: string,
+    index: number,
+    icon: string
+  ) => {
+    return <img key={index} alt={text} className="star" src={icon} />;
   };
 
   const getSkillWithStars = (starNum: number) => {
@@ -48,8 +44,13 @@ export const Skills = (props: ISkillsProps) => {
           .fill(null)
           .map((_item, index) => {
             return index + 1 <= starNum
-              ? getSkillStars(star, "Star filled", index)
-              : getSkillStars(starUnfilled, "Star unfilled", index);
+              ? getSkillStars(star, "Star filled", index, StarIcon)
+              : getSkillStars(
+                  starUnfilled,
+                  "Star unfilled",
+                  index,
+                  StarUnfilledIcon
+                );
           })}
       </FlexBox>
     );

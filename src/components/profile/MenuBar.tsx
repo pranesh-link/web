@@ -9,7 +9,7 @@ import { scrollTo } from "./ScrollTo";
 interface IMenuBarProps {
   isMobileMenu?: boolean;
   closeHamburgerMenu?: () => void;
-  onMenuChange: (section: string) => void;
+  onMenuChange?: (section: string) => void;
 }
 const MenuBar = (props: IMenuBarProps) => {
   const { refs, data, currentSection, isInstallBannerOpen } =
@@ -61,7 +61,9 @@ const MenuBar = (props: IMenuBarProps) => {
       },
       { section: "aboutMe", pos: isInstallBannerOpen ? 90 : 0 }
     );
-    onMenuChange(resultPosition.section);
+    if (onMenuChange) {
+      onMenuChange(resultPosition.section);
+    }
   };
 
   const debounce = (method: () => void, delay: number) => {
