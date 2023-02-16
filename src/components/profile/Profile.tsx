@@ -7,6 +7,7 @@ import { AppProvider } from "../../store/profile/context";
 import { IProfileData } from "../../store/profile/types";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
+import { ICommonData } from "../../store/common/types";
 
 interface ProfileProps {
   profileData: IProfileData;
@@ -16,10 +17,12 @@ interface ProfileProps {
   educationRef: React.MutableRefObject<any>;
   contactRef: React.MutableRefObject<any>;
   orgRef: React.MutableRefObject<any>;
+  commonData: ICommonData;
   isDownloading: boolean;
   isMobile: boolean;
   isHamburgerMenuOpen: boolean;
   isInstallBannerOpen: boolean;
+  isExport: boolean;
   setIsDownloading: (isDownloading: boolean) => void;
   setIsHamburgerMenuOpen: (isHamburgerMenuOpen: boolean) => void;
 }
@@ -27,6 +30,7 @@ interface ProfileProps {
 export const Profile = (props: ProfileProps) => {
   const {
     profileData,
+    commonData,
     homeRef,
     skillsRef,
     experienceRef,
@@ -37,11 +41,13 @@ export const Profile = (props: ProfileProps) => {
     isMobile,
     isHamburgerMenuOpen,
     isInstallBannerOpen,
+    isExport,
     setIsDownloading,
     setIsHamburgerMenuOpen,
   } = props;
   const [hasDownloadedProfile, setHasDownloadedProfile] =
     useState<boolean>(false);
+  const [currentSection, setCurrentSection] = useState<string>("aboutMe");
   let timer: NodeJS.Timeout;
   useEffect(() => {
     return () => clearTimeout(timer);
@@ -62,6 +68,9 @@ export const Profile = (props: ProfileProps) => {
             contactRef,
             orgRef,
           },
+          currentSection,
+          commonData,
+          isExport,
           isDownloading,
           isMobile,
           isInstallBannerOpen,
@@ -71,9 +80,10 @@ export const Profile = (props: ProfileProps) => {
         <HamBurgerMenu
           isOpen={isHamburgerMenuOpen}
           setIsOpen={(isOpen) => setIsHamburgerMenuOpen(isOpen)}
+          onMenuChange={(section) => setCurrentSection(section)}
         />
         {isMobile && <Swipe onTouchMove={() => setIsHamburgerMenuOpen(true)} />}
-        <MenuBar />
+        <MenuBar onMenuChange={(section) => setCurrentSection(section)} />
         <ProfileSections
           exportProfile={() => {
             setIsDownloading(true);
@@ -88,6 +98,7 @@ export const Profile = (props: ProfileProps) => {
       <AppProvider
         value={{
           data: profileData,
+          commonData,
           refs: {
             homeRef,
             orgRef,
@@ -96,6 +107,7 @@ export const Profile = (props: ProfileProps) => {
             educationRef,
             contactRef,
           },
+          currentSection,
           isExport: true,
           isMobile,
           isInstallBannerOpen,
@@ -114,7 +126,6 @@ export const Profile = (props: ProfileProps) => {
             fileName={PROFILE_PDF_NAME}
             ref={(component: PDFExport) => (pdfExportComponent = component)}
           >
-            <MenuBar />
             <ProfileSections />
           </PDFExport>
         </div>

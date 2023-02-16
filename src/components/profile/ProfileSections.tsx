@@ -9,6 +9,7 @@ import { Education } from "./Sections/Education";
 import { Contact } from "./Sections/Contact";
 import classNames from "classnames";
 import { Organizations } from "./Sections/Organizations";
+import { ResumeExperiences } from "./Sections/ResumeExperiences";
 
 interface IProfileSectionsProps {
   exportProfile?: () => void;
@@ -56,7 +57,11 @@ const ProfileSections = (props: IProfileSectionsProps) => {
       <FlexBox direction="column" alignItems="center">
         <Separator className={classNames({ export: isExport })} />
       </FlexBox>
-      <SectionsWrapper className={classNames({ export: isExport })}>
+      <SectionsWrapper
+        isMobile={isMobile}
+        isExport={isExport}
+        className={classNames({ export: isExport })}
+      >
         <About
           aboutMe={aboutMe}
           links={links}
@@ -73,18 +78,24 @@ const ProfileSections = (props: IProfileSectionsProps) => {
           education={education}
           refObj={educationRef}
         />
-        <Organizations
-          isExport={isExport}
-          isMobile={isMobile}
-          organizations={organizations}
-          refObj={orgRef}
-        />
+        {!isExport && (
+          <Organizations
+            isExport={isExport}
+            isMobile={isMobile}
+            organizations={organizations}
+            refObj={orgRef}
+          />
+        )}
         <Skills isExport={isExport} skills={skills} refObj={skillsRef} />
-        <Experiences
-          isExport={isExport}
-          experiences={experience}
-          refObj={experienceRef}
-        />
+        {isExport ? (
+          <ResumeExperiences />
+        ) : (
+          <Experiences
+            isExport={isExport}
+            experiences={experience}
+            refObj={experienceRef}
+          />
+        )}
         {!isExport && <Contact links={links} refObj={contactRef} />}
       </SectionsWrapper>
     </Wrapper>

@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { FlexBoxSection } from "../../common/Elements";
 import { AppContext } from "../../store/profile/context";
@@ -9,14 +9,17 @@ import { scrollTo } from "./ScrollTo";
 interface IMenuBarProps {
   isMobileMenu?: boolean;
   closeHamburgerMenu?: () => void;
+  onMenuChange: (section: string) => void;
 }
 const MenuBar = (props: IMenuBarProps) => {
-  const { refs, data } = React.useContext(AppContext);
-
-  const [currentSection, setCurrentSection] = useState<string>("about");
-
+  const { refs, data, currentSection, isInstallBannerOpen } =
+    React.useContext(AppContext);
+  const { onMenuChange } = props;
   const goTo = (section: string) => {
-    scrollTo(`#${section}`, props.isMobileMenu ? 90 : 20);
+    scrollTo(
+      `#${section}`,
+      props.isMobileMenu ? 90 : isInstallBannerOpen ? 110 : 20
+    );
   };
   let timeout: any;
   const menuItems = Object.keys(data.sections).reduce(
@@ -41,7 +44,12 @@ const MenuBar = (props: IMenuBarProps) => {
         const currentRef = refs[ref as RefTypes];
         if (currentRef.current) {
           let pos = currentRef.current.getBoundingClientRect().top;
-          pos = window.innerWidth < 768 ? pos - 95 : pos - 30;
+          pos =
+            window.innerWidth < 768
+              ? pos - 95
+              : isInstallBannerOpen
+              ? pos - 120
+              : pos - 30;
           if (index === 0 || (pos <= 0 && pos > result.pos)) {
             return {
               section,
@@ -51,9 +59,9 @@ const MenuBar = (props: IMenuBarProps) => {
         }
         return result;
       },
-      { section: "aboutMe", pos: 0 }
+      { section: "aboutMe", pos: isInstallBannerOpen ? 90 : 0 }
     );
-    setCurrentSection(resultPosition.section);
+    onMenuChange(resultPosition.section);
   };
 
   const debounce = (method: () => void, delay: number) => {

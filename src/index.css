@@ -7,6 +7,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-size: 15px;
   color: #3e3e3e;
+  overflow-y: overlay;
 }
 
 html {
@@ -23,6 +24,24 @@ p {
 }
 
 li,
-.k-pdf-export li {
-  list-style: lower-roman;
+.k-pdf-export ul {
+  padding-inline-start: 5px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: none;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1671ee;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1671ee;
 }

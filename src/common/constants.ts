@@ -30,6 +30,7 @@ export const DEFAULT_PWA: IPWA = {
   },
   bannerExpiryTime: 0,
 };
+
 export const DEFAULT_CONTEXT: IAppContext = {
   data: {
     header: {
@@ -65,6 +66,10 @@ export const DEFAULT_CONTEXT: IAppContext = {
         title: "",
         info: "",
       },
+      resumeExperiences: {
+        title: "",
+        info: [],
+      },
     },
     download: {
       download: {
@@ -89,6 +94,13 @@ export const DEFAULT_CONTEXT: IAppContext = {
     contactRef: React.createRef(),
     orgRef: React.createRef(),
   },
+  commonData: {
+    icons: {
+      star: { icon: "", pdfExportIcon: "" },
+      starUnfilled: { icon: "", pdfExportIcon: "" },
+    },
+  },
+  currentSection: "about",
   isExport: false,
   isDownloading: false,
   isMobile: false,
@@ -115,6 +127,7 @@ export const SECTIONS = {
   EXPERIENCE: "experiences",
   LINKS: "links",
   DOWNLOAD: "download",
+  RESUME_EXPERIENCES: "resume-experiences",
 };
 
 export const PAGE_TITLES = {

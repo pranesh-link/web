@@ -6,6 +6,7 @@ import {
   InfoType,
   IOrganization,
   IOrgProject,
+  IResumeOrg,
   ISectionInfo,
   ISkill,
 } from "../store/profile/types";
@@ -24,6 +25,9 @@ export const valueIsOrgProjectInfo = (
   return (item as IOrgProject[])[0].organization !== undefined;
 };
 
+export const valueIsResumeOrgInfo = (item: InfoType): item is IResumeOrg[] => {
+  return (item as IResumeOrg[])[0].organization !== undefined;
+};
 export const valueIsSkillInfo = (item: InfoType): item is ISkill[] => {
   return (item as ISkill[])[0].label !== undefined;
 };

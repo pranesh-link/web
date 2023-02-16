@@ -1,3 +1,5 @@
+import { ICommonData } from "../common/types";
+
 export interface IProfileData {
   header: IHeader;
   sections: SectionsType;
@@ -20,6 +22,23 @@ export interface ISectionInfo {
   pdfExportIcon?: string;
 }
 
+export interface IResumeExperience {
+  title: string;
+  info: IResumeOrg[];
+}
+
+export interface IResumeOrg {
+  organization: string;
+  responsibilities: string;
+  designation: string;
+  duration: string;
+  projects: {
+    title: string;
+    client: string;
+    links: string[];
+  }[];
+}
+
 type DownloadStages = "download" | "downloading" | "downloaded";
 
 export type DownloadType = {
@@ -40,11 +59,11 @@ export interface IPWA {
 
 export type InfoType =
   | string
-  | (ISkill | IOrgProject | ILink | IDetailInfo | IOrganization)[];
+  | (ISkill | IOrgProject | ILink | IDetailInfo | IOrganization | IResumeOrg)[];
 
 export interface ISkill {
   label: string;
-  info: string;
+  star: number;
 }
 
 export interface IOrganization {
@@ -56,6 +75,7 @@ export interface IOrganization {
 }
 
 export interface IDetailInfo extends ISkill {
+  info: string;
   canCopy?: boolean;
   icon: string;
   pdfExportIcon: string;
@@ -88,7 +108,8 @@ export type ProfileSectionType =
   | "experience"
   | "education"
   | "links"
-  | "organizations";
+  | "organizations"
+  | "resumeExperiences";
 
 export type RefTypes =
   | "homeRef"
@@ -103,6 +124,8 @@ export interface IAppContext {
   refs: {
     [key in RefTypes]: React.MutableRefObject<any>;
   };
+  currentSection: string;
+  commonData: ICommonData;
   isExport?: boolean;
   isDownloading?: boolean;
   isMobile: boolean;

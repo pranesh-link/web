@@ -124,7 +124,10 @@ export const Desc = styled.p`
   }
 `;
 
-export const SectionsWrapper = styled.section`
+export const SectionsWrapper = styled.section<{
+  isMobile: boolean;
+  isExport: boolean;
+}>`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -264,14 +267,12 @@ export const SectionsWrapper = styled.section`
         }
       }
       .profile-image {
-        width: 200px;
-        height: 200px;
+        width: ${(props) =>
+          props.isMobile && !props.isExport ? "125px" : "200px"};
+        height: ${(props) =>
+          props.isMobile && !props.isExport ? "125px" : "200px"};
         border-radius: 50%;
         border: 2px solid #dddbca;
-        @media screen and (max-width: 767px) {
-          width: 125px;
-          height: 125px;
-        }
       }
     }
     .details {

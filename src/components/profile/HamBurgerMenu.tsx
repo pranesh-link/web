@@ -16,12 +16,15 @@ import CloseIcon from "../../assets/close-icon.svg";
 interface IHamburgerMenuProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  onMenuChange: (section: string) => void;
 }
 
 export const HamBurgerMenu = (props: IHamburgerMenuProps) => {
-  const { isOpen, setIsOpen } = props;
+  const { isOpen, setIsOpen, onMenuChange } = props;
   const contentRef = React.useRef<HTMLDivElement>(null);
   const {
+    isMobile,
+    isExport = false,
     data,
     refs: { contactRef },
   } = React.useContext(AppContext);
@@ -85,9 +88,14 @@ export const HamBurgerMenu = (props: IHamburgerMenuProps) => {
               <MenuBar
                 isMobileMenu={true}
                 closeHamburgerMenu={() => setIsOpen(false)}
+                onMenuChange={(section) => onMenuChange(section)}
               />
               <label className="find-me">Find me @</label>
-              <SectionsWrapper className="hamburger-menu">
+              <SectionsWrapper
+                isMobile={isMobile}
+                isExport={isExport}
+                className="hamburger-menu"
+              >
                 <Contact links={links} refObj={contactRef} />
               </SectionsWrapper>
             </ContentSection>
