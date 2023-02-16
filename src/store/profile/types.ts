@@ -1,7 +1,10 @@
+import { CommonDataType } from "../common/types";
+
 export interface IProfileData {
   header: IHeader;
   sections: SectionsType;
   download: DownloadType;
+  // resumeExperience: IResumeExperience;
 }
 
 export type SectionsType = {
@@ -18,6 +21,23 @@ export interface ISectionInfo {
   ref?: string;
   icon?: string;
   pdfExportIcon?: string;
+}
+
+export interface IResumeExperience {
+  title: string;
+  info: IResumeOrg[];
+}
+
+export interface IResumeOrg {
+  organization: string;
+  responsibilities: string;
+  designation: string;
+  duration: string;
+  projects: {
+    title: string;
+    client: string;
+    links: string[];
+  }[];
 }
 
 type DownloadStages = "download" | "downloading" | "downloaded";
@@ -40,7 +60,7 @@ export interface IPWA {
 
 export type InfoType =
   | string
-  | (ISkill | IOrgProject | ILink | IDetailInfo | IOrganization)[];
+  | (ISkill | IOrgProject | ILink | IDetailInfo | IOrganization | IResumeOrg)[];
 
 export interface ISkill {
   label: string;
@@ -88,7 +108,8 @@ export type ProfileSectionType =
   | "experience"
   | "education"
   | "links"
-  | "organizations";
+  | "organizations"
+  | "resumeExperiences";
 
 export type RefTypes =
   | "homeRef"
@@ -103,6 +124,7 @@ export interface IAppContext {
   refs: {
     [key in RefTypes]: React.MutableRefObject<any>;
   };
+  commonData: CommonDataType;
   isExport?: boolean;
   isDownloading?: boolean;
   isMobile: boolean;

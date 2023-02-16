@@ -29,10 +29,13 @@ import { CloseButton, LoaderImg } from "../../common/Elements";
 import CloseIcon from "../../assets/close-icon.svg";
 import LoaderIcon from "../../assets/loader-icon.svg";
 import "react-toastify/dist/ReactToastify.css";
+import { CommonDataType } from "../../store/common/types";
 
 interface ProfilePageProps {
   pwa: IPWA;
   hasError: boolean;
+  isExport: boolean;
+  commonData: CommonDataType;
 }
 
 const ProfilePage = (props: ProfilePageProps) => {
@@ -43,7 +46,7 @@ const ProfilePage = (props: ProfilePageProps) => {
   const contactRef = useRef(null);
   const orgRef = useRef(null);
 
-  const { pwa, hasError } = props;
+  const { pwa, hasError, isExport, commonData } = props;
   const [hasErrorInProfile, setHasErrorInProfile] = useState<boolean>(hasError);
   const { isInstallPromptSupported, promptInstall } = usePWA();
 
@@ -97,6 +100,7 @@ const ProfilePage = (props: ProfilePageProps) => {
       EXPERIENCE,
       LINKS,
       DOWNLOAD,
+      RESUME_EXPERIENCES,
     } = SECTIONS;
 
     const fetchSections = async (jsonToFetch: string, data: ISectionInfo) => {
@@ -133,6 +137,7 @@ const ProfilePage = (props: ProfilePageProps) => {
         experience,
         links,
         download,
+        resumeExperiences,
       ] = await Promise.all([
         fetchHeader(HEADER, DEFAULT_CONTEXT.data.header),
         fetchSections(ABOUT_ME, DEFAULT_SECTIONS_DETAILS),
@@ -143,6 +148,7 @@ const ProfilePage = (props: ProfilePageProps) => {
         fetchSections(EXPERIENCE, DEFAULT_SECTIONS_DETAILS),
         fetchSections(LINKS, DEFAULT_SECTIONS_DETAILS),
         fetchDownloadInfo(DOWNLOAD, DEFAULT_CONTEXT.data.download),
+        fetchSections(RESUME_EXPERIENCES, DEFAULT_SECTIONS_DETAILS),
       ]);
 
       const sections = {
@@ -153,6 +159,7 @@ const ProfilePage = (props: ProfilePageProps) => {
         skills,
         experience,
         links,
+        resumeExperiences,
       };
       setProfileData({ header, sections, download });
       setIsFetchingData(false);
@@ -178,6 +185,8 @@ const ProfilePage = (props: ProfilePageProps) => {
       />
       {!hasErrorInProfile && (
         <Profile
+          commonData={commonData}
+          isExport={isExport}
           profileData={profileData}
           homeRef={homeRef}
           skillsRef={skillsRef}
@@ -201,7 +210,7 @@ const ProfilePage = (props: ProfilePageProps) => {
           }
         />
       )}
-      {!hasErrorInProfile && (
+      {!hasErrorInProfile && !isExport && (
         <PWABanner
           pwa={pwa}
           isMobile={IS_MOBILE}
