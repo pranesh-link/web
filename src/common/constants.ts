@@ -97,9 +97,10 @@ export const DEFAULT_CONTEXT: IAppContext = {
   commonData: {
     icons: {
       star: { icon: "", pdfExportIcon: "" },
-      "star-unfilled": { icon: "", pdfExportIcon: "" },
+      starUnfilled: { icon: "", pdfExportIcon: "" },
     },
   },
+  currentSection: "about",
   isExport: false,
   isDownloading: false,
   isMobile: false,

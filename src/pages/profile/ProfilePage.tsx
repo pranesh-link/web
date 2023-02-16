@@ -25,7 +25,12 @@ import {
   IPWA,
 } from "../../store/profile/types";
 import styled from "styled-components";
-import { CloseButton, LoaderImg } from "../../common/Elements";
+import {
+  CloseButton,
+  FlexBox,
+  FlexBoxSection,
+  LoaderImg,
+} from "../../common/Elements";
 import CloseIcon from "../../assets/close-icon.svg";
 import LoaderIcon from "../../assets/loader-icon.svg";
 import "react-toastify/dist/ReactToastify.css";

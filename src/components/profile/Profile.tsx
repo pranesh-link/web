@@ -47,6 +47,7 @@ export const Profile = (props: ProfileProps) => {
   } = props;
   const [hasDownloadedProfile, setHasDownloadedProfile] =
     useState<boolean>(false);
+  const [currentSection, setCurrentSection] = useState<string>("aboutMe");
   let timer: NodeJS.Timeout;
   useEffect(() => {
     return () => clearTimeout(timer);
@@ -67,6 +68,7 @@ export const Profile = (props: ProfileProps) => {
             contactRef,
             orgRef,
           },
+          currentSection,
           commonData,
           isExport,
           isDownloading,
@@ -78,9 +80,10 @@ export const Profile = (props: ProfileProps) => {
         <HamBurgerMenu
           isOpen={isHamburgerMenuOpen}
           setIsOpen={(isOpen) => setIsHamburgerMenuOpen(isOpen)}
+          onMenuChange={(section) => setCurrentSection(section)}
         />
         {isMobile && <Swipe onTouchMove={() => setIsHamburgerMenuOpen(true)} />}
-        <MenuBar />
+        <MenuBar onMenuChange={(section) => setCurrentSection(section)} />
         <ProfileSections
           exportProfile={() => {
             setIsDownloading(true);
@@ -104,6 +107,7 @@ export const Profile = (props: ProfileProps) => {
             educationRef,
             contactRef,
           },
+          currentSection,
           isExport: true,
           isMobile,
           isInstallBannerOpen,
@@ -122,7 +126,6 @@ export const Profile = (props: ProfileProps) => {
             fileName={PROFILE_PDF_NAME}
             ref={(component: PDFExport) => (pdfExportComponent = component)}
           >
-            <MenuBar />
             <ProfileSections />
           </PDFExport>
         </div>

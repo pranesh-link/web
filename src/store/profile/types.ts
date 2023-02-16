@@ -124,6 +124,7 @@ export interface IAppContext {
   refs: {
     [key in RefTypes]: React.MutableRefObject<any>;
   };
+  currentSection: string;
   commonData: ICommonData;
   isExport?: boolean;
   isDownloading?: boolean;
