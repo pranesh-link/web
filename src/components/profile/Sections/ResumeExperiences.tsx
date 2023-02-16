@@ -1,17 +1,10 @@
 import classNames from "classnames";
 import styled from "styled-components";
-import { SecHeader, FlexBoxSection, FlexBox } from "../../../common/Elements";
-import { ProjectInfo } from "../ProjectInfo";
+import { SecHeader, FlexBoxSection } from "../../../common/Elements";
 import { renderToStaticMarkup } from "react-dom/server";
 import React, { useContext, createElement } from "react";
 import { AppContext } from "../../../store/profile/context";
 import { valueIsArray, valueIsResumeOrgInfo } from "../../../common/Utils";
-import { ReactComponent as RightArrow } from "../../../assets/right-arrow.svg";
-
-const reactSvgComponentToMarkupString = (Component: React.FunctionComponent) =>
-  `data:image/svg+xml,${encodeURIComponent(
-    renderToStaticMarkup(createElement(Component))
-  )}`;
 
 export const ResumeExperiences = () => {
   const {

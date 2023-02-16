@@ -1,4 +1,3 @@
-import ReactTable from "react-table";
 import styled from "styled-components";
 import React, { useContext } from "react";
 import { ISkill, ISectionInfo } from "../../../store/profile/types";

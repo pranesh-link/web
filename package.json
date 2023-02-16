@@ -93,11 +93,17 @@
     "workbox-webpack-plugin": "5.1.4"
   },
   "scripts": {
+    "prepare": "husky install",
     "start": "GENERATE_SOURCEMAP=true node scripts/start.js",
     "wStart": "set \"GENERATE_SOURCEMAP=false\" && node scripts/start.js",
     "build": "GENERATE_SOURCEMAP=false node scripts/build.js",
     "wBuild": "set \"GENERATE_SOURCEMAP=false\" && node scripts/build.js",
     "test": "node scripts/test.js"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "yarn wBuild"
+    }
   },
   "eslintConfig": {
     "extends": [
@@ -121,7 +127,8 @@
     "@types/classnames": "2.3.1",
     "@types/react-table": "6.7.15",
     "@types/react-transition-group": "4.4.0",
-    "@types/styled-components": "5.1.7"
+    "@types/styled-components": "5.1.7",
+    "husky": "^8.0.3"
   },
   "jest": {
     "roots": [
