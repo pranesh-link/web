@@ -1,6 +1,7 @@
+/* eslint-disable no-restricted-globals */
+import { precacheAndRoute } from "workbox-precaching";
 var CACHE_NAME = "pwa-task-manager";
 var urlsToCache = ["/", "/index.html"];
-import { precacheAndRoute } from "workbox-precaching";
 
 precacheAndRoute(self.__WB_MANIFEST);
 
@@ -34,6 +35,7 @@ self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
+        // eslint-disable-next-line array-callback-return
         cacheNames.map((cacheName) => {
           if (cacheWhitelist.indexOf(cacheName) === -1) {
             return caches.delete(cacheName);

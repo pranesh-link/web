@@ -10,7 +10,6 @@ import {
 } from "../../../common/Elements";
 import classNames from "classnames";
 import { AppContext } from "../../../store/profile/context";
-import { IIcon } from "../../../store/common/types";
 import StarIcon from "../../../assets/star.svg";
 import StarUnfilledIcon from "../../../assets/star-unfilled.svg";
 
@@ -21,62 +20,43 @@ interface ISkillsProps {
 }
 export const Skills = (props: ISkillsProps) => {
   const { refObj, skills, isExport = false } = props;
-  const {
-    commonData: {
-      icons: { star, starUnfilled },
-    },
-    isMobile,
-  } = useContext(AppContext);
+  const { isMobile } = useContext(AppContext);
 
-  const getSkillStars = (
-    star: IIcon,
-    text: string,
-    index: number,
-    icon: string
-  ) => {
-    return <img key={index} alt={text} className="star" src={icon} />;
-  };
+  const getSkillStars = (text: string, index: number, icon: string) => (
+    <img key={index} alt={text} className="star" src={icon} />
+  );
 
-  const getSkillWithStars = (starNum: number) => {
-    return (
-      <FlexBox className="stars">
-        {Array(5)
-          .fill(null)
-          .map((_item, index) => {
-            return index + 1 <= starNum
-              ? getSkillStars(star, "Star filled", index, StarIcon)
-              : getSkillStars(
-                  starUnfilled,
-                  "Star unfilled",
-                  index,
-                  StarUnfilledIcon
-                );
-          })}
-      </FlexBox>
-    );
-  };
+  const getSkillWithStars = (starNum: number) => (
+    <FlexBox className="stars">
+      {Array(5)
+        .fill(null)
+        .map((_item, index) => {
+          let skillText = "Star unfilled",
+            starIcon = StarUnfilledIcon;
+          if (index + 1 <= starNum) {
+            skillText = "Star filled";
+            starIcon = StarIcon;
+          }
+          return getSkillStars(skillText, index, starIcon);
+        })}
+    </FlexBox>
+  );
 
-  const getColumnData = (skill: ISkill) => {
-    return (
-      <FlexBox className="skill">
-        <div className="skill-label">
-          <strong>{skill.label}</strong>
-        </div>
-        {getSkillWithStars(skill.star)}
-      </FlexBox>
-    );
-  };
+  const getColumnData = (skill: ISkill) => (
+    <FlexBox className="skill">
+      <div className="skill-label">
+        <strong>{skill.label}</strong>
+      </div>
+      {getSkillWithStars(skill.star)}
+    </FlexBox>
+  );
 
-  const getStarredSkillsData = () => {
-    const { info } = skills;
-    return valueIsArray(info) && valueIsSkillInfo(info)
-      ? info.map((skill: ISkill, index: number) => {
-          return <div key={index}>{getColumnData(skill)}</div>;
-        })
-      : [];
-  };
-
-  const skillsData = getStarredSkillsData();
+  const getStarredSkillsData = () =>
+    valueIsArray(skills.info) && valueIsSkillInfo(skills.info)
+      ? skills.info.map((skill: ISkill, index: number) => (
+          <div key={index}>{getColumnData(skill)}</div>
+        ))
+      : null;
 
   return (
     <section
@@ -92,7 +72,7 @@ export const Skills = (props: ISkillsProps) => {
         isMobile={isMobile}
         justifyContent={isExport ? "normal" : "center"}
       >
-        <Grid gridTemplateColumns="1fr 1fr">{skillsData}</Grid>
+        <Grid gridTemplateColumns="1fr 1fr">{getStarredSkillsData()}</Grid>
       </SkillsInfoWrapper>
     </section>
   );
