@@ -5,7 +5,6 @@ import {
   DEFAULT_CONTEXT,
   DEFAULT_MAINTENANCE_DATA,
   DEFAULT_PWA,
-  IS_MOBILE,
 } from "./common/constants";
 import { ISectionInfo } from "./store/profile/types";
 import { LoaderImg } from "./common/Elements";
@@ -16,6 +15,7 @@ function App() {
   const queryParams = new URLSearchParams(window.location.search);
   const isAdmin = queryParams.get("admin");
   const isExport = !!queryParams.get("export");
+  const [isMobile, setIsMobile] = useState<boolean>(false);
   const [maintenance, setMaintenance] = useState(DEFAULT_MAINTENANCE_DATA);
   const [links, setLinks] = useState(DEFAULT_CONTEXT.data.sections.links);
   const [pwa, setPwa] = useState(DEFAULT_PWA);
@@ -35,6 +35,13 @@ function App() {
     setHasError(response.hasError);
     return response.data;
   };
+
+  const setViewportProps = () => setIsMobile(window.innerWidth < 767);
+
+  useEffect(() => {
+    window.addEventListener("resize", setViewportProps);
+    return () => window.removeEventListener("resize", setViewportProps);
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -63,10 +70,10 @@ function App() {
 
   return (
     <div>
-      <Suspense fallback={<LoaderImg isMobile={IS_MOBILE} src={LoaderIcon} />}>
+      <Suspense fallback={<LoaderImg isMobile={isMobile} src={LoaderIcon} />}>
         <BrowserRouter>
           <Routes>
-            {!hasError && maintenance?.isUnderMaintenance && !isAdmin ? (
+            {!hasError && !isAdmin && maintenance?.isUnderMaintenance ? (
               <>
                 <Route path="*" element={<Navigate to="/maintenance" />} />
                 <Route
@@ -74,6 +81,7 @@ function App() {
                   element={
                     <>
                       <MaintenancePageComponent
+                        isMobile={isMobile}
                         maintenance={maintenance}
                         links={links}
                       />
@@ -89,6 +97,7 @@ function App() {
                   element={
                     <>
                       <ProfilePageComponent
+                        isMobile={isMobile}
                         isExport={isExport}
                         hasError={hasError}
                         pwa={pwa}

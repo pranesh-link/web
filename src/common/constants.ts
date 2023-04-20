@@ -17,11 +17,6 @@ export const COPIED = "copied";
 export const NOT_COPIED = "not-copied";
 export const COPIED_TEXT = "Copied!";
 
-export const IS_MOBILE =
-  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    navigator.userAgent
-  );
-
 export const DEFAULT_PWA: IPWA = {
   messages: {
     install: "",
@@ -138,4 +133,13 @@ export const DEFAULT_MAINTENANCE_DATA: IMaintenance = {
   isUnderMaintenance: false,
   message: "",
   image: "",
+};
+
+export const SECTION_ORDER: Record<string, number> = {
+  ABOUT: 1,
+  EDUCATION: 4,
+  ORGANIZATIONS: 3,
+  SKILLS: 2,
+  EXPERIENCES: 5,
+  CONTACT: 6,
 };

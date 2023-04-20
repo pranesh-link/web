@@ -5,6 +5,7 @@ import { FlexBoxSection } from "../../common/Elements";
 import { AppContext } from "../../store/profile/context";
 import { ProfileSectionType, RefTypes } from "../../store/profile/types";
 import { scrollTo } from "./ScrollTo";
+import { SECTION_ORDER } from "../../common/constants";
 
 interface IMenuBarProps {
   isMobileMenu?: boolean;
@@ -22,20 +23,27 @@ const MenuBar = (props: IMenuBarProps) => {
     );
   };
   let timeout: any;
-  const menuItems = Object.keys(data.sections).reduce(
-    (
-      items: { title: string; ref: string; section: string }[],
-      current: string
-    ) => {
-      if (data.sections[current as ProfileSectionType].ref) {
-        const { title, ref = "" } =
-          data.sections[current as ProfileSectionType];
-        items.push({ section: current, title, ref });
-      }
-      return items;
-    },
-    []
-  );
+  const menuItems = Object.keys(data.sections)
+    .reduce(
+      (
+        items: { title: string; ref: string; section: string; order: number }[],
+        current: string
+      ) => {
+        if (data.sections[current as ProfileSectionType].ref) {
+          const { title, ref = "" } =
+            data.sections[current as ProfileSectionType];
+          items.push({
+            section: current,
+            title,
+            ref,
+            order: SECTION_ORDER[title.toUpperCase()],
+          });
+        }
+        return items;
+      },
+      []
+    )
+    .sort((a, b) => a.order - b.order);
 
   const handleScroll = () => {
     const resultPosition = menuItems.reduce(

@@ -8,14 +8,12 @@ import {
   TOAST_ERROR_MESSAGE,
   SECTIONS,
   TOAST_POSITION,
-  IS_MOBILE,
   PAGE_TITLES,
 } from "../../common/constants";
 import {
   getLocalStorage,
   setLocalStorage,
   getProfileJsonResponse,
-  getJsonResponse,
 } from "../../common/Utils";
 import {
   IProfileData,
@@ -35,6 +33,7 @@ interface ProfilePageProps {
   pwa: IPWA;
   hasError: boolean;
   isExport: boolean;
+  isMobile: boolean;
   commonData: ICommonData;
 }
 
@@ -46,7 +45,7 @@ const ProfilePage = (props: ProfilePageProps) => {
   const contactRef = useRef(null);
   const orgRef = useRef(null);
 
-  const { pwa, hasError, isExport, commonData } = props;
+  const { pwa, hasError, isExport, commonData, isMobile } = props;
   const [hasErrorInProfile, setHasErrorInProfile] = useState<boolean>(hasError);
   const { isInstallPromptSupported, promptInstall } = usePWA();
 
@@ -103,32 +102,32 @@ const ProfilePage = (props: ProfilePageProps) => {
       RESUME_EXPERIENCES,
     } = SECTIONS;
 
-    const fetchSections = async (jsonToFetch: string, data: ISectionInfo) => {
-      const response = await getProfileJsonResponse(jsonToFetch, data);
-      setHasErrorInProfile(response.hasError);
-      return response.data as ISectionInfo;
-    };
-
-    const fetchHeader = async (jsonToFetch: string, data: IHeader) => {
-      const response = await getProfileJsonResponse(jsonToFetch, data);
-      setHasErrorInProfile(response.hasError);
-      return response.data as IHeader;
-    };
-
-    const fetchDownloadInfo = async (
-      jsonToFetch: string,
-      data: DownloadType
-    ) => {
-      const response = await getJsonResponse(jsonToFetch, data);
-      setHasErrorInProfile(response.hasError);
-      return response.data as DownloadType;
-    };
-
     const DEFAULT_SECTIONS_DETAILS = DEFAULT_CONTEXT.data.sections.details;
+
+    const sectionsToFetch = [
+      ABOUT_ME,
+      DETAILS,
+      EDUCATION,
+      ORGANIZATIONS,
+      SKILLS,
+      EXPERIENCE,
+      LINKS,
+      RESUME_EXPERIENCES,
+    ];
+
+    const fetchInfo = async (
+      jsonToFetch: string,
+      data: ISectionInfo | IHeader | DownloadType
+    ) => {
+      const response = await getProfileJsonResponse(jsonToFetch, data);
+      setHasErrorInProfile(response.hasError);
+      return response.data;
+    };
 
     (async () => {
       const [
         header,
+        download,
         aboutMe,
         details,
         education,
@@ -136,19 +135,13 @@ const ProfilePage = (props: ProfilePageProps) => {
         skills,
         experience,
         links,
-        download,
         resumeExperiences,
       ] = await Promise.all([
-        fetchHeader(HEADER, DEFAULT_CONTEXT.data.header),
-        fetchSections(ABOUT_ME, DEFAULT_SECTIONS_DETAILS),
-        fetchSections(DETAILS, DEFAULT_SECTIONS_DETAILS),
-        fetchSections(EDUCATION, DEFAULT_SECTIONS_DETAILS),
-        fetchSections(ORGANIZATIONS, DEFAULT_SECTIONS_DETAILS),
-        fetchSections(SKILLS, DEFAULT_SECTIONS_DETAILS),
-        fetchSections(EXPERIENCE, DEFAULT_SECTIONS_DETAILS),
-        fetchSections(LINKS, DEFAULT_SECTIONS_DETAILS),
-        fetchDownloadInfo(DOWNLOAD, DEFAULT_CONTEXT.data.download),
-        fetchSections(RESUME_EXPERIENCES, DEFAULT_SECTIONS_DETAILS),
+        fetchInfo(HEADER, DEFAULT_CONTEXT.data.header),
+        fetchInfo(DOWNLOAD, DEFAULT_CONTEXT.data.download),
+        ...sectionsToFetch.map((section) =>
+          fetchInfo(section, DEFAULT_SECTIONS_DETAILS)
+        ),
       ]);
 
       const sections = {
@@ -172,7 +165,7 @@ const ProfilePage = (props: ProfilePageProps) => {
     }
   }, [hasErrorInProfile, ToastError]);
   return isFetchingData ? (
-    <LoaderImg isMobile={IS_MOBILE} src={LoaderIcon} />
+    <LoaderImg isMobile={isMobile} src={LoaderIcon} />
   ) : (
     <Wrapper>
       <ToastContainer
@@ -195,7 +188,7 @@ const ProfilePage = (props: ProfilePageProps) => {
           contactRef={contactRef}
           orgRef={orgRef}
           isDownloading={isDownloading}
-          isMobile={IS_MOBILE}
+          isMobile={isMobile}
           isInstallBannerOpen={
             !hasPWAInstalled &&
             isInstallPromptSupported &&
@@ -213,7 +206,7 @@ const ProfilePage = (props: ProfilePageProps) => {
       {!hasErrorInProfile && !isExport && (
         <PWABanner
           pwa={pwa}
-          isMobile={IS_MOBILE}
+          isMobile={isMobile}
           isInstallBannerOpen={!!isInstallBannerOpen}
           hasPWAInstalled={hasPWAInstalled}
           isInstallPromptSupported={isInstallPromptSupported}

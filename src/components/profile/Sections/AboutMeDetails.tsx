@@ -147,12 +147,9 @@ export const AboutMeDetails = (props: AboutMeDetailsProps) => {
     ) : null;
   };
 
-  let displayDetails = getDesktopDetails(details);
-
-  if (isMobile && !isExport) {
-    displayDetails = getMobileDetails(details);
-  }
-  return displayDetails;
+  return isMobile && !isExport
+    ? getMobileDetails(details)
+    : getDesktopDetails(details);
 };
 
 const DetailSection = styled(FlexBoxSection)<{

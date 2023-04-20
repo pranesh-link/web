@@ -10,6 +10,7 @@ import { Contact } from "./Sections/Contact";
 import classNames from "classnames";
 import { Organizations } from "./Sections/Organizations";
 import { ResumeExperiences } from "./Sections/ResumeExperiences";
+import { SECTION_ORDER } from "../../common/constants";
 
 interface IProfileSectionsProps {
   exportProfile?: () => void;
@@ -39,6 +40,106 @@ const ProfileSections = (props: IProfileSectionsProps) => {
     organizations,
   } = sections;
   const { shortDesc, name } = header;
+  const { ABOUT, EDUCATION, ORGANIZATIONS, SKILLS, EXPERIENCES, CONTACT } =
+    SECTION_ORDER;
+
+  const AboutComp = (
+    <About
+      aboutMe={aboutMe}
+      links={links}
+      details={details}
+      refObj={homeRef}
+      exportProfile={() => {
+        if (props.exportProfile) {
+          props.exportProfile();
+        }
+      }}
+    />
+  );
+
+  const EducationComp = (
+    <Education
+      isExport={isExport}
+      education={education}
+      refObj={educationRef}
+    />
+  );
+
+  const OrganizationsComp = (
+    <>
+      {!isExport && (
+        <Organizations
+          isExport={isExport}
+          isMobile={isMobile}
+          organizations={organizations}
+          refObj={orgRef}
+        />
+      )}
+    </>
+  );
+
+  const SkillsComp = (
+    <Skills isExport={isExport} skills={skills} refObj={skillsRef} />
+  );
+
+  const ExperiencesComp = (
+    <>
+      {isExport ? (
+        <ResumeExperiences />
+      ) : (
+        <Experiences
+          isExport={isExport}
+          experiences={experience}
+          refObj={experienceRef}
+        />
+      )}
+    </>
+  );
+
+  const ContactComp = (
+    <>{!isExport && <Contact links={links} refObj={contactRef} />}</>
+  );
+
+  const sectionComponents = [
+    {
+      order: ABOUT,
+      name: "about",
+      component: AboutComp,
+    },
+    {
+      order: EDUCATION,
+      name: "education",
+      component: EducationComp,
+    },
+    {
+      order: ORGANIZATIONS,
+      name: "organizations",
+      component: OrganizationsComp,
+    },
+    {
+      order: SKILLS,
+      name: "skills",
+      component: SkillsComp,
+    },
+    {
+      order: EXPERIENCES,
+      name: "experiences",
+      component: ExperiencesComp,
+    },
+    {
+      order: CONTACT,
+      name: "contact",
+      component: ContactComp,
+    },
+  ];
+
+  const reOrderedSectionComponents = sectionComponents.sort(
+    (a, b) => a.order - b.order
+  );
+
+  const HorizontalSep = () => (
+    <hr className={classNames("header-sep", { export: isExport })} />
+  );
 
   return (
     <Wrapper
@@ -50,9 +151,9 @@ const ProfileSections = (props: IProfileSectionsProps) => {
     >
       {!isExport && <ShortDesc>{shortDesc}</ShortDesc>}
       <PageHeader>
-        <hr className={classNames("header-sep", { export: isExport })} />
+        <HorizontalSep />
         <span>{name}</span>
-        <hr className={classNames("header-sep", { export: isExport })} />
+        <HorizontalSep />
       </PageHeader>
       <FlexBox direction="column" alignItems="center">
         <Separator className={classNames({ export: isExport })} />
@@ -62,41 +163,9 @@ const ProfileSections = (props: IProfileSectionsProps) => {
         isExport={isExport}
         className={classNames({ export: isExport })}
       >
-        <About
-          aboutMe={aboutMe}
-          links={links}
-          details={details}
-          refObj={homeRef}
-          exportProfile={() => {
-            if (props.exportProfile) {
-              props.exportProfile();
-            }
-          }}
-        />
-        <Education
-          isExport={isExport}
-          education={education}
-          refObj={educationRef}
-        />
-        {!isExport && (
-          <Organizations
-            isExport={isExport}
-            isMobile={isMobile}
-            organizations={organizations}
-            refObj={orgRef}
-          />
-        )}
-        <Skills isExport={isExport} skills={skills} refObj={skillsRef} />
-        {isExport ? (
-          <ResumeExperiences />
-        ) : (
-          <Experiences
-            isExport={isExport}
-            experiences={experience}
-            refObj={experienceRef}
-          />
-        )}
-        {!isExport && <Contact links={links} refObj={contactRef} />}
+        {reOrderedSectionComponents.map((section, index) => (
+          <div key={index}>{section.component}</div>
+        ))}
       </SectionsWrapper>
     </Wrapper>
   );
