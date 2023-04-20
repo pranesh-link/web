@@ -142,6 +142,7 @@ export const SectionsWrapper = styled.section<{
     padding-left: 0;
     padding-bottom: 0;
     height: unset;
+    padding: 0 10px;
     .profile-section {
       &.links {
         @media screen and (max-width: 767px) {
