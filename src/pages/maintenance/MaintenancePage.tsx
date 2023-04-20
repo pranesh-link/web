@@ -3,17 +3,17 @@ import { IMaintenance } from "../../store/common/types";
 import { Contact } from "../../components/profile/Sections/Contact";
 import { ISectionInfo } from "../../store/profile/types";
 import { useRef } from "react";
-import { IS_MOBILE } from "../../common/constants";
 import { getIconUrl } from "../../common/Utils";
 
 interface IMaintenanceProps {
   maintenance: IMaintenance;
   links: ISectionInfo;
+  isMobile: boolean;
 }
 const MaintenancePage = (props: IMaintenanceProps) => {
-  const { maintenance, links } = props;
+  const { maintenance, links, isMobile } = props;
   return (
-    <MaintenanceArticle isMobile={IS_MOBILE}>
+    <MaintenanceArticle isMobile={isMobile}>
       <div className="maintenance-info">
         <img
           className="maintenance-image"

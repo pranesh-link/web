@@ -152,6 +152,7 @@ export const SectionsWrapper = styled.section<{
   }
   .profile-section {
     margin-bottom: 20px;
+    padding-bottom: 20px;
     > header {
       @media screen and (max-width: 767px) {
         margin-bottom: 10px;

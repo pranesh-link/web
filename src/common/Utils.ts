@@ -1,5 +1,6 @@
 import { CORS_MODE, DEV_JSON_BASE_URL, PROD_JSON_BASE_URL } from "./constants";
 import {
+  DownloadType,
   IDetailInfo,
   IHeader,
   ILink,
@@ -104,7 +105,7 @@ export const getJsonResponse = async (jsonToFetch: string, data?: any) => {
 
 export const getProfileJsonResponse = async (
   jsonToFetch: string,
-  data: IHeader | ISectionInfo
+  data: IHeader | ISectionInfo | DownloadType
 ) => {
   return getJsonResponse(jsonToFetch, data);
 };
