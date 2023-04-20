@@ -15,7 +15,7 @@ function App() {
   const queryParams = new URLSearchParams(window.location.search);
   const isAdmin = queryParams.get("admin");
   const isExport = !!queryParams.get("export");
-  const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 767);
   const [maintenance, setMaintenance] = useState(DEFAULT_MAINTENANCE_DATA);
   const [links, setLinks] = useState(DEFAULT_CONTEXT.data.sections.links);
   const [pwa, setPwa] = useState(DEFAULT_PWA);
