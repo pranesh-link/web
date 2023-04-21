@@ -1,6 +1,6 @@
 import React from "react";
 import { FlexBoxSection } from "../../../common/Elements";
-import { ISectionInfo } from "../../../store/profile/types";
+import { ILink, ISectionInfo } from "../../../store/profile/types";
 import {
   getIconUrl,
   valueIsArray,
@@ -15,7 +15,9 @@ interface IContactProps {
 }
 export const Contact = (props: IContactProps) => {
   const { links, refObj } = props;
-
+  const filteredLinks = (links.info as ILink[]).filter(
+    (link) => link?.display !== false
+  );
   return (
     <ContactsSection
       justifyContent="center"
@@ -25,10 +27,12 @@ export const Contact = (props: IContactProps) => {
       ref={refObj}
     >
       {valueIsArray(links.info) && valueIsLinkInfo(links.info)
-        ? links.info.map((link, index) => (
+        ? filteredLinks.map((link, index) => (
             <div
               key={index}
-              className={classNames({ "hide-profile-url": link.isExportOnly })}
+              className={classNames("link-wrapper", {
+                "hide-profile-url": link.isExportOnly,
+              })}
             >
               {!link.isExportOnly && (
                 <a
