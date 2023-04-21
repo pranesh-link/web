@@ -86,6 +86,7 @@ export interface ILink {
   link: string;
   label: string;
   pdfExportIcon: string;
+  display?: boolean;
   isExportOnly?: boolean;
 }
 
