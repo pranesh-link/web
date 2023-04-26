@@ -125,3 +125,6 @@ export const getObjectKeyValuesByIndex = (obj: Object, index: number) => [
   Object.keys(obj)[index],
   Object.values(obj)[index],
 ];
+
+export const getFilteredLinks = (info: ILink[]) =>
+  info.filter((link) => link?.display !== false);
