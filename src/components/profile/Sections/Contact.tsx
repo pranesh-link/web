@@ -2,6 +2,7 @@ import React from "react";
 import { FlexBoxSection } from "../../../common/Elements";
 import { ILink, ISectionInfo } from "../../../store/profile/types";
 import {
+  getFilteredLinks,
   getIconUrl,
   valueIsArray,
   valueIsLinkInfo,
@@ -15,9 +16,7 @@ interface IContactProps {
 }
 export const Contact = (props: IContactProps) => {
   const { links, refObj } = props;
-  const filteredLinks = (links.info as ILink[]).filter(
-    (link) => link?.display !== false
-  );
+  const filteredLinks = getFilteredLinks(links.info as ILink[]);
   return (
     <ContactsSection
       justifyContent="center"

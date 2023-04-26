@@ -6,8 +6,9 @@ import {
   Desc,
   FlexBox,
 } from "../../../common/Elements";
-import { ISectionInfo } from "../../../store/profile/types";
+import { ILink, ISectionInfo } from "../../../store/profile/types";
 import {
+  getFilteredLinks,
   getIconUrl,
   getIconUrlByExportFlag,
   getObjectKeyValuesByIndex,
@@ -55,6 +56,7 @@ export const About = (props: IAboutProps) => {
     }
   }, [copyState]);
 
+  const filteredLinks = getFilteredLinks(links.info as ILink[]);
   return (
     <FlexBoxSection
       className={classNames("profile-section", "about", { export: isExport })}
@@ -110,7 +112,7 @@ export const About = (props: IAboutProps) => {
               className="profile-section links export"
             >
               {valueIsArray(links.info) && valueIsLinkInfo(links.info)
-                ? links.info.map((link) => (
+                ? filteredLinks.map((link) => (
                     <a
                       className="link"
                       href={link.link}
