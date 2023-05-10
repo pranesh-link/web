@@ -143,3 +143,15 @@ export const SECTION_ORDER: Record<string, number> = {
   EXPERIENCES: 5,
   CONTACT: 6,
 };
+
+export const LABELS = {
+  PROJECTS: "Projects",
+  CLIENTS: "Clients",
+  RESPONSIBILITIES: "Responsibilities",
+  CLIENT: "Client",
+};
+
+export const EXPERIENCE_TYPES = {
+  CURRENT: "Current",
+  PREVIOUS: "Previous",
+};

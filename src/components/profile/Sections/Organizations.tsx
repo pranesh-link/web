@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { FlexBoxSection, SecHeader } from "../../../common/Elements";
 import { ISectionInfo } from "../../../store/profile/types";
 import { valueIsArray, valueIsOrgInfo } from "../../../common/Utils";
+import { EXPERIENCE_TYPES } from "../../../common/constants";
 
 interface IOrganizationsProps {
   isExport?: boolean;
@@ -16,10 +17,10 @@ export const Organizations = (props: IOrganizationsProps) => {
   const { isExport, organizations, refObj, isMobile } = props;
   if (valueIsArray(organizations.info) && valueIsOrgInfo(organizations.info)) {
     const currentOrg = organizations.info.find(
-      (organization) => organization.type === "Current"
+      (organization) => organization.type === EXPERIENCE_TYPES.CURRENT
     );
     const previousOrgs = organizations.info.filter(
-      (organization) => organization.type === "Previous"
+      (organization) => organization.type === EXPERIENCE_TYPES.PREVIOUS
     );
 
     return (

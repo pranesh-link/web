@@ -56,7 +56,7 @@ const MenuBar = (props: IMenuBarProps) => {
             window.innerWidth < 768
               ? pos - 95
               : isInstallBannerOpen
-              ? pos - 120
+              ? pos - 125
               : pos - 30;
           if (index === 0 || (pos <= 0 && pos > result.pos)) {
             return {

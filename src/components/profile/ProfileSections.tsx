@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 import { FlexBox, SectionsWrapper } from "../../common/Elements";
 import { AppContext } from "../../store/profile/context";
@@ -43,102 +43,134 @@ const ProfileSections = (props: IProfileSectionsProps) => {
   const { ABOUT, EDUCATION, ORGANIZATIONS, SKILLS, EXPERIENCES, CONTACT } =
     SECTION_ORDER;
 
-  const AboutComp = (
-    <About
-      aboutMe={aboutMe}
-      links={links}
-      details={details}
-      refObj={homeRef}
-      exportProfile={() => {
-        if (props.exportProfile) {
-          props.exportProfile();
-        }
-      }}
-    />
+  const AboutComp = useMemo(
+    () => (
+      <About
+        aboutMe={aboutMe}
+        links={links}
+        details={details}
+        refObj={homeRef}
+        exportProfile={() => {
+          if (props.exportProfile) {
+            props.exportProfile();
+          }
+        }}
+      />
+    ),
+    [aboutMe, details, homeRef, links, props]
   );
 
-  const EducationComp = (
-    <Education
-      isExport={isExport}
-      education={education}
-      refObj={educationRef}
-    />
+  const EducationComp = useMemo(
+    () => (
+      <Education
+        isExport={isExport}
+        education={education}
+        refObj={educationRef}
+      />
+    ),
+    [education, educationRef, isExport]
   );
 
-  const OrganizationsComp = (
-    <>
-      {!isExport && (
-        <Organizations
-          isExport={isExport}
-          isMobile={isMobile}
-          organizations={organizations}
-          refObj={orgRef}
-        />
-      )}
-    </>
+  const OrganizationsComp = useMemo(
+    () => (
+      <>
+        {!isExport && (
+          <Organizations
+            isExport={isExport}
+            isMobile={isMobile}
+            organizations={organizations}
+            refObj={orgRef}
+          />
+        )}
+      </>
+    ),
+    [isExport, isMobile, orgRef, organizations]
   );
 
-  const SkillsComp = (
-    <Skills isExport={isExport} skills={skills} refObj={skillsRef} />
+  const SkillsComp = useMemo(
+    () => <Skills isExport={isExport} skills={skills} refObj={skillsRef} />,
+    [isExport, skills, skillsRef]
   );
 
-  const ExperiencesComp = (
-    <>
-      {isExport ? (
-        <ResumeExperiences />
-      ) : (
-        <Experiences
-          isExport={isExport}
-          experiences={experience}
-          refObj={experienceRef}
-        />
-      )}
-    </>
+  const ExperiencesComp = useMemo(
+    () => (
+      <>
+        {isExport ? (
+          <ResumeExperiences />
+        ) : (
+          <Experiences
+            isExport={isExport}
+            experiences={experience}
+            refObj={experienceRef}
+          />
+        )}
+      </>
+    ),
+    [experience, experienceRef, isExport]
   );
 
-  const ContactComp = (
-    <>{!isExport && <Contact links={links} refObj={contactRef} />}</>
+  const ContactComp = useMemo(
+    () => <>{!isExport && <Contact links={links} refObj={contactRef} />}</>,
+    [contactRef, isExport, links]
   );
 
-  const sectionComponents = [
-    {
-      order: ABOUT,
-      name: "about",
-      component: AboutComp,
-    },
-    {
-      order: EDUCATION,
-      name: "education",
-      component: EducationComp,
-    },
-    {
-      order: ORGANIZATIONS,
-      name: "organizations",
-      component: OrganizationsComp,
-    },
-    {
-      order: SKILLS,
-      name: "skills",
-      component: SkillsComp,
-    },
-    {
-      order: EXPERIENCES,
-      name: "experiences",
-      component: ExperiencesComp,
-    },
-    {
-      order: CONTACT,
-      name: "contact",
-      component: ContactComp,
-    },
-  ];
-
-  const reOrderedSectionComponents = sectionComponents.sort(
-    (a, b) => a.order - b.order
+  const sectionComponents = useMemo(
+    () => [
+      {
+        order: ABOUT,
+        name: "about",
+        component: AboutComp,
+      },
+      {
+        order: EDUCATION,
+        name: "education",
+        component: EducationComp,
+      },
+      {
+        order: ORGANIZATIONS,
+        name: "organizations",
+        component: OrganizationsComp,
+      },
+      {
+        order: SKILLS,
+        name: "skills",
+        component: SkillsComp,
+      },
+      {
+        order: EXPERIENCES,
+        name: "experiences",
+        component: ExperiencesComp,
+      },
+      {
+        order: CONTACT,
+        name: "contact",
+        component: ContactComp,
+      },
+    ],
+    [
+      ABOUT,
+      AboutComp,
+      CONTACT,
+      ContactComp,
+      EDUCATION,
+      EXPERIENCES,
+      EducationComp,
+      ExperiencesComp,
+      ORGANIZATIONS,
+      OrganizationsComp,
+      SKILLS,
+      SkillsComp,
+    ]
   );
 
-  const HorizontalSep = () => (
-    <hr className={classNames("header-sep", { export: isExport })} />
+  const reOrderedSectionComponents = useMemo(
+    () => sectionComponents.sort((a, b) => a.order - b.order),
+    [sectionComponents]
+  );
+
+  const HorizontalSep = useMemo(
+    () => <hr className={classNames("header-sep", { export: isExport })} />,
+    [isExport]
   );
 
   return (
@@ -151,9 +183,9 @@ const ProfileSections = (props: IProfileSectionsProps) => {
     >
       {!isExport && <ShortDesc>{shortDesc}</ShortDesc>}
       <PageHeader>
-        <HorizontalSep />
+        {HorizontalSep}
         <span>{name}</span>
-        <HorizontalSep />
+        {HorizontalSep}
       </PageHeader>
       <FlexBox direction="column" alignItems="center">
         <Separator className={classNames({ export: isExport })} />
@@ -240,6 +272,7 @@ const ShortDesc = styled.h3`
   margin-top: 0;
   line-height: 3;
   font-style: italic;
+
   @media screen and (max-width: 767px) {
     padding-top: 75px;
     margin: 0;
