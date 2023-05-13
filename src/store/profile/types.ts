@@ -66,12 +66,19 @@ export interface ISkill {
   star: number;
 }
 
+export interface IProjectExperience {
+  title: string;
+  client: string;
+  links: string[];
+}
 export interface IOrganization {
   name: string;
   type: string;
   from: string;
   to?: string;
   designation: string;
+  responsibilities: string;
+  projects: IProjectExperience[];
 }
 
 export interface IDetailInfo extends ISkill {
