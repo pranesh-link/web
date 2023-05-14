@@ -68,6 +68,24 @@ export const About = (props: IAboutProps) => {
         direction="column"
         className={classNames("about-me", { export: isExport })}
       >
+        {!isExport && isMobile && (
+          <FlexBoxSection
+            justifyContent={isMobile ? "space-around" : "normal"}
+            className="image"
+          >
+            <p className="image-wrap">
+              <img
+                alt=""
+                className="profile-image"
+                src={getIconUrlByExportFlag(
+                  aboutMe.icon,
+                  aboutMe.pdfExportIcon,
+                  isExport
+                )}
+              />
+            </p>
+          </FlexBoxSection>
+        )}
         <SecHeader className="about-me-title">{aboutMe.title}</SecHeader>
         <Desc
           className="about"
@@ -75,19 +93,24 @@ export const About = (props: IAboutProps) => {
         />
       </FlexBoxSection>
       <FlexBoxSection alignItems="center" className="image-details-wrap">
-        <FlexBoxSection className="image">
-          <p className="image-wrap">
-            <img
-              alt=""
-              className="profile-image"
-              src={getIconUrlByExportFlag(
-                aboutMe.icon,
-                aboutMe.pdfExportIcon,
-                isExport
-              )}
-            />
-          </p>
-        </FlexBoxSection>
+        {(!isMobile || isExport) && (
+          <FlexBoxSection
+            justifyContent={isMobile ? "space-around" : "normal"}
+            className="image"
+          >
+            <p className="image-wrap">
+              <img
+                alt=""
+                className="profile-image"
+                src={getIconUrlByExportFlag(
+                  aboutMe.icon,
+                  aboutMe.pdfExportIcon,
+                  isExport
+                )}
+              />
+            </p>
+          </FlexBoxSection>
+        )}
         <FlexBoxSection direction="column">
           <AboutMeDetails
             copyState={copyState}

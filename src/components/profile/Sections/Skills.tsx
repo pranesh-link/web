@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useContext } from "react";
+import React, { memo, useContext } from "react";
 import { ISkill, ISectionInfo } from "../../../store/profile/types";
 import { valueIsArray, valueIsSkillInfo } from "../../../common/Utils";
 import {
@@ -18,36 +18,48 @@ interface ISkillsProps {
   refObj: React.MutableRefObject<any>;
   skills: ISectionInfo;
 }
-export const Skills = (props: ISkillsProps) => {
-  const { refObj, skills, isExport = false } = props;
-  const { isMobile } = useContext(AppContext);
 
-  const getSkillStars = (text: string, index: number, icon: string) => (
-    <img key={index} alt={text} className="star" src={icon} />
-  );
-
-  const getSkillWithStars = (starNum: number) => (
+const SKILL_ICON_TEXT_MAP = {
+  filled: {
+    icon: StarIcon,
+    text: "Star filled",
+  },
+  unfilled: {
+    icon: StarUnfilledIcon,
+    text: "Star unfilled",
+  },
+};
+const SkillStars = memo(
+  ({ skillParams }: { skillParams: { text: string; icon: string } }) => {
+    return (
+      <img alt={skillParams.text} className="star" src={skillParams.icon} />
+    );
+  }
+);
+const SkillWithStars = memo(({ starNum }: { starNum: number }) => {
+  const { filled, unfilled } = SKILL_ICON_TEXT_MAP;
+  return (
     <FlexBox className="stars">
       {Array(5)
         .fill(null)
         .map((_item, index) => {
-          let skillText = "Star unfilled",
-            starIcon = StarUnfilledIcon;
-          if (index + 1 <= starNum) {
-            skillText = "Star filled";
-            starIcon = StarIcon;
-          }
-          return getSkillStars(skillText, index, starIcon);
+          const skillParams = index + 1 <= starNum ? filled : unfilled;
+          return <SkillStars skillParams={skillParams} key={index} />;
         })}
     </FlexBox>
   );
+});
+
+export const Skills = (props: ISkillsProps) => {
+  const { refObj, skills, isExport = false } = props;
+  const { isMobile } = useContext(AppContext);
 
   const getColumnData = (skill: ISkill) => (
     <FlexBox className="skill">
       <div className="skill-label">
         <strong>{skill.label}</strong>
       </div>
-      {getSkillWithStars(skill.star)}
+      <SkillWithStars starNum={skill.star} />
     </FlexBox>
   );
 
