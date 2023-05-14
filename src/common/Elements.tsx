@@ -402,3 +402,19 @@ export const LoaderImg = styled.img<{ isMobile: boolean }>`
     }
   }
 `;
+
+export const Overlay = styled.div<{
+  opacity: number;
+  top?: number;
+  bottom?: number;
+  height?: number;
+  background?: string;
+}>`
+  position: fixed;
+  ${(props) => props.top && `top: ${props.top}px`};
+  ${(props) => props.bottom && `bottom: ${props.bottom}px`};
+  height: ${(props) => props.height || 0}px;
+  background: ${(props) => props.background || "#fff"};
+  width: 100%;
+  opacity: ${(props) => props.opacity};
+`;
