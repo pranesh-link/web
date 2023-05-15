@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { FlexBox, FlexBoxSection, Grid } from "../../../common/Elements";
+import { FlexBoxSection, Grid } from "../../../common/Elements";
 import {
   getHref,
   getIconUrlByExportFlag,
@@ -67,89 +67,48 @@ export const AboutMeDetails = (props: AboutMeDetailsProps) => {
     </>
   );
 
-  const getDesktopDetails = (details: ISectionInfo) => {
-    return valueIsArray(details.info) && valueIsDetailInfo(details.info) ? (
-      <DetailSection
-        className="details"
-        isMobile={isMobile}
-        isExport={isExport}
-      >
-        {!isExport && (
-          <FlexBoxSection direction="column" justifyContent="space-between">
-            {details.info.map((detail, index) => (
-              <img
-                crossOrigin="anonymous"
-                key={index}
-                alt={detail.label}
-                className={classNames("detail-icon", detail.label, {
-                  export: isExport,
-                })}
-                src={getIconUrlByExportFlag(
-                  detail.icon,
-                  detail.pdfExportIcon,
-                  isExport
-                )}
-              />
-            ))}
-          </FlexBoxSection>
-        )}
-        <FlexBoxSection direction="column">
+  return valueIsArray(details.info) && valueIsDetailInfo(details.info) ? (
+    <DetailSection className="details" isMobile={false} isExport={isExport}>
+      {!isExport && (
+        <FlexBoxSection direction="column" justifyContent="space-between">
           {details.info.map((detail, index) => (
-            <Grid
-              gridTemplateColumns="1fr 1fr"
-              className="detail-info"
+            <img
+              crossOrigin="anonymous"
               key={index}
-              onMouseEnter={() => {
-                setCopyState(detail.label, NOT_COPIED);
-                setShowCopy(true);
-              }}
-              onMouseLeave={() => {
-                setCopyState("", NOT_COPIED);
-                setShowCopy(false);
-              }}
-            >
-              {getGridDetailInfo(detail, index)}
-            </Grid>
+              alt={detail.label}
+              className={classNames("detail-icon", detail.label, {
+                export: isExport,
+              })}
+              src={getIconUrlByExportFlag(
+                detail.icon,
+                detail.pdfExportIcon,
+                isExport
+              )}
+            />
           ))}
         </FlexBoxSection>
-      </DetailSection>
-    ) : null;
-  };
-
-  const getMobileDetails = (details: ISectionInfo) => {
-    return valueIsArray(details.info) && valueIsDetailInfo(details.info) ? (
-      <DetailSection
-        className="details"
-        direction="column"
-        isMobile={isMobile}
-        isExport={isExport}
-      >
+      )}
+      <FlexBoxSection direction="column">
         {details.info.map((detail, index) => (
-          <FlexBox key={index} direction="column" className="mobile-detail">
-            <Grid
-              gridTemplateColumns={detail.canCopy ? "2fr 1fr" : "1fr"}
-              className="detail-info"
-              key={index}
-              onMouseEnter={() => {
-                setCopyState(detail.label, NOT_COPIED);
-                setShowCopy(true);
-              }}
-              onMouseLeave={() => {
-                setCopyState("", NOT_COPIED);
-                setShowCopy(false);
-              }}
-            >
-              {getGridDetailInfo(detail, index)}
-            </Grid>
-          </FlexBox>
+          <Grid
+            gridTemplateColumns="1fr 1fr"
+            className="detail-info"
+            key={index}
+            onMouseEnter={() => {
+              setCopyState(detail.label, NOT_COPIED);
+              setShowCopy(true);
+            }}
+            onMouseLeave={() => {
+              setCopyState("", NOT_COPIED);
+              setShowCopy(false);
+            }}
+          >
+            {getGridDetailInfo(detail, index)}
+          </Grid>
         ))}
-      </DetailSection>
-    ) : null;
-  };
-
-  return isMobile && !isExport
-    ? getMobileDetails(details)
-    : getDesktopDetails(details);
+      </FlexBoxSection>
+    </DetailSection>
+  ) : null;
 };
 
 const DetailSection = styled(FlexBoxSection)<{
