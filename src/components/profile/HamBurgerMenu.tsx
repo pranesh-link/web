@@ -121,6 +121,7 @@ const IconWrap = styled.div`
 const Menu = styled.div`
   display: flex;
   position: fixed;
+  flex-direction: row-reverse;
   top: 0;
   left: 0;
   height: 100%;
@@ -138,6 +139,7 @@ const ContentSection = styled(FlexBoxSection)`
   background-color: #222222;
   flex-basis: 50%;
   .find-me {
+    align-self: center;
     color: #f0f0f0;
     padding-bottom: 5px;
     padding-left: 15px;
@@ -154,7 +156,8 @@ const RightSection = styled.div`
   flex-basis: 50%;
 `;
 const Icon = styled.img`
-  margin-left: 10px;
+  position: absolute;
+  right: 10px;
   cursor: pointer;
   padding: 10px;
   animation: blinker 5s linear infinite;
