@@ -108,6 +108,8 @@ export const HamBurgerMenu = (props: IHamburgerMenuProps) => {
 };
 
 const IconWrap = styled.div`
+  display: flex;
+  justify-content: flex-end;
   position: fixed;
   width: 100%;
   z-index: 20;
@@ -156,8 +158,7 @@ const RightSection = styled.div`
   flex-basis: 50%;
 `;
 const Icon = styled.img`
-  position: absolute;
-  right: 10px;
+  margin-right: 10px;
   cursor: pointer;
   padding: 10px;
   animation: blinker 5s linear infinite;
