@@ -8,6 +8,7 @@ import { IProfileData } from "../../store/profile/types";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { ICommonData } from "../../store/common/types";
+import { Overlay } from "../../common/Elements";
 
 interface ProfileProps {
   profileData: IProfileData;
@@ -84,6 +85,22 @@ export const Profile = (props: ProfileProps) => {
         />
         {isMobile && <Swipe onTouchMove={() => setIsHamburgerMenuOpen(true)} />}
         <MenuBar onMenuChange={(section) => setCurrentSection(section)} />
+        {!isHamburgerMenuOpen && (
+          <>
+            <Overlay
+              background="#f0f0f0"
+              height={15}
+              bottom={isMobile ? "0" : "55"}
+              opacity={0.9}
+            />
+            <Overlay
+              background="#f0f0f0"
+              height={15}
+              bottom={isMobile ? "15" : "70"}
+              opacity={0.6}
+            />
+          </>
+        )}
         <ProfileSections
           exportProfile={() => {
             setIsDownloading(true);

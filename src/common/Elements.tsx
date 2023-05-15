@@ -301,6 +301,9 @@ export const SectionsWrapper = styled.section<{
   @media screen and (max-width: 767px) {
     padding-left: 20px;
     margin-top: 0;
+    .profile-section {
+      padding-right: 10px;
+    }
   }
 `;
 
@@ -406,7 +409,7 @@ export const LoaderImg = styled.img<{ isMobile: boolean }>`
 export const Overlay = styled.div<{
   opacity: number;
   top?: number;
-  bottom?: number;
+  bottom?: string;
   height?: number;
   background?: string;
 }>`
