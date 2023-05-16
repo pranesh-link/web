@@ -155,5 +155,6 @@ export const Profile = (props: ProfileProps) => {
 const Swipe = styled.div`
   height: 100%;
   width: 60px;
+  right: 0;
   position: fixed;
 `;
