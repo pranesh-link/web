@@ -10,10 +10,17 @@ import { Contact } from "./Sections/Contact";
 import classNames from "classnames";
 import { Organizations } from "./Sections/Organizations";
 import { ResumeExperiences } from "./Sections/ResumeExperiences";
-import { SECTION_ORDER } from "../../common/constants";
+import { SECTION_ORDER_DISPLAY } from "../../common/constants";
 
 interface IProfileSectionsProps {
   exportProfile?: () => void;
+}
+
+interface ISectionComponents {
+  order: number;
+  name: string;
+  component: JSX.Element;
+  display?: boolean;
 }
 const ProfileSections = (props: IProfileSectionsProps) => {
   const {
@@ -40,8 +47,8 @@ const ProfileSections = (props: IProfileSectionsProps) => {
     organizations,
   } = sections;
   const { shortDesc, name } = header;
-  const { ABOUT, EDUCATION, ORGANIZATIONS, SKILLS, EXPERIENCES, CONTACT } =
-    SECTION_ORDER;
+  const { ABOUTME, EDUCATION, ORGANIZATIONS, SKILLS, EXPERIENCE, CONTACT } =
+    SECTION_ORDER_DISPLAY;
 
   const AboutComp = useMemo(
     () => (
@@ -95,7 +102,7 @@ const ProfileSections = (props: IProfileSectionsProps) => {
   const ExperiencesComp = useMemo(
     () => (
       <>
-        {isExport ? (
+        {true ? (
           <ResumeExperiences />
         ) : (
           <Experiences
@@ -114,46 +121,52 @@ const ProfileSections = (props: IProfileSectionsProps) => {
     [contactRef, isExport, links]
   );
 
-  const sectionComponents = useMemo(
+  const sectionComponents: ISectionComponents[] = useMemo(
     () => [
       {
-        order: ABOUT,
+        order: ABOUTME.order,
         name: "about",
         component: AboutComp,
+        display: ABOUTME.display,
       },
       {
-        order: EDUCATION,
+        order: EDUCATION.order,
         name: "education",
         component: EducationComp,
+        display: EDUCATION.display,
       },
       {
-        order: ORGANIZATIONS,
+        order: ORGANIZATIONS.order,
         name: "organizations",
         component: OrganizationsComp,
+        display: ORGANIZATIONS.display,
       },
       {
-        order: SKILLS,
+        order: SKILLS.order,
         name: "skills",
         component: SkillsComp,
+        display: SKILLS.display,
       },
       {
-        order: EXPERIENCES,
+        order: EXPERIENCE.order,
         name: "experiences",
         component: ExperiencesComp,
+        display: EXPERIENCE.display,
       },
       {
-        order: CONTACT,
+        order: CONTACT.order,
         name: "contact",
         component: ContactComp,
+        display: CONTACT.display,
       },
     ],
     [
-      ABOUT,
+      ABOUTME,
       AboutComp,
       CONTACT,
       ContactComp,
       EDUCATION,
-      EXPERIENCES,
+      EXPERIENCE,
       EducationComp,
       ExperiencesComp,
       ORGANIZATIONS,
@@ -195,9 +208,11 @@ const ProfileSections = (props: IProfileSectionsProps) => {
         isExport={isExport}
         className={classNames({ export: isExport })}
       >
-        {reOrderedSectionComponents.map((section, index) => (
-          <div key={index}>{section.component}</div>
-        ))}
+        {reOrderedSectionComponents.map((section, index) => {
+          return section.display !== false ? (
+            <div key={index}>{section.component}</div>
+          ) : null;
+        })}
       </SectionsWrapper>
     </Wrapper>
   );

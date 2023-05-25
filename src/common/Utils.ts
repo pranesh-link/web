@@ -46,6 +46,14 @@ export const valueIsOrgInfo = (item: InfoType): item is IOrganization[] => {
 };
 export const lowercase = (str: string) => str.toLowerCase().replace(/ /g, "");
 
+export const uppercase = (str: string) => str.toUpperCase().replace(/ /g, "");
+
+export const replaceWith = (
+  mainStr: string,
+  replaceChar1: string,
+  replaceChar2: string
+) => mainStr.replace(replaceChar1, replaceChar2);
+
 export const getHref = (label: string, info: string) => {
   switch (label) {
     case "mobile":

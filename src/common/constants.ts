@@ -135,13 +135,16 @@ export const DEFAULT_MAINTENANCE_DATA: IMaintenance = {
   image: "",
 };
 
-export const SECTION_ORDER: Record<string, number> = {
-  ABOUT: 1,
-  EDUCATION: 4,
-  ORGANIZATIONS: 3,
-  SKILLS: 2,
-  EXPERIENCES: 5,
-  CONTACT: 6,
+export const SECTION_ORDER_DISPLAY: Record<
+  string,
+  { order: number; display?: boolean }
+> = {
+  ABOUTME: { order: 1 },
+  EDUCATION: { order: 4 },
+  ORGANIZATIONS: { order: 3, display: false },
+  SKILLS: { order: 2 },
+  EXPERIENCE: { order: 5 },
+  CONTACT: { order: 6 },
 };
 
 export const LABELS = {

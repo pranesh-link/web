@@ -5,7 +5,8 @@ import { FlexBoxSection } from "../../common/Elements";
 import { AppContext } from "../../store/profile/context";
 import { ProfileSectionType, RefTypes } from "../../store/profile/types";
 import { scrollTo } from "./ScrollTo";
-import { SECTION_ORDER } from "../../common/constants";
+import { SECTION_ORDER_DISPLAY } from "../../common/constants";
+import { uppercase } from "../../common/Utils";
 
 interface IMenuBarProps {
   isMobileMenu?: boolean;
@@ -32,12 +33,16 @@ const MenuBar = (props: IMenuBarProps) => {
         if (data.sections[current as ProfileSectionType].ref) {
           const { title, ref = "" } =
             data.sections[current as ProfileSectionType];
-          items.push({
-            section: current,
-            title,
-            ref,
-            order: SECTION_ORDER[title.toUpperCase()],
-          });
+
+          const { order, display } = SECTION_ORDER_DISPLAY[uppercase(current)];
+          if (display !== false) {
+            items.push({
+              section: current,
+              title,
+              ref,
+              order,
+            });
+          }
         }
         return items;
       },
@@ -56,7 +61,7 @@ const MenuBar = (props: IMenuBarProps) => {
             window.innerWidth < 768
               ? pos - 95
               : isInstallBannerOpen
-              ? pos - 125
+              ? pos - 120
               : pos - 30;
           if (index === 0 || (pos <= 0 && pos > result.pos)) {
             return {

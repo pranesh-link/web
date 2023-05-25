@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import styled from "styled-components";
 import { SecHeader, FlexBoxSection } from "../../../common/Elements";
-import React, { memo, useContext } from "react";
+import React, { memo, useContext, useMemo } from "react";
 import { AppContext } from "../../../store/profile/context";
 import { valueIsArray, valueIsOrgInfo } from "../../../common/Utils";
 import { IProjectExperience } from "../../../store/profile/types";
@@ -17,6 +17,9 @@ export const ResumeExperiences = memo(() => {
     data: {
       sections: { organizations: experiences },
     },
+    isExport,
+    isMobile,
+    refs: { experienceRef },
   } = useContext(AppContext);
 
   const getExperienceInfo = (
@@ -46,19 +49,26 @@ export const ResumeExperiences = memo(() => {
       totalClients: [...new Set(names.clientNames)].length,
     };
   };
+
+  const textSeparator = useMemo(
+    () => <>{isMobile ? <br /> : <span>,&nbsp;</span>}</>,
+    [isMobile]
+  );
   return valueIsArray(experiences.info) && valueIsOrgInfo(experiences.info) ? (
     <section
       className={classNames("profile-section", "experience", {
-        export: true,
+        export: isExport,
       })}
+      id={isExport ? "" : "experience"}
+      ref={isExport ? null : experienceRef}
     >
-      <SecHeader className={classNames("page-break", { export: true })}>
+      <SecHeader className={classNames("page-break", { export: isExport })}>
         {experiences.title}
       </SecHeader>
       <SectionWrapper
         direction="column"
         justifyContent="space-around"
-        className="export"
+        className={classNames({ export: isExport })}
         icon={experiences.icon || ""}
       >
         {experiences.info.map((experience, index) => {
@@ -82,8 +92,10 @@ export const ResumeExperiences = memo(() => {
                 })}
               >
                 <span>{designation}</span>
-                <span>&nbsp;@ {name}</span>
-                <span className="duration">, {duration}</span>
+                {textSeparator}
+                <span>{name}</span>
+                {textSeparator}
+                <span className="duration">{duration}</span>
               </h3>
               <h4 className="projects-label">
                 <label>{`${LABELS.PROJECTS}:`}</label>

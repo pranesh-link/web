@@ -1,11 +1,6 @@
 import classNames from "classnames";
 import React, { useEffect, useState } from "react";
-import {
-  FlexBoxSection,
-  SecHeader,
-  Desc,
-  FlexBox,
-} from "../../../common/Elements";
+import { FlexBoxSection, Desc, FlexBox } from "../../../common/Elements";
 import { ILink, ISectionInfo } from "../../../store/profile/types";
 import {
   getFilteredLinks,
@@ -86,7 +81,6 @@ export const About = (props: IAboutProps) => {
             </p>
           </FlexBoxSection>
         )}
-        <SecHeader className="about-me-title">{aboutMe.title}</SecHeader>
         <Desc
           className="about"
           dangerouslySetInnerHTML={{ __html: aboutMe.info as string }}
