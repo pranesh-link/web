@@ -328,12 +328,10 @@ const ModalContentWrap = styled.div`
   border-radius: 10px;
   .close {
     position: absolute;
-    top: 10px;
-    right: 5px;
+    top: -10px;
+    right: -15px;
     @media only screen and (max-width: 992px) {
       position: fixed;
-      top: 25px;
-      right: 25px;
     }
   }
 
