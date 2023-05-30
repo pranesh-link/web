@@ -151,26 +151,29 @@ export const About = (props: IAboutProps) => {
           ) : (
             <InterestedInProfile
               isMobile={isMobile}
+              disabled={download.download.disabled}
               className={classNames({
                 "downloaded-profile": hasDownloadedProfile,
               })}
               alignItems="center"
             >
-              {!isDownloading && !hasDownloadedProfile && (
-                <>
-                  <img
-                    className="download"
-                    alt="Click here"
-                    height="25px"
-                    onClick={props.exportProfile}
-                    src={getIconUrl(download.download.icon)}
-                    loading="lazy"
-                  />
-                  <span className="download-text">
-                    {download.download.message}
-                  </span>
-                </>
-              )}
+              {!download.download.disabled &&
+                !isDownloading &&
+                !hasDownloadedProfile && (
+                  <>
+                    <img
+                      className="download"
+                      alt="Click here"
+                      height="25px"
+                      onClick={props.exportProfile}
+                      src={getIconUrl(download.download.icon)}
+                      loading="lazy"
+                    />
+                    <span className="download-text">
+                      {download.download.message}
+                    </span>
+                  </>
+                )}
               {isDownloading && (
                 <>
                   <img
@@ -208,9 +211,12 @@ export const About = (props: IAboutProps) => {
   );
 };
 
-const InterestedInProfile = styled(FlexBox)<{ isMobile: boolean }>`
+const InterestedInProfile = styled(FlexBox)<{
+  isMobile: boolean;
+  disabled?: boolean;
+}>`
   margin: ${(props) => (props.isMobile ? "10px 0 0 0" : "10px 0 0 10px")};
-  min-height: 50px;
+  min-height: ${(props) => (props.disabled ? "0px" : "50px")};
   font-weight: bold;
   &.downloaded-profile {
     margin-left: ${(props) => (props.isMobile ? "0" : "5px")};

@@ -1,8 +1,7 @@
 import classNames from "classnames";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { FlexBoxSection, SecHeader } from "../../../common/Elements";
-import { ProjectInfo } from "../ProjectInfo";
 import { valueIsArray, valueIsOrgProjectInfo } from "../../../common/Utils";
 import { AppContext } from "../../../store/profile/context";
 
@@ -15,8 +14,6 @@ export const Experiences = () => {
     isExport,
   } = useContext(AppContext);
   const { info: experience } = experiences;
-
-  const [isExpanded, setIsExpanded] = useState<{ [key: string]: boolean }>({});
 
   return valueIsArray(experience) && valueIsOrgProjectInfo(experience) ? (
     <section

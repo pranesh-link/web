@@ -43,6 +43,7 @@ type DownloadStages = "download" | "downloading" | "downloaded";
 
 export type DownloadType = {
   [key in DownloadStages]: {
+    disabled?: boolean;
     message: string;
     icon: string;
   };
