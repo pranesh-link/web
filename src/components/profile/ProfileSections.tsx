@@ -2,7 +2,6 @@ import React, { useMemo } from "react";
 import styled from "styled-components";
 import { FlexBox, SectionsWrapper } from "../../common/Elements";
 import { AppContext } from "../../store/profile/context";
-import { Experiences } from "./Sections/Experiences";
 import { Skills } from "./Sections/Skills";
 import { About } from "./Sections/About";
 import { Education } from "./Sections/Education";
@@ -27,25 +26,8 @@ const ProfileSections = (props: IProfileSectionsProps) => {
     isExport = false,
     isMobile,
     isInstallBannerOpen,
-    data: { sections, header },
-    refs: {
-      homeRef,
-      skillsRef,
-      experienceRef,
-      educationRef,
-      contactRef,
-      orgRef,
-    },
+    data: { header },
   } = React.useContext(AppContext);
-  const {
-    aboutMe,
-    details,
-    skills,
-    education,
-    experience,
-    links,
-    organizations,
-  } = sections;
   const { shortDesc, name } = header;
   const { ABOUTME, EDUCATION, ORGANIZATIONS, SKILLS, EXPERIENCE, CONTACT } =
     SECTION_ORDER_DISPLAY;
@@ -53,10 +35,6 @@ const ProfileSections = (props: IProfileSectionsProps) => {
   const AboutComp = useMemo(
     () => (
       <About
-        aboutMe={aboutMe}
-        links={links}
-        details={details}
-        refObj={homeRef}
         exportProfile={() => {
           if (props.exportProfile) {
             props.exportProfile();
@@ -64,61 +42,23 @@ const ProfileSections = (props: IProfileSectionsProps) => {
         }}
       />
     ),
-    [aboutMe, details, homeRef, links, props]
+    [props]
   );
 
-  const EducationComp = useMemo(
-    () => (
-      <Education
-        isExport={isExport}
-        education={education}
-        refObj={educationRef}
-      />
-    ),
-    [education, educationRef, isExport]
-  );
+  const EducationComp = useMemo(() => <Education />, []);
 
   const OrganizationsComp = useMemo(
-    () => (
-      <>
-        {!isExport && (
-          <Organizations
-            isExport={isExport}
-            isMobile={isMobile}
-            organizations={organizations}
-            refObj={orgRef}
-          />
-        )}
-      </>
-    ),
-    [isExport, isMobile, orgRef, organizations]
+    () => <>{!isExport && <Organizations />}</>,
+    [isExport]
   );
 
-  const SkillsComp = useMemo(
-    () => <Skills isExport={isExport} skills={skills} refObj={skillsRef} />,
-    [isExport, skills, skillsRef]
-  );
+  const SkillsComp = useMemo(() => <Skills />, []);
 
-  const ExperiencesComp = useMemo(
-    () => (
-      <>
-        {true ? (
-          <ResumeExperiences />
-        ) : (
-          <Experiences
-            isExport={isExport}
-            experiences={experience}
-            refObj={experienceRef}
-          />
-        )}
-      </>
-    ),
-    [experience, experienceRef, isExport]
-  );
+  const ExperiencesComp = useMemo(() => <ResumeExperiences />, []);
 
   const ContactComp = useMemo(
-    () => <>{!isExport && <Contact links={links} refObj={contactRef} />}</>,
-    [contactRef, isExport, links]
+    () => <>{!isExport && <Contact />}</>,
+    [isExport]
   );
 
   const sectionComponents: ISectionComponents[] = useMemo(

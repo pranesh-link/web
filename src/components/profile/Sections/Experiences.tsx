@@ -1,23 +1,20 @@
 import classNames from "classnames";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { FlexBoxSection, SecHeader } from "../../../common/Elements";
-import { ISectionInfo } from "../../../store/profile/types";
 import { ProjectInfo } from "../ProjectInfo";
 import { valueIsArray, valueIsOrgProjectInfo } from "../../../common/Utils";
+import { AppContext } from "../../../store/profile/context";
 
-interface IExperiencesProps {
-  experiences: ISectionInfo;
-  refObj: React.MutableRefObject<any>;
-  isExport?: boolean;
-}
-export const Experiences = (props: IExperiencesProps) => {
+export const Experiences = () => {
   const {
-    experiences,
-    experiences: { info: experience },
-    refObj,
+    data: {
+      sections: { experience: experiences },
+    },
+    refs: { experienceRef: refObj },
     isExport,
-  } = props;
+  } = useContext(AppContext);
+  const { info: experience } = experiences;
 
   const [isExpanded, setIsExpanded] = useState<{ [key: string]: boolean }>({});
 
@@ -42,22 +39,6 @@ export const Experiences = (props: IExperiencesProps) => {
             <h3 className={classNames("org-name", { "page-break": index > 0 })}>
               {experience.organization}
             </h3>
-            <section className="org-projects">
-              {experience.projects.map((project, index) => (
-                <ProjectInfo
-                  key={index}
-                  index={index}
-                  project={project}
-                  isExpanded={isExpanded}
-                  setExpanded={(expandSection, expanded) =>
-                    setIsExpanded({
-                      ...isExpanded,
-                      [`${expandSection}-${index}`]: expanded,
-                    })
-                  }
-                />
-              ))}
-            </section>
           </section>
         ))}
       </SectionWrapper>

@@ -1,5 +1,10 @@
 import React from "react";
-import { IAppContext, IPWA } from "../store/profile/types";
+import {
+  ExpandableInfosType,
+  IAppContext,
+  IPWA,
+  ShortInfosType,
+} from "../store/profile/types";
 import { IMaintenance } from "../store/common/types";
 
 export const CORS_MODE = "cors";
@@ -11,8 +16,13 @@ export const TOAST_ERROR_MESSAGE = [
   "Something went wrong.",
   "Please close this error to reload the page.",
 ];
-export const SHORT_INFOS = ["client", "duration", "role", "softwareTech"];
-export const EXPANDABLE_INFOS = ["description", "responsibilities"];
+export const SHORT_INFOS: ShortInfosType[] = [
+  "client",
+  "duration",
+  "role",
+  "softwareTech",
+];
+export const EXPANDABLE_INFOS: ExpandableInfosType[] = ["description"];
 export const COPIED = "copied";
 export const NOT_COPIED = "not-copied";
 export const COPIED_TEXT = "Copied!";

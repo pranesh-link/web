@@ -45,3 +45,36 @@ li,
 ::-webkit-scrollbar-thumb:hover {
   background: #3498db;
 }
+
+.ReactModal__Overlay {
+  opacity: 0;
+  transition: opacity 1000ms ease-in-out;
+  z-index: 99999;
+  background-color: rgba(0, 0, 0, 0.75) !important;
+}
+
+.ReactModal__Overlay--after-open {
+  opacity: 1;
+}
+
+.ReactModal__Overlay--before-close {
+  opacity: 0;
+}
+
+.ReactModal__Content {
+  margin-left: 10%;
+  margin-right: 10%;
+  position: relative;
+  top: 45%;
+  transform: translateY(-45%);
+}
+
+.modal-open {
+  overflow: hidden;
+}
+
+@media only screen and (max-width: 992px) {
+  .ReactModal__Content {
+    margin: 15px;
+  }
+}

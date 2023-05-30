@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import React, { useEffect, useState } from "react";
 import { FlexBoxSection, Desc, FlexBox } from "../../../common/Elements";
-import { ILink, ISectionInfo } from "../../../store/profile/types";
+import { ILink } from "../../../store/profile/types";
 import {
   getFilteredLinks,
   getIconUrl,
@@ -17,20 +17,19 @@ import { AboutMeDetails } from "./AboutMeDetails";
 import { COPIED, NOT_COPIED } from "../../../common/constants";
 
 interface IAboutProps {
-  refObj: React.MutableRefObject<any>;
-  aboutMe: ISectionInfo;
-  details: ISectionInfo;
-  links: ISectionInfo;
   exportProfile: () => void;
 }
 export const About = (props: IAboutProps) => {
-  const { refObj, aboutMe, details, links } = props;
   const {
     hasDownloadedProfile,
     isExport,
     isMobile,
     isDownloading,
-    data: { download },
+    data: {
+      sections: { aboutMe, links, details },
+      download,
+    },
+    refs: { homeRef: refObj },
   } = React.useContext(AppContext);
   const [copyState, setCopyState] = useState<Record<string, { state: string }>>(
     {}

@@ -1,15 +1,16 @@
 import classNames from "classnames";
-import React from "react";
+import React, { useContext } from "react";
 import { SecHeader, Desc } from "../../../common/Elements";
-import { ISectionInfo } from "../../../store/profile/types";
+import { AppContext } from "../../../store/profile/context";
 
-interface IEducationProps {
-  education: ISectionInfo;
-  isExport?: boolean;
-  refObj: React.MutableRefObject<any>;
-}
-export const Education = (props: IEducationProps) => {
-  const { education, refObj, isExport } = props;
+export const Education = () => {
+  const {
+    isExport,
+    data: {
+      sections: { education },
+    },
+    refs: { educationRef: refObj },
+  } = useContext(AppContext);
   return (
     <section
       className="profile-section"
