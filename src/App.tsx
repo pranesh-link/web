@@ -36,7 +36,7 @@ function App() {
     return response.data;
   };
 
-  const setViewportProps = () => setIsMobile(window.innerWidth < 767);
+  const setViewportProps = () => setIsMobile(window.innerWidth < 768);
 
   useEffect(() => {
     window.addEventListener("resize", setViewportProps);

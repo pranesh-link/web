@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FlexBoxSection } from "../../../common/Elements";
 import { ILink, ISectionInfo } from "../../../store/profile/types";
 import {
@@ -9,13 +9,25 @@ import {
 } from "../../../common/Utils";
 import classNames from "classnames";
 import styled from "styled-components";
+import { AppContext } from "../../../store/profile/context";
 
 interface IContactProps {
-  refObj: React.MutableRefObject<any>;
-  links: ISectionInfo;
+  links?: ISectionInfo;
+  refObj?: React.MutableRefObject<any>;
 }
+
 export const Contact = (props: IContactProps) => {
-  const { links, refObj } = props;
+  const { links: propsLinks, refObj: propsRefObj } = props;
+  let {
+    data: {
+      sections: { links },
+    },
+    refs: { contactRef: refObj },
+  } = useContext(AppContext);
+  if (propsLinks && propsRefObj) {
+    links = propsLinks;
+    refObj = propsRefObj;
+  }
   const filteredLinks = getFilteredLinks(links.info as ILink[]);
   return (
     <ContactsSection

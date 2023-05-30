@@ -102,11 +102,10 @@ export const SecHeader = styled.header`
 export const Desc = styled.p`
   margin: 0;
   padding-right: 15%;
-  @media screen and (max-width: 767px) {
-    padding-right: 0;
-  }
+
   &.about {
     padding-left: 0;
+    padding-top: 10px;
   }
   &.education {
     text-align: center;
@@ -121,6 +120,13 @@ export const Desc = styled.p`
   }
   strong {
     color: #3e3e3e;
+  }
+
+  @media screen and (max-width: 767px) {
+    padding-right: 0;
+    &.about {
+      padding-top: 20px;
+    }
   }
 `;
 

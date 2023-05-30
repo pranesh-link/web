@@ -1,12 +1,7 @@
 import classNames from "classnames";
 import React, { useEffect, useState } from "react";
-import {
-  FlexBoxSection,
-  SecHeader,
-  Desc,
-  FlexBox,
-} from "../../../common/Elements";
-import { ILink, ISectionInfo } from "../../../store/profile/types";
+import { FlexBoxSection, Desc, FlexBox } from "../../../common/Elements";
+import { ILink } from "../../../store/profile/types";
 import {
   getFilteredLinks,
   getIconUrl,
@@ -22,20 +17,19 @@ import { AboutMeDetails } from "./AboutMeDetails";
 import { COPIED, NOT_COPIED } from "../../../common/constants";
 
 interface IAboutProps {
-  refObj: React.MutableRefObject<any>;
-  aboutMe: ISectionInfo;
-  details: ISectionInfo;
-  links: ISectionInfo;
   exportProfile: () => void;
 }
 export const About = (props: IAboutProps) => {
-  const { refObj, aboutMe, details, links } = props;
   const {
     hasDownloadedProfile,
     isExport,
     isMobile,
     isDownloading,
-    data: { download },
+    data: {
+      sections: { aboutMe, links, details },
+      download,
+    },
+    refs: { homeRef: refObj },
   } = React.useContext(AppContext);
   const [copyState, setCopyState] = useState<Record<string, { state: string }>>(
     {}
@@ -86,7 +80,6 @@ export const About = (props: IAboutProps) => {
             </p>
           </FlexBoxSection>
         )}
-        <SecHeader className="about-me-title">{aboutMe.title}</SecHeader>
         <Desc
           className="about"
           dangerouslySetInnerHTML={{ __html: aboutMe.info as string }}
@@ -158,26 +151,29 @@ export const About = (props: IAboutProps) => {
           ) : (
             <InterestedInProfile
               isMobile={isMobile}
+              disabled={download.download.disabled}
               className={classNames({
                 "downloaded-profile": hasDownloadedProfile,
               })}
               alignItems="center"
             >
-              {!isDownloading && !hasDownloadedProfile && (
-                <>
-                  <img
-                    className="download"
-                    alt="Click here"
-                    height="25px"
-                    onClick={props.exportProfile}
-                    src={getIconUrl(download.download.icon)}
-                    loading="lazy"
-                  />
-                  <span className="download-text">
-                    {download.download.message}
-                  </span>
-                </>
-              )}
+              {!download.download.disabled &&
+                !isDownloading &&
+                !hasDownloadedProfile && (
+                  <>
+                    <img
+                      className="download"
+                      alt="Click here"
+                      height="25px"
+                      onClick={props.exportProfile}
+                      src={getIconUrl(download.download.icon)}
+                      loading="lazy"
+                    />
+                    <span className="download-text">
+                      {download.download.message}
+                    </span>
+                  </>
+                )}
               {isDownloading && (
                 <>
                   <img
@@ -215,9 +211,12 @@ export const About = (props: IAboutProps) => {
   );
 };
 
-const InterestedInProfile = styled(FlexBox)<{ isMobile: boolean }>`
+const InterestedInProfile = styled(FlexBox)<{
+  isMobile: boolean;
+  disabled?: boolean;
+}>`
   margin: ${(props) => (props.isMobile ? "10px 0 0 0" : "10px 0 0 10px")};
-  min-height: 50px;
+  min-height: ${(props) => (props.disabled ? "0px" : "50px")};
   font-weight: bold;
   &.downloaded-profile {
     margin-left: ${(props) => (props.isMobile ? "0" : "5px")};

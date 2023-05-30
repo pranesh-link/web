@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { FlexBox, FlexBoxSection } from "../../common/Elements";
-import { IProject } from "../../store/profile/types";
+import { IProjectExperience } from "../../store/profile/types";
 import classNames from "classnames";
 import {
   EXPANDABLE_INFOS,
@@ -11,10 +11,7 @@ import {
 import { AppContext } from "../../store/profile/context";
 
 interface IProjectInfoProps {
-  index: number;
-  project: IProject;
-  isExpanded: { [key: string]: boolean };
-  setExpanded: (expandSection: string, isExpanded: boolean) => void;
+  project: IProjectExperience;
 }
 export const ProjectInfo = (props: IProjectInfoProps) => {
   const {
@@ -26,7 +23,7 @@ export const ProjectInfo = (props: IProjectInfoProps) => {
   return (
     <SectionWrapper direction="column" className="keep-together">
       <ProjectName>
-        <span>{title.info}</span>
+        <span>{title}</span>
       </ProjectName>
       <FlexBoxSection
         direction="column"
@@ -44,7 +41,7 @@ export const ProjectInfo = (props: IProjectInfoProps) => {
                 >
                   {LABEL_TEXT[key]}
                 </label>
-                <div className="info">{project[key].info}</div>
+                <div className="info">{project[key]}</div>
               </FlexBox>
             ))}
           </FlexBoxSection>
@@ -67,38 +64,22 @@ export const ProjectInfo = (props: IProjectInfoProps) => {
             <FlexBoxSection direction="column" className="short-info">
               {SHORT_INFOS.map((key, index) => (
                 <div key={index} className="info">
-                  {project[key].info}
+                  {project[key]}
                 </div>
               ))}
             </FlexBoxSection>
           </FlexBox>
         )}
         {EXPANDABLE_INFOS.map((key, index) => {
-          const isExpanded = props.isExpanded[`${key}-${props.index}`];
-          const { requiresShowHide, info } = project[key];
           return (
             <FlexBox direction="column" className="info-wrapper" key={index}>
               <label className="info-label">
                 <span>{LABEL_TEXT[key]}</span>
-                {!isExport && requiresShowHide && (
-                  <button
-                    className={classNames("show-hide", {
-                      hide: isExpanded,
-                    })}
-                    onClick={() => props.setExpanded(key, !isExpanded)}
-                  >
-                    {isExpanded ? "Hide" : "Show"}
-                  </button>
-                )}
               </label>
-              {((requiresShowHide && isExpanded) ||
-                !requiresShowHide ||
-                isExport) && (
-                <div
-                  className={classNames("info", key, { export: isExport })}
-                  dangerouslySetInnerHTML={{ __html: info }}
-                />
-              )}
+              <div
+                className={classNames("info", key, { export: isExport })}
+                dangerouslySetInnerHTML={{ __html: project[key] }}
+              />
             </FlexBox>
           );
         })}

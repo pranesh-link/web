@@ -12,6 +12,10 @@ import { AppContext } from "../../store/profile/context";
 import MenuBar from "./MenuBar";
 import { Contact } from "./Sections/Contact";
 import CloseIcon from "../../assets/close-icon.svg";
+import { ComponentType } from "react";
+import { TransitionProps } from "react-transition-group/Transition";
+
+const TransitionComponent = Transition as ComponentType<TransitionProps>;
 
 interface IHamburgerMenuProps {
   isOpen: boolean;
@@ -22,13 +26,7 @@ interface IHamburgerMenuProps {
 export const HamBurgerMenu = (props: IHamburgerMenuProps) => {
   const { isOpen, setIsOpen, onMenuChange } = props;
   const contentRef = React.useRef<HTMLDivElement>(null);
-  const {
-    isMobile,
-    isExport = false,
-    data,
-    refs: { contactRef },
-  } = React.useContext(AppContext);
-  const { links } = data.sections;
+  const { isMobile, isExport = false } = React.useContext(AppContext);
 
   const [hamburgerClicked, setHamburgerClicked] = useState<boolean>(false);
   const scrollbarSize =
@@ -66,7 +64,7 @@ export const HamBurgerMenu = (props: IHamburgerMenuProps) => {
           className={classNames({ clicked: hamburgerClicked })}
         />
       </IconWrap>
-      <Transition
+      <TransitionComponent
         in={isOpen}
         duration={0}
         addEndListener={(node, done) => {
@@ -96,13 +94,13 @@ export const HamBurgerMenu = (props: IHamburgerMenuProps) => {
                 isExport={isExport}
                 className="hamburger-menu"
               >
-                <Contact links={links} refObj={contactRef} />
+                <Contact />
               </SectionsWrapper>
             </ContentSection>
             <RightSection onClick={() => setIsOpen(false)} />
           </Menu>
         )}
-      </Transition>
+      </TransitionComponent>
     </>
   );
 };

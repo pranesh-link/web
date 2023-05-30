@@ -43,6 +43,7 @@ type DownloadStages = "download" | "downloading" | "downloaded";
 
 export type DownloadType = {
   [key in DownloadStages]: {
+    disabled?: boolean;
     message: string;
     icon: string;
   };
@@ -66,9 +67,16 @@ export interface ISkill {
   star: number;
 }
 
+export type ShortInfosType = "client" | "duration" | "role" | "softwareTech";
+export type ExpandableInfosType = "description";
 export interface IProjectExperience {
   title: string;
+  shortTitle: string;
   client: string;
+  duration: string;
+  role: string;
+  softwareTech: string;
+  description: string;
   links: string[];
 }
 export interface IOrganization {

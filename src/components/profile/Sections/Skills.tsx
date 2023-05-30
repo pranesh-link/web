@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { memo, useContext } from "react";
-import { ISkill, ISectionInfo } from "../../../store/profile/types";
+import { ISkill } from "../../../store/profile/types";
 import { valueIsArray, valueIsSkillInfo } from "../../../common/Utils";
 import {
   FlexBox,
@@ -12,12 +12,6 @@ import classNames from "classnames";
 import { AppContext } from "../../../store/profile/context";
 import StarIcon from "../../../assets/star.svg";
 import StarUnfilledIcon from "../../../assets/star-unfilled.svg";
-
-interface ISkillsProps {
-  isExport?: boolean;
-  refObj: React.MutableRefObject<any>;
-  skills: ISectionInfo;
-}
 
 const SKILL_ICON_TEXT_MAP = {
   filled: {
@@ -50,9 +44,15 @@ const SkillWithStars = memo(({ starNum }: { starNum: number }) => {
   );
 });
 
-export const Skills = (props: ISkillsProps) => {
-  const { refObj, skills, isExport = false } = props;
-  const { isMobile } = useContext(AppContext);
+export const Skills = () => {
+  const {
+    isMobile,
+    isExport = false,
+    refs: { skillsRef: refObj },
+    data: {
+      sections: { skills },
+    },
+  } = useContext(AppContext);
 
   const getColumnData = (skill: ISkill) => (
     <FlexBox className="skill">

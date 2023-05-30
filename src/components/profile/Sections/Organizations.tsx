@@ -1,20 +1,20 @@
 import classNames from "classnames";
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { FlexBoxSection, SecHeader } from "../../../common/Elements";
-import { ISectionInfo } from "../../../store/profile/types";
 import { valueIsArray, valueIsOrgInfo } from "../../../common/Utils";
 import { EXPERIENCE_TYPES } from "../../../common/constants";
+import { AppContext } from "../../../store/profile/context";
 
-interface IOrganizationsProps {
-  isExport?: boolean;
-  isMobile: boolean;
-  organizations: ISectionInfo;
-  refObj: React.MutableRefObject<any>;
-}
-
-export const Organizations = (props: IOrganizationsProps) => {
-  const { isExport, organizations, refObj, isMobile } = props;
+export const Organizations = () => {
+  const {
+    isExport,
+    isMobile,
+    data: {
+      sections: { organizations },
+    },
+    refs: { orgRef: refObj },
+  } = useContext(AppContext);
   if (valueIsArray(organizations.info) && valueIsOrgInfo(organizations.info)) {
     const currentOrg = organizations.info.find(
       (organization) => organization.type === EXPERIENCE_TYPES.CURRENT

@@ -1,5 +1,10 @@
 import React from "react";
-import { IAppContext, IPWA } from "../store/profile/types";
+import {
+  ExpandableInfosType,
+  IAppContext,
+  IPWA,
+  ShortInfosType,
+} from "../store/profile/types";
 import { IMaintenance } from "../store/common/types";
 
 export const CORS_MODE = "cors";
@@ -11,8 +16,13 @@ export const TOAST_ERROR_MESSAGE = [
   "Something went wrong.",
   "Please close this error to reload the page.",
 ];
-export const SHORT_INFOS = ["client", "duration", "role", "softwareTech"];
-export const EXPANDABLE_INFOS = ["description", "responsibilities"];
+export const SHORT_INFOS: ShortInfosType[] = [
+  "client",
+  "duration",
+  "role",
+  "softwareTech",
+];
+export const EXPANDABLE_INFOS: ExpandableInfosType[] = ["description"];
 export const COPIED = "copied";
 export const NOT_COPIED = "not-copied";
 export const COPIED_TEXT = "Copied!";
@@ -135,13 +145,16 @@ export const DEFAULT_MAINTENANCE_DATA: IMaintenance = {
   image: "",
 };
 
-export const SECTION_ORDER: Record<string, number> = {
-  ABOUT: 1,
-  EDUCATION: 4,
-  ORGANIZATIONS: 3,
-  SKILLS: 2,
-  EXPERIENCES: 5,
-  CONTACT: 6,
+export const SECTION_ORDER_DISPLAY: Record<
+  string,
+  { order: number; display?: boolean }
+> = {
+  ABOUTME: { order: 1 },
+  EDUCATION: { order: 4 },
+  ORGANIZATIONS: { order: 3, display: false },
+  SKILLS: { order: 2 },
+  EXPERIENCE: { order: 5 },
+  CONTACT: { order: 6 },
 };
 
 export const LABELS = {
