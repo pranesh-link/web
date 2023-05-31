@@ -77,4 +77,8 @@ li,
   .ReactModal__Content {
     margin: 15px;
   }
+
+  ::-webkit-scrollbar {
+    width: 7px;
+  }
 }
