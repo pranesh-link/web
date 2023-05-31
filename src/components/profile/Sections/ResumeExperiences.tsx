@@ -318,6 +318,10 @@ const SectionWrapper = styled(FlexBoxSection)<{ icon: string }>`
     .org-name {
       font-size: 20px;
     }
+
+    .project-titles-wrap {
+      max-width: unset;
+    }
   }
 `;
 
