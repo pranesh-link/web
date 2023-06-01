@@ -7,7 +7,6 @@ import { About } from "./Sections/About";
 import { Education } from "./Sections/Education";
 import { Contact } from "./Sections/Contact";
 import classNames from "classnames";
-import { Organizations } from "./Sections/Organizations";
 import { ResumeExperiences } from "./Sections/ResumeExperiences";
 import { SECTION_ORDER_DISPLAY } from "../../common/constants";
 
@@ -29,7 +28,7 @@ const ProfileSections = (props: IProfileSectionsProps) => {
     data: { header },
   } = React.useContext(AppContext);
   const { shortDesc, name } = header;
-  const { ABOUTME, EDUCATION, ORGANIZATIONS, SKILLS, EXPERIENCE, CONTACT } =
+  const { ABOUTME, EDUCATION, SKILLS, EXPERIENCES, CONTACT } =
     SECTION_ORDER_DISPLAY;
 
   const AboutComp = useMemo(
@@ -46,11 +45,6 @@ const ProfileSections = (props: IProfileSectionsProps) => {
   );
 
   const EducationComp = useMemo(() => <Education />, []);
-
-  const OrganizationsComp = useMemo(
-    () => <>{!isExport && <Organizations />}</>,
-    [isExport]
-  );
 
   const SkillsComp = useMemo(() => <Skills />, []);
 
@@ -76,22 +70,16 @@ const ProfileSections = (props: IProfileSectionsProps) => {
         display: EDUCATION.display,
       },
       {
-        order: ORGANIZATIONS.order,
-        name: "organizations",
-        component: OrganizationsComp,
-        display: ORGANIZATIONS.display,
-      },
-      {
         order: SKILLS.order,
         name: "skills",
         component: SkillsComp,
         display: SKILLS.display,
       },
       {
-        order: EXPERIENCE.order,
+        order: EXPERIENCES.order,
         name: "experiences",
         component: ExperiencesComp,
-        display: EXPERIENCE.display,
+        display: EXPERIENCES.display,
       },
       {
         order: CONTACT.order,
@@ -106,11 +94,9 @@ const ProfileSections = (props: IProfileSectionsProps) => {
       CONTACT,
       ContactComp,
       EDUCATION,
-      EXPERIENCE,
+      EXPERIENCES,
       EducationComp,
       ExperiencesComp,
-      ORGANIZATIONS,
-      OrganizationsComp,
       SKILLS,
       SkillsComp,
     ]

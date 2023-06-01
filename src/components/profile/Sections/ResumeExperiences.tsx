@@ -26,7 +26,7 @@ interface INames {
 export const ResumeExperiences = memo(() => {
   const {
     data: {
-      sections: { organizations: experiences },
+      sections: { experiences },
     },
     isExport,
     isMobile,

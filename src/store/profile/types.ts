@@ -121,11 +121,9 @@ export type ProfileSectionType =
   | "aboutMe"
   | "details"
   | "skills"
-  | "experience"
+  | "experiences"
   | "education"
-  | "links"
-  | "organizations"
-  | "resumeExperiences";
+  | "links";
 
 export type RefTypes =
   | "homeRef"

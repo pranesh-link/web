@@ -94,12 +94,10 @@ const ProfilePage = (props: ProfilePageProps) => {
       ABOUT_ME,
       DETAILS,
       EDUCATION,
-      ORGANIZATIONS,
       SKILLS,
       EXPERIENCE,
       LINKS,
       DOWNLOAD,
-      RESUME_EXPERIENCES,
     } = SECTIONS;
 
     const DEFAULT_SECTIONS_DETAILS = DEFAULT_CONTEXT.data.sections.details;
@@ -108,11 +106,9 @@ const ProfilePage = (props: ProfilePageProps) => {
       ABOUT_ME,
       DETAILS,
       EDUCATION,
-      ORGANIZATIONS,
       SKILLS,
       EXPERIENCE,
       LINKS,
-      RESUME_EXPERIENCES,
     ];
 
     const fetchInfo = async (
@@ -131,11 +127,9 @@ const ProfilePage = (props: ProfilePageProps) => {
         aboutMe,
         details,
         education,
-        organizations,
         skills,
-        experience,
+        experiences,
         links,
-        resumeExperiences,
       ] = await Promise.all([
         fetchInfo(HEADER, DEFAULT_CONTEXT.data.header),
         fetchInfo(DOWNLOAD, DEFAULT_CONTEXT.data.download),
@@ -148,11 +142,9 @@ const ProfilePage = (props: ProfilePageProps) => {
         aboutMe,
         details,
         education,
-        organizations,
         skills,
-        experience,
+        experiences,
         links,
-        resumeExperiences,
       };
       setProfileData({ header, sections, download });
       setIsFetchingData(false);

@@ -55,11 +55,7 @@ export const DEFAULT_CONTEXT: IAppContext = {
         title: "",
         info: "",
       },
-      organizations: {
-        title: "",
-        info: "",
-      },
-      experience: {
+      experiences: {
         title: "",
         info: "",
       },
@@ -71,12 +67,10 @@ export const DEFAULT_CONTEXT: IAppContext = {
         title: "",
         info: "",
       },
-      resumeExperiences: {
-        title: "",
-        info: [],
-      },
     },
     download: {
+      type: "",
+      staticFileUrl: "",
       download: {
         message: "",
         icon: "",
@@ -153,7 +147,7 @@ export const SECTION_ORDER_DISPLAY: Record<
   EDUCATION: { order: 4 },
   ORGANIZATIONS: { order: 3, display: false },
   SKILLS: { order: 2 },
-  EXPERIENCE: { order: 5 },
+  EXPERIENCES: { order: 5 },
   CONTACT: { order: 6 },
 };
 
