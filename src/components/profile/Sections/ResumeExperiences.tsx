@@ -8,7 +8,7 @@ import {
 } from "../../../common/Elements";
 import React, { memo, useContext, useEffect, useMemo, useState } from "react";
 import { AppContext } from "../../../store/profile/context";
-import { valueIsArray, valueIsOrgInfo } from "../../../common/Utils";
+import { valueIsArray, valueIsExperienceInfo } from "../../../common/Utils";
 import { IProjectExperience } from "../../../store/profile/types";
 import { EXPERIENCE_TYPES, LABELS } from "../../../common/constants";
 import Modal from "react-modal";
@@ -26,7 +26,7 @@ interface INames {
 export const ResumeExperiences = memo(() => {
   const {
     data: {
-      sections: { organizations: experiences },
+      sections: { experiences },
     },
     isExport,
     isMobile,
@@ -91,7 +91,8 @@ export const ResumeExperiences = memo(() => {
           </ModalContentWrap>
         </ModalComponent>
       )}
-      {valueIsArray(experiences.info) && valueIsOrgInfo(experiences.info) ? (
+      {valueIsArray(experiences.info) &&
+      valueIsExperienceInfo(experiences.info) ? (
         <section
           className={classNames("profile-section", "experience", {
             export: isExport,
@@ -103,7 +104,7 @@ export const ResumeExperiences = memo(() => {
             className={classNames("page-break", { export: isExport })}
             onClick={() =>
               setProject(
-                valueIsOrgInfo(experiences.info)
+                valueIsExperienceInfo(experiences.info)
                   ? experiences.info[0].projects[0]
                   : null
               )

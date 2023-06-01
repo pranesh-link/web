@@ -1,11 +1,12 @@
 import classNames from "classnames";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { FlexBoxSection, Desc, FlexBox } from "../../../common/Elements";
 import { ILink } from "../../../store/profile/types";
 import {
   getFilteredLinks,
   getIconUrl,
   getIconUrlByExportFlag,
+  getJsonBaseUrl,
   getObjectKeyValuesByIndex,
   isEmptyObject,
   valueIsArray,
@@ -50,7 +51,17 @@ export const About = (props: IAboutProps) => {
     }
   }, [copyState]);
 
+  const downloadProfile = useCallback(() => {
+    const { type, staticFileUrl } = download;
+    if (type === "static") {
+      window.open(`${getJsonBaseUrl()}/${staticFileUrl}`);
+    } else {
+      props.exportProfile();
+    }
+  }, [download, props]);
+
   const filteredLinks = getFilteredLinks(links.info as ILink[]);
+
   return (
     <FlexBoxSection
       className={classNames("profile-section", "about", { export: isExport })}
@@ -165,7 +176,7 @@ export const About = (props: IAboutProps) => {
                       className="download"
                       alt="Click here"
                       height="25px"
-                      onClick={props.exportProfile}
+                      onClick={downloadProfile}
                       src={getIconUrl(download.download.icon)}
                       loading="lazy"
                     />
