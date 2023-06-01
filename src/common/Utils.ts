@@ -5,7 +5,7 @@ import {
   IHeader,
   ILink,
   InfoType,
-  IOrganization,
+  IExperience,
   IOrgProject,
   IResumeOrg,
   ISectionInfo,
@@ -41,8 +41,10 @@ export const valueIsLinkInfo = (item: InfoType): item is ILink[] => {
   return (item as ILink[])[0].icon !== undefined;
 };
 
-export const valueIsOrgInfo = (item: InfoType): item is IOrganization[] => {
-  return (item as IOrganization[])[0].name !== undefined;
+export const valueIsExperienceInfo = (
+  item: InfoType
+): item is IExperience[] => {
+  return (item as IExperience[])[0].name !== undefined;
 };
 export const lowercase = (str: string) => str.toLowerCase().replace(/ /g, "");
 

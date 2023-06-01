@@ -60,7 +60,7 @@ export interface IPWA {
 
 export type InfoType =
   | string
-  | (ISkill | IOrgProject | ILink | IDetailInfo | IOrganization | IResumeOrg)[];
+  | (ISkill | IOrgProject | ILink | IDetailInfo | IExperience | IResumeOrg)[];
 
 export interface ISkill {
   label: string;
@@ -79,7 +79,7 @@ export interface IProjectExperience {
   description: string;
   links: string[];
 }
-export interface IOrganization {
+export interface IExperience {
   name: string;
   type: string;
   from: string;

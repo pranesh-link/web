@@ -2,7 +2,7 @@ import classNames from "classnames";
 import React, { useContext } from "react";
 import styled from "styled-components";
 import { FlexBoxSection, SecHeader } from "../../../common/Elements";
-import { valueIsArray, valueIsOrgInfo } from "../../../common/Utils";
+import { valueIsArray, valueIsExperienceInfo } from "../../../common/Utils";
 import { EXPERIENCE_TYPES } from "../../../common/constants";
 import { AppContext } from "../../../store/profile/context";
 
@@ -15,7 +15,10 @@ export const Organizations = () => {
     },
     refs: { orgRef: refObj },
   } = useContext(AppContext);
-  if (valueIsArray(organizations.info) && valueIsOrgInfo(organizations.info)) {
+  if (
+    valueIsArray(organizations.info) &&
+    valueIsExperienceInfo(organizations.info)
+  ) {
     const currentOrg = organizations.info.find(
       (organization) => organization.type === EXPERIENCE_TYPES.CURRENT
     );

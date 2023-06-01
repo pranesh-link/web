@@ -55,6 +55,7 @@ const MenuBar = (props: IMenuBarProps) => {
       (result, curr, index) => {
         const { ref, section } = curr;
         const currentRef = refs[ref as RefTypes];
+        console.log("currentRef", currentRef, refs, ref);
         if (currentRef.current) {
           let pos = currentRef.current.getBoundingClientRect().top;
           pos =
