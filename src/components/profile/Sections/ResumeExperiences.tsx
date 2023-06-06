@@ -13,7 +13,6 @@ import { IProjectExperience } from "../../../store/profile/types";
 import { EXPERIENCE_TYPES, LABELS } from "../../../common/constants";
 import Modal from "react-modal";
 import { ProjectInfo } from "../ProjectInfo";
-import CloseIcon from "../../../assets/close-icon.svg";
 import { ComponentType } from "react";
 
 const ModalComponent = Modal as ComponentType<ReactModal["props"]>;
@@ -83,11 +82,13 @@ export const ResumeExperiences = memo(() => {
           className="modal-wrap"
           ariaHideApp={false}
         >
-          <ModalContentWrap>
-            <ActionBtn className="close" onClick={() => setProject(null)}>
-              <img alt="" src={CloseIcon} className="close-button" />
-            </ActionBtn>
+          <ModalContentWrap direction="column">
+            <div className="modal-banner header" />
             <ProjectInfo project={project} />
+            <ActionBtn className="close" onClick={() => setProject(null)}>
+              Close
+            </ActionBtn>
+            <div className="modal-banner footer" />
           </ModalContentWrap>
         </ModalComponent>
       )}
@@ -169,66 +170,6 @@ export const ResumeExperiences = memo(() => {
               );
             })}
           </SectionWrapper>
-
-          {isExport && (
-            <SectionWrapper
-              direction="column"
-              justifyContent="space-around"
-              className={classNames({ export: isExport })}
-              icon={experiences.icon || ""}
-            >
-              {experiences.info.map((experience, index) => {
-                const {
-                  name,
-                  from,
-                  to,
-                  type,
-                  designation,
-                  responsibilities,
-                  projects,
-                } = experience;
-
-                const { projectNames, clientNames, duration, totalClients } =
-                  getExperienceInfo(projects, type, from, to);
-                return (
-                  <section key={index} className="organization">
-                    <h3
-                      className={classNames("org-name", type.toLowerCase(), {
-                        "page-break": false,
-                      })}
-                    >
-                      <span>{designation}</span>
-                      {textSeparator}
-                      <span>{name}</span>
-                      {textSeparator}
-                      <span className="duration">{duration}</span>
-                    </h3>
-                    <h4 className="projects-label">
-                      <label>{`${LABELS.PROJECTS}:`}</label>
-                      <span>{projectNames}</span>
-                    </h4>
-                    <h4 className="clients-label">
-                      <label>
-                        {`${
-                          totalClients === 1 ? LABELS.CLIENT : LABELS.CLIENTS
-                        }:`}
-                      </label>
-                      <span>{clientNames}</span>
-                    </h4>
-                    <h4 className="responsibilities">
-                      <label>{`${LABELS.RESPONSIBILITIES}:`} </label>
-                      <div
-                        className="responsibilities"
-                        dangerouslySetInnerHTML={{
-                          __html: responsibilities,
-                        }}
-                      />
-                    </h4>
-                  </section>
-                );
-              })}
-            </SectionWrapper>
-          )}
         </section>
       ) : null}
     </>
@@ -326,17 +267,41 @@ const SectionWrapper = styled(FlexBoxSection)<{ icon: string }>`
   }
 `;
 
-const ModalContentWrap = styled.div`
+const ModalContentWrap = styled(FlexBox)`
   background: #f0f0f0;
   position: relative;
-  padding: 20px;
-  border-radius: 10px;
+  /* padding: 20px; */
+  border-radius: 5px;
+  .modal-banner {
+    height: 5px;
+    background: #3fc935;
+    position: fixed;
+    width: 100%;
+    &.header {
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+    }
+    &.footer {
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+      bottom: 0;
+    }
+  }
   .close {
-    position: absolute;
-    top: -10px;
-    right: -15px;
+    align-self: self-end;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    padding: 7px 15px;
+    background: #3498db;
+    border-radius: 20px;
+    color: #f0f0f0;
+    &:hover {
+      background: #ee4b2b;
+    }
     @media only screen and (max-width: 992px) {
-      position: fixed;
+      align-self: center;
+      margin-right: 0;
     }
   }
 

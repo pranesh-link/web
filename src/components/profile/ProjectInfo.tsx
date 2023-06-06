@@ -90,6 +90,7 @@ export const ProjectInfo = (props: IProjectInfoProps) => {
 
 const SectionWrapper = styled(FlexBoxSection)`
   margin-bottom: 20px;
+  padding: 20px 20px 0;
   .project-info {
     margin-left: 10px;
     &.export {
