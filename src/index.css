@@ -62,8 +62,7 @@ li,
 }
 
 .ReactModal__Content {
-  margin-left: 10%;
-  margin-right: 10%;
+  margin: 0 10%;
   position: relative;
   top: 45%;
   transform: translateY(-45%);
@@ -75,7 +74,7 @@ li,
 
 @media only screen and (max-width: 992px) {
   .ReactModal__Content {
-    margin: 15px;
+    margin: 0 15px;
   }
 
   ::-webkit-scrollbar {
