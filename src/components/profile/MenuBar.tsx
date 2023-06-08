@@ -127,7 +127,7 @@ export default MenuBar;
 const MenuWrapper = styled.nav`
   overflow: hidden;
   position: fixed;
-  top: 20%;
+  top: 35%;
   right: 25px;
   width: 100%;
   z-index: 10;

@@ -1,5 +1,3 @@
-import { ICommonData } from "../common/types";
-
 export interface IProfileData {
   header: IHeader;
   sections: SectionsType;
@@ -130,8 +128,7 @@ export type RefTypes =
   | "skillsRef"
   | "experienceRef"
   | "educationRef"
-  | "contactRef"
-  | "orgRef";
+  | "contactRef";
 
 export interface IAppContext {
   data: IProfileData;
@@ -139,7 +136,6 @@ export interface IAppContext {
     [key in RefTypes]: React.MutableRefObject<any>;
   };
   currentSection: string;
-  commonData: ICommonData;
   isExport?: boolean;
   isDownloading?: boolean;
   isMobile: boolean;

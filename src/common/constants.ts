@@ -91,13 +91,6 @@ export const DEFAULT_CONTEXT: IAppContext = {
     experienceRef: React.createRef(),
     educationRef: React.createRef(),
     contactRef: React.createRef(),
-    orgRef: React.createRef(),
-  },
-  commonData: {
-    icons: {
-      star: { icon: "", pdfExportIcon: "" },
-      starUnfilled: { icon: "", pdfExportIcon: "" },
-    },
   },
   currentSection: "about",
   isExport: false,
@@ -117,6 +110,7 @@ export const LABEL_TEXT: { [key: string]: string } = {
 };
 
 export const SECTIONS = {
+  COMBINED: "profile-sections",
   HEADER: "header",
   ABOUT_ME: "aboutMe",
   DETAILS: "details",

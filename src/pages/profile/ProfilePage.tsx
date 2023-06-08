@@ -27,14 +27,12 @@ import { CloseButton, LoaderImg } from "../../common/Elements";
 import CloseIcon from "../../assets/close-icon.svg";
 import LoaderIcon from "../../assets/loader-icon.svg";
 import "react-toastify/dist/ReactToastify.css";
-import { ICommonData } from "../../store/common/types";
 
 interface ProfilePageProps {
   pwa: IPWA;
   hasError: boolean;
   isExport: boolean;
   isMobile: boolean;
-  commonData: ICommonData;
 }
 
 const ProfilePage = (props: ProfilePageProps) => {
@@ -43,9 +41,8 @@ const ProfilePage = (props: ProfilePageProps) => {
   const experienceRef = useRef(null);
   const educationRef = useRef(null);
   const contactRef = useRef(null);
-  const orgRef = useRef(null);
 
-  const { pwa, hasError, isExport, commonData, isMobile } = props;
+  const { pwa, hasError, isExport, isMobile } = props;
   const [hasErrorInProfile, setHasErrorInProfile] = useState<boolean>(hasError);
   const { isInstallPromptSupported, promptInstall } = usePWA();
 
@@ -89,27 +86,11 @@ const ProfilePage = (props: ProfilePageProps) => {
   useEffect(() => {
     window.scrollTo(0, 0);
     document.title = PAGE_TITLES.profile;
-    const {
-      HEADER,
-      ABOUT_ME,
-      DETAILS,
-      EDUCATION,
-      SKILLS,
-      EXPERIENCE,
-      LINKS,
-      DOWNLOAD,
-    } = SECTIONS;
+    const { COMBINED, SKILLS, EXPERIENCE, LINKS, DOWNLOAD } = SECTIONS;
 
     const DEFAULT_SECTIONS_DETAILS = DEFAULT_CONTEXT.data.sections.details;
 
-    const sectionsToFetch = [
-      ABOUT_ME,
-      DETAILS,
-      EDUCATION,
-      SKILLS,
-      EXPERIENCE,
-      LINKS,
-    ];
+    const sectionsToFetch = [COMBINED, SKILLS, EXPERIENCE, LINKS];
 
     const fetchInfo = async (
       jsonToFetch: string,
@@ -121,22 +102,15 @@ const ProfilePage = (props: ProfilePageProps) => {
     };
 
     (async () => {
-      const [
-        header,
-        download,
-        aboutMe,
-        details,
-        education,
-        skills,
-        experiences,
-        links,
-      ] = await Promise.all([
-        fetchInfo(HEADER, DEFAULT_CONTEXT.data.header),
-        fetchInfo(DOWNLOAD, DEFAULT_CONTEXT.data.download),
-        ...sectionsToFetch.map((section) =>
-          fetchInfo(section, DEFAULT_SECTIONS_DETAILS)
-        ),
-      ]);
+      const [download, profileSectionsInfo, skills, experiences, links] =
+        await Promise.all([
+          fetchInfo(DOWNLOAD, DEFAULT_CONTEXT.data.download),
+          ...sectionsToFetch.map((section) =>
+            fetchInfo(section, DEFAULT_SECTIONS_DETAILS)
+          ),
+        ]);
+
+      const { header, aboutMe, details, education } = profileSectionsInfo;
 
       const sections = {
         aboutMe,
@@ -156,6 +130,7 @@ const ProfilePage = (props: ProfilePageProps) => {
       toast.error(ToastError);
     }
   }, [hasErrorInProfile, ToastError]);
+
   return isFetchingData ? (
     <LoaderImg isMobile={isMobile} src={LoaderIcon} />
   ) : (
@@ -170,15 +145,9 @@ const ProfilePage = (props: ProfilePageProps) => {
       />
       {!hasErrorInProfile && (
         <Profile
-          commonData={commonData}
           isExport={isExport}
           profileData={profileData}
-          homeRef={homeRef}
-          skillsRef={skillsRef}
-          experienceRef={experienceRef}
-          educationRef={educationRef}
-          contactRef={contactRef}
-          orgRef={orgRef}
+          refs={{ homeRef, skillsRef, experienceRef, educationRef, contactRef }}
           isDownloading={isDownloading}
           isMobile={isMobile}
           isInstallBannerOpen={
