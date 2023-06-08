@@ -7,18 +7,17 @@ import { AppProvider } from "../../store/profile/context";
 import { IProfileData } from "../../store/profile/types";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { ICommonData } from "../../store/common/types";
 import { Overlay } from "../../common/Elements";
 
 interface ProfileProps {
   profileData: IProfileData;
-  homeRef: React.MutableRefObject<any>;
-  skillsRef: React.MutableRefObject<any>;
-  experienceRef: React.MutableRefObject<any>;
-  educationRef: React.MutableRefObject<any>;
-  contactRef: React.MutableRefObject<any>;
-  orgRef: React.MutableRefObject<any>;
-  commonData: ICommonData;
+  refs: {
+    homeRef: React.MutableRefObject<any>;
+    skillsRef: React.MutableRefObject<any>;
+    experienceRef: React.MutableRefObject<any>;
+    educationRef: React.MutableRefObject<any>;
+    contactRef: React.MutableRefObject<any>;
+  };
   isDownloading: boolean;
   isMobile: boolean;
   isHamburgerMenuOpen: boolean;
@@ -31,13 +30,7 @@ interface ProfileProps {
 export const Profile = (props: ProfileProps) => {
   const {
     profileData,
-    commonData,
-    homeRef,
-    skillsRef,
-    experienceRef,
-    educationRef,
-    contactRef,
-    orgRef,
+    refs: { homeRef, skillsRef, experienceRef, educationRef, contactRef },
     isDownloading,
     isMobile,
     isHamburgerMenuOpen,
@@ -67,10 +60,8 @@ export const Profile = (props: ProfileProps) => {
             experienceRef,
             educationRef,
             contactRef,
-            orgRef,
           },
           currentSection,
-          commonData,
           isExport,
           isDownloading,
           isMobile,
@@ -115,10 +106,8 @@ export const Profile = (props: ProfileProps) => {
       <AppProvider
         value={{
           data: profileData,
-          commonData,
           refs: {
             homeRef,
-            orgRef,
             skillsRef,
             experienceRef,
             educationRef,

@@ -9,7 +9,6 @@ import {
 import { ISectionInfo } from "./store/profile/types";
 import { LoaderImg } from "./common/Elements";
 import LoaderIcon from "./assets/loader-icon.svg";
-import { ICommonData } from "./store/common/types";
 
 function App() {
   const queryParams = new URLSearchParams(window.location.search);
@@ -19,9 +18,6 @@ function App() {
   const [maintenance, setMaintenance] = useState(DEFAULT_MAINTENANCE_DATA);
   const [links, setLinks] = useState(DEFAULT_CONTEXT.data.sections.links);
   const [pwa, setPwa] = useState(DEFAULT_PWA);
-  const [commonData, setCommonData] = useState<ICommonData>(
-    DEFAULT_CONTEXT.commonData
-  );
   const [hasError, setHasError] = useState(false);
 
   const fetchSections = async (jsonToFetch: string, data: ISectionInfo) => {
@@ -45,17 +41,14 @@ function App() {
 
   useEffect(() => {
     (async () => {
-      const [maintenanceInfo, linksInfo, pwaInfo, commonData] =
-        await Promise.all([
-          fetchData("maintenance"),
-          fetchSections("links", links),
-          fetchData("pwa"),
-          fetchData("common"),
-        ]);
+      const [maintenanceInfo, linksInfo, pwaInfo] = await Promise.all([
+        fetchData("maintenance"),
+        fetchSections("links", links),
+        fetchData("pwa"),
+      ]);
       setMaintenance(maintenanceInfo);
       setLinks(linksInfo);
       setPwa(pwaInfo);
-      setCommonData(commonData);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -101,7 +94,6 @@ function App() {
                         isExport={isExport}
                         hasError={hasError}
                         pwa={pwa}
-                        commonData={commonData}
                       />
                     </>
                   }
