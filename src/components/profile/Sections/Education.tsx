@@ -2,6 +2,7 @@ import classNames from "classnames";
 import React, { useContext } from "react";
 import { SecHeader, Desc } from "../../../common/Elements";
 import { AppContext } from "../../../store/profile/context";
+import { SECTIONS } from "../../../common/constants";
 
 export const Education = () => {
   const {
@@ -14,7 +15,7 @@ export const Education = () => {
   return (
     <section
       className="profile-section"
-      id={isExport ? "" : "education"}
+      id={isExport ? "" : SECTIONS.EDUCATION}
       ref={isExport ? null : refObj}
     >
       <SecHeader className={classNames({ export: isExport })}>

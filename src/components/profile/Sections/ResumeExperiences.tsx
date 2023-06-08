@@ -10,7 +10,7 @@ import React, { memo, useContext, useEffect, useMemo, useState } from "react";
 import { AppContext } from "../../../store/profile/context";
 import { valueIsArray, valueIsExperienceInfo } from "../../../common/Utils";
 import { IProjectExperience } from "../../../store/profile/types";
-import { EXPERIENCE_TYPES, LABELS } from "../../../common/constants";
+import { EXPERIENCE_TYPES, LABELS, SECTIONS } from "../../../common/constants";
 import Modal from "react-modal";
 import { ProjectInfo } from "../ProjectInfo";
 import { ComponentType } from "react";
@@ -98,7 +98,7 @@ export const ResumeExperiences = memo(() => {
           className={classNames("profile-section", "experience", {
             export: isExport,
           })}
-          id={isExport ? "" : "experience"}
+          id={isExport ? "" : SECTIONS.EXPERIENCE}
           ref={isExport ? null : experienceRef}
         >
           <SecHeader
