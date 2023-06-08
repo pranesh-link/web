@@ -10,6 +10,7 @@ import {
 import classNames from "classnames";
 import styled from "styled-components";
 import { AppContext } from "../../../store/profile/context";
+import { SECTIONS } from "../../../common/constants";
 
 interface IContactProps {
   links?: ISectionInfo;
@@ -34,7 +35,7 @@ export const Contact = (props: IContactProps) => {
       justifyContent="center"
       alignItems="center"
       className="profile-section links"
-      id="links"
+      id={SECTIONS.LINKS}
       ref={refObj}
     >
       {valueIsArray(links.info) && valueIsLinkInfo(links.info)

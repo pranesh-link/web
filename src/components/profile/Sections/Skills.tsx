@@ -12,6 +12,7 @@ import classNames from "classnames";
 import { AppContext } from "../../../store/profile/context";
 import StarIcon from "../../../assets/star.svg";
 import StarUnfilledIcon from "../../../assets/star-unfilled.svg";
+import { SECTIONS } from "../../../common/constants";
 
 const SKILL_ICON_TEXT_MAP = {
   filled: {
@@ -73,7 +74,7 @@ export const Skills = () => {
   return (
     <section
       className="profile-section"
-      id={isExport ? "" : "skills"}
+      id={isExport ? "" : SECTIONS.SKILLS}
       ref={isExport ? null : refObj}
     >
       <SecHeader className={classNames({ export: isExport })}>
