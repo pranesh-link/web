@@ -162,6 +162,7 @@ const ProfilePage = (props: ProfilePageProps) => {
           setIsHamburgerMenuOpen={(isHamburgerMenuOpen: boolean) =>
             setIsHamburgerMenuOpen(isHamburgerMenuOpen)
           }
+          onInstallPWA={onClickInstall}
         />
       )}
       {!hasErrorInProfile && !isExport && (

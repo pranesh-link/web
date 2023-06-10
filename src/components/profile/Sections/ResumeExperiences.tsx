@@ -270,7 +270,6 @@ const SectionWrapper = styled(FlexBoxSection)<{ icon: string }>`
 const ModalContentWrap = styled(FlexBox)`
   background: #f0f0f0;
   position: relative;
-  /* padding: 20px; */
   border-radius: 5px;
   .modal-banner {
     height: 5px;

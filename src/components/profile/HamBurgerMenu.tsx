@@ -3,11 +3,12 @@ import React, { useEffect, useState } from "react";
 import { Transition } from "react-transition-group";
 import styled from "styled-components";
 import HamBurgerIcon from "../../assets/burgericon.svg";
-import { FlexBox, FlexBoxSection } from "../../common/Elements";
+import { ActionBtn, FlexBox, FlexBoxSection } from "../../common/Elements";
 import MenuBar from "./MenuBar";
 import CloseIcon from "../../assets/close-icon.svg";
 import { ComponentType } from "react";
 import { TransitionProps } from "react-transition-group/Transition";
+import MobileApplicationIcon from "../../assets/mobile-application-icon.svg";
 
 const TransitionComponent = Transition as ComponentType<TransitionProps>;
 
@@ -15,10 +16,11 @@ interface IHamburgerMenuProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   onMenuChange: (section: string) => void;
+  onInstallPWA: () => void;
 }
 
 export const HamBurgerMenu = (props: IHamburgerMenuProps) => {
-  const { isOpen, setIsOpen, onMenuChange } = props;
+  const { isOpen, setIsOpen, onMenuChange, onInstallPWA } = props;
   const contentRef = React.useRef<HTMLDivElement>(null);
 
   const [hamburgerClicked, setHamburgerClicked] = useState<boolean>(false);
@@ -81,6 +83,21 @@ export const HamBurgerMenu = (props: IHamburgerMenuProps) => {
                 closeHamburgerMenu={() => setIsOpen(false)}
                 onMenuChange={(section) => onMenuChange(section)}
               />
+              <FlexBox justifyContent="center">
+                <ActionBtn
+                  className="install-app-button"
+                  onClick={onInstallPWA}
+                >
+                  <FlexBox alignItems="center">
+                    <img
+                      alt=""
+                      src={MobileApplicationIcon}
+                      className="mobile-application-icon"
+                    />
+                    <span className="install-app-text">Install app</span>
+                  </FlexBox>
+                </ActionBtn>
+              </FlexBox>
             </ContentSection>
             <RightSection onClick={() => setIsOpen(false)} />
           </Menu>
@@ -135,6 +152,24 @@ const ContentSection = styled(FlexBoxSection)`
     cursor: pointer;
     margin: 10px;
     height: 30px;
+  }
+
+  .install-app-button {
+    margin-bottom: 25px;
+    background-color: #f0f0f0;
+    border-radius: 30px;
+    padding: 5px 20px;
+    max-width: fit-content;
+  }
+
+  .mobile-application-icon {
+    cursor: pointer;
+    height: 25px;
+  }
+
+  .install-app-text {
+    margin-left: 10px;
+    font-weight: bold;
   }
 `;
 const RightSection = styled.div`

@@ -25,6 +25,7 @@ interface ProfileProps {
   isExport: boolean;
   setIsDownloading: (isDownloading: boolean) => void;
   setIsHamburgerMenuOpen: (isHamburgerMenuOpen: boolean) => void;
+  onInstallPWA: () => void;
 }
 
 export const Profile = (props: ProfileProps) => {
@@ -38,6 +39,7 @@ export const Profile = (props: ProfileProps) => {
     isExport,
     setIsDownloading,
     setIsHamburgerMenuOpen,
+    onInstallPWA,
   } = props;
   const [hasDownloadedProfile, setHasDownloadedProfile] =
     useState<boolean>(false);
@@ -73,6 +75,7 @@ export const Profile = (props: ProfileProps) => {
           isOpen={isHamburgerMenuOpen}
           setIsOpen={(isOpen) => setIsHamburgerMenuOpen(isOpen)}
           onMenuChange={(section) => setCurrentSection(section)}
+          onInstallPWA={onInstallPWA}
         />
         {isMobile && <Swipe onTouchMove={() => setIsHamburgerMenuOpen(true)} />}
         <MenuBar onMenuChange={(section) => setCurrentSection(section)} />
