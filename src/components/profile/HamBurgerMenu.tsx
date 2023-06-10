@@ -3,17 +3,12 @@ import React, { useEffect, useState } from "react";
 import { Transition } from "react-transition-group";
 import styled from "styled-components";
 import HamBurgerIcon from "../../assets/burgericon.svg";
-import {
-  FlexBox,
-  FlexBoxSection,
-  SectionsWrapper,
-} from "../../common/Elements";
-import { AppContext } from "../../store/profile/context";
+import { ActionBtn, FlexBox, FlexBoxSection } from "../../common/Elements";
 import MenuBar from "./MenuBar";
-import { Contact } from "./Sections/Contact";
 import CloseIcon from "../../assets/close-icon.svg";
 import { ComponentType } from "react";
 import { TransitionProps } from "react-transition-group/Transition";
+import MobileApplicationIcon from "../../assets/mobile-application-icon.svg";
 
 const TransitionComponent = Transition as ComponentType<TransitionProps>;
 
@@ -21,12 +16,12 @@ interface IHamburgerMenuProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   onMenuChange: (section: string) => void;
+  onInstallPWA: () => void;
 }
 
 export const HamBurgerMenu = (props: IHamburgerMenuProps) => {
-  const { isOpen, setIsOpen, onMenuChange } = props;
+  const { isOpen, setIsOpen, onMenuChange, onInstallPWA } = props;
   const contentRef = React.useRef<HTMLDivElement>(null);
-  const { isMobile, isExport = false } = React.useContext(AppContext);
 
   const [hamburgerClicked, setHamburgerClicked] = useState<boolean>(false);
   const scrollbarSize =
@@ -88,14 +83,21 @@ export const HamBurgerMenu = (props: IHamburgerMenuProps) => {
                 closeHamburgerMenu={() => setIsOpen(false)}
                 onMenuChange={(section) => onMenuChange(section)}
               />
-              <label className="find-me">Find me @</label>
-              <SectionsWrapper
-                isMobile={isMobile}
-                isExport={isExport}
-                className="hamburger-menu"
-              >
-                <Contact />
-              </SectionsWrapper>
+              <FlexBox justifyContent="center">
+                <ActionBtn
+                  className="install-app-button"
+                  onClick={onInstallPWA}
+                >
+                  <FlexBox alignItems="center">
+                    <img
+                      alt=""
+                      src={MobileApplicationIcon}
+                      className="mobile-application-icon"
+                    />
+                    <span className="install-app-text">Install app</span>
+                  </FlexBox>
+                </ActionBtn>
+              </FlexBox>
             </ContentSection>
             <RightSection onClick={() => setIsOpen(false)} />
           </Menu>
@@ -150,6 +152,24 @@ const ContentSection = styled(FlexBoxSection)`
     cursor: pointer;
     margin: 10px;
     height: 30px;
+  }
+
+  .install-app-button {
+    margin-bottom: 25px;
+    background-color: #f0f0f0;
+    border-radius: 30px;
+    padding: 5px 20px;
+    max-width: fit-content;
+  }
+
+  .mobile-application-icon {
+    cursor: pointer;
+    height: 25px;
+  }
+
+  .install-app-text {
+    margin-left: 10px;
+    font-weight: bold;
   }
 `;
 const RightSection = styled.div`
