@@ -189,18 +189,6 @@ export const SectionsWrapper = styled.section<{
       .link-wrapper {
         padding-right: 50px;
       }
-      @media screen and (max-width: 767px) {
-        display: none;
-        position: static;
-        padding: 20px 0;
-        background-color: transparent;
-        .link-wrapper {
-          padding-right: 15px;
-          &:last-of-type {
-            padding-right: 0;
-          }
-        }
-      }
 
       .link {
         @media screen and (max-width: 767px) {
@@ -305,9 +293,9 @@ export const SectionsWrapper = styled.section<{
     }
   }
   @media screen and (max-width: 767px) {
-    padding-left: 20px;
     margin-top: 0;
     .profile-section {
+      padding-left: 20px;
       padding-right: 10px;
     }
   }
