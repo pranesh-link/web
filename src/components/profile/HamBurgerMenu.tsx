@@ -14,13 +14,14 @@ const TransitionComponent = Transition as ComponentType<TransitionProps>;
 
 interface IHamburgerMenuProps {
   isOpen: boolean;
+  hasPWAInstalled:boolean;
   setIsOpen: (isOpen: boolean) => void;
   onMenuChange: (section: string) => void;
   onInstallPWA: () => void;
 }
 
 export const HamBurgerMenu = (props: IHamburgerMenuProps) => {
-  const { isOpen, setIsOpen, onMenuChange, onInstallPWA } = props;
+  const { isOpen, hasPWAInstalled, setIsOpen, onMenuChange, onInstallPWA } = props;
   const contentRef = React.useRef<HTMLDivElement>(null);
 
   const [hamburgerClicked, setHamburgerClicked] = useState<boolean>(false);
@@ -83,7 +84,7 @@ export const HamBurgerMenu = (props: IHamburgerMenuProps) => {
                 closeHamburgerMenu={() => setIsOpen(false)}
                 onMenuChange={(section) => onMenuChange(section)}
               />
-              <FlexBox justifyContent="center">
+              {!hasPWAInstalled && <FlexBox justifyContent="center">
                 <ActionBtn
                   className="install-app-button"
                   onClick={onInstallPWA}
@@ -97,7 +98,7 @@ export const HamBurgerMenu = (props: IHamburgerMenuProps) => {
                     <span className="install-app-text">Install app</span>
                   </FlexBox>
                 </ActionBtn>
-              </FlexBox>
+              </FlexBox>}
             </ContentSection>
             <RightSection onClick={() => setIsOpen(false)} />
           </Menu>
