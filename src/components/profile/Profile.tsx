@@ -23,6 +23,7 @@ interface ProfileProps {
   isHamburgerMenuOpen: boolean;
   isInstallBannerOpen: boolean;
   isExport: boolean;
+  hasPWAInstalled: boolean;
   setIsDownloading: (isDownloading: boolean) => void;
   setIsHamburgerMenuOpen: (isHamburgerMenuOpen: boolean) => void;
   onInstallPWA: () => void;
@@ -37,6 +38,7 @@ export const Profile = (props: ProfileProps) => {
     isHamburgerMenuOpen,
     isInstallBannerOpen,
     isExport,
+    hasPWAInstalled,
     setIsDownloading,
     setIsHamburgerMenuOpen,
     onInstallPWA,
@@ -73,6 +75,7 @@ export const Profile = (props: ProfileProps) => {
       >
         <HamBurgerMenu
           isOpen={isHamburgerMenuOpen}
+          hasPWAInstalled={hasPWAInstalled}
           setIsOpen={(isOpen) => setIsHamburgerMenuOpen(isOpen)}
           onMenuChange={(section) => setCurrentSection(section)}
           onInstallPWA={onInstallPWA}

@@ -155,6 +155,7 @@ const ProfilePage = (props: ProfilePageProps) => {
             isInstallPromptSupported &&
             !!isInstallBannerOpen
           }
+          hasPWAInstalled={hasPWAInstalled}
           isHamburgerMenuOpen={isHamburgerMenuOpen}
           setIsDownloading={(isDownloading: boolean) =>
             setIsDownloading(isDownloading)
