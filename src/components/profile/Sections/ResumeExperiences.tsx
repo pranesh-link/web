@@ -243,6 +243,7 @@ const SectionWrapper = styled(FlexBoxSection)<{ icon: string }>`
         align-items: center;
         &::before {
           content: "✓";
+          color: #3fc935;
           font-size: 20px;
           font-weight: bold;
           margin-right: 10px;
