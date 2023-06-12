@@ -27,6 +27,7 @@ const ForkTsCheckerWebpackPlugin = require("react-dev-utils/ForkTsCheckerWebpack
 const typescriptFormatter = require("react-dev-utils/typescriptFormatter");
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const WorkboxPlugin = require("workbox-webpack-plugin");
+const CompressionPlugin = require("compression-webpack-plugin");
 
 const postcssNormalize = require("postcss-normalize");
 
@@ -583,6 +584,7 @@ module.exports = function (webpackEnv) {
             : undefined
         )
       ),
+      new CompressionPlugin(),
       // Inlines the webpack runtime script. This script is too small to warrant
       // a network request.
       // https://github.com/facebook/create-react-app/issues/5358
