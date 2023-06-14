@@ -52,6 +52,9 @@ export const Profile = (props: ProfileProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   let pdfExportComponent: PDFExport;
+  const {
+    download: { type },
+  } = profileData;
 
   return (
     <>
@@ -109,40 +112,42 @@ export const Profile = (props: ProfileProps) => {
           }}
         />
       </AppProvider>
-      <AppProvider
-        value={{
-          data: profileData,
-          refs: {
-            homeRef,
-            skillsRef,
-            experienceRef,
-            educationRef,
-            contactRef,
-          },
-          currentSection,
-          isExport: true,
-          isMobile,
-          isInstallBannerOpen,
-        }}
-      >
-        <div className="export-wrapper">
-          <PDFExport
-            scale={0.65}
-            paperSize="A4"
-            creator="Pranesh"
-            author="Pranesh"
-            title="Pranesh_Profile"
-            margin={{ top: "20mm", bottom: "25mm" }}
-            forcePageBreak=".page-break"
-            keepTogether=".keep-together"
-            fileName={PROFILE_PDF_NAME}
-            ref={(component: PDFExport) => (pdfExportComponent = component)}
-          >
-            <MenuBar />
-            <ProfileSections />
-          </PDFExport>
-        </div>
-      </AppProvider>
+      {type !== "static" && (
+        <AppProvider
+          value={{
+            data: profileData,
+            refs: {
+              homeRef,
+              skillsRef,
+              experienceRef,
+              educationRef,
+              contactRef,
+            },
+            currentSection,
+            isExport: true,
+            isMobile,
+            isInstallBannerOpen,
+          }}
+        >
+          <div className="export-wrapper">
+            <PDFExport
+              scale={0.65}
+              paperSize="A4"
+              creator="Pranesh"
+              author="Pranesh"
+              title="Pranesh_Profile"
+              margin={{ top: "20mm", bottom: "25mm" }}
+              forcePageBreak=".page-break"
+              keepTogether=".keep-together"
+              fileName={PROFILE_PDF_NAME}
+              ref={(component: PDFExport) => (pdfExportComponent = component)}
+            >
+              <MenuBar />
+              <ProfileSections />
+            </PDFExport>
+          </div>
+        </AppProvider>
+      )}
     </>
   );
 };
