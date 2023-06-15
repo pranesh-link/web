@@ -55,7 +55,7 @@ const ProfilePage = (props: ProfilePageProps) => {
   const [profileData, setProfileData] = useState<IProfileData>(
     DEFAULT_CONTEXT.data
   );
-  const [isFetchingData, setIsFetchingData] = useState<boolean>(false);
+  const [isFetchingData, setIsFetchingData] = useState<boolean>(true);
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] =
     useState<boolean>(false);
