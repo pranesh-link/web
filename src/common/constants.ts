@@ -65,7 +65,7 @@ export const DEFAULT_CONTEXT: IAppContext = {
       },
       links: {
         title: "",
-        info: [],
+        info: "",
       },
     },
     download: {

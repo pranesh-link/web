@@ -38,8 +38,7 @@ export const valueIsDetailInfo = (item: InfoType): item is IDetailInfo[] => {
 };
 
 export const valueIsLinkInfo = (item: InfoType): item is ILink[] => {
-  const linkArr = item as ILink[];
-  return linkArr.length ? linkArr[0].icon !== undefined : true;
+  return (item as ILink[])[0].icon !== undefined;
 };
 
 export const valueIsExperienceInfo = (

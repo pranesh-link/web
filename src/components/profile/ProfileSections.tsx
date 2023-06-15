@@ -25,10 +25,7 @@ const ProfileSections = (props: IProfileSectionsProps) => {
     isExport = false,
     isMobile,
     isInstallBannerOpen,
-    data: {
-      header,
-      sections: { aboutMe, links, details, education, experiences, skills },
-    },
+    data: { header },
   } = React.useContext(AppContext);
   const { shortDesc, name } = header;
   const { ABOUTME, EDUCATION, SKILLS, EXPERIENCES, CONTACT } =
@@ -36,36 +33,26 @@ const ProfileSections = (props: IProfileSectionsProps) => {
 
   const AboutComp = useMemo(
     () => (
-      <>
-        {aboutMe && links && details && (
-          <About
-            exportProfile={() => {
-              if (props.exportProfile) {
-                props.exportProfile();
-              }
-            }}
-          />
-        )}
-      </>
+      <About
+        exportProfile={() => {
+          if (props.exportProfile) {
+            props.exportProfile();
+          }
+        }}
+      />
     ),
-    [aboutMe, details, links, props]
+    [props]
   );
 
-  const EducationComp = useMemo(
-    () => <>{education && <Education />}</>,
-    [education]
-  );
+  const EducationComp = useMemo(() => <Education />, []);
 
-  const SkillsComp = useMemo(() => <>{skills && <Skills />}</>, [skills]);
+  const SkillsComp = useMemo(() => <Skills />, []);
 
-  const ExperiencesComp = useMemo(
-    () => <>{experiences && <ResumeExperiences />}</>,
-    [experiences]
-  );
+  const ExperiencesComp = useMemo(() => <ResumeExperiences />, []);
 
   const ContactComp = useMemo(
-    () => <>{!isExport && links && <Contact />}</>,
-    [isExport, links]
+    () => <>{!isExport && <Contact />}</>,
+    [isExport]
   );
 
   const sectionComponents: ISectionComponents[] = useMemo(
