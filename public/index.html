@@ -52,6 +52,29 @@
       ></iframe
     ></noscript>
     <!-- End Google Tag Manager (noscript) -->
+    <script type="text/javascript">
+      function preloadImages(array) {
+        if (!preloadImages.list) {
+          preloadImages.list = [];
+        }
+        var list = preloadImages.list;
+        for (var i = 0; i < array.length; i++) {
+          var img = new Image();
+          img.onload = function () {
+            var index = list.indexOf(this);
+            if (index !== -1) {
+              // remove image from the array once it's loaded
+              // for memory consumption reasons
+              list.splice(index, 1);
+            }
+          };
+          list.push(img);
+          img.src = array[i];
+        }
+      }
+
+      preloadImages(["/images/display-pic.avif"]);
+    </script>
 
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
