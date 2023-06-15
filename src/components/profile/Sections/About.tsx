@@ -80,6 +80,7 @@ export const About = (props: IAboutProps) => {
           >
             <p className="image-wrap">
               <img
+                fetchpriority="high"
                 alt=""
                 className="profile-image"
                 src={getIconUrlByExportFlag(
