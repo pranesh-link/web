@@ -12,10 +12,9 @@ export const DEV_JSON_BASE_URL = "http://localhost:8080";
 export const PROD_JSON_BASE_URL = "https://profile-jsons.pranesh.link";
 export const TOAST_POSITION = "top-center";
 export const PROFILE_PDF_NAME = "Pranesh_Profile";
-export const TOAST_ERROR_MESSAGE = [
-  "Something went wrong.",
-  "Please close this error to reload the page.",
-];
+export const MESSAGES = {
+  genericError: "Something went wrong!",
+};
 export const SHORT_INFOS: ShortInfosType[] = [
   "client",
   "duration",
@@ -100,13 +99,15 @@ export const DEFAULT_CONTEXT: IAppContext = {
   hasDownloadedProfile: false,
 };
 
-export const LABEL_TEXT: { [key: string]: string } = {
+export const LABEL_TEXT: Record<string, string> = {
   client: "Client",
   duration: "Duration",
   description: "Description",
   responsibilities: "Responsibilities",
   softwareTech: "Software/Technologies",
   role: "Role",
+  retry: "Retry",
+  close: "Close",
 };
 
 export const SECTIONS = {

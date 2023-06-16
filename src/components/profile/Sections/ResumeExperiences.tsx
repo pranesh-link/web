@@ -10,7 +10,12 @@ import React, { memo, useContext, useEffect, useMemo, useState } from "react";
 import { AppContext } from "../../../store/profile/context";
 import { valueIsArray, valueIsExperienceInfo } from "../../../common/Utils";
 import { IProjectExperience } from "../../../store/profile/types";
-import { EXPERIENCE_TYPES, LABELS, SECTIONS } from "../../../common/constants";
+import {
+  EXPERIENCE_TYPES,
+  LABELS,
+  LABEL_TEXT,
+  SECTIONS,
+} from "../../../common/constants";
 import Modal from "react-modal";
 import { ProjectInfo } from "../ProjectInfo";
 import { ComponentType } from "react";
@@ -86,7 +91,7 @@ export const ResumeExperiences = memo(() => {
             <div className="modal-banner header" />
             <ProjectInfo project={project} />
             <ActionBtn className="close" onClick={() => setProject(null)}>
-              Close
+              {LABEL_TEXT.close}
             </ActionBtn>
             <div className="modal-banner footer" />
           </ModalContentWrap>
