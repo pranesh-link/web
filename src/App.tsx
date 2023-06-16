@@ -19,6 +19,7 @@ function App() {
   const [links, setLinks] = useState(DEFAULT_CONTEXT.data.sections.links);
   const [pwa, setPwa] = useState(DEFAULT_PWA);
   const [hasError, setHasError] = useState(false);
+  const [retry, setRetry] = useState<boolean>(true);
 
   const fetchSections = async (jsonToFetch: string, data: ISectionInfo) => {
     const response = await getProfileJsonResponse(jsonToFetch, data);
@@ -41,17 +42,20 @@ function App() {
 
   useEffect(() => {
     (async () => {
-      const [maintenanceInfo, linksInfo, pwaInfo] = await Promise.all([
-        fetchData("maintenance"),
-        fetchSections("links", links),
-        fetchData("pwa"),
-      ]);
-      setMaintenance(maintenanceInfo);
-      setLinks(linksInfo);
-      setPwa(pwaInfo);
+      if (retry) {
+        const [maintenanceInfo, linksInfo, pwaInfo] = await Promise.all([
+          fetchData("maintenance"),
+          fetchSections("links", links),
+          fetchData("pwa"),
+        ]);
+        setMaintenance(maintenanceInfo);
+        setLinks(linksInfo);
+        setPwa(pwaInfo);
+        setRetry(false);
+      }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [retry]);
 
   const ProfilePageComponent = React.lazy(
     () => import("./pages/profile/ProfilePage")
@@ -94,6 +98,7 @@ function App() {
                         isExport={isExport}
                         hasError={hasError}
                         pwa={pwa}
+                        retryBaseInfo={() => setRetry(true)}
                       />
                     </>
                   }
