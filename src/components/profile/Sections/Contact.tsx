@@ -19,6 +19,7 @@ interface IContactProps {
 
 export const Contact = (props: IContactProps) => {
   const { links: propsLinks, refObj: propsRefObj } = props;
+  const { isMobile } = useContext(AppContext);
   let {
     data: {
       sections: { links },
@@ -32,7 +33,7 @@ export const Contact = (props: IContactProps) => {
   const filteredLinks = getFilteredLinks(links.info as ILink[]);
   return (
     <ContactsSection
-      justifyContent="center"
+      justifyContent={isMobile ? "space-evenly" : "center"}
       alignItems="center"
       className="profile-section links"
       id={SECTIONS.LINKS}
