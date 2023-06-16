@@ -192,7 +192,7 @@ const Wrapper = styled.section`
 `;
 
 const ErrorWrapper = styled(FlexBoxSection)`
-  background: #ee4b2b;
+  background: #b21807;
   color: #f0f0f0;
   height: 100vh;
   text-align: center;
