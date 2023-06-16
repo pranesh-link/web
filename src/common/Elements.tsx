@@ -221,6 +221,12 @@ export const SectionsWrapper = styled.section<{
           }
         }
       }
+
+      @media only screen and (max-width: 767px) {
+        .link-wrapper {
+          padding-right: 0;
+        }
+      }
     }
 
     &.experience {
