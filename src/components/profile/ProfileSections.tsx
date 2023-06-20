@@ -27,7 +27,7 @@ const ProfileSections = (props: IProfileSectionsProps) => {
     isInstallBannerOpen,
     data: { header },
   } = React.useContext(AppContext);
-  const { shortDesc, name } = header;
+  const { shortDesc, name, currentJobRole } = header;
   const { ABOUTME, EDUCATION, SKILLS, EXPERIENCES, CONTACT } =
     SECTION_ORDER_DISPLAY;
 
@@ -127,6 +127,7 @@ const ProfileSections = (props: IProfileSectionsProps) => {
         {HorizontalSep}
       </PageHeader>
       <FlexBox direction="column" alignItems="center">
+        <CurrentJobRole>{currentJobRole}</CurrentJobRole>
         <Separator className={classNames({ export: isExport })} />
       </FlexBox>
       <SectionsWrapper
@@ -232,4 +233,11 @@ const PageHeader = styled.h2`
   @media screen and (max-width: 767px) {
     font-size: 36px;
   }
+`;
+
+const CurrentJobRole = styled.h3`
+  font-style: italic;
+  margin-block: 0;
+  color: #22a39f;
+  font-size: 20px;
 `;
