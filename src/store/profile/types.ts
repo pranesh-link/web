@@ -11,6 +11,7 @@ export type SectionsType = {
 export interface IHeader {
   shortDesc: string;
   name: string;
+  currentJobRole: string;
 }
 export interface ISectionInfo {
   title: string;
