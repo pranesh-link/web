@@ -1,6 +1,11 @@
 import classNames from "classnames";
-import React, { useCallback, useEffect, useState } from "react";
-import { FlexBoxSection, Desc, FlexBox } from "../../../common/Elements";
+import React, { ComponentType, useCallback, useEffect, useState } from "react";
+import {
+  FlexBoxSection,
+  Desc,
+  FlexBox,
+  ActionBtn,
+} from "../../../common/Elements";
 import { ILink } from "../../../store/profile/types";
 import {
   getFilteredLinks,
@@ -16,7 +21,10 @@ import styled from "styled-components";
 import { AppContext } from "../../../store/profile/context";
 import { AboutMeDetails } from "./AboutMeDetails";
 import { COPIED, NOT_COPIED } from "../../../common/constants";
+import Modal from "react-modal";
+import { ContactForm } from "../ContactForm";
 
+const ModalComponent = Modal as ComponentType<ReactModal["props"]>;
 interface IAboutProps {
   exportProfile: () => void;
 }
@@ -29,6 +37,7 @@ export const About = (props: IAboutProps) => {
     data: {
       sections: { aboutMe, links, details },
       download,
+      forms: { contactForm },
     },
     refs: { homeRef: refObj },
   } = React.useContext(AppContext);
@@ -36,6 +45,7 @@ export const About = (props: IAboutProps) => {
     {}
   );
   const [showCopy, setShowCopy] = useState<boolean>(false);
+  const [isContactFormOpen, setIsContactFormOpen] = useState(false);
 
   useEffect(() => {
     const [key, value] = getObjectKeyValuesByIndex(copyState, 0);
@@ -63,166 +73,193 @@ export const About = (props: IAboutProps) => {
   const filteredLinks = getFilteredLinks(links.info as ILink[]);
 
   return (
-    <FlexBoxSection
-      className={classNames("profile-section", "about", { export: isExport })}
-      justifyContent={isExport ? "normal" : "center"}
-      ref={isExport ? null : refObj}
-      id={isExport ? "" : "home"}
-    >
-      <FlexBoxSection
-        direction="column"
-        className={classNames("about-me", { export: isExport })}
+    <>
+      <ModalComponent
+        className="contact-modal-content"
+        isOpen={isContactFormOpen}
+        ariaHideApp={false}
       >
-        {!isExport && isMobile && (
-          <FlexBoxSection
-            justifyContent={isMobile ? "space-around" : "normal"}
-            className="image"
-          >
-            <p className="image-wrap">
-              <img
-                fetchpriority="high"
-                alt=""
-                className="profile-image"
-                src={getIconUrlByExportFlag(
-                  aboutMe.icon,
-                  aboutMe.pdfExportIcon,
-                  isExport
-                )}
-              />
-            </p>
-          </FlexBoxSection>
-        )}
-        <Desc
-          className="about"
-          dangerouslySetInnerHTML={{ __html: aboutMe.info as string }}
-        />
-      </FlexBoxSection>
-      <FlexBoxSection alignItems="center" className="image-details-wrap">
-        {(!isMobile || isExport) && (
-          <FlexBoxSection
-            justifyContent={isMobile ? "space-around" : "normal"}
-            className="image"
-          >
-            <p className="image-wrap">
-              <img
-                alt=""
-                className="profile-image"
-                src={getIconUrlByExportFlag(
-                  aboutMe.icon,
-                  aboutMe.pdfExportIcon,
-                  isExport
-                )}
-              />
-            </p>
-          </FlexBoxSection>
-        )}
-        <FlexBoxSection direction="column">
-          <AboutMeDetails
-            copyState={copyState}
-            details={details}
-            showCopy={showCopy}
-            setShowCopy={(showCopy: boolean) => setShowCopy(showCopy)}
-            setCopyState={(copyInfoId: string, state: string) => {
-              setCopyState(
-                copyInfoId
-                  ? {
-                      [copyInfoId]: {
-                        state,
-                      },
-                    }
-                  : {}
-              );
-            }}
-          />
-          {isExport ? (
+        <ContactForm closeModal={() => setIsContactFormOpen(false)} />
+      </ModalComponent>
+      <FlexBoxSection
+        className={classNames("profile-section", "about", { export: isExport })}
+        justifyContent={isExport ? "normal" : "center"}
+        ref={isExport ? null : refObj}
+        id={isExport ? "" : "home"}
+      >
+        <FlexBoxSection
+          direction="column"
+          className={classNames("about-me", { export: isExport })}
+        >
+          {!isExport && isMobile && (
             <FlexBoxSection
-              alignItems="center"
-              className="profile-section links export"
+              justifyContent={isMobile ? "space-around" : "normal"}
+              className="image"
             >
-              {valueIsArray(links.info) && valueIsLinkInfo(links.info)
-                ? filteredLinks.map((link) => (
-                    <a
-                      className="link"
-                      href={link.link}
-                      target="_blank"
-                      key={link.label}
-                      rel="noreferrer"
-                    >
-                      <img
-                        crossOrigin="anonymous"
-                        alt={link.label}
-                        className={link.label}
-                        src={`${link.pdfExportIcon}?dummy=${Math.floor(
-                          Math.random() * 1000
-                        )}`}
-                      />
-                    </a>
-                  ))
-                : null}
+              <p className="image-wrap">
+                <img
+                  fetchpriority="high"
+                  alt=""
+                  className="profile-image"
+                  src={getIconUrlByExportFlag(
+                    aboutMe.icon,
+                    aboutMe.pdfExportIcon,
+                    isExport
+                  )}
+                />
+              </p>
             </FlexBoxSection>
-          ) : (
-            <InterestedInProfile
-              isMobile={isMobile}
-              disabled={download.download.disabled}
-              className={classNames({
-                "downloaded-profile": hasDownloadedProfile,
-              })}
-              alignItems="center"
+          )}
+          <Desc
+            className="about"
+            dangerouslySetInnerHTML={{ __html: aboutMe.info as string }}
+          />
+        </FlexBoxSection>
+        <FlexBoxSection alignItems="center" className="image-details-wrap">
+          {(!isMobile || isExport) && (
+            <FlexBoxSection
+              justifyContent={isMobile ? "space-around" : "normal"}
+              className="image"
             >
-              {!download.download.disabled &&
-                !isDownloading &&
-                !hasDownloadedProfile && (
+              <p className="image-wrap">
+                <img
+                  alt=""
+                  className="profile-image"
+                  src={getIconUrlByExportFlag(
+                    aboutMe.icon,
+                    aboutMe.pdfExportIcon,
+                    isExport
+                  )}
+                />
+              </p>
+            </FlexBoxSection>
+          )}
+          <FlexBoxSection direction="column">
+            <AboutMeDetails
+              copyState={copyState}
+              details={details}
+              showCopy={showCopy}
+              setShowCopy={(showCopy: boolean) => setShowCopy(showCopy)}
+              setCopyState={(copyInfoId: string, state: string) => {
+                setCopyState(
+                  copyInfoId
+                    ? {
+                        [copyInfoId]: {
+                          state,
+                        },
+                      }
+                    : {}
+                );
+              }}
+            />
+            {isExport ? (
+              <FlexBoxSection
+                alignItems="center"
+                className="profile-section links export"
+              >
+                {valueIsArray(links.info) && valueIsLinkInfo(links.info)
+                  ? filteredLinks.map((link) => (
+                      <a
+                        className="link"
+                        href={link.link}
+                        target="_blank"
+                        key={link.label}
+                        rel="noreferrer"
+                      >
+                        <img
+                          crossOrigin="anonymous"
+                          alt={link.label}
+                          className={link.label}
+                          src={`${link.pdfExportIcon}?dummy=${Math.floor(
+                            Math.random() * 1000
+                          )}`}
+                        />
+                      </a>
+                    ))
+                  : null}
+              </FlexBoxSection>
+            ) : (
+              <InterestedInProfile
+                direction="column"
+                isMobile={isMobile}
+                disabled={download.download.disabled}
+                className={classNames({
+                  "downloaded-profile": hasDownloadedProfile,
+                })}
+              >
+                {!download.download.disabled &&
+                  !isDownloading &&
+                  !hasDownloadedProfile && (
+                    <FlexBox alignItems="center">
+                      <img
+                        className="download"
+                        alt="Click here"
+                        height="25px"
+                        onClick={downloadProfile}
+                        src={getIconUrl(download.download.icon)}
+                        loading="lazy"
+                      />
+                      <span className="download-text">
+                        {download.download.message}
+                      </span>
+                    </FlexBox>
+                  )}
+                {isDownloading && (
                   <>
                     <img
-                      className="download"
-                      alt="Click here"
-                      height="25px"
-                      onClick={downloadProfile}
-                      src={getIconUrl(download.download.icon)}
+                      className="downloading"
+                      alt="Downloading"
+                      height="35px"
+                      src={getIconUrl(download.downloading.icon)}
                       loading="lazy"
                     />
-                    <span className="download-text">
-                      {download.download.message}
+                    <FlexBox alignItems="center" className="downloading-text">
+                      <span>{download.downloading.message}</span>
+                      <span className="progress-animation" />
+                    </FlexBox>
+                  </>
+                )}
+                {hasDownloadedProfile && (
+                  <>
+                    <img
+                      className="downloaded"
+                      alt="Downloaded"
+                      height="40px"
+                      src={getIconUrl(download.downloaded.icon)}
+                      loading="lazy"
+                    />
+                    <span className="downloaded-text">
+                      {download.downloaded.message}
                     </span>
                   </>
                 )}
-              {isDownloading && (
-                <>
-                  <img
-                    className="downloading"
-                    alt="Downloading"
-                    height="35px"
-                    src={getIconUrl(download.downloading.icon)}
-                    loading="lazy"
-                  />
-                  <FlexBox alignItems="center" className="downloading-text">
-                    <span>{download.downloading.message}</span>
-                    <span className="progress-animation" />
-                  </FlexBox>
-                </>
-              )}
-              {hasDownloadedProfile && (
-                <>
-                  <img
-                    className="downloaded"
-                    alt="Downloaded"
-                    height="40px"
-                    src={getIconUrl(download.downloaded.icon)}
-                    loading="lazy"
-                  />
-                  <span className="downloaded-text">
-                    {download.downloaded.message}
-                  </span>
-                </>
-              )}
-            </InterestedInProfile>
-          )}
+                <ContactMeButton onClick={() => setIsContactFormOpen(true)}>
+                  {contactForm.actionButtonLabel}
+                </ContactMeButton>
+              </InterestedInProfile>
+            )}
+          </FlexBoxSection>
         </FlexBoxSection>
       </FlexBoxSection>
-    </FlexBoxSection>
+    </>
   );
 };
 
+const ContactMeButton = styled(ActionBtn)`
+  margin-top: 15px;
+  color: #f0f0f0;
+  padding: 10px 15px;
+  background: #3d9b32;
+  border-radius: 20px;
+  max-width: 120px;
+  opacity: 0.85;
+  &:hover {
+    opacity: 1;
+  }
+  @media only screen and (max-width: 767px) {
+    opacity: 1;
+  }
+`;
 const InterestedInProfile = styled(FlexBox)<{
   isMobile: boolean;
   disabled?: boolean;

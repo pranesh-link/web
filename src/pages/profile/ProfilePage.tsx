@@ -1,8 +1,7 @@
-import React, { useRef, useState, useEffect, ComponentType } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import usePWA from "react-pwa-install-prompt";
 import { PWABanner } from "../../PWABanner";
 import { Profile } from "../../components/profile/Profile";
-import Modal from "react-modal";
 import {
   DEFAULT_CONTEXT,
   SECTIONS,
@@ -27,7 +26,6 @@ import {
 import styled from "styled-components";
 import { ActionBtn, FlexBoxSection, LoaderImg } from "../../common/Elements";
 import LoaderIcon from "../../assets/loader-icon.svg";
-import { ContactForm } from "../../components/profile/ContactForm";
 
 interface ProfilePageProps {
   pwa: IPWA;
@@ -36,7 +34,6 @@ interface ProfilePageProps {
   isMobile: boolean;
   retryBaseInfo: () => void;
 }
-const ModalComponent = Modal as ComponentType<ReactModal["props"]>;
 
 const ProfilePage = (props: ProfilePageProps) => {
   const homeRef = useRef(null);
@@ -149,15 +146,6 @@ const ProfilePage = (props: ProfilePageProps) => {
         </ErrorWrapper>
       ) : (
         <Wrapper>
-          <ModalComponent
-            className="contact-modal-content"
-            isOpen
-            ariaHideApp={false}
-          >
-            {/* <ModalContentWrap> */}
-            <ContactForm form={profileData.forms.contactForm} />
-            {/* </ModalContentWrap> */}
-          </ModalComponent>
           <Profile
             isExport={isExport}
             profileData={profileData}

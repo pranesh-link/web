@@ -19,6 +19,7 @@ export interface IFormField {
 }
 export interface IFormInfo {
   name: string;
+  actionButtonLabel: string;
   submitLabel: string;
   submittingLabel: string;
   fields: IFormField[];

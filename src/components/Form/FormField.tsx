@@ -41,9 +41,9 @@ export const FormField = (props: IFormFieldProps) => {
   };
 
   return (
-    <FieldWrap>
-      <FormLabel>{field.label}</FormLabel>
-      <InputWrap direction="column">
+    <FieldWrap direction="column">
+      <InputWrap alignItems="center">
+        <FormLabel>{field.label}</FormLabel>
         {field.type === FIELD_TYPES.TEXT && (
           <>
             <TextInput
@@ -57,10 +57,6 @@ export const FormField = (props: IFormFieldProps) => {
               name={field.name}
               onChange={handleTextChange}
             />
-            <RemainingCharacters>
-              {getRemainingCharacters(fieldValue, field.maxLength)}/
-              {field.maxLength}
-            </RemainingCharacters>
           </>
         )}
         {field.type === FIELD_TYPES.MOBILE && (
@@ -77,10 +73,6 @@ export const FormField = (props: IFormFieldProps) => {
               value={fieldValue}
               onChange={handleMobileInputChange}
             />
-            <RemainingCharacters>
-              {getRemainingCharacters(fieldValue, field.maxLength)}/
-              {field.maxLength}
-            </RemainingCharacters>
           </>
         )}
         {field.type === FIELD_TYPES.TEXTAREA && (
@@ -95,13 +87,12 @@ export const FormField = (props: IFormFieldProps) => {
               value={fieldValue}
               onChange={handleTextChange}
             />
-            <RemainingCharacters>
-              {getRemainingCharacters(fieldValue, field.maxLength)}/
-              {field.maxLength}
-            </RemainingCharacters>
           </>
         )}
       </InputWrap>
+      <RemainingCharacters>
+        {getRemainingCharacters(fieldValue, field.maxLength)}/{field.maxLength}
+      </RemainingCharacters>
     </FieldWrap>
   );
 };
@@ -123,6 +114,7 @@ const FieldWrap = styled(FlexBoxSection)`
       border-radius: 5px;
       height: 25px;
       width: 100%;
+      padding-left: 5px;
     }
     &.error {
       input {
@@ -133,6 +125,7 @@ const FieldWrap = styled(FlexBoxSection)`
 `;
 
 const TextInput = styled.input`
+  width: 100%;
   height: 25px;
   border-radius: 5px;
   border-color: transparent;
@@ -145,6 +138,7 @@ const TextInput = styled.input`
 `;
 
 const TextArea = styled.textarea`
+  width: 100%;
   resize: none;
   border-radius: 5px;
   border-color: transparent;

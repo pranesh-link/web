@@ -1,17 +1,14 @@
-import { useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import emailjs from "@emailjs/browser";
 import styled from "styled-components";
 import { ActionBtn, FlexBoxSection } from "../../common/Elements";
 import classNames from "classnames";
-import { IFormField, IFormInfo } from "../../store/profile/types";
+import { IFormField } from "../../store/profile/types";
 import { validateLength, validateRegex } from "../../common/FormUtils";
 import { FormField } from "../Form/FormField";
-import { FIELD_TYPES, MAIL_STATUS } from "../../common/constants";
+import { FIELD_TYPES, LABEL_TEXT, MAIL_STATUS } from "../../common/constants";
 import { isPossiblePhoneNumber } from "react-phone-number-input";
-
-interface IContactFormProps {
-  form: IFormInfo;
-}
+import { AppContext } from "../../store/profile/context";
 
 type ContactFormFields = "userName" | "userMobile" | "userEmail" | "message";
 type ContactFormData = {
@@ -27,8 +24,17 @@ const DEFAULT_FORM_DATA = {
   message: "",
 };
 
+interface IContactFormProps {
+  closeModal: () => void;
+}
+
 export const ContactForm = (props: IContactFormProps) => {
-  const { form } = props;
+  const {
+    data: {
+      forms: { contactForm: form },
+    },
+  } = useContext(AppContext);
+  const { closeModal } = props;
   const [formData, setFormData] = useState<ContactFormData>(DEFAULT_FORM_DATA);
   const [formValid, setFormValid] = useState<ContactFormValid | null>(null);
   const [formDisabled, setFormDisabled] = useState<boolean>(true);
@@ -62,14 +68,20 @@ export const ContactForm = (props: IContactFormProps) => {
     //   .then(
     //     (result) => {
     //       console.log(result.text);
-    // setMailStatus(MAIL_STATUS.SUCCESS);
+    //       setMailStatus(MAIL_STATUS.SUCCESS);
+    //       resetFields();
     //     },
     //     (error) => {
     //       console.log(error.text);
-    // setMailStatus(MAIL_STATUS.ERROR);
+    //       setMailStatus(MAIL_STATUS.ERROR);
     //     }
     //   );
   };
+
+  useEffect(() => {
+    document.body.classList.add("modal-open");
+    return () => document.body.classList.remove("modal-open");
+  }, []);
 
   const isFormSubmit = useMemo(
     () => mailStatus === MAIL_STATUS.SENDING,
@@ -123,7 +135,10 @@ export const ContactForm = (props: IContactFormProps) => {
           />
         );
       })}
-      <FieldWrap justifyContent="space-around">
+      <FieldWrap justifyContent="space-between" alignItems="center">
+        <ActionBtn className="close" onClick={closeModal}>
+          {LABEL_TEXT.close}
+        </ActionBtn>
         <FormSubmit
           disabled={formDisabled || isFormSubmit}
           className={classNames({
@@ -149,6 +164,20 @@ const Form = styled.form`
 
 const FieldWrap = styled(FlexBoxSection)`
   margin-bottom: 20px;
+  .close {
+    font-size: 15px;
+    padding: 10px 25px;
+    background: #ee4b2b;
+    opacity: 0.85;
+    border-radius: 20px;
+    color: #f0f0f0;
+    &:hover {
+      opacity: 1;
+    }
+    @media only screen and (max-width: 767px) {
+      opacity: 1;
+    }
+  }
 `;
 
 const FormSubmit = styled(ActionBtn)`
@@ -159,15 +188,17 @@ const FormSubmit = styled(ActionBtn)`
   border-color: transparent;
   border-radius: 20px;
   padding: 10px 25px;
-  margin-top: 20px;
-  width: 20%;
   font-family: Open Sans, sans-serif !important;
-
+  opacity: 0.85;
+  &:not(.disabled):hover {
+    opacity: 1;
+  }
   &.disabled {
     background: #8a8982;
+    cursor: default;
   }
 
   @media only screen and (max-width: 767px) {
-    width: 30%;
+    opacity: 1;
   }
 `;
