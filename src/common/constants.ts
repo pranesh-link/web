@@ -171,9 +171,17 @@ export const EXPERIENCE_TYPES = {
 
 export const FIELD_TYPES = {
   TEXT: "text",
+  MOBILE: "mobile",
   TEXTAREA: "textarea",
 };
 
 export const FIELD_SUB_TYPES = {
   EMAIL: "email",
 };
+
+export enum MAIL_STATUS {
+  FORM_FILL = "form_fill",
+  SENDING = "sending",
+  SUCCESS = "success",
+  ERROR = "error",
+}

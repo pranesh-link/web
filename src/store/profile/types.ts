@@ -20,6 +20,7 @@ export interface IFormField {
 export interface IFormInfo {
   name: string;
   submitLabel: string;
+  submittingLabel: string;
   fields: IFormField[];
 }
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import emailjs from "@emailjs/browser";
 import styled from "styled-components";
 import { ActionBtn, FlexBoxSection } from "../../common/Elements";
@@ -6,6 +6,8 @@ import classNames from "classnames";
 import { IFormField, IFormInfo } from "../../store/profile/types";
 import { validateLength, validateRegex } from "../../common/FormUtils";
 import { FormField } from "../Form/FormField";
+import { FIELD_TYPES, MAIL_STATUS } from "../../common/constants";
+import { isPossiblePhoneNumber } from "react-phone-number-input";
 
 interface IContactFormProps {
   form: IFormInfo;
@@ -30,6 +32,7 @@ export const ContactForm = (props: IContactFormProps) => {
   const [formData, setFormData] = useState<ContactFormData>(DEFAULT_FORM_DATA);
   const [formValid, setFormValid] = useState<ContactFormValid | null>(null);
   const [formDisabled, setFormDisabled] = useState<boolean>(true);
+  const [mailStatus, setMailStatus] = useState(MAIL_STATUS.FORM_FILL);
   const { userName, userMobile, userEmail, message } = formData;
 
   const templateParams = {
@@ -38,10 +41,17 @@ export const ContactForm = (props: IContactFormProps) => {
     message,
     userMobile,
   };
-
+  const resetFields = () => {
+    setFormData(DEFAULT_FORM_DATA);
+    setFormDisabled(true);
+  };
   const sendEmail = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    console.log("send email");
+    setMailStatus(MAIL_STATUS.SENDING);
+    setTimeout(() => {
+      setMailStatus(MAIL_STATUS.SUCCESS);
+      resetFields();
+    }, 2000);
     // emailjs
     //   .send(
     //     "service_h7f2fbh",
@@ -52,33 +62,50 @@ export const ContactForm = (props: IContactFormProps) => {
     //   .then(
     //     (result) => {
     //       console.log(result.text);
+    // setMailStatus(MAIL_STATUS.SUCCESS);
     //     },
     //     (error) => {
     //       console.log(error.text);
+    // setMailStatus(MAIL_STATUS.ERROR);
     //     }
     //   );
   };
 
+  const isFormSubmit = useMemo(
+    () => mailStatus === MAIL_STATUS.SENDING,
+    [mailStatus]
+  );
+
   const updateInput = (value: string, field: string) =>
     setFormData({ ...formData, [field as ContactFormFields]: value });
 
+  const handleSpecialValidations = (
+    type: string,
+    fieldValue: string,
+    isValid: boolean
+  ) => {
+    switch (type) {
+      case FIELD_TYPES.MOBILE:
+        isValid = isPossiblePhoneNumber(fieldValue);
+        break;
+    }
+    return isValid;
+  };
   const validateField = (value: string, field: string) => {
-    const { regex } = form.fields.find(
+    const { regex, type } = form.fields.find(
       (formField) => formField.name === field
     ) as IFormField;
     const fieldValue = value.trim();
     let isValid = false;
     isValid = validateLength(fieldValue);
     isValid = regex ? validateRegex(fieldValue, regex) : isValid;
-
+    isValid = handleSpecialValidations(type, fieldValue, isValid);
     const fieldValidity = { ...(formValid || {}), [field]: isValid };
-
     const currentFormDisabled =
       Object.values(fieldValidity).some((valid) => valid === false) ||
       Object.keys(fieldValidity).length !== Object.keys(formData).length;
     setFormValid(fieldValidity);
     setFormDisabled(currentFormDisabled);
-    return isValid;
   };
 
   return (
@@ -92,16 +119,19 @@ export const ContactForm = (props: IContactFormProps) => {
             fieldValid={formValid?.[fieldName]}
             updateInput={updateInput}
             validateField={validateField}
+            isFormSubmit={isFormSubmit}
           />
         );
       })}
       <FieldWrap justifyContent="space-around">
         <FormSubmit
-          disabled={formDisabled}
-          className={classNames({ disabled: formDisabled })}
+          disabled={formDisabled || isFormSubmit}
+          className={classNames({
+            disabled: formDisabled || isFormSubmit,
+          })}
           type="submit"
         >
-          {form.submitLabel}
+          {isFormSubmit ? form.submittingLabel : form.submitLabel}
         </FormSubmit>
       </FieldWrap>
     </Form>
