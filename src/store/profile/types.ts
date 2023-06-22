@@ -2,8 +2,30 @@ export interface IProfileData {
   header: IHeader;
   sections: SectionsType;
   download: DownloadType;
+  forms: FormsType;
 }
 
+export type FormType = "contactForm";
+
+export interface IFormField {
+  id: string;
+  name: string;
+  label: string;
+  placeholder: string;
+  subType?: string;
+  type: string;
+  maxLength: number;
+  regex: string;
+}
+export interface IFormInfo {
+  name: string;
+  submitLabel: string;
+  fields: IFormField[];
+}
+
+export type FormsType = {
+  [key in FormType]: IFormInfo;
+};
 export type SectionsType = {
   [key in ProfileSectionType]: ISectionInfo;
 };

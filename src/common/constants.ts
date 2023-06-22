@@ -40,6 +40,13 @@ export const DEFAULT_CONTEXT: IAppContext = {
     header: {
       shortDesc: "",
       name: "",
+      currentJobRole: "",
+    },
+    forms: {
+      contactForm: {
+        name: "",
+        fields: [],
+      },
     },
     sections: {
       aboutMe: {
@@ -124,6 +131,10 @@ export const SECTIONS = {
   RESUME_EXPERIENCES: "resume-experiences",
 };
 
+export const FORMS = {
+  CONTACT_FORM: "contact-form",
+};
+
 export const PAGE_TITLES = {
   profile: "Pranesh",
 };
@@ -156,4 +167,13 @@ export const LABELS = {
 export const EXPERIENCE_TYPES = {
   CURRENT: "Current",
   PREVIOUS: "Previous",
+};
+
+export const FIELD_TYPES = {
+  TEXT: "text",
+  TEXTAREA: "textarea",
+};
+
+export const FIELD_SUB_TYPES = {
+  EMAIL: "email",
 };

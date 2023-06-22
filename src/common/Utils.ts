@@ -10,6 +10,7 @@ import {
   IResumeOrg,
   ISectionInfo,
   ISkill,
+  IFormInfo,
 } from "../store/profile/types";
 
 export const valueIsString = (item: InfoType): item is string => {
@@ -115,7 +116,7 @@ export const getJsonResponse = async (jsonToFetch: string, data?: any) => {
 
 export const getProfileJsonResponse = async (
   jsonToFetch: string,
-  data: IHeader | ISectionInfo | DownloadType
+  data: IHeader | ISectionInfo | DownloadType | IFormInfo
 ) => {
   return getJsonResponse(jsonToFetch, data);
 };
@@ -138,3 +139,6 @@ export const getObjectKeyValuesByIndex = (obj: Object, index: number) => [
 
 export const getFilteredLinks = (info: ILink[]) =>
   info.filter((link) => link?.display !== false);
+
+export const getRemainingCharacters = (fieldStr: string, maxLength: number) =>
+  maxLength - fieldStr.length;

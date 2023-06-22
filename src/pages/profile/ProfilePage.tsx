@@ -1,13 +1,15 @@
-import { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, ComponentType } from "react";
 import usePWA from "react-pwa-install-prompt";
 import { PWABanner } from "../../PWABanner";
 import { Profile } from "../../components/profile/Profile";
+import Modal from "react-modal";
 import {
   DEFAULT_CONTEXT,
   SECTIONS,
   PAGE_TITLES,
   MESSAGES,
   LABEL_TEXT,
+  FORMS,
 } from "../../common/constants";
 import {
   getLocalStorage,
@@ -20,10 +22,12 @@ import {
   IHeader,
   DownloadType,
   IPWA,
+  IFormInfo,
 } from "../../store/profile/types";
 import styled from "styled-components";
 import { ActionBtn, FlexBoxSection, LoaderImg } from "../../common/Elements";
 import LoaderIcon from "../../assets/loader-icon.svg";
+import { ContactForm } from "../../components/profile/ContactForm";
 
 interface ProfilePageProps {
   pwa: IPWA;
@@ -32,6 +36,7 @@ interface ProfilePageProps {
   isMobile: boolean;
   retryBaseInfo: () => void;
 }
+const ModalComponent = Modal as ComponentType<ReactModal["props"]>;
 
 const ProfilePage = (props: ProfilePageProps) => {
   const homeRef = useRef(null);
@@ -74,14 +79,14 @@ const ProfilePage = (props: ProfilePageProps) => {
       window.scrollTo(0, 0);
       document.title = PAGE_TITLES.profile;
       const { COMBINED, SKILLS, EXPERIENCE, LINKS, DOWNLOAD } = SECTIONS;
-
+      const { CONTACT_FORM } = FORMS;
       const DEFAULT_SECTIONS_DETAILS = DEFAULT_CONTEXT.data.sections.details;
 
       const sectionsToFetch = [COMBINED, SKILLS, EXPERIENCE, LINKS];
 
       const fetchInfo = async (
         jsonToFetch: string,
-        data: ISectionInfo | IHeader | DownloadType
+        data: ISectionInfo | IHeader | DownloadType | IFormInfo
       ) => {
         const response = await getProfileJsonResponse(jsonToFetch, data);
         setHasErrorInProfile(response.hasError);
@@ -89,13 +94,20 @@ const ProfilePage = (props: ProfilePageProps) => {
       };
 
       (async () => {
-        const [download, profileSectionsInfo, skills, experiences, links] =
-          await Promise.all([
-            fetchInfo(DOWNLOAD, DEFAULT_CONTEXT.data.download),
-            ...sectionsToFetch.map((section) =>
-              fetchInfo(section, DEFAULT_SECTIONS_DETAILS)
-            ),
-          ]);
+        const [
+          download,
+          contactForm,
+          profileSectionsInfo,
+          skills,
+          experiences,
+          links,
+        ] = await Promise.all([
+          fetchInfo(DOWNLOAD, DEFAULT_CONTEXT.data.download),
+          fetchInfo(CONTACT_FORM, DEFAULT_CONTEXT.data.forms.contactForm),
+          ...sectionsToFetch.map((section) =>
+            fetchInfo(section, DEFAULT_SECTIONS_DETAILS)
+          ),
+        ]);
 
         const { header, aboutMe, details, education } = profileSectionsInfo;
 
@@ -107,7 +119,7 @@ const ProfilePage = (props: ProfilePageProps) => {
           experiences,
           links,
         };
-        setProfileData({ header, sections, download });
+        setProfileData({ header, sections, download, forms: { contactForm } });
         setIsFetchingData(false);
         setRetry(false);
       })();
@@ -137,6 +149,15 @@ const ProfilePage = (props: ProfilePageProps) => {
         </ErrorWrapper>
       ) : (
         <Wrapper>
+          <ModalComponent
+            className="contact-modal-content"
+            isOpen
+            ariaHideApp={false}
+          >
+            {/* <ModalContentWrap> */}
+            <ContactForm form={profileData.forms.contactForm} />
+            {/* </ModalContentWrap> */}
+          </ModalComponent>
           <Profile
             isExport={isExport}
             profileData={profileData}
