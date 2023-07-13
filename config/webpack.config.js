@@ -599,7 +599,7 @@ module.exports = function (webpackEnv) {
         threshold: 10240,
         minRatio: 0.8
       }),
-      new BundleAnalyzerPlugin(),
+      isEnvDevelopment && new BundleAnalyzerPlugin(),
       // Inlines the webpack runtime script. This script is too small to warrant
       // a network request.
       // https://github.com/facebook/create-react-app/issues/5358
