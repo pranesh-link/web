@@ -20,6 +20,7 @@ import {
   IHeader,
   DownloadType,
   IPWA,
+  IExperienceJsonInfo,
 } from "../../store/profile/types";
 import styled from "styled-components";
 import { ActionBtn, FlexBoxSection, LoaderImg } from "../../common/Elements";
@@ -49,10 +50,10 @@ const ProfilePage = (props: ProfilePageProps) => {
     boolean | null
   >(getLocalStorage("isInstallBannerOpen"));
   const [hasPWAInstalled, setHasPWAInstalled] = useState<boolean>(
-    getLocalStorage("hasPWAInstalled") || false
+    getLocalStorage("hasPWAInstalled") || false,
   );
   const [profileData, setProfileData] = useState<IProfileData>(
-    DEFAULT_CONTEXT.data
+    DEFAULT_CONTEXT.data,
   );
   const [isFetchingData, setIsFetchingData] = useState<boolean>(true);
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
@@ -81,7 +82,7 @@ const ProfilePage = (props: ProfilePageProps) => {
 
       const fetchInfo = async (
         jsonToFetch: string,
-        data: ISectionInfo | IHeader | DownloadType
+        data: ISectionInfo | IHeader | DownloadType,
       ) => {
         const response = await getProfileJsonResponse(jsonToFetch, data);
         setHasErrorInProfile(response.hasError);
@@ -92,10 +93,20 @@ const ProfilePage = (props: ProfilePageProps) => {
         const [download, profileSectionsInfo, skills, experiences, links] =
           await Promise.all([
             fetchInfo(DOWNLOAD, DEFAULT_CONTEXT.data.download),
-            ...sectionsToFetch.map((section) =>
-              fetchInfo(section, DEFAULT_SECTIONS_DETAILS)
+            ...sectionsToFetch.map(section =>
+              fetchInfo(section, DEFAULT_SECTIONS_DETAILS),
             ),
           ]);
+
+        const experienceJsonRefs: string[] = experiences.info.map(
+          (experience: IExperienceJsonInfo) => experience.ref,
+        );
+
+        const experienceData = await Promise.all(
+          experienceJsonRefs.map(ref =>
+            fetchInfo(ref, DEFAULT_SECTIONS_DETAILS),
+          ),
+        );
 
         const { header, aboutMe, details, education } = profileSectionsInfo;
 
@@ -104,7 +115,7 @@ const ProfilePage = (props: ProfilePageProps) => {
           details,
           education,
           skills,
-          experiences,
+          experiences: { ...experiences, info: experienceData },
           links,
         };
         setProfileData({ header, sections, download });
@@ -170,7 +181,7 @@ const ProfilePage = (props: ProfilePageProps) => {
             isInstallBannerOpen={!!isInstallBannerOpen}
             hasPWAInstalled={hasPWAInstalled}
             isInstallPromptSupported={isInstallPromptSupported}
-            setIsInstallBannerOpen={(isInstallBannerOpen) =>
+            setIsInstallBannerOpen={isInstallBannerOpen =>
               setIsInstallBannerOpen(isInstallBannerOpen)
             }
             onClickInstall={onClickInstall}

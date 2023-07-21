@@ -8,6 +8,11 @@ export type SectionsType = {
   [key in ProfileSectionType]: ISectionInfo;
 };
 
+export interface IExperienceJsonInfo {
+  ref: string;
+  name: string;
+}
+
 export interface IHeader {
   shortDesc: string;
   name: string;
