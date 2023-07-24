@@ -19,7 +19,7 @@ function App() {
   const [links, setLinks] = useState(DEFAULT_CONTEXT.data.sections.links);
   const [pwa, setPwa] = useState(DEFAULT_PWA);
   const [hasError, setHasError] = useState(false);
-  const [retry, setRetry] = useState<boolean>(true);
+  const [retry, setRetry] = useState<boolean>(false);
 
   const fetchSections = async (jsonToFetch: string, data: ISectionInfo) => {
     const response = await getProfileJsonResponse(jsonToFetch, data);
