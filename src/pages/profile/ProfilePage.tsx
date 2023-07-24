@@ -74,7 +74,7 @@ const ProfilePage = (props: ProfilePageProps) => {
     if (retry) {
       window.scrollTo(0, 0);
       document.title = PAGE_TITLES.profile;
-      const { COMBINED, SKILLS, EXPERIENCE, LINKS, DOWNLOAD } = SECTIONS;
+      const { COMBINED, SKILLS, LINKS, DOWNLOAD } = SECTIONS;
 
       const DEFAULT_SECTIONS_DETAILS = DEFAULT_CONTEXT.data.sections.details;
 
