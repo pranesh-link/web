@@ -78,7 +78,7 @@ const ProfilePage = (props: ProfilePageProps) => {
 
       const DEFAULT_SECTIONS_DETAILS = DEFAULT_CONTEXT.data.sections.details;
 
-      const sectionsToFetch = [COMBINED, SKILLS, EXPERIENCE, LINKS];
+      const sectionsToFetch = [COMBINED, SKILLS, LINKS];
 
       const fetchInfo = async (
         jsonToFetch: string,
@@ -90,13 +90,16 @@ const ProfilePage = (props: ProfilePageProps) => {
       };
 
       (async () => {
-        const [download, profileSectionsInfo, skills, experiences, links] =
+        const [download, profileSectionsInfo, skills, links] =
           await Promise.all([
             fetchInfo(DOWNLOAD, DEFAULT_CONTEXT.data.download),
             ...sectionsToFetch.map(section =>
               fetchInfo(section, DEFAULT_SECTIONS_DETAILS),
             ),
           ]);
+
+        const { header, aboutMe, details, education, experiences } =
+          profileSectionsInfo;
 
         const experienceJsonRefs: string[] = experiences.info.map(
           (experience: IExperienceJsonInfo) => experience.ref,
@@ -107,8 +110,6 @@ const ProfilePage = (props: ProfilePageProps) => {
             fetchInfo(ref, DEFAULT_SECTIONS_DETAILS),
           ),
         );
-
-        const { header, aboutMe, details, education } = profileSectionsInfo;
 
         const sections = {
           aboutMe,
