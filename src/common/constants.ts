@@ -40,6 +40,7 @@ export const DEFAULT_CONTEXT: IAppContext = {
     header: {
       shortDesc: "",
       name: "",
+      currentJobRole: "",
     },
     sections: {
       aboutMe: {

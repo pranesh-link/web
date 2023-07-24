@@ -58,11 +58,11 @@ function App() {
   }, [retry]);
 
   const ProfilePageComponent = React.lazy(
-    () => import("./pages/profile/ProfilePage")
+    () => import("./pages/profile/ProfilePage"),
   );
 
   const MaintenancePageComponent = React.lazy(
-    () => import("./pages/maintenance/MaintenancePage")
+    () => import("./pages/maintenance/MaintenancePage"),
   );
 
   return (
