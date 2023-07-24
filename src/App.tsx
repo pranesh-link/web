@@ -40,20 +40,27 @@ function App() {
     return () => window.removeEventListener("resize", setViewportProps);
   }, []);
 
+  const fetchInfo = async () => {
+    const [maintenanceInfo, linksInfo, pwaInfo] = await Promise.all([
+      fetchData("maintenance"),
+      fetchSections("links", links),
+      fetchData("pwa"),
+    ]);
+    setMaintenance(maintenanceInfo);
+    setLinks(linksInfo);
+    setPwa(pwaInfo);
+    setRetry(false);
+  };
+
   useEffect(() => {
-    (async () => {
-      if (retry) {
-        const [maintenanceInfo, linksInfo, pwaInfo] = await Promise.all([
-          fetchData("maintenance"),
-          fetchSections("links", links),
-          fetchData("pwa"),
-        ]);
-        setMaintenance(maintenanceInfo);
-        setLinks(linksInfo);
-        setPwa(pwaInfo);
-        setRetry(false);
-      }
-    })();
+    fetchInfo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (retry) {
+      fetchInfo();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [retry]);
 
