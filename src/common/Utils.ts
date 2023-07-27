@@ -21,7 +21,7 @@ export const valueIsArray = (item: InfoType): item is any[] => {
 };
 
 export const valueIsOrgProjectInfo = (
-  item: InfoType
+  item: InfoType,
 ): item is IOrgProject[] => {
   return (item as IOrgProject[])[0].organization !== undefined;
 };
@@ -42,7 +42,7 @@ export const valueIsLinkInfo = (item: InfoType): item is ILink[] => {
 };
 
 export const valueIsExperienceInfo = (
-  item: InfoType
+  item: InfoType,
 ): item is IExperience[] => {
   return (item as IExperience[])[0].name !== undefined;
 };
@@ -53,7 +53,7 @@ export const uppercase = (str: string) => str.toUpperCase().replace(/ /g, "");
 export const replaceWith = (
   mainStr: string,
   replaceChar1: string,
-  replaceChar2: string
+  replaceChar2: string,
 ) => mainStr.replace(replaceChar1, replaceChar2);
 
 export const getHref = (label: string, info: string) => {
@@ -102,7 +102,7 @@ export const getJsonResponse = async (jsonToFetch: string, data?: any) => {
   let hasError = false;
   data = data || {};
   try {
-    const url = `${JSON_BASE_URL}/${jsonToFetch}.json`;
+    const url = `${JSON_BASE_URL}/${jsonToFetch}`;
     const response = await fetch(url, {
       mode: CORS_MODE,
     });
@@ -115,7 +115,7 @@ export const getJsonResponse = async (jsonToFetch: string, data?: any) => {
 
 export const getProfileJsonResponse = async (
   jsonToFetch: string,
-  data: IHeader | ISectionInfo | DownloadType
+  data: IHeader | ISectionInfo | DownloadType,
 ) => {
   return getJsonResponse(jsonToFetch, data);
 };
@@ -123,7 +123,7 @@ export const getProfileJsonResponse = async (
 export const getIconUrlByExportFlag = (
   iconUrl?: string,
   pdfExportIconUrl?: string,
-  isExport?: boolean
+  isExport?: boolean,
 ) =>
   isExport
     ? `${pdfExportIconUrl}?dummy=${Math.floor(Math.random() * 1000)}`
@@ -137,4 +137,4 @@ export const getObjectKeyValuesByIndex = (obj: Object, index: number) => [
 ];
 
 export const getFilteredLinks = (info: ILink[]) =>
-  info.filter((link) => link?.display !== false);
+  info.filter(link => link?.display !== false);

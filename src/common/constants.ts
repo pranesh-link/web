@@ -8,7 +8,7 @@ import {
 import { IMaintenance } from "../store/common/types";
 
 export const CORS_MODE = "cors";
-export const DEV_JSON_BASE_URL = "http://localhost:8080";
+export const DEV_JSON_BASE_URL = "http://localhost:7373";
 export const PROD_JSON_BASE_URL = "https://profile-jsons.pranesh.link";
 export const TOAST_POSITION = "top-center";
 export const PROFILE_PDF_NAME = "Pranesh_Profile";
@@ -157,4 +157,22 @@ export const LABELS = {
 export const EXPERIENCE_TYPES = {
   CURRENT: "Current",
   PREVIOUS: "Previous",
+};
+
+export const DEFAULT_PROFILE_CONFIG_DATA = {
+  profileSections: {
+    header: DEFAULT_CONTEXT.data.header,
+    aboutMe: DEFAULT_CONTEXT.data.sections.aboutMe,
+    education: DEFAULT_CONTEXT.data.sections.education,
+    details: DEFAULT_CONTEXT.data.sections.details,
+    experiences: DEFAULT_CONTEXT.data.sections.experiences,
+  },
+  links: DEFAULT_CONTEXT.data.sections.links,
+  download: DEFAULT_CONTEXT.data.download,
+  skills: DEFAULT_CONTEXT.data.sections.skills,
+};
+
+export const CONFIG_REF_INFO = {
+  ref: "config.json",
+  name: "config",
 };
