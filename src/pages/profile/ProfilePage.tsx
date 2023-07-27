@@ -4,10 +4,10 @@ import { PWABanner } from "../../PWABanner";
 import { Profile } from "../../components/profile/Profile";
 import {
   DEFAULT_CONTEXT,
-  SECTIONS,
   PAGE_TITLES,
   MESSAGES,
   LABEL_TEXT,
+  DEFAULT_PROFILE_CONFIG_DATA,
 } from "../../common/constants";
 import {
   getLocalStorage,
@@ -25,12 +25,14 @@ import {
 import styled from "styled-components";
 import { ActionBtn, FlexBoxSection, LoaderImg } from "../../common/Elements";
 import LoaderIcon from "../../assets/loader-icon.svg";
+import { IConfigDataParams } from "../../store/common/types";
 
 interface ProfilePageProps {
   pwa: IPWA;
   hasError: boolean;
   isExport: boolean;
   isMobile: boolean;
+  profileConfig: IConfigDataParams[];
   retryBaseInfo: () => void;
 }
 
@@ -41,7 +43,8 @@ const ProfilePage = (props: ProfilePageProps) => {
   const educationRef = useRef(null);
   const contactRef = useRef(null);
 
-  const { pwa, hasError, isExport, isMobile, retryBaseInfo } = props;
+  const { pwa, hasError, isExport, isMobile, profileConfig, retryBaseInfo } =
+    props;
   const [retry, setRetry] = useState<boolean>(true);
   const [hasErrorInProfile, setHasErrorInProfile] = useState<boolean>(hasError);
   const { isInstallPromptSupported, promptInstall } = usePWA();
@@ -74,47 +77,43 @@ const ProfilePage = (props: ProfilePageProps) => {
     if (retry) {
       window.scrollTo(0, 0);
       document.title = PAGE_TITLES.profile;
-      const { COMBINED, SKILLS, LINKS, DOWNLOAD } = SECTIONS;
 
       const DEFAULT_SECTIONS_DETAILS = DEFAULT_CONTEXT.data.sections.details;
-
-      const sectionsToFetch = [COMBINED, SKILLS, LINKS];
 
       const fetchInfo = async (
         jsonToFetch: string,
         data: ISectionInfo | IHeader | DownloadType,
+        name: string,
       ) => {
         const response = await getProfileJsonResponse(jsonToFetch, data);
         setHasErrorInProfile(response.hasError);
-        return response.data;
+        return { name, data: response.data };
       };
 
       (async () => {
-        const [download, profileSectionsInfo, skills, links] =
-          await Promise.all([
-            fetchInfo(DOWNLOAD, DEFAULT_CONTEXT.data.download),
-            ...sectionsToFetch.map(section =>
-              fetchInfo(section, DEFAULT_SECTIONS_DETAILS),
+        const { profileSections, links, skills, download } = (
+          await Promise.all(
+            profileConfig.map((data: IConfigDataParams) =>
+              fetchInfo(data.ref, DEFAULT_SECTIONS_DETAILS, data.name),
             ),
-          ]);
-
-        const { header, aboutMe, details, education, experiences } =
-          profileSectionsInfo;
-
-        const experienceJsonRefs: string[] = experiences.info.map(
-          (experience: IExperienceJsonInfo) => experience.ref,
+          )
+        ).reduce(
+          (curr, prev) => ({ ...curr, [prev.name]: prev.data }),
+          DEFAULT_PROFILE_CONFIG_DATA,
         );
 
-        const experienceData = await Promise.all(
-          experienceJsonRefs.map(ref =>
-            fetchInfo(ref, DEFAULT_SECTIONS_DETAILS),
-          ),
-        );
+        const { header, experiences } = profileSections;
+
+        const experienceData = (
+          await Promise.all(
+            (experiences.info as any[]).map((data: IExperienceJsonInfo) =>
+              fetchInfo(data.ref, DEFAULT_SECTIONS_DETAILS, data.name),
+            ),
+          )
+        ).map(data => data.data);
 
         const sections = {
-          aboutMe,
-          details,
-          education,
+          ...profileSections,
           skills,
           experiences: { ...experiences, info: experienceData },
           links,
@@ -124,7 +123,7 @@ const ProfilePage = (props: ProfilePageProps) => {
         setRetry(false);
       })();
     }
-  }, [retry]);
+  }, [retry, profileConfig]);
 
   return isFetchingData ? (
     <LoaderImg isMobile={isMobile} src={LoaderIcon} />
