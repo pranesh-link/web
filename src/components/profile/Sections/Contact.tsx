@@ -9,7 +9,7 @@ import {
 } from "../../../common/Utils";
 import classNames from "classnames";
 import styled from "styled-components";
-import { AppContext } from "../../../store/profile/context";
+import { ProfileContext } from "../../../store/profile/context";
 import { SECTIONS } from "../../../common/constants";
 
 interface IContactProps {
@@ -19,13 +19,13 @@ interface IContactProps {
 
 export const Contact = (props: IContactProps) => {
   const { links: propsLinks, refObj: propsRefObj } = props;
-  const { isMobile } = useContext(AppContext);
+  const { isMobile } = useContext(ProfileContext);
   let {
     data: {
       sections: { links },
     },
     refs: { contactRef: refObj },
-  } = useContext(AppContext);
+  } = useContext(ProfileContext);
   if (propsLinks && propsRefObj) {
     links = propsLinks;
     refObj = propsRefObj;

@@ -7,7 +7,7 @@ import {
   valueIsArray,
   valueIsDetailInfo,
 } from "../../../common/Utils";
-import { AppContext } from "../../../store/profile/context";
+import { ProfileContext } from "../../../store/profile/context";
 import { IDetailInfo, ISectionInfo } from "../../../store/profile/types";
 import { useContext } from "react";
 import styled from "styled-components";
@@ -23,7 +23,7 @@ interface AboutMeDetailsProps {
   setCopyState: (copyInfoId: string, state: string) => void;
 }
 export const AboutMeDetails = (props: AboutMeDetailsProps) => {
-  const { isMobile, isExport } = useContext(AppContext);
+  const { isMobile, isExport } = useContext(ProfileContext);
   const { details, showCopy, copyState, setShowCopy, setCopyState } = props;
 
   const getCopyButton = (detail: IDetailInfo) => {
@@ -82,7 +82,7 @@ export const AboutMeDetails = (props: AboutMeDetailsProps) => {
               src={getIconUrlByExportFlag(
                 detail.icon,
                 detail.pdfExportIcon,
-                isExport
+                isExport,
               )}
             />
           ))}
@@ -119,9 +119,9 @@ const DetailSection = styled(FlexBoxSection)<{
   line-height: 1.5;
   .detail-icon {
     height: 25px;
-    min-width: ${(props) =>
+    min-width: ${props =>
       props.isMobile && !props.isExport ? "unset" : "50px"};
-    margin: ${(props) => (props.isMobile && !props.isExport ? "0" : "10px 0")};
+    margin: ${props => (props.isMobile && !props.isExport ? "0" : "10px 0")};
     &.export {
       min-width: 0;
       width: 25px;

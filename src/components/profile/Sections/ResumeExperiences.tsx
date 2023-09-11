@@ -7,7 +7,7 @@ import {
   FlexBox,
 } from "../../../common/Elements";
 import React, { memo, useContext, useEffect, useMemo, useState } from "react";
-import { AppContext } from "../../../store/profile/context";
+import { ProfileContext } from "../../../store/profile/context";
 import { valueIsArray, valueIsExperienceInfo } from "../../../common/Utils";
 import { IProjectExperience } from "../../../store/profile/types";
 import {
@@ -35,21 +35,21 @@ export const ResumeExperiences = memo(() => {
     isExport,
     isMobile,
     refs: { experienceRef },
-  } = useContext(AppContext);
+  } = useContext(ProfileContext);
   const [project, setProject] = useState<IProjectExperience | null>(null);
 
   const getExperienceInfo = (
     projects: IProjectExperience[],
     type: string,
     from: string,
-    to?: string
+    to?: string,
   ) => {
     const names = projects.reduce(
       (curr: INames, next: IProjectExperience) => ({
         projectNames: [...curr.projectNames, next.title],
         clientNames: [...curr.clientNames, next.client],
       }),
-      { projectNames: [], clientNames: [] }
+      { projectNames: [], clientNames: [] },
     );
     const projectNames = names.projectNames.join(", ");
     const clientNames = [...new Set(names.clientNames)].join(", ");
@@ -75,7 +75,7 @@ export const ResumeExperiences = memo(() => {
 
   const textSeparator = useMemo(
     () => <>{isMobile ? <br /> : <span>,&nbsp;</span>}</>,
-    [isMobile]
+    [isMobile],
   );
 
   return (
@@ -112,7 +112,7 @@ export const ResumeExperiences = memo(() => {
               setProject(
                 valueIsExperienceInfo(experiences.info)
                   ? experiences.info[0].projects[0]
-                  : null
+                  : null,
               )
             }
           >

@@ -2,7 +2,7 @@ import classNames from "classnames";
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { FlexBoxSection } from "../../common/Elements";
-import { AppContext } from "../../store/profile/context";
+import { ProfileContext } from "../../store/profile/context";
 import { ProfileSectionType, RefTypes } from "../../store/profile/types";
 import { scrollTo } from "./ScrollTo";
 import { SECTION_ORDER_DISPLAY } from "../../common/constants";
@@ -15,12 +15,12 @@ interface IMenuBarProps {
 }
 const MenuBar = (props: IMenuBarProps) => {
   const { refs, data, currentSection, isInstallBannerOpen } =
-    React.useContext(AppContext);
+    React.useContext(ProfileContext);
   const { onMenuChange } = props;
   const goTo = (section: string) => {
     scrollTo(
       `#${section}`,
-      props.isMobileMenu ? 90 : isInstallBannerOpen ? 110 : 20
+      props.isMobileMenu ? 90 : isInstallBannerOpen ? 110 : 20,
     );
   };
   let timeout: any;
@@ -28,7 +28,7 @@ const MenuBar = (props: IMenuBarProps) => {
     .reduce(
       (
         items: { title: string; ref: string; section: string; order: number }[],
-        current: string
+        current: string,
       ) => {
         if (data.sections[current as ProfileSectionType].ref) {
           const { title, ref = "" } =
@@ -46,7 +46,7 @@ const MenuBar = (props: IMenuBarProps) => {
         }
         return items;
       },
-      []
+      [],
     )
     .sort((a, b) => a.order - b.order);
 
@@ -73,7 +73,7 @@ const MenuBar = (props: IMenuBarProps) => {
         }
         return result;
       },
-      { section: "aboutMe", pos: isInstallBannerOpen ? 90 : 0 }
+      { section: "aboutMe", pos: isInstallBannerOpen ? 90 : 0 },
     );
     if (onMenuChange) {
       onMenuChange(resultPosition.section);
@@ -101,7 +101,7 @@ const MenuBar = (props: IMenuBarProps) => {
       className={classNames("wrapper", { mobile: props.isMobileMenu })}
     >
       <FlexBoxSection direction="column">
-        {menuItems.map((item) => (
+        {menuItems.map(item => (
           <MenuBtn
             key={item.section}
             onClick={() => {

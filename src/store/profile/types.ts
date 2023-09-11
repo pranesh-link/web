@@ -136,7 +136,7 @@ export type RefTypes =
   | "educationRef"
   | "contactRef";
 
-export interface IAppContext {
+export interface IProfileContext {
   data: IProfileData;
   refs: {
     [key in RefTypes]: React.MutableRefObject<any>;
