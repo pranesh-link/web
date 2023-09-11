@@ -3,7 +3,7 @@ import usePWA from "react-pwa-install-prompt";
 import { PWABanner } from "../../PWABanner";
 import { Profile } from "../../components/profile/Profile";
 import {
-  DEFAULT_CONTEXT,
+  DEFAULT_PROFILE_CONTEXT,
   PAGE_TITLES,
   MESSAGES,
   LABEL_TEXT,
@@ -56,7 +56,7 @@ const ProfilePage = (props: ProfilePageProps) => {
     getLocalStorage("hasPWAInstalled") || false,
   );
   const [profileData, setProfileData] = useState<IProfileData>(
-    DEFAULT_CONTEXT.data,
+    DEFAULT_PROFILE_CONTEXT.data,
   );
   const [isFetchingData, setIsFetchingData] = useState<boolean>(true);
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
@@ -78,7 +78,8 @@ const ProfilePage = (props: ProfilePageProps) => {
       window.scrollTo(0, 0);
       document.title = PAGE_TITLES.profile;
 
-      const DEFAULT_SECTIONS_DETAILS = DEFAULT_CONTEXT.data.sections.details;
+      const DEFAULT_SECTIONS_DETAILS =
+        DEFAULT_PROFILE_CONTEXT.data.sections.details;
 
       const fetchInfo = async (
         jsonToFetch: string,

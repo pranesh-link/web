@@ -1,11 +1,12 @@
 import React from "react";
 import {
   ExpandableInfosType,
-  IAppContext,
+  IProfileContext,
   IPWA,
   ShortInfosType,
 } from "../store/profile/types";
 import { IMaintenance } from "../store/common/types";
+import { IAppContext } from "../store/app/types";
 
 export const CORS_MODE = "cors";
 export const DEV_JSON_BASE_URL = "http://localhost:7373";
@@ -35,7 +36,13 @@ export const DEFAULT_PWA: IPWA = {
   bannerExpiryTime: 0,
 };
 
-export const DEFAULT_CONTEXT: IAppContext = {
+export const DEFAULT_MAINTENANCE_DATA: IMaintenance = {
+  isUnderMaintenance: false,
+  message: "",
+  image: "",
+};
+
+export const DEFAULT_PROFILE_CONTEXT: IProfileContext = {
   data: {
     header: {
       shortDesc: "",
@@ -100,6 +107,21 @@ export const DEFAULT_CONTEXT: IAppContext = {
   hasDownloadedProfile: false,
 };
 
+export const DEFAULT_APP_CONTEXT: IAppContext = {
+  data: {
+    messages: {
+      homepage: {
+        title: "",
+        underConstruction: "",
+        redirection: "",
+      },
+    },
+    links: DEFAULT_PROFILE_CONTEXT.data.sections.links,
+    pwa: DEFAULT_PWA,
+    maintenance: DEFAULT_MAINTENANCE_DATA,
+  },
+};
+
 export const LABEL_TEXT: Record<string, string> = {
   client: "Client",
   duration: "Duration",
@@ -129,12 +151,6 @@ export const PAGE_TITLES = {
   profile: "Pranesh",
 };
 
-export const DEFAULT_MAINTENANCE_DATA: IMaintenance = {
-  isUnderMaintenance: false,
-  message: "",
-  image: "",
-};
-
 export const SECTION_ORDER_DISPLAY: Record<
   string,
   { order: number; display?: boolean }
@@ -161,15 +177,15 @@ export const EXPERIENCE_TYPES = {
 
 export const DEFAULT_PROFILE_CONFIG_DATA = {
   profileSections: {
-    header: DEFAULT_CONTEXT.data.header,
-    aboutMe: DEFAULT_CONTEXT.data.sections.aboutMe,
-    education: DEFAULT_CONTEXT.data.sections.education,
-    details: DEFAULT_CONTEXT.data.sections.details,
-    experiences: DEFAULT_CONTEXT.data.sections.experiences,
+    header: DEFAULT_PROFILE_CONTEXT.data.header,
+    aboutMe: DEFAULT_PROFILE_CONTEXT.data.sections.aboutMe,
+    education: DEFAULT_PROFILE_CONTEXT.data.sections.education,
+    details: DEFAULT_PROFILE_CONTEXT.data.sections.details,
+    experiences: DEFAULT_PROFILE_CONTEXT.data.sections.experiences,
   },
-  links: DEFAULT_CONTEXT.data.sections.links,
-  download: DEFAULT_CONTEXT.data.download,
-  skills: DEFAULT_CONTEXT.data.sections.skills,
+  links: DEFAULT_PROFILE_CONTEXT.data.sections.links,
+  download: DEFAULT_PROFILE_CONTEXT.data.download,
+  skills: DEFAULT_PROFILE_CONTEXT.data.sections.skills,
 };
 
 export const CONFIG_REF_INFO = {

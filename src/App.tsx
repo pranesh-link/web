@@ -1,26 +1,14 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import React, { Suspense, useEffect, useState } from "react";
 import { getJsonResponse, getProfileJsonResponse } from "./common/Utils";
-import {
-  CONFIG_REF_INFO,
-  DEFAULT_CONTEXT,
-  DEFAULT_MAINTENANCE_DATA,
-  DEFAULT_PWA,
-} from "./common/constants";
-import { IPWA, ISectionInfo } from "./store/profile/types";
+import { CONFIG_REF_INFO, DEFAULT_APP_CONTEXT } from "./common/constants";
+import { ISectionInfo } from "./store/profile/types";
 import { LoaderImg } from "./common/Elements";
 import LoaderIcon from "./assets/loader-icon.svg";
-import {
-  IConfigData,
-  IConfigDataParams,
-  IMaintenance,
-} from "./store/common/types";
-
-interface IBasicConfigData {
-  pwa: IPWA;
-  maintenance: IMaintenance;
-  links: ISectionInfo;
-}
+import { IConfigData, IConfigDataParams } from "./store/common/types";
+import { HomePage } from "./pages/HomePage";
+import { AppProvider } from "./store/app/context";
+import { IAppConfigData } from "./store/app/types";
 
 const DEFAULT_CONFIG_DATA = {
   basic: [
@@ -39,12 +27,6 @@ const DEFAULT_CONFIG_DATA = {
   ],
 };
 
-const DEFAULT_BASIC_CONFIG_DATA = {
-  pwa: DEFAULT_PWA,
-  maintenance: DEFAULT_MAINTENANCE_DATA,
-  links: DEFAULT_CONTEXT.data.sections.links,
-};
-
 function App() {
   const queryParams = new URLSearchParams(window.location.search);
   const isAdmin = queryParams.get("admin");
@@ -54,8 +36,8 @@ function App() {
   const [retry, setRetry] = useState<boolean>(true);
   const [configData, setConfigData] =
     useState<IConfigData>(DEFAULT_CONFIG_DATA);
-  const [basicConfigData, setBasicConfigData] = useState<IBasicConfigData>(
-    DEFAULT_BASIC_CONFIG_DATA,
+  const [basicConfigData, setBasicConfigData] = useState<IAppConfigData>(
+    DEFAULT_APP_CONTEXT.data,
   );
 
   const fetchSections = async (
@@ -119,7 +101,7 @@ function App() {
   );
 
   return (
-    <div>
+    <AppProvider value={{ data: basicConfigData }}>
       <Suspense fallback={<LoaderImg isMobile={isMobile} src={LoaderIcon} />}>
         <BrowserRouter>
           <Routes>
@@ -143,7 +125,14 @@ function App() {
               </>
             ) : (
               <>
-                <Route path="*" element={<Navigate to="/profile" />} />
+                <Route
+                  path="/"
+                  element={
+                    <>
+                      <HomePage />
+                    </>
+                  }
+                />
                 <Route
                   path="/profile"
                   element={
@@ -164,7 +153,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </Suspense>
-    </div>
+    </AppProvider>
   );
 }
 

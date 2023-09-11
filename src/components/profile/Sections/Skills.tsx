@@ -9,7 +9,7 @@ import {
   SecHeader,
 } from "../../../common/Elements";
 import classNames from "classnames";
-import { AppContext } from "../../../store/profile/context";
+import { ProfileContext } from "../../../store/profile/context";
 import StarIcon from "../../../assets/star.svg";
 import StarUnfilledIcon from "../../../assets/star-unfilled.svg";
 import { SECTIONS } from "../../../common/constants";
@@ -29,7 +29,7 @@ const SkillStars = memo(
     return (
       <img alt={skillParams.text} className="star" src={skillParams.icon} />
     );
-  }
+  },
 );
 const SkillWithStars = memo(({ starNum }: { starNum: number }) => {
   const { filled, unfilled } = SKILL_ICON_TEXT_MAP;
@@ -53,7 +53,7 @@ export const Skills = () => {
     data: {
       sections: { skills },
     },
-  } = useContext(AppContext);
+  } = useContext(ProfileContext);
 
   const getColumnData = (skill: ISkill) => (
     <FlexBox className="skill">
@@ -98,23 +98,21 @@ const SkillsInfoWrapper = styled(FlexBoxSection)<{
   .skill {
     padding-bottom: 10px;
     .skill-label {
-      flex-basis: ${(props) => {
+      flex-basis: ${props => {
         let flexBasis = "50%";
         flexBasis = props.isExport ? "60%" : props.isMobile ? "40%" : flexBasis;
         return flexBasis;
       }};
       padding-right: 10px;
-      ${(props) => props.isMobile && !props.isExport && "font-size: 13px"}
+      ${props => props.isMobile && !props.isExport && "font-size: 13px"}
     }
     .stars {
-      margin-right: ${(props) => (props.isExport ? "100px" : "10px")};
+      margin-right: ${props => (props.isExport ? "100px" : "10px")};
     }
 
     .star {
-      height: ${(props) =>
-        props.isMobile && !props.isExport ? "15px" : "20px"};
-      width: ${(props) =>
-        props.isMobile && !props.isExport ? "15px" : "20px"};
+      height: ${props => (props.isMobile && !props.isExport ? "15px" : "20px")};
+      width: ${props => (props.isMobile && !props.isExport ? "15px" : "20px")};
     }
   }
 

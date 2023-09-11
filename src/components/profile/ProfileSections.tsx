@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import styled from "styled-components";
 import { FlexBox, SectionsWrapper } from "../../common/Elements";
-import { AppContext } from "../../store/profile/context";
+import { ProfileContext } from "../../store/profile/context";
 import { Skills } from "./Sections/Skills";
 import { About } from "./Sections/About";
 import { Education } from "./Sections/Education";
@@ -26,7 +26,7 @@ const ProfileSections = (props: IProfileSectionsProps) => {
     isMobile,
     isInstallBannerOpen,
     data: { header },
-  } = React.useContext(AppContext);
+  } = React.useContext(ProfileContext);
   const { shortDesc, name, currentJobRole } = header;
   const { ABOUTME, EDUCATION, SKILLS, EXPERIENCES, CONTACT } =
     SECTION_ORDER_DISPLAY;
@@ -41,7 +41,7 @@ const ProfileSections = (props: IProfileSectionsProps) => {
         }}
       />
     ),
-    [props]
+    [props],
   );
 
   const EducationComp = useMemo(() => <Education />, []);
@@ -52,7 +52,7 @@ const ProfileSections = (props: IProfileSectionsProps) => {
 
   const ContactComp = useMemo(
     () => <>{!isExport && <Contact />}</>,
-    [isExport]
+    [isExport],
   );
 
   const sectionComponents: ISectionComponents[] = useMemo(
@@ -99,17 +99,17 @@ const ProfileSections = (props: IProfileSectionsProps) => {
       ExperiencesComp,
       SKILLS,
       SkillsComp,
-    ]
+    ],
   );
 
   const reOrderedSectionComponents = useMemo(
     () => sectionComponents.sort((a, b) => a.order - b.order),
-    [sectionComponents]
+    [sectionComponents],
   );
 
   const HorizontalSep = useMemo(
     () => <hr className={classNames("header-sep", { export: isExport })} />,
-    [isExport]
+    [isExport],
   );
 
   return (
