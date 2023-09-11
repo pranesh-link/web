@@ -15,7 +15,7 @@ export const HomePage = () => {
 
   useEffect(() => {
     setTimeout(() => navigate("/profile"), 2000);
-  }, []);
+  }, [navigate]);
   return (
     <HomePageWrapper
       direction="column"

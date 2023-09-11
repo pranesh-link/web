@@ -1,21 +1,11 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import React, { Suspense, useEffect, useState } from "react";
 import { getJsonResponse, getProfileJsonResponse } from "./common/Utils";
-import {
-  CONFIG_REF_INFO,
-  DEFAULT_PROFILE_CONTEXT,
-  DEFAULT_MAINTENANCE_DATA,
-  DEFAULT_PWA,
-  DEFAULT_APP_CONTEXT,
-} from "./common/constants";
-import { IPWA, ISectionInfo } from "./store/profile/types";
+import { CONFIG_REF_INFO, DEFAULT_APP_CONTEXT } from "./common/constants";
+import { ISectionInfo } from "./store/profile/types";
 import { LoaderImg } from "./common/Elements";
 import LoaderIcon from "./assets/loader-icon.svg";
-import {
-  IConfigData,
-  IConfigDataParams,
-  IMaintenance,
-} from "./store/common/types";
+import { IConfigData, IConfigDataParams } from "./store/common/types";
 import { HomePage } from "./pages/HomePage";
 import { AppProvider } from "./store/app/context";
 import { IAppConfigData } from "./store/app/types";
