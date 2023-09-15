@@ -138,3 +138,14 @@ export const getObjectKeyValuesByIndex = (obj: Object, index: number) => [
 
 export const getFilteredLinks = (info: ILink[]) =>
   info.filter(link => link?.display !== false);
+
+export const isSupportedBrowserAndOS = (
+  browsers: string[],
+  os: string[],
+  browserName: string,
+  osName: string,
+) => {
+  const isSupportedBrowser = browsers.indexOf(browserName) > -1;
+  const isSupportedOS = os.indexOf(osName) > -1;
+  return isSupportedOS && isSupportedBrowser;
+};

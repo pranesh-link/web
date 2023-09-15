@@ -3,10 +3,12 @@ import { FlexBox, MobilePWAWrapper, PWAWrapper } from "./common/Elements";
 import {
   getLocalStorage,
   isBannerHidden,
+  isSupportedBrowserAndOS,
   setLocalStorage,
 } from "./common/Utils";
-import { useEffect } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import { IPWA } from "./store/profile/types";
+import { AppContext } from "./store/app/context";
 
 interface PWABannerProps {
   pwa: IPWA;
@@ -27,6 +29,15 @@ export const PWABanner = (props: PWABannerProps) => {
     isInstallPromptSupported,
     pwa: { messages, bannerExpiryTime },
   } = props;
+
+  const {
+    data: {
+      appConfig: {
+        pwa: { browsers, os },
+      },
+      currentDevice: { osName, browserName },
+    },
+  } = useContext(AppContext);
 
   const closeInstallBanner = () => {
     const expiry = new Date().getTime() + bannerExpiryTime * 1000;
@@ -49,6 +60,11 @@ export const PWABanner = (props: PWABannerProps) => {
     </button>
   );
 
+  const hasPWASupport = useMemo(
+    () => isSupportedBrowserAndOS(browsers, os, browserName, osName),
+    [browsers, os, browserName, osName],
+  );
+
   useEffect(() => {
     // Set install banner based on local storage key availability
     const openBanner =
@@ -66,10 +82,10 @@ export const PWABanner = (props: PWABannerProps) => {
     isInstallPromptSupported,
     setIsInstallBannerOpen,
   ]);
-
+  console.log("isMobile && hasPWASupport", isMobile && hasPWASupport);
   return !hasPWAInstalled && isInstallPromptSupported && isInstallBannerOpen ? (
     <>
-      {isMobile ? (
+      {isMobile && hasPWASupport && (
         <MobilePWAWrapper
           bottom="0"
           direction="column"
@@ -82,7 +98,8 @@ export const PWABanner = (props: PWABannerProps) => {
             {InstallButton}
           </MobilePWAControls>
         </MobilePWAWrapper>
-      ) : (
+      )}
+      {!isMobile && (
         <PWAWrapper top="0" alignItems="center" justifyContent="space-between">
           {NotNowButton}
           {PWAInstallMessage}

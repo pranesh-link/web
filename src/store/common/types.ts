@@ -29,7 +29,22 @@ export interface IConfigDataParams {
   name: string;
 }
 
+export interface IHomePageConfig {
+  profileRedirectDelay: number;
+}
+
+interface IPWAConfig {
+  browsers: string[];
+  os: string[];
+}
+export interface IAppConfig {
+  homepage: IHomePageConfig;
+  pwa: IPWAConfig;
+}
 export interface IConfigData {
-  basic: IConfigDataParams[];
-  profile: IConfigDataParams[];
+  jsonConfig: {
+    defaultConfig: IConfigDataParams[];
+    profileConfig: IConfigDataParams[];
+  };
+  appConfig: IAppConfig;
 }

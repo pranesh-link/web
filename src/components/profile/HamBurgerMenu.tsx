@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Transition } from "react-transition-group";
 import styled from "styled-components";
 import HamBurgerIcon from "../../assets/burgericon.svg";
@@ -9,20 +9,36 @@ import CloseIcon from "../../assets/close-icon.svg";
 import { ComponentType } from "react";
 import { TransitionProps } from "react-transition-group/Transition";
 import MobileApplicationIcon from "../../assets/mobile-application-icon.svg";
+import { AppContext } from "../../store/app/context";
+import { isSupportedBrowserAndOS } from "../../common/Utils";
 
 const TransitionComponent = Transition as ComponentType<TransitionProps>;
 
 interface IHamburgerMenuProps {
   isOpen: boolean;
-  hasPWAInstalled:boolean;
+  hasPWAInstalled: boolean;
   setIsOpen: (isOpen: boolean) => void;
   onMenuChange: (section: string) => void;
   onInstallPWA: () => void;
 }
 
 export const HamBurgerMenu = (props: IHamburgerMenuProps) => {
-  const { isOpen, hasPWAInstalled, setIsOpen, onMenuChange, onInstallPWA } = props;
+  const { isOpen, hasPWAInstalled, setIsOpen, onMenuChange, onInstallPWA } =
+    props;
   const contentRef = React.useRef<HTMLDivElement>(null);
+  const {
+    data: {
+      appConfig: {
+        pwa: { browsers, os },
+      },
+      currentDevice: { osName, browserName },
+    },
+  } = useContext(AppContext);
+
+  const hasPWASupport = useMemo(
+    () => isSupportedBrowserAndOS(browsers, os, browserName, osName),
+    [browsers, os, browserName, osName],
+  );
 
   const [hamburgerClicked, setHamburgerClicked] = useState<boolean>(false);
   const scrollbarSize =
@@ -68,7 +84,7 @@ export const HamBurgerMenu = (props: IHamburgerMenuProps) => {
           node.addEventListener("transitionend", done, true);
         }}
       >
-        {(state) => (
+        {state => (
           <Menu className={state}>
             <ContentSection direction="column" justifyContent="space-around">
               <FlexBox justifyContent="flex-end">
@@ -82,23 +98,25 @@ export const HamBurgerMenu = (props: IHamburgerMenuProps) => {
               <MenuBar
                 isMobileMenu={true}
                 closeHamburgerMenu={() => setIsOpen(false)}
-                onMenuChange={(section) => onMenuChange(section)}
+                onMenuChange={section => onMenuChange(section)}
               />
-              {!hasPWAInstalled && <FlexBox justifyContent="center">
-                <ActionBtn
-                  className="install-app-button"
-                  onClick={onInstallPWA}
-                >
-                  <FlexBox alignItems="center">
-                    <img
-                      alt=""
-                      src={MobileApplicationIcon}
-                      className="mobile-application-icon"
-                    />
-                    <span className="install-app-text">Install app</span>
-                  </FlexBox>
-                </ActionBtn>
-              </FlexBox>}
+              {hasPWASupport && !hasPWAInstalled && (
+                <FlexBox justifyContent="center">
+                  <ActionBtn
+                    className="install-app-button"
+                    onClick={onInstallPWA}
+                  >
+                    <FlexBox alignItems="center">
+                      <img
+                        alt=""
+                        src={MobileApplicationIcon}
+                        className="mobile-application-icon"
+                      />
+                      <span className="install-app-text">Install app</span>
+                    </FlexBox>
+                  </ActionBtn>
+                </FlexBox>
+              )}
             </ContentSection>
             <RightSection onClick={() => setIsOpen(false)} />
           </Menu>

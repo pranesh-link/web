@@ -1,7 +1,12 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import React, { Suspense, useEffect, useState } from "react";
 import { getJsonResponse, getProfileJsonResponse } from "./common/Utils";
-import { CONFIG_REF_INFO, DEFAULT_APP_CONTEXT } from "./common/constants";
+import {
+  CONFIG_REF_INFO,
+  CONFIG_TYPES,
+  DEFAULT_APP_CONTEXT,
+  ROUTES,
+} from "./common/constants";
 import { ISectionInfo } from "./store/profile/types";
 import { LoaderImg } from "./common/Elements";
 import LoaderIcon from "./assets/loader-icon.svg";
@@ -9,29 +14,45 @@ import { IConfigData, IConfigDataParams } from "./store/common/types";
 import { HomePage } from "./pages/HomePage";
 import { AppProvider } from "./store/app/context";
 import { IAppConfigData } from "./store/app/types";
+import {
+  osName,
+  browserName,
+  isMobile as isMobileDevice,
+} from "react-device-detect";
 
-const DEFAULT_CONFIG_DATA = {
-  basic: [
-    {
-      name: "maintenance",
-      type: "",
-      ref: "",
+const DEFAULT_CONFIG_DATA: IConfigData = {
+  jsonConfig: {
+    defaultConfig: [
+      {
+        name: "maintenance",
+        type: "",
+        ref: "",
+      },
+    ],
+    profileConfig: [
+      {
+        name: "profileSections",
+        type: "",
+        ref: "",
+      },
+    ],
+  },
+  appConfig: {
+    homepage: {
+      profileRedirectDelay: 2,
     },
-  ],
-  profile: [
-    {
-      name: "profileSections",
-      type: "",
-      ref: "",
+    pwa: {
+      browsers: [],
+      os: [],
     },
-  ],
+  },
 };
 
 function App() {
   const queryParams = new URLSearchParams(window.location.search);
   const isAdmin = queryParams.get("admin");
   const isExport = !!queryParams.get("export");
-  const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 768);
+  const [isMobile, setIsMobile] = useState<boolean>(isMobileDevice);
   const [hasError, setHasError] = useState(false);
   const [retry, setRetry] = useState<boolean>(true);
   const [configData, setConfigData] =
@@ -67,24 +88,31 @@ function App() {
     (async () => {
       if (retry) {
         const config = (
-          await fetchData(CONFIG_REF_INFO.ref, CONFIG_REF_INFO.name)
+          (await fetchData(
+            CONFIG_REF_INFO.ref,
+            CONFIG_REF_INFO.name,
+          )) as unknown as { data: IConfigData }
         ).data;
         setConfigData(config);
-        const { basic } = config;
+        const {
+          jsonConfig: { defaultConfig },
+          appConfig,
+        } = config;
         const configData = await Promise.all(
-          basic.map((data: IConfigDataParams) => {
+          defaultConfig.map((data: IConfigDataParams) => {
             const { name, type, ref } = data;
-            return type === "profileConfig"
+            return type === CONFIG_TYPES.PROFILECONFIG
               ? fetchSections(ref, basicConfigData.links, name)
               : fetchData(ref, name);
           }),
         );
-        setBasicConfigData(
-          configData.reduce(
+        setBasicConfigData({
+          ...configData.reduce(
             (curr, prev) => ({ ...curr, [prev.name]: prev.data }),
             basicConfigData,
           ),
-        );
+          appConfig,
+        });
 
         setRetry(false);
       }
@@ -101,7 +129,14 @@ function App() {
   );
 
   return (
-    <AppProvider value={{ data: basicConfigData }}>
+    <AppProvider
+      value={{
+        data: {
+          ...basicConfigData,
+          currentDevice: { osName, browserName, isMobile },
+        },
+      }}
+    >
       <Suspense fallback={<LoaderImg isMobile={isMobile} src={LoaderIcon} />}>
         <BrowserRouter>
           <Routes>
@@ -109,9 +144,12 @@ function App() {
             !isAdmin &&
             basicConfigData.maintenance?.isUnderMaintenance ? (
               <>
-                <Route path="*" element={<Navigate to="/maintenance" />} />
                 <Route
-                  path="/maintenance"
+                  path="*"
+                  element={<Navigate to={ROUTES.ROUTE_MAINTENANCE} />}
+                />
+                <Route
+                  path={ROUTES.ROUTE_MAINTENANCE}
                   element={
                     <>
                       <MaintenancePageComponent
@@ -134,14 +172,14 @@ function App() {
                   }
                 />
                 <Route
-                  path="/profile"
+                  path={ROUTES.ROUTE_PROFILE}
                   element={
                     <>
                       <ProfilePageComponent
                         isMobile={isMobile}
                         isExport={isExport}
                         hasError={hasError}
-                        profileConfig={configData.profile}
+                        profileConfig={configData.jsonConfig.profileConfig}
                         pwa={basicConfigData.pwa}
                         retryBaseInfo={() => setRetry(true)}
                       />
