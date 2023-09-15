@@ -1,4 +1,4 @@
-import { IMaintenance } from "../common/types";
+import { IAppConfig, IMaintenance } from "../common/types";
 import { IPWA, ISectionInfo } from "../profile/types";
 
 export interface IAppContext {
@@ -6,10 +6,16 @@ export interface IAppContext {
 }
 
 export interface IAppConfigData {
+  currentDevice: {
+    osName: string;
+    browserName: string;
+    isMobile: boolean;
+  };
   pwa: IPWA;
   maintenance: IMaintenance;
   links: ISectionInfo;
   messages: IMessages;
+  appConfig: IAppConfig;
 }
 
 export interface IMessages {

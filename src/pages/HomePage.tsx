@@ -3,19 +3,26 @@ import { AppContext } from "../store/app/context";
 import { FlexBoxSection } from "../common/Elements";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../common/constants";
 
 export const HomePage = () => {
   const {
     data: {
       messages: { homepage: messages },
+      appConfig: {
+        homepage: { profileRedirectDelay },
+      },
     },
   } = useContext(AppContext);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    setTimeout(() => navigate("/profile"), 2000);
-  }, [navigate]);
+    setTimeout(
+      () => navigate(ROUTES.ROUTE_PROFILE),
+      profileRedirectDelay * 1000,
+    );
+  }, [navigate, profileRedirectDelay]);
   return (
     <HomePageWrapper
       direction="column"

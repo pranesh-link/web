@@ -109,6 +109,11 @@ export const DEFAULT_PROFILE_CONTEXT: IProfileContext = {
 
 export const DEFAULT_APP_CONTEXT: IAppContext = {
   data: {
+    currentDevice: {
+      osName: "Android",
+      browserName: "Chrome",
+      isMobile: false,
+    },
     messages: {
       homepage: {
         title: "",
@@ -119,6 +124,15 @@ export const DEFAULT_APP_CONTEXT: IAppContext = {
     links: DEFAULT_PROFILE_CONTEXT.data.sections.links,
     pwa: DEFAULT_PWA,
     maintenance: DEFAULT_MAINTENANCE_DATA,
+    appConfig: {
+      homepage: {
+        profileRedirectDelay: 3,
+      },
+      pwa: {
+        browsers: [],
+        os: [],
+      },
+    },
   },
 };
 
@@ -191,4 +205,14 @@ export const DEFAULT_PROFILE_CONFIG_DATA = {
 export const CONFIG_REF_INFO = {
   ref: "config.json",
   name: "config",
+};
+
+export const ROUTES = {
+  ROUTE_PROFILE: "/profile",
+  ROUTE_MAINTENANCE: "/maintenance",
+};
+
+export const CONFIG_TYPES = {
+  APPCONFIG: "appConfig",
+  PROFILECONFIG: "profileConfig",
 };
