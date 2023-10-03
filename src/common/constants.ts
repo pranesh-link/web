@@ -1,11 +1,12 @@
 import React from "react";
 import {
   ExpandableInfosType,
-  IAppContext,
+  IProfileContext,
   IPWA,
   ShortInfosType,
 } from "../store/profile/types";
 import { IMaintenance } from "../store/common/types";
+import { IAppContext } from "../store/app/types";
 
 export const CORS_MODE = "cors";
 export const DEV_JSON_BASE_URL = "http://localhost:7373";
@@ -35,7 +36,13 @@ export const DEFAULT_PWA: IPWA = {
   bannerExpiryTime: 0,
 };
 
-export const DEFAULT_CONTEXT: IAppContext = {
+export const DEFAULT_MAINTENANCE_DATA: IMaintenance = {
+  isUnderMaintenance: false,
+  message: "",
+  image: "",
+};
+
+export const DEFAULT_PROFILE_CONTEXT: IProfileContext = {
   data: {
     header: {
       shortDesc: "",
@@ -50,6 +57,16 @@ export const DEFAULT_CONTEXT: IAppContext = {
         messages: {
           success: "",
           error: "",
+          retry: "",
+          form_fill: "",
+          sending: "",
+        },
+        icons: {
+          success: "",
+          error: "",
+          retry: "",
+          form_fill: "",
+          sending: "",
         },
         name: "",
         fields: [],
@@ -113,6 +130,35 @@ export const DEFAULT_CONTEXT: IAppContext = {
   hasDownloadedProfile: false,
 };
 
+export const DEFAULT_APP_CONTEXT: IAppContext = {
+  data: {
+    currentDevice: {
+      osName: "Android",
+      browserName: "Chrome",
+      isMobile: false,
+    },
+    messages: {
+      homepage: {
+        title: "",
+        underConstruction: "",
+        redirection: "",
+      },
+    },
+    links: DEFAULT_PROFILE_CONTEXT.data.sections.links,
+    pwa: DEFAULT_PWA,
+    maintenance: DEFAULT_MAINTENANCE_DATA,
+    appConfig: {
+      homepage: {
+        profileRedirectDelay: 3,
+      },
+      pwa: {
+        browsers: [],
+        os: [],
+      },
+    },
+  },
+};
+
 export const LABEL_TEXT: Record<string, string> = {
   client: "Client",
   duration: "Duration",
@@ -144,12 +190,6 @@ export const FORMS = {
 
 export const PAGE_TITLES = {
   profile: "Pranesh",
-};
-
-export const DEFAULT_MAINTENANCE_DATA: IMaintenance = {
-  isUnderMaintenance: false,
-  message: "",
-  image: "",
 };
 
 export const SECTION_ORDER_DISPLAY: Record<
@@ -186,15 +226,45 @@ export const FIELD_SUB_TYPES = {
   EMAIL: "email",
 };
 
-export enum MAIL_STATUS {
+export enum CONTACT_FORM_STATUS {
   FORM_FILL = "form_fill",
   SENDING = "sending",
   SUCCESS = "success",
   ERROR = "error",
+  RETRY = "retry",
 }
 
 export const EMAILJS_CONFIG = {
   SERVICE_ID: "service_h7f2fbh",
   TEMPLATE_ID: "template_ccivvus",
   PUBLIC_KEY: "YM2FkZ24YRF2W_Vgl",
+};
+
+export const DEFAULT_PROFILE_CONFIG_DATA = {
+  profileSections: {
+    header: DEFAULT_PROFILE_CONTEXT.data.header,
+    aboutMe: DEFAULT_PROFILE_CONTEXT.data.sections.aboutMe,
+    education: DEFAULT_PROFILE_CONTEXT.data.sections.education,
+    details: DEFAULT_PROFILE_CONTEXT.data.sections.details,
+    experiences: DEFAULT_PROFILE_CONTEXT.data.sections.experiences,
+  },
+  links: DEFAULT_PROFILE_CONTEXT.data.sections.links,
+  download: DEFAULT_PROFILE_CONTEXT.data.download,
+  skills: DEFAULT_PROFILE_CONTEXT.data.sections.skills,
+  contactForm: DEFAULT_PROFILE_CONTEXT.data.forms.contactForm,
+};
+
+export const CONFIG_REF_INFO = {
+  ref: "config.json",
+  name: "config",
+};
+
+export const ROUTES = {
+  ROUTE_PROFILE: "/profile",
+  ROUTE_MAINTENANCE: "/maintenance",
+};
+
+export const CONFIG_TYPES = {
+  APPCONFIG: "appConfig",
+  PROFILECONFIG: "profileConfig",
 };

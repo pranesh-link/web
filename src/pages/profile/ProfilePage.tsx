@@ -3,12 +3,12 @@ import usePWA from "react-pwa-install-prompt";
 import { PWABanner } from "../../PWABanner";
 import { Profile } from "../../components/profile/Profile";
 import {
-  DEFAULT_CONTEXT,
-  SECTIONS,
+  DEFAULT_PROFILE_CONTEXT,
   PAGE_TITLES,
   MESSAGES,
   LABEL_TEXT,
   FORMS,
+  DEFAULT_PROFILE_CONFIG_DATA,
 } from "../../common/constants";
 import {
   getLocalStorage,
@@ -22,16 +22,19 @@ import {
   DownloadType,
   IPWA,
   IFormInfo,
+  IExperienceJsonInfo,
 } from "../../store/profile/types";
 import styled from "styled-components";
 import { ActionBtn, FlexBoxSection, LoaderImg } from "../../common/Elements";
 import LoaderIcon from "../../assets/loader-icon.svg";
+import { IConfigDataParams } from "../../store/common/types";
 
 interface ProfilePageProps {
   pwa: IPWA;
   hasError: boolean;
   isExport: boolean;
   isMobile: boolean;
+  profileConfig: IConfigDataParams[];
   retryBaseInfo: () => void;
 }
 
@@ -42,7 +45,8 @@ const ProfilePage = (props: ProfilePageProps) => {
   const educationRef = useRef(null);
   const contactRef = useRef(null);
 
-  const { pwa, hasError, isExport, isMobile, retryBaseInfo } = props;
+  const { pwa, hasError, isExport, isMobile, profileConfig, retryBaseInfo } =
+    props;
   const [retry, setRetry] = useState<boolean>(true);
   const [hasErrorInProfile, setHasErrorInProfile] = useState<boolean>(hasError);
   const { isInstallPromptSupported, promptInstall } = usePWA();
@@ -51,10 +55,10 @@ const ProfilePage = (props: ProfilePageProps) => {
     boolean | null
   >(getLocalStorage("isInstallBannerOpen"));
   const [hasPWAInstalled, setHasPWAInstalled] = useState<boolean>(
-    getLocalStorage("hasPWAInstalled") || false
+    getLocalStorage("hasPWAInstalled") || false,
   );
   const [profileData, setProfileData] = useState<IProfileData>(
-    DEFAULT_CONTEXT.data
+    DEFAULT_PROFILE_CONTEXT.data,
   );
   const [isFetchingData, setIsFetchingData] = useState<boolean>(true);
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
@@ -75,45 +79,46 @@ const ProfilePage = (props: ProfilePageProps) => {
     if (retry) {
       window.scrollTo(0, 0);
       document.title = PAGE_TITLES.profile;
-      const { COMBINED, SKILLS, EXPERIENCE, LINKS, DOWNLOAD } = SECTIONS;
-      const { CONTACT_FORM } = FORMS;
-      const DEFAULT_SECTIONS_DETAILS = DEFAULT_CONTEXT.data.sections.details;
 
-      const sectionsToFetch = [COMBINED, SKILLS, EXPERIENCE, LINKS];
+      const DEFAULT_SECTIONS_DETAILS =
+        DEFAULT_PROFILE_CONTEXT.data.sections.details;
 
       const fetchInfo = async (
         jsonToFetch: string,
-        data: ISectionInfo | IHeader | DownloadType | IFormInfo
+        data: ISectionInfo | IHeader | DownloadType,
+        name: string,
       ) => {
         const response = await getProfileJsonResponse(jsonToFetch, data);
         setHasErrorInProfile(response.hasError);
-        return response.data;
+        return { name, data: response.data };
       };
 
       (async () => {
-        const [
-          download,
-          contactForm,
-          profileSectionsInfo,
-          skills,
-          experiences,
-          links,
-        ] = await Promise.all([
-          fetchInfo(DOWNLOAD, DEFAULT_CONTEXT.data.download),
-          fetchInfo(CONTACT_FORM, DEFAULT_CONTEXT.data.forms.contactForm),
-          ...sectionsToFetch.map((section) =>
-            fetchInfo(section, DEFAULT_SECTIONS_DETAILS)
-          ),
-        ]);
+        const { profileSections, links, skills, download, contactForm } = (
+          await Promise.all(
+            profileConfig.map((data: IConfigDataParams) =>
+              fetchInfo(data.ref, DEFAULT_SECTIONS_DETAILS, data.name),
+            ),
+          )
+        ).reduce(
+          (curr, prev) => ({ ...curr, [prev.name]: prev.data }),
+          DEFAULT_PROFILE_CONFIG_DATA,
+        );
 
-        const { header, aboutMe, details, education } = profileSectionsInfo;
+        const { header, experiences } = profileSections;
+
+        const experienceData = (
+          await Promise.all(
+            (experiences.info as any[]).map((data: IExperienceJsonInfo) =>
+              fetchInfo(data.ref, DEFAULT_SECTIONS_DETAILS, data.name),
+            ),
+          )
+        ).map(data => data.data);
 
         const sections = {
-          aboutMe,
-          details,
-          education,
+          ...profileSections,
           skills,
-          experiences,
+          experiences: { ...experiences, info: experienceData },
           links,
         };
         setProfileData({ header, sections, download, forms: { contactForm } });
@@ -121,7 +126,7 @@ const ProfilePage = (props: ProfilePageProps) => {
         setRetry(false);
       })();
     }
-  }, [retry]);
+  }, [retry, profileConfig]);
 
   return isFetchingData ? (
     <LoaderImg isMobile={isMobile} src={LoaderIcon} />
@@ -179,7 +184,7 @@ const ProfilePage = (props: ProfilePageProps) => {
             isInstallBannerOpen={!!isInstallBannerOpen}
             hasPWAInstalled={hasPWAInstalled}
             isInstallPromptSupported={isInstallPromptSupported}
-            setIsInstallBannerOpen={(isInstallBannerOpen) =>
+            setIsInstallBannerOpen={isInstallBannerOpen =>
               setIsInstallBannerOpen(isInstallBannerOpen)
             }
             onClickInstall={onClickInstall}

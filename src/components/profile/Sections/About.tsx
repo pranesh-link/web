@@ -20,7 +20,7 @@ import {
   valueIsLinkInfo,
 } from "../../../common/Utils";
 import styled from "styled-components";
-import { AppContext } from "../../../store/profile/context";
+import { ProfileContext } from "../../../store/profile/context";
 import { AboutMeDetails } from "./AboutMeDetails";
 import { COPIED, NOT_COPIED } from "../../../common/constants";
 import { ContactForm } from "../ContactForm";
@@ -41,9 +41,9 @@ export const About = (props: IAboutProps) => {
       forms: { contactForm },
     },
     refs: { homeRef: refObj },
-  } = React.useContext(AppContext);
+  } = React.useContext(ProfileContext);
   const [copyState, setCopyState] = useState<Record<string, { state: string }>>(
-    {}
+    {},
   );
   const [showCopy, setShowCopy] = useState<boolean>(false);
   const [isContactFormOpen, setIsContactFormOpen] = useState(false);
@@ -109,7 +109,7 @@ export const About = (props: IAboutProps) => {
                   src={getIconUrlByExportFlag(
                     aboutMe.icon,
                     aboutMe.pdfExportIcon,
-                    isExport
+                    isExport,
                   )}
                 />
               </p>
@@ -133,7 +133,7 @@ export const About = (props: IAboutProps) => {
                   src={getIconUrlByExportFlag(
                     aboutMe.icon,
                     aboutMe.pdfExportIcon,
-                    isExport
+                    isExport,
                   )}
                 />
               </p>
@@ -153,7 +153,7 @@ export const About = (props: IAboutProps) => {
                           state,
                         },
                       }
-                    : {}
+                    : {},
                 );
               }}
             />
@@ -163,7 +163,7 @@ export const About = (props: IAboutProps) => {
                 className="profile-section links export"
               >
                 {valueIsArray(links.info) && valueIsLinkInfo(links.info)
-                  ? filteredLinks.map((link) => (
+                  ? filteredLinks.map(link => (
                       <a
                         className="link"
                         href={link.link}
@@ -176,7 +176,7 @@ export const About = (props: IAboutProps) => {
                           alt={link.label}
                           className={link.label}
                           src={`${link.pdfExportIcon}?dummy=${Math.floor(
-                            Math.random() * 1000
+                            Math.random() * 1000,
                           )}`}
                         />
                       </a>
@@ -185,17 +185,17 @@ export const About = (props: IAboutProps) => {
               </FlexBoxSection>
             ) : (
               <InterestedInProfile
-                direction="column"
                 isMobile={isMobile}
                 disabled={download.download.disabled}
                 className={classNames({
                   "downloaded-profile": hasDownloadedProfile,
                 })}
+                alignItems="center"
               >
                 {!download.download.disabled &&
                   !isDownloading &&
                   !hasDownloadedProfile && (
-                    <FlexBox alignItems="center">
+                    <>
                       <img
                         className="download"
                         alt="Click here"
@@ -207,7 +207,7 @@ export const About = (props: IAboutProps) => {
                       <span className="download-text">
                         {download.download.message}
                       </span>
-                    </FlexBox>
+                    </>
                   )}
                 {isDownloading && (
                   <>
@@ -269,11 +269,11 @@ const InterestedInProfile = styled(FlexBox)<{
   isMobile: boolean;
   disabled?: boolean;
 }>`
-  margin: ${(props) => (props.isMobile ? "10px 0 0 0" : "10px 0 0 10px")};
-  min-height: ${(props) => (props.disabled ? "0px" : "50px")};
+  margin: ${props => (props.isMobile ? "10px 0 0 0" : "10px 0 0 10px")};
+  min-height: ${props => (props.disabled ? "0px" : "50px")};
   font-weight: bold;
   &.downloaded-profile {
-    margin-left: ${(props) => (props.isMobile ? "0" : "5px")};
+    margin-left: ${props => (props.isMobile ? "0" : "5px")};
   }
 
   .download {

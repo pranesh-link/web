@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import React, { useContext } from "react";
 import { SecHeader, Desc } from "../../../common/Elements";
-import { AppContext } from "../../../store/profile/context";
+import { ProfileContext } from "../../../store/profile/context";
 import { SECTIONS } from "../../../common/constants";
 
 export const Education = () => {
@@ -11,7 +11,7 @@ export const Education = () => {
       sections: { education },
     },
     refs: { educationRef: refObj },
-  } = useContext(AppContext);
+  } = useContext(ProfileContext);
   return (
     <section
       className="profile-section"

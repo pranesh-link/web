@@ -38,6 +38,11 @@ export type SectionsType = {
   [key in ProfileSectionType]: ISectionInfo;
 };
 
+export interface IExperienceJsonInfo {
+  ref: string;
+  name: string;
+}
+
 export interface IHeader {
   shortDesc: string;
   name: string;
@@ -161,7 +166,7 @@ export type RefTypes =
   | "educationRef"
   | "contactRef";
 
-export interface IAppContext {
+export interface IProfileContext {
   data: IProfileData;
   refs: {
     [key in RefTypes]: React.MutableRefObject<any>;

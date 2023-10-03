@@ -14,3 +14,37 @@ export interface ICommonData {
     starUnfilled: IIcon;
   };
 }
+
+export type BasicDataType = "links" | "maintenance" | "pwa";
+
+export type ProfileDataType =
+  | "profileSections"
+  | "links"
+  | "download"
+  | "skills";
+
+export interface IConfigDataParams {
+  type: string;
+  ref: string;
+  name: string;
+}
+
+export interface IHomePageConfig {
+  profileRedirectDelay: number;
+}
+
+interface IPWAConfig {
+  browsers: string[];
+  os: string[];
+}
+export interface IAppConfig {
+  homepage: IHomePageConfig;
+  pwa: IPWAConfig;
+}
+export interface IConfigData {
+  jsonConfig: {
+    defaultConfig: IConfigDataParams[];
+    profileConfig: IConfigDataParams[];
+  };
+  appConfig: IAppConfig;
+}

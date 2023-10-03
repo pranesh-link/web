@@ -1,9 +1,11 @@
 import React from "react";
-import { IAppContext } from "./types";
-import { DEFAULT_CONTEXT } from "../../common/constants";
+import { IProfileContext } from "./types";
+import { DEFAULT_PROFILE_CONTEXT } from "../../common/constants";
 
-const AppContext = React.createContext<IAppContext>(DEFAULT_CONTEXT);
+const ProfileContext = React.createContext<IProfileContext>(
+  DEFAULT_PROFILE_CONTEXT,
+);
 
-const { Provider: AppProvider, Consumer } = AppContext;
+const { Provider: ProfileProvider, Consumer: ProfileConsumer } = ProfileContext;
 
-export { AppProvider, Consumer, AppContext };
+export { ProfileProvider, ProfileConsumer, ProfileContext };

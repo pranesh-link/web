@@ -8,7 +8,7 @@ import {
   LABEL_TEXT,
   SHORT_INFOS,
 } from "../../common/constants";
-import { AppContext } from "../../store/profile/context";
+import { ProfileContext } from "../../store/profile/context";
 
 interface IProjectInfoProps {
   project: IProjectExperience;
@@ -18,7 +18,7 @@ export const ProjectInfo = (props: IProjectInfoProps) => {
     project,
     project: { title },
   } = props;
-  const { isExport, isMobile } = React.useContext(AppContext);
+  const { isExport, isMobile } = React.useContext(ProfileContext);
 
   return (
     <SectionWrapper direction="column" className="keep-together">

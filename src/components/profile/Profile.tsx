@@ -3,7 +3,7 @@ import { PROFILE_PDF_NAME } from "../../common/constants";
 import { HamBurgerMenu } from "./HamBurgerMenu";
 import MenuBar from "./MenuBar";
 import ProfileSections from "./ProfileSections";
-import { AppProvider } from "../../store/profile/context";
+import { ProfileProvider } from "../../store/profile/context";
 import { IProfileData } from "../../store/profile/types";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
@@ -58,7 +58,7 @@ export const Profile = (props: ProfileProps) => {
 
   return (
     <>
-      <AppProvider
+      <ProfileProvider
         value={{
           data: profileData,
           refs: {
@@ -79,12 +79,12 @@ export const Profile = (props: ProfileProps) => {
         <HamBurgerMenu
           isOpen={isHamburgerMenuOpen}
           hasPWAInstalled={hasPWAInstalled}
-          setIsOpen={(isOpen) => setIsHamburgerMenuOpen(isOpen)}
-          onMenuChange={(section) => setCurrentSection(section)}
+          setIsOpen={isOpen => setIsHamburgerMenuOpen(isOpen)}
+          onMenuChange={section => setCurrentSection(section)}
           onInstallPWA={onInstallPWA}
         />
         {isMobile && <Swipe onTouchMove={() => setIsHamburgerMenuOpen(true)} />}
-        <MenuBar onMenuChange={(section) => setCurrentSection(section)} />
+        <MenuBar onMenuChange={section => setCurrentSection(section)} />
         {!isHamburgerMenuOpen && (
           <>
             <Overlay
@@ -111,9 +111,9 @@ export const Profile = (props: ProfileProps) => {
             });
           }}
         />
-      </AppProvider>
+      </ProfileProvider>
       {type !== "static" && (
-        <AppProvider
+        <ProfileProvider
           value={{
             data: profileData,
             refs: {
@@ -146,7 +146,7 @@ export const Profile = (props: ProfileProps) => {
               <ProfileSections />
             </PDFExport>
           </div>
-        </AppProvider>
+        </ProfileProvider>
       )}
     </>
   );
