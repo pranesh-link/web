@@ -78,6 +78,8 @@ li,
 
 .contact-form-status-modal-content {
   margin: 0 30%;
+  display: flex;
+  justify-content: center;
 }
 
 @media only screen and (max-width: 992px) {

@@ -7,6 +7,7 @@ import classNames from "classnames";
 import { ChangeEvent } from "react";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
 interface IFormFieldProps {
   field: IFormField;
@@ -27,7 +28,7 @@ export const FormField = (props: IFormFieldProps) => {
   } = props;
 
   const handleTextChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     updateInput(e.target.value, field.name);
     validateField(e.target.value, field.name);
@@ -50,6 +51,7 @@ export const FormField = (props: IFormFieldProps) => {
               className={classNames({
                 error: fieldValid === false,
               })}
+              placeholder={field.placeholder}
               disabled={isFormSubmit}
               value={fieldValue}
               maxLength={field.maxLength}
@@ -62,6 +64,7 @@ export const FormField = (props: IFormFieldProps) => {
         {field.type === FIELD_TYPES.MOBILE && (
           <>
             <PhoneInput
+              placeholder="place holder"
               disabled={isFormSubmit}
               defaultCountry="IN"
               international
@@ -78,6 +81,7 @@ export const FormField = (props: IFormFieldProps) => {
         {field.type === FIELD_TYPES.TEXTAREA && (
           <>
             <TextArea
+              placeholder={field.placeholder}
               disabled={isFormSubmit}
               className={classNames({
                 error: fieldValid === false,
@@ -104,6 +108,10 @@ const FormLabel = styled.label`
 
 const FieldWrap = styled(FlexBoxSection)`
   margin-bottom: 20px;
+  input,
+  textarea {
+    padding-left: 7px;
+  }
   .phone-input {
     width: 100%;
     font-family: Open Sans, sans-serif !important;
@@ -118,7 +126,7 @@ const FieldWrap = styled(FlexBoxSection)`
     }
     &.error {
       input {
-        border: 1px solid #ee4b2b;
+        /* border: 1px solid #ee4b2b; */
       }
     }
   }
@@ -133,7 +141,7 @@ const TextInput = styled.input`
   font-family: Open Sans, sans-serif !important;
   font-size: 14px;
   &.error {
-    border: 1px solid #ee4b2b;
+    /* border: 1px solid #ee4b2b; */
   }
 `;
 
@@ -147,7 +155,7 @@ const TextArea = styled.textarea`
   font-family: Open Sans, sans-serif !important;
   font-size: 14px;
   &.error {
-    border: 1px solid #ee4b2b;
+    /* border: 1px solid #ee4b2b; */
   }
 `;
 
@@ -159,4 +167,11 @@ const RemainingCharacters = styled.span`
 
 const InputWrap = styled(FlexBox)`
   width: 100%;
+`;
+
+const Error = styled.span`
+  margin-top: 5px;
+  align-self: self-start;
+  font-size: 12px;
+  color: #ee4b2b;
 `;

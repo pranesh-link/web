@@ -71,7 +71,7 @@
     "react-device-detect": "^2.2.3",
     "react-dom": "18.2.0",
     "react-modal": "^3.16.1",
-    "react-phone-number-input": "^3.2.23",
+    "react-phone-number-input": "3.3.6",
     "react-pwa-install-prompt": "1.0.5",
     "react-refresh": "0.8.3",
     "react-router-dom": "6.7.0",
@@ -131,7 +131,7 @@
   "devDependencies": {
     "@types/classnames": "2.3.1",
     "@types/react-modal": "^3.16.0",
-    "@types/react-phone-number-input": "^3.0.14",
+    "@types/react-phone-number-input": "^3.0.15",
     "@types/react-table": "6.7.15",
     "@types/react-transition-group": "4.4.0",
     "@types/styled-components": "5.1.7",

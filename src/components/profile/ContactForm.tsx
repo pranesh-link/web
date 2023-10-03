@@ -10,10 +10,10 @@ import {
   EMAILJS_CONFIG,
   FIELD_TYPES,
   LABEL_TEXT,
-  MAIL_STATUS,
+  CONTACT_FORM_STATUS,
 } from "../../common/constants";
 import { isPossiblePhoneNumber } from "react-phone-number-input";
-import { AppContext } from "../../store/profile/context";
+import { ProfileContext } from "../../store/profile/context";
 import { getIconUrl } from "../../common/Utils";
 import { ModalComponent } from "../../common/Component";
 
@@ -40,41 +40,54 @@ export const ContactForm = (props: IContactFormProps) => {
     data: {
       forms: { contactForm: form },
     },
-  } = useContext(AppContext);
+  } = useContext(ProfileContext);
   const { messages, icons } = form;
   const { closeModal } = props;
   const [formData, setFormData] = useState<ContactFormData>(DEFAULT_FORM_DATA);
   const [formValid, setFormValid] = useState<ContactFormValid | null>(null);
   const [formDisabled, setFormDisabled] = useState<boolean>(true);
-  const [mailStatus, setMailStatus] = useState(MAIL_STATUS.SENDING);
+  const [contactFormStatus, setContactFormStatus] = useState(
+    CONTACT_FORM_STATUS.FORM_FILL,
+  );
 
   const resetFields = () => {
     setFormData(DEFAULT_FORM_DATA);
     setFormDisabled(true);
   };
-  const sendEmail = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setMailStatus(MAIL_STATUS.SENDING);
+
+  const handleMailRequest = () => {
+    setContactFormStatus(CONTACT_FORM_STATUS.SENDING);
 
     emailjs
       .send(
         EMAILJS_CONFIG.SERVICE_ID,
         EMAILJS_CONFIG.TEMPLATE_ID,
         formData,
-        EMAILJS_CONFIG.PUBLIC_KEY
+        EMAILJS_CONFIG.PUBLIC_KEY,
       )
       .then(
-        (result) => {
+        result => {
           console.log(result.text);
-          setMailStatus(MAIL_STATUS.SUCCESS);
+          setContactFormStatus(CONTACT_FORM_STATUS.SUCCESS);
           resetFields();
-          setTimeout(() => setMailStatus(MAIL_STATUS.FORM_FILL), 3000);
+          setTimeout(
+            () => setContactFormStatus(CONTACT_FORM_STATUS.FORM_FILL),
+            3000,
+          );
         },
-        (error) => {
+        error => {
           console.log(error.text);
-          setMailStatus(MAIL_STATUS.ERROR);
-        }
+          setContactFormStatus(CONTACT_FORM_STATUS.ERROR);
+        },
       );
+  };
+
+  const retryEmail = () => {
+    handleMailRequest();
+  };
+  const sendEmail = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleMailRequest();
   };
 
   useEffect(() => {
@@ -83,16 +96,18 @@ export const ContactForm = (props: IContactFormProps) => {
   }, []);
 
   const isFormSubmit = useMemo(
-    () => mailStatus === MAIL_STATUS.SENDING,
-    [mailStatus]
+    () => contactFormStatus === CONTACT_FORM_STATUS.SENDING,
+    [contactFormStatus],
   );
 
   const displayStatus = useMemo(
     () =>
-      [MAIL_STATUS.SUCCESS, MAIL_STATUS.ERROR, MAIL_STATUS.SENDING].indexOf(
-        mailStatus
-      ) > -1,
-    [mailStatus]
+      [
+        CONTACT_FORM_STATUS.SUCCESS,
+        CONTACT_FORM_STATUS.ERROR,
+        CONTACT_FORM_STATUS.SENDING,
+      ].indexOf(contactFormStatus) > -1,
+    [contactFormStatus],
   );
 
   const updateInput = (value: string, field: string) =>
@@ -101,7 +116,7 @@ export const ContactForm = (props: IContactFormProps) => {
   const handleSpecialValidations = (
     type: string,
     fieldValue: string,
-    isValid: boolean
+    isValid: boolean,
   ) => {
     switch (type) {
       case FIELD_TYPES.MOBILE:
@@ -112,7 +127,7 @@ export const ContactForm = (props: IContactFormProps) => {
   };
   const validateField = (value: string, field: string) => {
     const { regex, type } = form.fields.find(
-      (formField) => formField.name === field
+      formField => formField.name === field,
     ) as IFormField;
     const fieldValue = value.trim();
     let isValid = false;
@@ -121,41 +136,50 @@ export const ContactForm = (props: IContactFormProps) => {
     isValid = handleSpecialValidations(type, fieldValue, isValid);
     const fieldValidity = { ...(formValid || {}), [field]: isValid };
     const currentFormDisabled =
-      Object.values(fieldValidity).some((valid) => valid === false) ||
+      Object.values(fieldValidity).some(valid => valid === false) ||
       Object.keys(fieldValidity).length !== Object.keys(formData).length;
     setFormValid(fieldValidity);
     setFormDisabled(currentFormDisabled);
   };
 
   const displayStatusInfo = useMemo(() => {
-    const icon = icons[mailStatus];
-    const message = messages[mailStatus];
+    const icon = icons[contactFormStatus];
+    const message = messages[contactFormStatus];
+    const retryMessage =
+      contactFormStatus === CONTACT_FORM_STATUS.ERROR
+        ? messages[CONTACT_FORM_STATUS.RETRY]
+        : "";
 
-    return { icon, message };
-  }, [icons, mailStatus, messages]);
+    return { icon, message, retryMessage };
+  }, [icons, contactFormStatus, messages]);
   return (
     <>
-      <ModalComponent isOpen className="contact-form-status-modal-content">
+      <ModalComponent
+        isOpen={displayStatus}
+        className="contact-form-status-modal-content"
+      >
         <StatusMessage justifyContent="space-evenly" alignItems="center">
-          {displayStatus && (
-            <>
-              <img
-                className="form-status-image"
-                alt="Form status"
-                height="45px"
-                src={getIconUrl(displayStatusInfo.icon)}
-                loading="lazy"
-              />
-              <p>{displayStatusInfo.message}</p>
-            </>
+          <img
+            className="form-status-image"
+            alt="Form status"
+            height="35px"
+            src={getIconUrl(displayStatusInfo.icon)}
+            loading="lazy"
+          />
+          <ProgressMessage>{displayStatusInfo.message}</ProgressMessage>
+          {contactFormStatus === CONTACT_FORM_STATUS.ERROR && (
+            <Retry href="" onClick={retryEmail}>
+              {displayStatusInfo.retryMessage}
+            </Retry>
           )}
         </StatusMessage>
       </ModalComponent>
       <Form onSubmit={sendEmail}>
-        {form.fields.map((field) => {
+        {form.fields.map((field, index) => {
           const fieldName = field.name as ContactFormFields;
           return (
             <FormField
+              key={index}
               field={field}
               fieldValue={formData[fieldName]}
               fieldValid={formValid?.[fieldName]}
@@ -196,7 +220,8 @@ const Form = styled.form`
 
 const StatusMessage = styled(FlexBox)`
   background: #f0f0f0;
-  border-radius: 20px;
+  border-radius: 30px;
+  padding: 5px 20px;
 `;
 
 const FieldWrap = styled(FlexBoxSection)`
@@ -238,4 +263,16 @@ const FormSubmit = styled(ActionBtn)`
   @media only screen and (max-width: 767px) {
     opacity: 1;
   }
+`;
+
+const Retry = styled.a`
+  margin-left: 10px;
+  font-weight: bold;
+  color: #3fc935;
+  letter-spacing: 0.3px;
+`;
+
+const ProgressMessage = styled.p`
+  margin-left: 10px;
+  font-weight: 600;
 `;

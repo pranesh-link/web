@@ -1,4 +1,4 @@
-import { MAIL_STATUS } from "../../common/constants";
+import { CONTACT_FORM_STATUS } from "../../common/constants";
 
 export interface IProfileData {
   header: IHeader;
@@ -20,7 +20,7 @@ export interface IFormField {
   regex: string;
 }
 
-export type MailStatusType = Record<MAIL_STATUS, string>;
+export type MailStatusType = Record<CONTACT_FORM_STATUS, string>;
 export interface IFormInfo {
   name: string;
   actionButtonLabel: string;
