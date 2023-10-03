@@ -8,7 +8,7 @@ import {
 import { IMaintenance } from "../store/common/types";
 
 export const CORS_MODE = "cors";
-export const DEV_JSON_BASE_URL = "http://localhost:8080";
+export const DEV_JSON_BASE_URL = "http://localhost:7373";
 export const PROD_JSON_BASE_URL = "https://profile-jsons.pranesh.link";
 export const TOAST_POSITION = "top-center";
 export const PROFILE_PDF_NAME = "Pranesh_Profile";
