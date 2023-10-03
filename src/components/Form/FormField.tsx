@@ -4,14 +4,16 @@ import { getRemainingCharacters } from "../../common/Utils";
 import { IFormField } from "../../store/profile/types";
 import { FIELD_TYPES } from "../../common/constants";
 import classNames from "classnames";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useContext } from "react";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
+import { ProfileContext } from "../../store/profile/context";
 
 interface IFormFieldProps {
   field: IFormField;
   fieldValid?: boolean;
+  fieldEmpty?: boolean;
   fieldValue: string;
   isFormSubmit: boolean;
   updateInput: (value: string, field: string) => void;
@@ -22,10 +24,17 @@ export const FormField = (props: IFormFieldProps) => {
     field,
     fieldValid,
     fieldValue,
+    fieldEmpty,
     isFormSubmit,
     updateInput,
     validateField,
   } = props;
+  const {
+    data: {
+      forms: { contactForm: form },
+    },
+  } = useContext(ProfileContext);
+  const { messages } = form;
 
   const handleTextChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -94,9 +103,13 @@ export const FormField = (props: IFormFieldProps) => {
           </>
         )}
       </InputWrap>
-      <RemainingCharacters>
-        {getRemainingCharacters(fieldValue, field.maxLength)}/{field.maxLength}
-      </RemainingCharacters>
+      <FlexBox justifyContent="flex-end" alignItems="center">
+        {fieldEmpty && <Error>{messages.mandatoryError}</Error>}
+        <RemainingCharacters>
+          {getRemainingCharacters(fieldValue, field.maxLength)}/
+          {field.maxLength}
+        </RemainingCharacters>
+      </FlexBox>
     </FieldWrap>
   );
 };
@@ -126,7 +139,6 @@ const FieldWrap = styled(FlexBoxSection)`
     }
     &.error {
       input {
-        /* border: 1px solid #ee4b2b; */
       }
     }
   }
@@ -141,7 +153,6 @@ const TextInput = styled.input`
   font-family: Open Sans, sans-serif !important;
   font-size: 14px;
   &.error {
-    /* border: 1px solid #ee4b2b; */
   }
 `;
 
@@ -155,14 +166,12 @@ const TextArea = styled.textarea`
   font-family: Open Sans, sans-serif !important;
   font-size: 14px;
   &.error {
-    /* border: 1px solid #ee4b2b; */
   }
 `;
 
 const RemainingCharacters = styled.span`
   margin-top: 5px;
   font-size: 12px;
-  align-self: self-end;
 `;
 
 const InputWrap = styled(FlexBox)`
@@ -171,7 +180,9 @@ const InputWrap = styled(FlexBox)`
 
 const Error = styled.span`
   margin-top: 5px;
-  align-self: self-start;
   font-size: 12px;
   color: #ee4b2b;
+  margin-right: 10px;
+  font-style: italic;
+  font-weight: 600;
 `;

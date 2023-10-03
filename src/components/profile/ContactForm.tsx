@@ -41,10 +41,11 @@ export const ContactForm = (props: IContactFormProps) => {
       forms: { contactForm: form },
     },
   } = useContext(ProfileContext);
-  const { messages, icons } = form;
+  const { statusMessages, messages, icons } = form;
   const { closeModal } = props;
   const [formData, setFormData] = useState<ContactFormData>(DEFAULT_FORM_DATA);
   const [formValid, setFormValid] = useState<ContactFormValid | null>(null);
+  const [formEmpty, setFormEmpty] = useState<ContactFormValid | null>(null);
   const [formDisabled, setFormDisabled] = useState<boolean>(true);
   const [contactFormStatus, setContactFormStatus] = useState(
     CONTACT_FORM_STATUS.FORM_FILL,
@@ -67,7 +68,6 @@ export const ContactForm = (props: IContactFormProps) => {
       )
       .then(
         result => {
-          console.log(result.text);
           setContactFormStatus(CONTACT_FORM_STATUS.SUCCESS);
           resetFields();
           setTimeout(
@@ -76,7 +76,6 @@ export const ContactForm = (props: IContactFormProps) => {
           );
         },
         error => {
-          console.log(error.text);
           setContactFormStatus(CONTACT_FORM_STATUS.ERROR);
         },
       );
@@ -132,6 +131,7 @@ export const ContactForm = (props: IContactFormProps) => {
     const fieldValue = value.trim();
     let isValid = false;
     isValid = validateLength(fieldValue);
+    setFormEmpty({ ...(formEmpty || {}), [field]: !isValid });
     isValid = regex ? validateRegex(fieldValue, regex) : isValid;
     isValid = handleSpecialValidations(type, fieldValue, isValid);
     const fieldValidity = { ...(formValid || {}), [field]: isValid };
@@ -144,14 +144,12 @@ export const ContactForm = (props: IContactFormProps) => {
 
   const displayStatusInfo = useMemo(() => {
     const icon = icons[contactFormStatus];
-    const message = messages[contactFormStatus];
+    const message = statusMessages[contactFormStatus];
     const retryMessage =
-      contactFormStatus === CONTACT_FORM_STATUS.ERROR
-        ? messages[CONTACT_FORM_STATUS.RETRY]
-        : "";
+      contactFormStatus === CONTACT_FORM_STATUS.ERROR ? messages.retry : "";
 
     return { icon, message, retryMessage };
-  }, [icons, contactFormStatus, messages]);
+  }, [icons, contactFormStatus, statusMessages, messages.retry]);
   return (
     <>
       <ModalComponent
@@ -183,6 +181,7 @@ export const ContactForm = (props: IContactFormProps) => {
               field={field}
               fieldValue={formData[fieldName]}
               fieldValid={formValid?.[fieldName]}
+              fieldEmpty={formEmpty?.[fieldName]}
               updateInput={updateInput}
               validateField={validateField}
               isFormSubmit={isFormSubmit}

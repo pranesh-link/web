@@ -54,17 +54,19 @@ export const DEFAULT_PROFILE_CONTEXT: IProfileContext = {
         actionButtonLabel: "",
         submitLabel: "",
         submittingLabel: "",
-        messages: {
+        statusMessages: {
           success: "",
           error: "",
-          retry: "",
           form_fill: "",
           sending: "",
+        },
+        messages: {
+          retry: "",
+          mandatoryError: "",
         },
         icons: {
           success: "",
           error: "",
-          retry: "",
           form_fill: "",
           sending: "",
         },
@@ -231,7 +233,6 @@ export enum CONTACT_FORM_STATUS {
   SENDING = "sending",
   SUCCESS = "success",
   ERROR = "error",
-  RETRY = "retry",
 }
 
 export const EMAILJS_CONFIG = {

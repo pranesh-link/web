@@ -27,7 +27,11 @@ export interface IFormInfo {
   submitLabel: string;
   submittingLabel: string;
   icons: MailStatusType;
-  messages: MailStatusType;
+  statusMessages: MailStatusType;
+  messages: {
+    mandatoryError: string;
+    retry: string;
+  };
   fields: IFormField[];
 }
 
