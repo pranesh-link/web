@@ -1,3 +1,5 @@
+import { MAIL_STATUS } from "../../common/constants";
+
 export interface IProfileData {
   header: IHeader;
   sections: SectionsType;
@@ -17,11 +19,15 @@ export interface IFormField {
   maxLength: number;
   regex: string;
 }
+
+export type MailStatusType = Record<MAIL_STATUS, string>;
 export interface IFormInfo {
   name: string;
   actionButtonLabel: string;
   submitLabel: string;
   submittingLabel: string;
+  icons: MailStatusType;
+  messages: MailStatusType;
   fields: IFormField[];
 }
 

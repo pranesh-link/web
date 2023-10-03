@@ -421,3 +421,63 @@ export const Overlay = styled.div<{
   width: 100%;
   opacity: ${(props) => props.opacity};
 `;
+
+export const ModalBanner = styled.div`
+  height: 5px;
+  background: #3fc935;
+  position: fixed;
+  width: 100%;
+  &.header {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+  &.footer {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    bottom: 0;
+  }
+`;
+
+export const ModalContentWrap = styled(FlexBox)`
+  background: #f0f0f0;
+  position: relative;
+  border-radius: 5px;
+
+  &.contact-modal {
+    .close {
+      margin-bottom: 0;
+    }
+  }
+
+  .close {
+    align-self: self-end;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    padding: 7px 15px;
+    background: #3498db;
+    border-radius: 20px;
+    color: #f0f0f0;
+    &:hover {
+      background: #ee4b2b;
+    }
+    @media only screen and (max-width: 992px) {
+      align-self: center;
+      margin-right: 0;
+    }
+  }
+
+  @media only screen and (max-width: 374px) and (orientation: portrait) {
+    max-height: 99vh;
+    overflow-y: scroll;
+  }
+
+  @media only screen and (min-width: 375px) and (max-width: 992px) and (orientation: portrait) {
+    max-height: 90vh;
+    overflow-y: scroll;
+  }
+
+  @media only screen and (max-width: 992px) and (orientation: landscape) {
+    max-height: 80vh;
+    overflow-y: scroll;
+  }
+`;

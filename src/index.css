@@ -76,6 +76,10 @@ li,
   margin: 0 30%;
 }
 
+.contact-form-status-modal-content {
+  margin: 0 30%;
+}
+
 @media only screen and (max-width: 992px) {
   .ReactModal__Content {
     margin: 0 15px;

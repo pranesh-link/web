@@ -44,6 +44,13 @@ export const DEFAULT_CONTEXT: IAppContext = {
     },
     forms: {
       contactForm: {
+        actionButtonLabel: "",
+        submitLabel: "",
+        submittingLabel: "",
+        messages: {
+          success: "",
+          error: "",
+        },
         name: "",
         fields: [],
       },
@@ -185,3 +192,9 @@ export enum MAIL_STATUS {
   SUCCESS = "success",
   ERROR = "error",
 }
+
+export const EMAILJS_CONFIG = {
+  SERVICE_ID: "service_h7f2fbh",
+  TEMPLATE_ID: "template_ccivvus",
+  PUBLIC_KEY: "YM2FkZ24YRF2W_Vgl",
+};

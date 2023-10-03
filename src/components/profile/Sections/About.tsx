@@ -1,10 +1,12 @@
 import classNames from "classnames";
-import React, { ComponentType, useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   FlexBoxSection,
   Desc,
   FlexBox,
   ActionBtn,
+  ModalBanner,
+  ModalContentWrap,
 } from "../../../common/Elements";
 import { ILink } from "../../../store/profile/types";
 import {
@@ -21,10 +23,9 @@ import styled from "styled-components";
 import { AppContext } from "../../../store/profile/context";
 import { AboutMeDetails } from "./AboutMeDetails";
 import { COPIED, NOT_COPIED } from "../../../common/constants";
-import Modal from "react-modal";
 import { ContactForm } from "../ContactForm";
+import { ModalComponent } from "../../../common/Component";
 
-const ModalComponent = Modal as ComponentType<ReactModal["props"]>;
 interface IAboutProps {
   exportProfile: () => void;
 }
@@ -79,7 +80,11 @@ export const About = (props: IAboutProps) => {
         isOpen={isContactFormOpen}
         ariaHideApp={false}
       >
-        <ContactForm closeModal={() => setIsContactFormOpen(false)} />
+        <ModalContentWrap direction="column" className="contact-modal">
+          <ModalBanner className="header" />
+          <ContactForm closeModal={() => setIsContactFormOpen(false)} />
+          <ModalBanner className="footer" />
+        </ModalContentWrap>
       </ModalComponent>
       <FlexBoxSection
         className={classNames("profile-section", "about", { export: isExport })}

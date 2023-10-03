@@ -1,14 +1,21 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { FormEvent, useContext, useEffect, useMemo, useState } from "react";
 import emailjs from "@emailjs/browser";
 import styled from "styled-components";
-import { ActionBtn, FlexBoxSection } from "../../common/Elements";
+import { ActionBtn, FlexBox, FlexBoxSection } from "../../common/Elements";
 import classNames from "classnames";
 import { IFormField } from "../../store/profile/types";
 import { validateLength, validateRegex } from "../../common/FormUtils";
 import { FormField } from "../Form/FormField";
-import { FIELD_TYPES, LABEL_TEXT, MAIL_STATUS } from "../../common/constants";
+import {
+  EMAILJS_CONFIG,
+  FIELD_TYPES,
+  LABEL_TEXT,
+  MAIL_STATUS,
+} from "../../common/constants";
 import { isPossiblePhoneNumber } from "react-phone-number-input";
 import { AppContext } from "../../store/profile/context";
+import { getIconUrl } from "../../common/Utils";
+import { ModalComponent } from "../../common/Component";
 
 type ContactFormFields = "userName" | "userMobile" | "userEmail" | "message";
 type ContactFormData = {
@@ -34,48 +41,40 @@ export const ContactForm = (props: IContactFormProps) => {
       forms: { contactForm: form },
     },
   } = useContext(AppContext);
+  const { messages, icons } = form;
   const { closeModal } = props;
   const [formData, setFormData] = useState<ContactFormData>(DEFAULT_FORM_DATA);
   const [formValid, setFormValid] = useState<ContactFormValid | null>(null);
   const [formDisabled, setFormDisabled] = useState<boolean>(true);
-  const [mailStatus, setMailStatus] = useState(MAIL_STATUS.FORM_FILL);
-  const { userName, userMobile, userEmail, message } = formData;
+  const [mailStatus, setMailStatus] = useState(MAIL_STATUS.SENDING);
 
-  const templateParams = {
-    userName,
-    userEmail,
-    message,
-    userMobile,
-  };
   const resetFields = () => {
     setFormData(DEFAULT_FORM_DATA);
     setFormDisabled(true);
   };
-  const sendEmail = (e: { preventDefault: () => void }) => {
+  const sendEmail = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setMailStatus(MAIL_STATUS.SENDING);
-    setTimeout(() => {
-      setMailStatus(MAIL_STATUS.SUCCESS);
-      resetFields();
-    }, 2000);
-    // emailjs
-    //   .send(
-    //     "service_h7f2fbh",
-    //     "template_ccivvus",
-    //     templateParams,
-    //     "YM2FkZ24YRF2W_Vgl"
-    //   )
-    //   .then(
-    //     (result) => {
-    //       console.log(result.text);
-    //       setMailStatus(MAIL_STATUS.SUCCESS);
-    //       resetFields();
-    //     },
-    //     (error) => {
-    //       console.log(error.text);
-    //       setMailStatus(MAIL_STATUS.ERROR);
-    //     }
-    //   );
+
+    emailjs
+      .send(
+        EMAILJS_CONFIG.SERVICE_ID,
+        EMAILJS_CONFIG.TEMPLATE_ID,
+        formData,
+        EMAILJS_CONFIG.PUBLIC_KEY
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+          setMailStatus(MAIL_STATUS.SUCCESS);
+          resetFields();
+          setTimeout(() => setMailStatus(MAIL_STATUS.FORM_FILL), 3000);
+        },
+        (error) => {
+          console.log(error.text);
+          setMailStatus(MAIL_STATUS.ERROR);
+        }
+      );
   };
 
   useEffect(() => {
@@ -85,6 +84,14 @@ export const ContactForm = (props: IContactFormProps) => {
 
   const isFormSubmit = useMemo(
     () => mailStatus === MAIL_STATUS.SENDING,
+    [mailStatus]
+  );
+
+  const displayStatus = useMemo(
+    () =>
+      [MAIL_STATUS.SUCCESS, MAIL_STATUS.ERROR, MAIL_STATUS.SENDING].indexOf(
+        mailStatus
+      ) > -1,
     [mailStatus]
   );
 
@@ -120,36 +127,61 @@ export const ContactForm = (props: IContactFormProps) => {
     setFormDisabled(currentFormDisabled);
   };
 
+  const displayStatusInfo = useMemo(() => {
+    const icon = icons[mailStatus];
+    const message = messages[mailStatus];
+
+    return { icon, message };
+  }, [icons, mailStatus, messages]);
   return (
-    <Form onSubmit={sendEmail}>
-      {form.fields.map((field) => {
-        const fieldName = field.name as ContactFormFields;
-        return (
-          <FormField
-            field={field}
-            fieldValue={formData[fieldName]}
-            fieldValid={formValid?.[fieldName]}
-            updateInput={updateInput}
-            validateField={validateField}
-            isFormSubmit={isFormSubmit}
-          />
-        );
-      })}
-      <FieldWrap justifyContent="space-between" alignItems="center">
-        <ActionBtn className="close" onClick={closeModal}>
-          {LABEL_TEXT.close}
-        </ActionBtn>
-        <FormSubmit
-          disabled={formDisabled || isFormSubmit}
-          className={classNames({
-            disabled: formDisabled || isFormSubmit,
-          })}
-          type="submit"
-        >
-          {isFormSubmit ? form.submittingLabel : form.submitLabel}
-        </FormSubmit>
-      </FieldWrap>
-    </Form>
+    <>
+      <ModalComponent isOpen className="contact-form-status-modal-content">
+        <StatusMessage justifyContent="space-evenly" alignItems="center">
+          {displayStatus && (
+            <>
+              <img
+                className="form-status-image"
+                alt="Form status"
+                height="45px"
+                src={getIconUrl(displayStatusInfo.icon)}
+                loading="lazy"
+              />
+              <p>{displayStatusInfo.message}</p>
+            </>
+          )}
+        </StatusMessage>
+      </ModalComponent>
+      <Form onSubmit={sendEmail}>
+        {form.fields.map((field) => {
+          const fieldName = field.name as ContactFormFields;
+          return (
+            <FormField
+              field={field}
+              fieldValue={formData[fieldName]}
+              fieldValid={formValid?.[fieldName]}
+              updateInput={updateInput}
+              validateField={validateField}
+              isFormSubmit={isFormSubmit}
+            />
+          );
+        })}
+
+        <FieldWrap justifyContent="space-between" alignItems="center">
+          <ActionBtn className="close" onClick={closeModal}>
+            {LABEL_TEXT.close}
+          </ActionBtn>
+          <FormSubmit
+            disabled={formDisabled || isFormSubmit}
+            className={classNames({
+              disabled: formDisabled || isFormSubmit,
+            })}
+            type="submit"
+          >
+            {isFormSubmit ? form.submittingLabel : form.submitLabel}
+          </FormSubmit>
+        </FieldWrap>
+      </Form>
+    </>
   );
 };
 
@@ -160,6 +192,11 @@ const Form = styled.form`
   outline: none;
   padding: 45px 30px 20px;
   border-radius: 15px;
+`;
+
+const StatusMessage = styled(FlexBox)`
+  background: #f0f0f0;
+  border-radius: 20px;
 `;
 
 const FieldWrap = styled(FlexBoxSection)`
