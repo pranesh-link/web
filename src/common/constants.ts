@@ -49,6 +49,31 @@ export const DEFAULT_PROFILE_CONTEXT: IProfileContext = {
       name: "",
       currentJobRole: "",
     },
+    forms: {
+      contactForm: {
+        actionButtonLabel: "",
+        submitLabel: "",
+        submittingLabel: "",
+        statusMessages: {
+          success: "",
+          error: "",
+          form_fill: "",
+          sending: "",
+        },
+        messages: {
+          retry: "",
+          mandatoryError: "",
+        },
+        icons: {
+          success: "",
+          error: "",
+          form_fill: "",
+          sending: "",
+        },
+        name: "",
+        fields: [],
+      },
+    },
     sections: {
       aboutMe: {
         title: "",
@@ -105,6 +130,8 @@ export const DEFAULT_PROFILE_CONTEXT: IProfileContext = {
   isMobile: false,
   isInstallBannerOpen: false,
   hasDownloadedProfile: false,
+  isContactFormOpen: false,
+  setIsContactFormOpen: () => {},
 };
 
 export const DEFAULT_APP_CONTEXT: IAppContext = {
@@ -161,6 +188,10 @@ export const SECTIONS = {
   RESUME_EXPERIENCES: "resume-experiences",
 };
 
+export const FORMS = {
+  CONTACT_FORM: "contact-form",
+};
+
 export const PAGE_TITLES = {
   profile: "Pranesh",
 };
@@ -189,6 +220,29 @@ export const EXPERIENCE_TYPES = {
   PREVIOUS: "Previous",
 };
 
+export const FIELD_TYPES = {
+  TEXT: "text",
+  MOBILE: "mobile",
+  TEXTAREA: "textarea",
+};
+
+export const FIELD_SUB_TYPES = {
+  EMAIL: "email",
+};
+
+export enum CONTACT_FORM_STATUS {
+  FORM_FILL = "form_fill",
+  SENDING = "sending",
+  SUCCESS = "success",
+  ERROR = "error",
+}
+
+export const EMAILJS_CONFIG = {
+  SERVICE_ID: "service_h7f2fbh",
+  TEMPLATE_ID: "template_ccivvus",
+  PUBLIC_KEY: "YM2FkZ24YRF2W_Vgl",
+};
+
 export const DEFAULT_PROFILE_CONFIG_DATA = {
   profileSections: {
     header: DEFAULT_PROFILE_CONTEXT.data.header,
@@ -200,6 +254,7 @@ export const DEFAULT_PROFILE_CONFIG_DATA = {
   links: DEFAULT_PROFILE_CONTEXT.data.sections.links,
   download: DEFAULT_PROFILE_CONTEXT.data.download,
   skills: DEFAULT_PROFILE_CONTEXT.data.sections.skills,
+  contactForm: DEFAULT_PROFILE_CONTEXT.data.forms.contactForm,
 };
 
 export const CONFIG_REF_INFO = {

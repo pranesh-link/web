@@ -5,6 +5,8 @@ import {
   FlexBoxSection,
   ActionBtn,
   FlexBox,
+  ModalBanner,
+  ModalContentWrap,
 } from "../../../common/Elements";
 import React, { memo, useContext, useEffect, useMemo, useState } from "react";
 import { ProfileContext } from "../../../store/profile/context";
@@ -16,11 +18,8 @@ import {
   LABEL_TEXT,
   SECTIONS,
 } from "../../../common/constants";
-import Modal from "react-modal";
 import { ProjectInfo } from "../ProjectInfo";
-import { ComponentType } from "react";
-
-const ModalComponent = Modal as ComponentType<ReactModal["props"]>;
+import { ModalComponent } from "../../../common/Component";
 
 interface INames {
   projectNames: string[];
@@ -88,12 +87,12 @@ export const ResumeExperiences = memo(() => {
           ariaHideApp={false}
         >
           <ModalContentWrap direction="column">
-            <div className="modal-banner header" />
+            <ModalBanner className="header" />
             <ProjectInfo project={project} />
             <ActionBtn className="close" onClick={() => setProject(null)}>
               {LABEL_TEXT.close}
             </ActionBtn>
-            <div className="modal-banner footer" />
+            <ModalBanner className="footer" />
           </ModalContentWrap>
         </ModalComponent>
       )}
@@ -270,59 +269,6 @@ const SectionWrapper = styled(FlexBoxSection)<{ icon: string }>`
     .project-titles-wrap {
       max-width: unset;
     }
-  }
-`;
-
-const ModalContentWrap = styled(FlexBox)`
-  background: #f0f0f0;
-  position: relative;
-  border-radius: 5px;
-  .modal-banner {
-    height: 5px;
-    background: #3fc935;
-    position: fixed;
-    width: 100%;
-    &.header {
-      border-top-left-radius: 5px;
-      border-top-right-radius: 5px;
-    }
-    &.footer {
-      border-bottom-left-radius: 5px;
-      border-bottom-right-radius: 5px;
-      bottom: 0;
-    }
-  }
-  .close {
-    align-self: self-end;
-    margin-right: 20px;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    padding: 7px 15px;
-    background: #3498db;
-    border-radius: 20px;
-    color: #f0f0f0;
-    &:hover {
-      background: #ee4b2b;
-    }
-    @media only screen and (max-width: 992px) {
-      align-self: center;
-      margin-right: 0;
-    }
-  }
-
-  @media only screen and (max-width: 374px) and (orientation: portrait) {
-    max-height: 99vh;
-    overflow-y: scroll;
-  }
-
-  @media only screen and (min-width: 375px) and (max-width: 992px) and (orientation: portrait) {
-    max-height: 90vh;
-    overflow-y: scroll;
-  }
-
-  @media only screen and (max-width: 992px) and (orientation: landscape) {
-    max-height: 80vh;
-    overflow-y: scroll;
   }
 `;
 

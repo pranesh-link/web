@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import usePWA from "react-pwa-install-prompt";
 import { PWABanner } from "../../PWABanner";
 import { Profile } from "../../components/profile/Profile";
@@ -92,7 +92,7 @@ const ProfilePage = (props: ProfilePageProps) => {
       };
 
       (async () => {
-        const { profileSections, links, skills, download } = (
+        const { profileSections, links, skills, download, contactForm } = (
           await Promise.all(
             profileConfig.map((data: IConfigDataParams) =>
               fetchInfo(data.ref, DEFAULT_SECTIONS_DETAILS, data.name),
@@ -119,7 +119,7 @@ const ProfilePage = (props: ProfilePageProps) => {
           experiences: { ...experiences, info: experienceData },
           links,
         };
-        setProfileData({ header, sections, download });
+        setProfileData({ header, sections, download, forms: { contactForm } });
         setIsFetchingData(false);
         setRetry(false);
       })();

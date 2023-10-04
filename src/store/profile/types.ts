@@ -1,9 +1,47 @@
+import { CONTACT_FORM_STATUS } from "../../common/constants";
+
 export interface IProfileData {
   header: IHeader;
   sections: SectionsType;
   download: DownloadType;
+  forms: FormsType;
 }
 
+export type FormType = "contactForm";
+
+export interface IFormField {
+  id: string;
+  name: string;
+  label: string;
+  placeholder: string;
+  subType?: string;
+  type: string;
+  maxLength: number;
+  regex: string;
+  messages?: {
+    regexError: string;
+    fieldError: string;
+  };
+}
+
+export type MailStatusType = Record<CONTACT_FORM_STATUS, string>;
+export interface IFormInfo {
+  name: string;
+  actionButtonLabel: string;
+  submitLabel: string;
+  submittingLabel: string;
+  icons: MailStatusType;
+  statusMessages: MailStatusType;
+  messages: {
+    mandatoryError: string;
+    retry: string;
+  };
+  fields: IFormField[];
+}
+
+export type FormsType = {
+  [key in FormType]: IFormInfo;
+};
 export type SectionsType = {
   [key in ProfileSectionType]: ISectionInfo;
 };
@@ -147,4 +185,6 @@ export interface IProfileContext {
   isMobile: boolean;
   isInstallBannerOpen: boolean;
   hasDownloadedProfile?: boolean;
+  isContactFormOpen: boolean;
+  setIsContactFormOpen: Function;
 }
