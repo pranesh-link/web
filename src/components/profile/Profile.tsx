@@ -46,6 +46,8 @@ export const Profile = (props: ProfileProps) => {
   const [hasDownloadedProfile, setHasDownloadedProfile] =
     useState<boolean>(false);
   const [currentSection, setCurrentSection] = useState<string>("aboutMe");
+  const [isContactFormOpen, setIsContactFormOpen] = useState(false);
+
   let timer: NodeJS.Timeout;
   useEffect(() => {
     return () => clearTimeout(timer);
@@ -74,6 +76,8 @@ export const Profile = (props: ProfileProps) => {
           isMobile,
           isInstallBannerOpen,
           hasDownloadedProfile,
+          isContactFormOpen,
+          setIsContactFormOpen,
         }}
       >
         <HamBurgerMenu

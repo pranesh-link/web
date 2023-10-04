@@ -98,6 +98,8 @@ export const getJsonBaseUrl = () =>
 
 export const getIconUrl = (url: string) => `${getJsonBaseUrl()}/${url}`;
 
+export const isNetworkOnline = () => navigator.onLine;
+
 export const getJsonResponse = async (jsonToFetch: string, data?: any) => {
   const JSON_BASE_URL = getJsonBaseUrl();
   let hasError = false;

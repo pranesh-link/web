@@ -4,7 +4,6 @@ import {
   FlexBoxSection,
   Desc,
   FlexBox,
-  ActionBtn,
   ModalBanner,
   ModalContentWrap,
 } from "../../../common/Elements";
@@ -25,12 +24,15 @@ import { AboutMeDetails } from "./AboutMeDetails";
 import { COPIED, NOT_COPIED } from "../../../common/constants";
 import { ContactForm } from "../ContactForm";
 import { ModalComponent } from "../../../common/Component";
+import { ContactMe } from "../../../common/ContactMe";
 
 interface IAboutProps {
   exportProfile: () => void;
 }
 export const About = (props: IAboutProps) => {
   const {
+    isContactFormOpen,
+    setIsContactFormOpen,
     hasDownloadedProfile,
     isExport,
     isMobile,
@@ -38,7 +40,6 @@ export const About = (props: IAboutProps) => {
     data: {
       sections: { aboutMe, links, details },
       download,
-      forms: { contactForm },
     },
     refs: { homeRef: refObj },
   } = React.useContext(ProfileContext);
@@ -46,7 +47,6 @@ export const About = (props: IAboutProps) => {
     {},
   );
   const [showCopy, setShowCopy] = useState<boolean>(false);
-  const [isContactFormOpen, setIsContactFormOpen] = useState(false);
 
   useEffect(() => {
     const [key, value] = getObjectKeyValuesByIndex(copyState, 0);
@@ -238,9 +238,7 @@ export const About = (props: IAboutProps) => {
                     </span>
                   </>
                 )}
-                <ContactMeButton onClick={() => setIsContactFormOpen(true)}>
-                  {contactForm.actionButtonLabel}
-                </ContactMeButton>
+                <ContactMe />
               </InterestedInProfile>
             )}
           </FlexBoxSection>
@@ -250,21 +248,6 @@ export const About = (props: IAboutProps) => {
   );
 };
 
-const ContactMeButton = styled(ActionBtn)`
-  margin-top: 15px;
-  color: #f0f0f0;
-  padding: 10px 15px;
-  background: #3d9b32;
-  border-radius: 20px;
-  max-width: 120px;
-  opacity: 0.85;
-  &:hover {
-    opacity: 1;
-  }
-  @media only screen and (max-width: 767px) {
-    opacity: 1;
-  }
-`;
 const InterestedInProfile = styled(FlexBox)<{
   isMobile: boolean;
   disabled?: boolean;

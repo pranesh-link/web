@@ -30,6 +30,7 @@ export const FormField = (props: IFormFieldProps) => {
     validateField,
   } = props;
   const {
+    isMobile,
     data: {
       forms: { contactForm: form },
     },
@@ -127,7 +128,7 @@ export const FormField = (props: IFormFieldProps) => {
         )}
       </InputWrap>
       <FlexBox justifyContent="flex-end" alignItems="center">
-        {fieldError && <Error>{errorMessage}</Error>}
+        {!isMobile && fieldError && <Error>{errorMessage}</Error>}
         <RemainingCharacters>
           <span
             className={classNames({
@@ -146,6 +147,7 @@ export const FormField = (props: IFormFieldProps) => {
 const FormLabel = styled.label`
   flex-basis: 30%;
   font-weight: 600;
+  margin-right: 10px;
 `;
 
 const FieldWrap = styled(FlexBoxSection)`
@@ -166,8 +168,14 @@ const FieldWrap = styled(FlexBoxSection)`
       width: 100%;
       padding-left: 5px;
     }
-    &.error {
-      input {
+  }
+
+  @media only screen and (max-width: 767px) {
+    .phone-input {
+      &.error {
+        input {
+          border: 1px solid #ee4b2b;
+        }
       }
     }
   }
@@ -181,7 +189,10 @@ const TextInput = styled.input`
   outline: none;
   font-family: Open Sans, sans-serif !important;
   font-size: 14px;
-  &.error {
+  @media only screen and (max-width: 767px) {
+    &.error {
+      border: 1px solid #ee4b2b;
+    }
   }
 `;
 
@@ -194,7 +205,10 @@ const TextArea = styled.textarea`
   min-height: 100px;
   font-family: Open Sans, sans-serif !important;
   font-size: 14px;
-  &.error {
+  @media only screen and (max-width: 767px) {
+    &.error {
+      border: 1px solid #ee4b2b;
+    }
   }
 `;
 

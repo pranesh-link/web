@@ -14,7 +14,7 @@ import {
 } from "../../common/constants";
 import { isPossiblePhoneNumber } from "react-phone-number-input";
 import { ProfileContext } from "../../store/profile/context";
-import { getIconUrl } from "../../common/Utils";
+import { getIconUrl, isNetworkOnline } from "../../common/Utils";
 import { ModalComponent } from "../../common/Component";
 
 type ContactFormFields = "userName" | "userMobile" | "userEmail" | "message";
@@ -82,7 +82,8 @@ export const ContactForm = (props: IContactFormProps) => {
       );
   };
 
-  const retryEmail = () => {
+  const retryEmail = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    e.preventDefault();
     handleMailRequest();
   };
   const sendEmail = (e: FormEvent<HTMLFormElement>) => {
@@ -186,13 +187,15 @@ export const ContactForm = (props: IContactFormProps) => {
         className="contact-form-status-modal-content"
       >
         <StatusMessage justifyContent="space-evenly" alignItems="center">
-          <img
-            className="form-status-image"
-            alt="Form status"
-            height="35px"
-            src={getIconUrl(displayStatusInfo.icon)}
-            loading="lazy"
-          />
+          {isNetworkOnline() && (
+            <img
+              className="form-status-image"
+              alt="Form status"
+              height="35px"
+              src={getIconUrl(displayStatusInfo.icon)}
+              loading="lazy"
+            />
+          )}
           <ProgressMessage>{displayStatusInfo.message}</ProgressMessage>
           {contactFormStatus === CONTACT_FORM_STATUS.ERROR && (
             <Retry href="" onClick={retryEmail}>

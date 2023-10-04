@@ -185,4 +185,6 @@ export interface IProfileContext {
   isMobile: boolean;
   isInstallBannerOpen: boolean;
   hasDownloadedProfile?: boolean;
+  isContactFormOpen: boolean;
+  setIsContactFormOpen: Function;
 }
