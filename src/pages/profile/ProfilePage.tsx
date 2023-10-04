@@ -7,7 +7,6 @@ import {
   PAGE_TITLES,
   MESSAGES,
   LABEL_TEXT,
-  FORMS,
   DEFAULT_PROFILE_CONFIG_DATA,
 } from "../../common/constants";
 import {
@@ -21,7 +20,6 @@ import {
   IHeader,
   DownloadType,
   IPWA,
-  IFormInfo,
   IExperienceJsonInfo,
 } from "../../store/profile/types";
 import styled from "styled-components";

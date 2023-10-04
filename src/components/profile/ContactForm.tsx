@@ -23,6 +23,7 @@ type ContactFormData = {
 };
 
 type ContactFormValid = Record<string, boolean>;
+type ContactFormError = Record<string, string>;
 
 const DEFAULT_FORM_DATA = {
   userName: "",
@@ -45,7 +46,7 @@ export const ContactForm = (props: IContactFormProps) => {
   const { closeModal } = props;
   const [formData, setFormData] = useState<ContactFormData>(DEFAULT_FORM_DATA);
   const [formValid, setFormValid] = useState<ContactFormValid | null>(null);
-  const [formEmpty, setFormEmpty] = useState<ContactFormValid | null>(null);
+  const [formError, setFormError] = useState<ContactFormError | null>(null);
   const [formDisabled, setFormDisabled] = useState<boolean>(true);
   const [contactFormStatus, setContactFormStatus] = useState(
     CONTACT_FORM_STATUS.FORM_FILL,
@@ -124,6 +125,27 @@ export const ContactForm = (props: IContactFormProps) => {
     }
     return isValid;
   };
+
+  const getErrorPriority = (
+    mandatoryError: boolean,
+    regexError: boolean,
+    fieldError: boolean,
+  ) => {
+    let error = "";
+    switch (true) {
+      case mandatoryError:
+        error = "mandatoryError";
+        break;
+      case regexError:
+        error = "regexError";
+        break;
+      case fieldError:
+        error = "fieldError";
+        break;
+    }
+    return error;
+  };
+
   const validateField = (value: string, field: string) => {
     const { regex, type } = form.fields.find(
       formField => formField.name === field,
@@ -131,9 +153,16 @@ export const ContactForm = (props: IContactFormProps) => {
     const fieldValue = value.trim();
     let isValid = false;
     isValid = validateLength(fieldValue);
-    setFormEmpty({ ...(formEmpty || {}), [field]: !isValid });
-    isValid = regex ? validateRegex(fieldValue, regex) : isValid;
-    isValid = handleSpecialValidations(type, fieldValue, isValid);
+    const mandatoryError = !validateLength(fieldValue);
+    const regexError = !validateRegex(fieldValue, regex, isValid);
+    const fieldError = !handleSpecialValidations(type, fieldValue, isValid);
+    isValid = !mandatoryError && !regexError && !fieldError;
+    let error = "";
+    if (mandatoryError || regexError || fieldError) {
+      error = getErrorPriority(mandatoryError, regexError, fieldError);
+    }
+    setFormError({ ...(formError || {}), [field]: error });
+
     const fieldValidity = { ...(formValid || {}), [field]: isValid };
     const currentFormDisabled =
       Object.values(fieldValidity).some(valid => valid === false) ||
@@ -181,7 +210,7 @@ export const ContactForm = (props: IContactFormProps) => {
               field={field}
               fieldValue={formData[fieldName]}
               fieldValid={formValid?.[fieldName]}
-              fieldEmpty={formEmpty?.[fieldName]}
+              fieldError={formError?.[fieldName]}
               updateInput={updateInput}
               validateField={validateField}
               isFormSubmit={isFormSubmit}

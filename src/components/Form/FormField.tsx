@@ -4,7 +4,7 @@ import { getRemainingCharacters } from "../../common/Utils";
 import { IFormField } from "../../store/profile/types";
 import { FIELD_TYPES } from "../../common/constants";
 import classNames from "classnames";
-import { ChangeEvent, useContext } from "react";
+import { ChangeEvent, useContext, useMemo } from "react";
 import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
@@ -13,7 +13,7 @@ import { ProfileContext } from "../../store/profile/context";
 interface IFormFieldProps {
   field: IFormField;
   fieldValid?: boolean;
-  fieldEmpty?: boolean;
+  fieldError?: string;
   fieldValue: string;
   isFormSubmit: boolean;
   updateInput: (value: string, field: string) => void;
@@ -24,7 +24,7 @@ export const FormField = (props: IFormFieldProps) => {
     field,
     fieldValid,
     fieldValue,
-    fieldEmpty,
+    fieldError,
     isFormSubmit,
     updateInput,
     validateField,
@@ -50,6 +50,29 @@ export const FormField = (props: IFormFieldProps) => {
     }
   };
 
+  const errorMessage = useMemo(() => {
+    let errorMessage;
+    switch (fieldError) {
+      case "mandatoryError":
+        errorMessage = messages.mandatoryError;
+        break;
+      case "regexError":
+      case "fieldError":
+        errorMessage = field?.messages?.[fieldError] || "";
+        break;
+      default:
+        errorMessage = "";
+        break;
+    }
+    return errorMessage;
+  }, [field.messages, fieldError, messages.mandatoryError]);
+
+  const remainingCharacters = useMemo(
+    () => getRemainingCharacters(fieldValue, field.maxLength),
+    [field.maxLength, fieldValue],
+  );
+
+  console.log("fieldError", field.label, fieldError, errorMessage);
   return (
     <FieldWrap direction="column">
       <InputWrap alignItems="center">
@@ -104,10 +127,16 @@ export const FormField = (props: IFormFieldProps) => {
         )}
       </InputWrap>
       <FlexBox justifyContent="flex-end" alignItems="center">
-        {fieldEmpty && <Error>{messages.mandatoryError}</Error>}
+        {fieldError && <Error>{errorMessage}</Error>}
         <RemainingCharacters>
-          {getRemainingCharacters(fieldValue, field.maxLength)}/
-          {field.maxLength}
+          <span
+            className={classNames({
+              "empty-characters": remainingCharacters === 0,
+            })}
+          >
+            {remainingCharacters}
+          </span>
+          /{field.maxLength}
         </RemainingCharacters>
       </FlexBox>
     </FieldWrap>

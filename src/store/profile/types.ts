@@ -18,6 +18,10 @@ export interface IFormField {
   type: string;
   maxLength: number;
   regex: string;
+  messages?: {
+    regexError: string;
+    fieldError: string;
+  };
 }
 
 export type MailStatusType = Record<CONTACT_FORM_STATUS, string>;
