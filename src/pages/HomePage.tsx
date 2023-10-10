@@ -1,13 +1,16 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import { AppContext } from "../store/app/context";
-import { FlexBoxSection } from "../common/Elements";
+import { FlexBoxSection, LoaderImg } from "../common/Elements";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../common/constants";
+import { getLocalStorage } from "../common/Utils";
+import LoaderIcon from "../assets/loader-icon.svg";
 
 export const HomePage = () => {
   const {
     data: {
+      currentDevice: { isMobile },
       messages: { homepage: messages },
       appConfig: {
         homepage: { profileRedirectDelay },
@@ -17,24 +20,38 @@ export const HomePage = () => {
 
   const navigate = useNavigate();
 
+  const hasPWAInstalled = useMemo(() => getLocalStorage("hasPWAInstalled"), []);
+
   useEffect(() => {
-    setTimeout(
-      () => navigate(ROUTES.ROUTE_PROFILE),
-      profileRedirectDelay * 1000,
-    );
-  }, [navigate, profileRedirectDelay]);
+    if (hasPWAInstalled) {
+      navigate(ROUTES.ROUTE_PROFILE);
+    } else {
+      setTimeout(
+        () => navigate(ROUTES.ROUTE_PROFILE),
+        profileRedirectDelay * 1000,
+      );
+    }
+  }, [navigate, profileRedirectDelay, hasPWAInstalled]);
   return (
-    <HomePageWrapper
-      direction="column"
-      alignItems="center"
-      justifyContent="space-around"
-    >
-      <FlexBoxSection direction="column">
-        <h1 className="homepage-title">{messages.title}</h1>
-        <h3 className="homepage-construction">{messages.underConstruction}</h3>
-        <h3 className="homepage-redirection">{messages.redirection}</h3>
-      </FlexBoxSection>
-    </HomePageWrapper>
+    <>
+      {hasPWAInstalled ? (
+        <LoaderImg isMobile={isMobile} src={LoaderIcon} />
+      ) : (
+        <HomePageWrapper
+          direction="column"
+          alignItems="center"
+          justifyContent="space-around"
+        >
+          <FlexBoxSection direction="column">
+            <h1 className="homepage-title">{messages.title}</h1>
+            <h3 className="homepage-construction">
+              {messages.underConstruction}
+            </h3>
+            <h3 className="homepage-redirection">{messages.redirection}</h3>
+          </FlexBoxSection>
+        </HomePageWrapper>
+      )}
+    </>
   );
 };
 
