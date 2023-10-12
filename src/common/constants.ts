@@ -59,6 +59,7 @@ export const DEFAULT_PROFILE_CONTEXT: IProfileContext = {
           error: "",
           form_fill: "",
           sending: "",
+          offline: "",
         },
         messages: {
           retry: "",
@@ -69,6 +70,7 @@ export const DEFAULT_PROFILE_CONTEXT: IProfileContext = {
           error: "",
           form_fill: "",
           sending: "",
+          offline: "",
         },
         name: "",
         fields: [],
@@ -140,6 +142,7 @@ export const DEFAULT_APP_CONTEXT: IAppContext = {
       osName: "Android",
       browserName: "Chrome",
       isMobile: false,
+      online: true,
     },
     messages: {
       homepage: {
@@ -235,6 +238,7 @@ export enum CONTACT_FORM_STATUS {
   SENDING = "sending",
   SUCCESS = "success",
   ERROR = "error",
+  OFFLINE = "offline",
 }
 
 export const EMAILJS_CONFIG = {
