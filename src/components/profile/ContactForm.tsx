@@ -1,7 +1,19 @@
-import { FormEvent, useContext, useEffect, useMemo, useState } from "react";
+import {
+  FormEvent,
+  memo,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import emailjs from "@emailjs/browser";
 import styled from "styled-components";
-import { ActionBtn, FlexBox, FlexBoxSection } from "../../common/Elements";
+import {
+  ActionBtn,
+  FlexBox,
+  FlexBoxSection,
+  LoaderImg,
+} from "../../common/Elements";
 import classNames from "classnames";
 import { IFormField } from "../../store/profile/types";
 import { validateLength, validateRegex } from "../../common/FormUtils";
@@ -14,8 +26,13 @@ import {
 } from "../../common/constants";
 import { isPossiblePhoneNumber } from "react-phone-number-input";
 import { ProfileContext } from "../../store/profile/context";
-import { getIconUrl, isNetworkOnline } from "../../common/Utils";
+import { isNetworkOnline } from "../../common/Utils";
 import { ModalComponent } from "../../common/Component";
+import SendingAnimation from "../../assets/loading-animation.gif";
+import SuccessAnimation from "../../assets/success-animation.gif";
+import ErrorAnimation from "../../assets/error-animation.gif";
+import OfflineAnimation from "../../assets/offline-animation.gif";
+import { AppContext } from "../../store/app/context";
 
 type ContactFormFields = "userName" | "userMobile" | "userEmail" | "message";
 type ContactFormData = {
@@ -32,6 +49,26 @@ const DEFAULT_FORM_DATA = {
   message: "",
 };
 
+function preloadImage(src: string) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = function () {
+      resolve(img);
+    };
+    img.onerror = img.onabort = function () {
+      reject(src);
+    };
+    img.src = src;
+  });
+}
+
+const preloadSrcList: Record<string, string> = {
+  sending: SendingAnimation,
+  success: SuccessAnimation,
+  error: ErrorAnimation,
+  offline: OfflineAnimation,
+};
+
 interface IContactFormProps {
   closeModal: () => void;
 }
@@ -42,7 +79,12 @@ export const ContactForm = (props: IContactFormProps) => {
       forms: { contactForm: form },
     },
   } = useContext(ProfileContext);
-  const { statusMessages, messages, icons } = form;
+  const {
+    data: {
+      currentDevice: { isMobile },
+    },
+  } = useContext(AppContext);
+  const { statusMessages, messages } = form;
   const { closeModal } = props;
   const [formData, setFormData] = useState<ContactFormData>(DEFAULT_FORM_DATA);
   const [formValid, setFormValid] = useState<ContactFormValid | null>(null);
@@ -51,11 +93,23 @@ export const ContactForm = (props: IContactFormProps) => {
   const [contactFormStatus, setContactFormStatus] = useState(
     CONTACT_FORM_STATUS.FORM_FILL,
   );
+  const [assetsLoaded, setAssetsLoaded] = useState<boolean>(false);
+  const [assetImages, setAssetImages] = useState<any>([]);
 
   const resetFields = () => {
     setFormData(DEFAULT_FORM_DATA);
     setFormDisabled(true);
   };
+
+  const formStatusIconMap = useMemo(() => {
+    return {
+      [CONTACT_FORM_STATUS.FORM_FILL]: "",
+      [CONTACT_FORM_STATUS.SENDING]: assetImages?.[0]?.currentSrc,
+      [CONTACT_FORM_STATUS.SUCCESS]: assetImages?.[1]?.currentSrc,
+      [CONTACT_FORM_STATUS.ERROR]: assetImages?.[2]?.currentSrc,
+      [CONTACT_FORM_STATUS.OFFLINE]: assetImages?.[3]?.currentSrc,
+    };
+  }, [assetImages]);
 
   const handleMailRequest = () => {
     setContactFormStatus(CONTACT_FORM_STATUS.SENDING);
@@ -68,7 +122,7 @@ export const ContactForm = (props: IContactFormProps) => {
         EMAILJS_CONFIG.PUBLIC_KEY,
       )
       .then(
-        result => {
+        () => {
           setContactFormStatus(CONTACT_FORM_STATUS.SUCCESS);
           resetFields();
           setTimeout(
@@ -76,19 +130,21 @@ export const ContactForm = (props: IContactFormProps) => {
             3000,
           );
         },
-        error => {
+        () => {
           setContactFormStatus(CONTACT_FORM_STATUS.ERROR);
         },
       );
   };
 
-  const retryEmail = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+  const sendEmail = (
+    e:
+      | FormEvent<HTMLFormElement>
+      | React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+  ) => {
     e.preventDefault();
-    handleMailRequest();
-  };
-  const sendEmail = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    handleMailRequest();
+    isNetworkOnline()
+      ? handleMailRequest()
+      : setContactFormStatus(CONTACT_FORM_STATUS.OFFLINE);
   };
 
   useEffect(() => {
@@ -107,7 +163,16 @@ export const ContactForm = (props: IContactFormProps) => {
         CONTACT_FORM_STATUS.SUCCESS,
         CONTACT_FORM_STATUS.ERROR,
         CONTACT_FORM_STATUS.SENDING,
+        CONTACT_FORM_STATUS.OFFLINE,
       ].indexOf(contactFormStatus) > -1,
+    [contactFormStatus],
+  );
+
+  const hasErrorStatusOrOffline = useMemo(
+    () =>
+      [CONTACT_FORM_STATUS.ERROR, CONTACT_FORM_STATUS.OFFLINE].some(
+        item => contactFormStatus === item,
+      ),
     [contactFormStatus],
   );
 
@@ -173,69 +238,123 @@ export const ContactForm = (props: IContactFormProps) => {
   };
 
   const displayStatusInfo = useMemo(() => {
-    const icon = icons[contactFormStatus];
+    const icon = formStatusIconMap[contactFormStatus];
     const message = statusMessages[contactFormStatus];
-    const retryMessage =
-      contactFormStatus === CONTACT_FORM_STATUS.ERROR ? messages.retry : "";
+    const retryMessage = hasErrorStatusOrOffline ? messages.retry : "";
 
     return { icon, message, retryMessage };
-  }, [icons, contactFormStatus, statusMessages, messages.retry]);
+  }, [
+    formStatusIconMap,
+    contactFormStatus,
+    statusMessages,
+    messages.retry,
+    hasErrorStatusOrOffline,
+  ]);
+
+  const StatusIcon = memo(() => {
+    return (
+      <img
+        className="form-status-image"
+        alt="Form status"
+        height="35px"
+        src={displayStatusInfo.icon}
+        loading="lazy"
+      />
+    );
+  });
+
+  useEffect(() => {
+    let isCancelled = false;
+
+    async function effect() {
+      if (isCancelled) {
+        return;
+      }
+
+      const imagesPromiseList: Promise<any>[] = [];
+      for (const i in preloadSrcList) {
+        imagesPromiseList.push(preloadImage(preloadSrcList[i as string]));
+      }
+
+      const images = await Promise.all(imagesPromiseList);
+      setAssetImages(images);
+      if (isCancelled) {
+        return;
+      }
+      setAssetsLoaded(true);
+    }
+
+    effect();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
+
   return (
     <>
-      <ModalComponent
-        isOpen={displayStatus}
-        className="contact-form-status-modal-content"
-      >
-        <StatusMessage justifyContent="space-evenly" alignItems="center">
-          {isNetworkOnline() && (
-            <img
-              className="form-status-image"
-              alt="Form status"
-              height="35px"
-              src={getIconUrl(displayStatusInfo.icon)}
-              loading="lazy"
-            />
-          )}
-          <ProgressMessage>{displayStatusInfo.message}</ProgressMessage>
-          {contactFormStatus === CONTACT_FORM_STATUS.ERROR && (
-            <Retry href="" onClick={retryEmail}>
-              {displayStatusInfo.retryMessage}
-            </Retry>
-          )}
-        </StatusMessage>
-      </ModalComponent>
-      <Form onSubmit={sendEmail}>
-        {form.fields.map((field, index) => {
-          const fieldName = field.name as ContactFormFields;
-          return (
-            <FormField
-              key={index}
-              field={field}
-              fieldValue={formData[fieldName]}
-              fieldValid={formValid?.[fieldName]}
-              fieldError={formError?.[fieldName]}
-              updateInput={updateInput}
-              validateField={validateField}
-              isFormSubmit={isFormSubmit}
-            />
-          );
-        })}
-
-        <FieldWrap justifyContent="space-between" alignItems="center">
-          <ActionBtn className="close" onClick={closeModal}>
-            {LABEL_TEXT.close}
-          </ActionBtn>
-          <FormSubmit
-            disabled={formDisabled || isFormSubmit}
-            className={classNames({
-              disabled: formDisabled || isFormSubmit,
-            })}
-            type="submit"
+      {assetsLoaded ? (
+        <>
+          <ModalComponent
+            isOpen={displayStatus}
+            className="contact-form-status-modal-content"
+            shouldCloseOnOverlayClick={true}
+            onRequestClose={() => {
+              if (hasErrorStatusOrOffline) {
+                setContactFormStatus(CONTACT_FORM_STATUS.FORM_FILL);
+              }
+            }}
           >
-            {isFormSubmit ? form.submittingLabel : form.submitLabel}
-          </FormSubmit>
-        </FieldWrap>
-      </Form>
+            <StatusMessage justifyContent="space-evenly" alignItems="center">
+              <StatusIcon />
+              <ProgressMessage>{displayStatusInfo.message}</ProgressMessage>
+              <Retry
+                href=""
+                className={classNames({
+                  hide: !displayStatusInfo.retryMessage,
+                })}
+                onClick={sendEmail}
+              >
+                {displayStatusInfo.retryMessage}
+              </Retry>
+            </StatusMessage>
+          </ModalComponent>
+          <Form onSubmit={sendEmail}>
+            {form.fields.map((field, index) => {
+              const fieldName = field.name as ContactFormFields;
+              return (
+                <FormField
+                  key={index}
+                  field={field}
+                  fieldValue={formData[fieldName]}
+                  fieldValid={formValid?.[fieldName]}
+                  fieldError={formError?.[fieldName]}
+                  updateInput={updateInput}
+                  validateField={validateField}
+                  isFormSubmit={isFormSubmit}
+                />
+              );
+            })}
+
+            <FieldWrap justifyContent="space-between" alignItems="center">
+              <ActionBtn className="close" onClick={closeModal}>
+                {LABEL_TEXT.close}
+              </ActionBtn>
+              <FormSubmit
+                disabled={formDisabled || isFormSubmit}
+                className={classNames({
+                  disabled: formDisabled || isFormSubmit,
+                })}
+                type="submit"
+              >
+                {isFormSubmit ? form.submittingLabel : form.submitLabel}
+              </FormSubmit>
+            </FieldWrap>
+          </Form>
+        </>
+      ) : (
+        <LoaderImg isMobile={isMobile} />
+      )}
     </>
   );
 };
@@ -301,6 +420,7 @@ const Retry = styled.a`
   font-weight: bold;
   color: #3fc935;
   letter-spacing: 0.3px;
+  flex-basis: 15%;
 `;
 
 const ProgressMessage = styled.p`

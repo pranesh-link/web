@@ -30,7 +30,6 @@ export interface IFormInfo {
   actionButtonLabel: string;
   submitLabel: string;
   submittingLabel: string;
-  icons: MailStatusType;
   statusMessages: MailStatusType;
   messages: {
     mandatoryError: string;

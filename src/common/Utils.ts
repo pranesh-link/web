@@ -80,6 +80,10 @@ export const getLocalStorage = (key: string) => {
   return item.value;
 };
 
+export const clearLocalStorage = (key?: string) => {
+  key ? localStorage.removeItem(key) : localStorage.clear();
+};
+
 export const isBannerHidden = (hideTime: number) => {
   if (hideTime > 0) {
     const isHideTime = new Date().getTime() < hideTime;
