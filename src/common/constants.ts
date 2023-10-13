@@ -65,13 +65,6 @@ export const DEFAULT_PROFILE_CONTEXT: IProfileContext = {
           retry: "",
           mandatoryError: "",
         },
-        icons: {
-          success: "",
-          error: "",
-          form_fill: "",
-          sending: "",
-          offline: "",
-        },
         name: "",
         fields: [],
       },
@@ -142,8 +135,8 @@ export const DEFAULT_APP_CONTEXT: IAppContext = {
       osName: "Android",
       browserName: "Chrome",
       isMobile: false,
-      online: true,
     },
+    preloadedAssets: [],
     messages: {
       homepage: {
         title: "",
