@@ -332,7 +332,7 @@ export const ContactForm = (props: IContactFormProps) => {
           return (
             <FormField
               key={index}
-              autoFocus={index === 0}
+              autoFocus={index === 0 && online}
               field={field}
               fieldValue={formData[fieldName]}
               fieldValid={formValid?.[fieldName]}
