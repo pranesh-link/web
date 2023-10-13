@@ -79,6 +79,8 @@ export const About = (props: IAboutProps) => {
         className="contact-modal-content"
         isOpen={isContactFormOpen}
         ariaHideApp={false}
+        shouldCloseOnOverlayClick
+        onRequestClose={() => setIsContactFormOpen(false)}
       >
         <ModalContentWrap direction="column" className="contact-modal">
           <ModalBanner className="header" />
