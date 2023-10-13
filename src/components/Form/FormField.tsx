@@ -16,6 +16,7 @@ interface IFormFieldProps {
   fieldError?: string;
   fieldValue: string;
   isFormSubmit: boolean;
+  autoFocus: boolean;
   updateInput: (value: string, field: string) => void;
   validateField: (value: string, field: string) => void;
 }
@@ -26,6 +27,7 @@ export const FormField = (props: IFormFieldProps) => {
     fieldValue,
     fieldError,
     isFormSubmit,
+    autoFocus,
     updateInput,
     validateField,
   } = props;
@@ -84,6 +86,7 @@ export const FormField = (props: IFormFieldProps) => {
               className={classNames({
                 error: fieldValid === false,
               })}
+              autoFocus={autoFocus}
               placeholder={field.placeholder}
               disabled={isFormSubmit}
               value={fieldValue}
@@ -97,7 +100,7 @@ export const FormField = (props: IFormFieldProps) => {
         {field.type === FIELD_TYPES.MOBILE && (
           <>
             <PhoneInput
-              placeholder="place holder"
+              autoFocus={autoFocus}
               disabled={isFormSubmit}
               defaultCountry="IN"
               international
@@ -115,6 +118,7 @@ export const FormField = (props: IFormFieldProps) => {
           <>
             <TextArea
               placeholder={field.placeholder}
+              autoFocus={autoFocus}
               disabled={isFormSubmit}
               className={classNames({
                 error: fieldValid === false,

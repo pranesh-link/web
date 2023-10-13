@@ -57,9 +57,6 @@ function preloadImage(src: string) {
 }
 
 const preloadSrcList: Record<string, string> = {
-  sending: SendingAnimation,
-  success: SuccessAnimation,
-  error: ErrorAnimation,
   offline: OfflineAnimation,
 };
 
@@ -80,9 +77,10 @@ export const ContactForm = (props: IContactFormProps) => {
   const [formError, setFormError] = useState<ContactFormError | null>(null);
   const [formDisabled, setFormDisabled] = useState<boolean>(true);
   const [contactFormStatus, setContactFormStatus] = useState(
-    isNetworkOnline()
-      ? CONTACT_FORM_STATUS.FORM_FILL
-      : CONTACT_FORM_STATUS.OFFLINE,
+    // isNetworkOnline()
+    //   ? CONTACT_FORM_STATUS.FORM_FILL
+    //   : CONTACT_FORM_STATUS.OFFLINE,
+    CONTACT_FORM_STATUS.OFFLINE,
   );
   const [online, setOnline] = useState(isNetworkOnline());
   const [allowRetry, setAllowRetry] = useState(true);
@@ -96,10 +94,10 @@ export const ContactForm = (props: IContactFormProps) => {
   const formStatusIconMap = useMemo(() => {
     return {
       [CONTACT_FORM_STATUS.FORM_FILL]: "",
-      [CONTACT_FORM_STATUS.SENDING]: assetImages?.[0]?.currentSrc,
-      [CONTACT_FORM_STATUS.SUCCESS]: assetImages?.[1]?.currentSrc,
-      [CONTACT_FORM_STATUS.ERROR]: assetImages?.[2]?.currentSrc,
-      [CONTACT_FORM_STATUS.OFFLINE]: assetImages?.[3]?.currentSrc,
+      [CONTACT_FORM_STATUS.SENDING]: SendingAnimation,
+      [CONTACT_FORM_STATUS.SUCCESS]: SuccessAnimation,
+      [CONTACT_FORM_STATUS.ERROR]: ErrorAnimation,
+      [CONTACT_FORM_STATUS.OFFLINE]: assetImages?.[0]?.currentSrc,
     };
   }, [assetImages]);
 
@@ -303,7 +301,7 @@ export const ContactForm = (props: IContactFormProps) => {
 
   useEffect(() => {
     if (online && contactFormStatus === CONTACT_FORM_STATUS.OFFLINE) {
-      setContactFormStatus(CONTACT_FORM_STATUS.FORM_FILL);
+      // setContactFormStatus(CONTACT_FORM_STATUS.FORM_FILL);
     }
   }, [online, contactFormStatus]);
 
@@ -330,75 +328,76 @@ export const ContactForm = (props: IContactFormProps) => {
 
   return (
     <>
-      <>
-        <ModalComponent
-          isOpen={displayStatus}
-          className="contact-form-status-modal-content"
-          shouldCloseOnOverlayClick={true}
-          onRequestClose={() => {
-            if (isError || isOffline) {
-              setContactFormStatus(CONTACT_FORM_STATUS.FORM_FILL);
-            }
-          }}
-        >
-          <StatusMessage
-            direction={isError || isOffline ? "column" : "row"}
-            justifyContent="space-evenly"
-            alignItems="center"
-            className={classNames({ "high-border": isSending || isSuccess })}
-          >
-            {isError || isOffline ? (
-              <FlexBox alignItems="center">
-                <IconMessage />
-              </FlexBox>
-            ) : (
-              <IconMessage />
-            )}
-
-            <Retry
-              href=""
-              className={classNames({
-                hide: !allowRetry,
-              })}
-              onClick={sendEmail}
-            >
-              {displayStatusInfo.retryMessage}
-            </Retry>
-          </StatusMessage>
-        </ModalComponent>
-        <Form onSubmit={sendEmail}>
-          {form.fields.map((field, index) => {
-            const fieldName = field.name as ContactFormFields;
-            return (
-              <FormField
-                key={index}
-                field={field}
-                fieldValue={formData[fieldName]}
-                fieldValid={formValid?.[fieldName]}
-                fieldError={formError?.[fieldName]}
-                updateInput={updateInput}
-                validateField={validateField}
-                isFormSubmit={isFormSubmit}
-              />
-            );
+      <ModalComponent
+        isOpen={displayStatus}
+        className="contact-form-status-modal-content"
+        shouldCloseOnOverlayClick={true}
+        onRequestClose={() => {
+          if (isError || isOffline) {
+            setContactFormStatus(CONTACT_FORM_STATUS.FORM_FILL);
+          }
+        }}
+      >
+        <StatusMessage
+          direction={isError || isOffline ? "column" : "row"}
+          justifyContent="space-evenly"
+          alignItems="center"
+          className={classNames(contactFormStatus, {
+            "high-border": isSending || isSuccess,
           })}
+        >
+          {isError || isOffline ? (
+            <FlexBox alignItems="center">
+              <IconMessage />
+            </FlexBox>
+          ) : (
+            <IconMessage />
+          )}
 
-          <FieldWrap justifyContent="space-between" alignItems="center">
-            <ActionBtn className="close" onClick={closeModal}>
-              {LABEL_TEXT.close}
-            </ActionBtn>
-            <FormSubmit
-              disabled={formDisabled || isFormSubmit}
-              className={classNames({
-                disabled: formDisabled || isFormSubmit,
-              })}
-              type="submit"
-            >
-              {isFormSubmit ? form.submittingLabel : form.submitLabel}
-            </FormSubmit>
-          </FieldWrap>
-        </Form>
-      </>
+          <Retry
+            href=""
+            className={classNames({
+              hide: !allowRetry,
+            })}
+            onClick={sendEmail}
+          >
+            {displayStatusInfo.retryMessage}
+          </Retry>
+        </StatusMessage>
+      </ModalComponent>
+      <Form onSubmit={sendEmail}>
+        {form.fields.map((field, index) => {
+          const fieldName = field.name as ContactFormFields;
+          return (
+            <FormField
+              key={index}
+              autoFocus={index === 0}
+              field={field}
+              fieldValue={formData[fieldName]}
+              fieldValid={formValid?.[fieldName]}
+              fieldError={formError?.[fieldName]}
+              updateInput={updateInput}
+              validateField={validateField}
+              isFormSubmit={isFormSubmit}
+            />
+          );
+        })}
+
+        <FieldWrap justifyContent="space-between" alignItems="center">
+          <ActionBtn className="close" onClick={closeModal}>
+            {LABEL_TEXT.close}
+          </ActionBtn>
+          <FormSubmit
+            disabled={formDisabled || isFormSubmit}
+            className={classNames({
+              disabled: formDisabled || isFormSubmit,
+            })}
+            type="submit"
+          >
+            {isFormSubmit ? form.submittingLabel : form.submitLabel}
+          </FormSubmit>
+        </FieldWrap>
+      </Form>
     </>
   );
 };
@@ -415,8 +414,11 @@ const Form = styled.form`
 const StatusMessage = styled(FlexBox)`
   background: #f0f0f0;
   border-radius: 15px;
-  padding: 10px 15px;
+  padding: 15px 15px;
   margin: 0 10px;
+  &.error {
+    padding: 15px 25px;
+  }
   &.high-border {
     border-radius: 30px;
     padding: 5px 20px;
