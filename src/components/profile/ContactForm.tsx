@@ -26,7 +26,7 @@ import { ModalComponent } from "../../common/Component";
 import SendingAnimation from "../../assets/loading-animation.gif";
 import SuccessAnimation from "../../assets/success-animation.gif";
 import ErrorAnimation from "../../assets/error-animation.gif";
-import OfflineAnimation from "../../assets/offline-animation.gif";
+import { AppContext } from "../../store/app/context";
 
 type ContactFormFields = "userName" | "userMobile" | "userEmail" | "message";
 type ContactFormData = {
@@ -43,23 +43,6 @@ const DEFAULT_FORM_DATA = {
   message: "",
 };
 
-function preloadImage(src: string) {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = function () {
-      resolve(img);
-    };
-    img.onerror = img.onabort = function () {
-      reject(src);
-    };
-    img.src = src;
-  });
-}
-
-const preloadSrcList: Record<string, string> = {
-  offline: OfflineAnimation,
-};
-
 interface IContactFormProps {
   closeModal: () => void;
 }
@@ -70,6 +53,9 @@ export const ContactForm = (props: IContactFormProps) => {
       forms: { contactForm: form },
     },
   } = useContext(ProfileContext);
+  const {
+    data: { preloadedAssets },
+  } = useContext(AppContext);
   const { statusMessages, messages } = form;
   const { closeModal } = props;
   const [formData, setFormData] = useState<ContactFormData>(DEFAULT_FORM_DATA);
@@ -77,14 +63,12 @@ export const ContactForm = (props: IContactFormProps) => {
   const [formError, setFormError] = useState<ContactFormError | null>(null);
   const [formDisabled, setFormDisabled] = useState<boolean>(true);
   const [contactFormStatus, setContactFormStatus] = useState(
-    // isNetworkOnline()
-    //   ? CONTACT_FORM_STATUS.FORM_FILL
-    //   : CONTACT_FORM_STATUS.OFFLINE,
-    CONTACT_FORM_STATUS.OFFLINE,
+    isNetworkOnline()
+      ? CONTACT_FORM_STATUS.FORM_FILL
+      : CONTACT_FORM_STATUS.OFFLINE,
   );
   const [online, setOnline] = useState(isNetworkOnline());
   const [allowRetry, setAllowRetry] = useState(true);
-  const [assetImages, setAssetImages] = useState<any>([]);
 
   const resetFields = () => {
     setFormData(DEFAULT_FORM_DATA);
@@ -97,9 +81,11 @@ export const ContactForm = (props: IContactFormProps) => {
       [CONTACT_FORM_STATUS.SENDING]: SendingAnimation,
       [CONTACT_FORM_STATUS.SUCCESS]: SuccessAnimation,
       [CONTACT_FORM_STATUS.ERROR]: ErrorAnimation,
-      [CONTACT_FORM_STATUS.OFFLINE]: assetImages?.[0]?.currentSrc,
+      [CONTACT_FORM_STATUS.OFFLINE]: preloadedAssets.find(asset =>
+        asset.includes("offline"),
+      ),
     };
-  }, [assetImages]);
+  }, [preloadedAssets]);
 
   const handleMailRequest = () => {
     setContactFormStatus(CONTACT_FORM_STATUS.SENDING);
@@ -275,33 +261,8 @@ export const ContactForm = (props: IContactFormProps) => {
   });
 
   useEffect(() => {
-    let isCancelled = false;
-    if (online) {
-      async function effect() {
-        if (isCancelled) {
-          return;
-        }
-        const imagesPromiseList: Promise<any>[] = [];
-        for (const i in preloadSrcList) {
-          imagesPromiseList.push(preloadImage(preloadSrcList[i as string]));
-        }
-        const images = await Promise.all(imagesPromiseList);
-        setAssetImages(images);
-        if (isCancelled) {
-          return;
-        }
-      }
-      effect();
-    }
-
-    return () => {
-      isCancelled = true;
-    };
-  }, [online]);
-
-  useEffect(() => {
     if (online && contactFormStatus === CONTACT_FORM_STATUS.OFFLINE) {
-      // setContactFormStatus(CONTACT_FORM_STATUS.FORM_FILL);
+      setContactFormStatus(CONTACT_FORM_STATUS.FORM_FILL);
     }
   }, [online, contactFormStatus]);
 

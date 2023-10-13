@@ -1,5 +1,6 @@
 import { MouseEventHandler } from "react";
 import styled from "styled-components";
+import OfflineAnimation from "../assets/offline-animation.gif";
 
 export const ActionBtn = styled.button`
   border: none;
@@ -15,11 +16,11 @@ export const FlexBox = styled.div<{
   flexBasis?: string;
 }>`
   display: flex;
-  flex-direction: ${(props) => props.direction || "row"};
-  justify-content: ${(props) => props.justifyContent || "normal"};
-  align-items: ${(props) => props.alignItems || "normal"};
-  flex-wrap: ${(props) => props.flexWrap || "nowrap"};
-  flex-basis: ${(props) => props.flexBasis || "auto"};
+  flex-direction: ${props => props.direction || "row"};
+  justify-content: ${props => props.justifyContent || "normal"};
+  align-items: ${props => props.alignItems || "normal"};
+  flex-wrap: ${props => props.flexWrap || "nowrap"};
+  flex-basis: ${props => props.flexBasis || "auto"};
 `;
 
 export const FlexBoxSection = styled.section<{
@@ -30,11 +31,11 @@ export const FlexBoxSection = styled.section<{
   flexBasis?: string;
 }>`
   display: flex;
-  flex-direction: ${(props) => props.direction || "row"};
-  justify-content: ${(props) => props.justifyContent || "normal"};
-  align-items: ${(props) => props.alignItems || "normal"};
-  flex-wrap: ${(props) => props.flexWrap || "nowrap"};
-  flex-basis: ${(props) => props.flexBasis || "auto"};
+  flex-direction: ${props => props.direction || "row"};
+  justify-content: ${props => props.justifyContent || "normal"};
+  align-items: ${props => props.alignItems || "normal"};
+  flex-wrap: ${props => props.flexWrap || "nowrap"};
+  flex-basis: ${props => props.flexBasis || "auto"};
   &.short-info {
     padding-left: 10px;
   }
@@ -42,7 +43,7 @@ export const FlexBoxSection = styled.section<{
 
 export const Grid = styled.div<{ gridTemplateColumns?: string }>`
   display: grid;
-  grid-template-columns: ${(props) => props.gridTemplateColumns || "1fr"};
+  grid-template-columns: ${props => props.gridTemplateColumns || "1fr"};
 `;
 
 export type FLEX_WRAP =
@@ -277,9 +278,9 @@ export const SectionsWrapper = styled.section<{
         }
       }
       .profile-image {
-        width: ${(props) =>
+        width: ${props =>
           props.isMobile && !props.isExport ? "125px" : "200px"};
-        height: ${(props) =>
+        height: ${props =>
           props.isMobile && !props.isExport ? "125px" : "200px"};
         border-radius: 50%;
         border: 2px solid #dddbca;
@@ -390,10 +391,10 @@ export const MobilePWAWrapper = styled(PWAWrapper)`
 `;
 
 export const LoaderImg = styled.img<{ isMobile: boolean }>`
-  width: ${(props) => (props.isMobile ? "75px" : "100px")};
+  width: ${props => (props.isMobile ? "75px" : "100px")};
   position: absolute;
   top: 40%;
-  left: ${(props) => (props.isMobile ? "40%" : "45%")};
+  left: ${props => (props.isMobile ? "40%" : "45%")};
   animation: loader-spin infinite 1s linear;
 
   @keyframes loader-spin {
@@ -414,12 +415,12 @@ export const Overlay = styled.div<{
   background?: string;
 }>`
   position: fixed;
-  ${(props) => props.top && `top: ${props.top}px`};
-  ${(props) => props.bottom && `bottom: ${props.bottom}px`};
-  height: ${(props) => props.height || 0}px;
-  background: ${(props) => props.background || "#fff"};
+  ${props => props.top && `top: ${props.top}px`};
+  ${props => props.bottom && `bottom: ${props.bottom}px`};
+  height: ${props => props.height || 0}px;
+  background: ${props => props.background || "#fff"};
   width: 100%;
-  opacity: ${(props) => props.opacity};
+  opacity: ${props => props.opacity};
 `;
 
 export const ModalBanner = styled.div`
@@ -481,3 +482,7 @@ export const ModalContentWrap = styled(FlexBox)`
     overflow-y: scroll;
   }
 `;
+
+export const preloadSrcList: Record<string, string> = {
+  offline: OfflineAnimation,
+};

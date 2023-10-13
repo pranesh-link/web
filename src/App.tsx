@@ -1,6 +1,10 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import React, { Suspense, useEffect, useState } from "react";
-import { getJsonResponse, getProfileJsonResponse } from "./common/Utils";
+import {
+  getJsonResponse,
+  getProfileJsonResponse,
+  preloadImage,
+} from "./common/Utils";
 import {
   CONFIG_REF_INFO,
   CONFIG_TYPES,
@@ -8,7 +12,7 @@ import {
   ROUTES,
 } from "./common/constants";
 import { ISectionInfo } from "./store/profile/types";
-import { LoaderImg } from "./common/Elements";
+import { LoaderImg, preloadSrcList } from "./common/Elements";
 import LoaderIcon from "./assets/loader-icon.svg";
 import { IConfigData, IConfigDataParams } from "./store/common/types";
 import { HomePage } from "./pages/HomePage";
@@ -60,6 +64,7 @@ function App() {
   const [basicConfigData, setBasicConfigData] = useState<IAppConfigData>(
     DEFAULT_APP_CONTEXT.data,
   );
+  const [preloadAssetImages, setPreloadAssetImages] = useState<any>([]);
 
   const fetchSections = async (
     jsonToFetch: string,
@@ -82,6 +87,29 @@ function App() {
   useEffect(() => {
     window.addEventListener("resize", setViewportProps);
     return () => window.removeEventListener("resize", setViewportProps);
+  }, []);
+
+  useEffect(() => {
+    let isCancelled = false;
+    async function effect() {
+      if (isCancelled) {
+        return;
+      }
+      const imagesPromiseList: Promise<any>[] = [];
+      for (const i in preloadSrcList) {
+        imagesPromiseList.push(preloadImage(preloadSrcList[i as string]));
+      }
+      const images = await Promise.all(imagesPromiseList);
+      setPreloadAssetImages(images.map(image => image?.currentSrc));
+      if (isCancelled) {
+        return;
+      }
+    }
+    effect();
+
+    return () => {
+      isCancelled = true;
+    };
   }, []);
 
   useEffect(() => {
@@ -133,6 +161,7 @@ function App() {
       value={{
         data: {
           ...basicConfigData,
+          preloadedAssets: preloadAssetImages,
           currentDevice: { osName, browserName, isMobile },
         },
       }}
