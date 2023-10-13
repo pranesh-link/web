@@ -68,7 +68,7 @@ export const ContactForm = (props: IContactFormProps) => {
       : CONTACT_FORM_STATUS.OFFLINE,
   );
   const [online, setOnline] = useState(isNetworkOnline());
-  const [allowRetry, setAllowRetry] = useState(true);
+  const [allowRetry, setAllowRetry] = useState(false);
 
   const resetFields = () => {
     setFormData(DEFAULT_FORM_DATA);
