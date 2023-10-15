@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  build:
+  bump_version:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
@@ -15,5 +15,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          commit-message: "CI: bumps version to {{version}} [skip ci]"
+          commit-message: "CI: bumps version to {{version}}"
           tag-prefix: "v"
