@@ -1,4 +1,4 @@
-name: Create Tag
+name: Create Tag and bump version
 
 on:
   push:
@@ -10,8 +10,10 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: Klemensas/action-autotag@stable
+      - name: "Automated Version Bump"
+        uses: "phips28/gh-action-bump-version@master"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          tag_prefix: "v"
-          version: "${{ steps.previous_step.outputs.version }}"
+          commit-message: "CI: bumps version to {{version}} [skip ci]"
+          tag-prefix: "v"
