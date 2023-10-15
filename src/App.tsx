@@ -161,6 +161,7 @@ function App() {
       value={{
         data: {
           ...basicConfigData,
+          isAdmin: !!isAdmin,
           preloadedAssets: preloadAssetImages,
           currentDevice: { osName, browserName, isMobile },
         },
