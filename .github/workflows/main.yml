@@ -19,6 +19,7 @@ jobs:
           tag-prefix: "v"
           version-type: "major"
   deploy:
+    runs-on: macos-latest
     steps:
       - name: Trigger AWS CodePipeline
         uses: zulhfreelancer/aws-codepipeline-action@v1.0.7
