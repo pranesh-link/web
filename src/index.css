@@ -82,6 +82,26 @@ li,
   justify-content: center;
 }
 
+.hide {
+  display: none;
+}
+
+.version-modal {
+  background: #f0f0f0;
+  padding: 25px;
+  border-radius: 50px;
+  width: fit-content;
+  margin: 0 auto;
+  font-size: 18px;
+  font-weight: 600;
+  color: #3e3e3e;
+}
+
+.version-modal span {
+  font-style: italic;
+  font-weight: bold;
+}
+
 @media only screen and (max-width: 992px) {
   .ReactModal__Content {
     margin: 0 15px;
@@ -90,8 +110,10 @@ li,
   ::-webkit-scrollbar {
     width: 7px;
   }
-}
 
-.hide {
-  display: none;
+  .version-modal {
+    font-size: 15px;
+    margin: 0 auto;
+    letter-spacing: 0.5px;
+  }
 }

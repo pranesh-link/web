@@ -168,12 +168,13 @@ export const SectionsWrapper = styled.section<{
     }
 
     &.links {
-      padding: 15px 0;
+      padding: 15px 0 5px;
       background-color: #222222;
       position: fixed;
       bottom: 0;
       width: 100%;
       margin-bottom: 0;
+      z-index: 2;
       &.export {
         position: static;
         background-color: transparent;
@@ -486,3 +487,21 @@ export const ModalContentWrap = styled(FlexBox)`
 export const preloadSrcList: Record<string, string> = {
   offline: OfflineAnimation,
 };
+
+export const Version = styled.a`
+  color: #f0f0f0;
+  margin-top: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 16px;
+  background: rgb(52, 152, 219);
+  opacity: 0.7;
+  padding: 5px 10px;
+  border-radius: 20px;
+  width: fit-content;
+  margin: 0 auto;
+  margin-bottom: 60px;
+  &:hover {
+    opacity: 1;
+  }
+`;
