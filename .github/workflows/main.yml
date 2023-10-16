@@ -1,4 +1,4 @@
-name: Create Tag and bump version
+name: Create Tag, bump version and trigger AWS Codepipeline
 
 on:
   push:
@@ -15,5 +15,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          commit-message: "CI: bumps version to {{version}}"
+          commit-message: "CI version bump to {{version}}"
           tag-prefix: "v"
+          version-type: "major"
+  deploy:
+    steps:
+      - name: Trigger AWS CodePipeline
+        uses: zulhfreelancer/aws-codepipeline-action@v1.0.7
+        with:
+          aws-region: "us-west-1"
+          aws-access-key: ${{ secrets.AWS_PIPELINE_ACCESS_KEY }}
+          aws-secret-key: ${{ secrets.AWS_PIPELINE_SECRET_KEY }}
+          pipeline-name: "profile"

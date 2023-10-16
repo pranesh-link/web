@@ -8,7 +8,6 @@ import { IProfileData } from "../../store/profile/types";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { Overlay } from "../../common/Elements";
-
 interface ProfileProps {
   profileData: IProfileData;
   refs: {
@@ -94,13 +93,13 @@ export const Profile = (props: ProfileProps) => {
             <Overlay
               background="#f0f0f0"
               height={15}
-              bottom={isMobile ? "0" : "55"}
+              bottom={isMobile ? "0" : "50"}
               opacity={0.9}
             />
             <Overlay
               background="#f0f0f0"
               height={15}
-              bottom={isMobile ? "15" : "70"}
+              bottom={isMobile ? "15" : "65"}
               opacity={0.6}
             />
           </>

@@ -1,6 +1,6 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import styled from "styled-components";
-import { FlexBox, SectionsWrapper } from "../../common/Elements";
+import { FlexBox, SectionsWrapper, Version } from "../../common/Elements";
 import { ProfileContext } from "../../store/profile/context";
 import { Skills } from "./Sections/Skills";
 import { About } from "./Sections/About";
@@ -9,7 +9,8 @@ import { Contact } from "./Sections/Contact";
 import classNames from "classnames";
 import { ResumeExperiences } from "./Sections/ResumeExperiences";
 import { SECTION_ORDER_DISPLAY } from "../../common/constants";
-
+import { version } from "../../../package.json";
+import { ModalComponent } from "../../common/Component";
 interface IProfileSectionsProps {
   exportProfile?: () => void;
 }
@@ -30,6 +31,7 @@ const ProfileSections = (props: IProfileSectionsProps) => {
   const { shortDesc, name, currentJobRole } = header;
   const { ABOUTME, EDUCATION, SKILLS, EXPERIENCES, CONTACT } =
     SECTION_ORDER_DISPLAY;
+  const [displayVersionModal, setDisplayVersionModal] = useState(false);
 
   const AboutComp = useMemo(
     () => (
@@ -113,35 +115,58 @@ const ProfileSections = (props: IProfileSectionsProps) => {
   );
 
   return (
-    <Wrapper
-      className={classNames({
-        export: isExport,
-        "add-margin-top": !isMobile && isInstallBannerOpen,
-        "add-margin-bottom": isMobile && isInstallBannerOpen,
-      })}
-    >
-      {!isExport && <ShortDesc>{shortDesc}</ShortDesc>}
-      <PageHeader>
-        {HorizontalSep}
-        <span>{name}</span>
-        {HorizontalSep}
-      </PageHeader>
-      <FlexBox direction="column" alignItems="center">
-        <CurrentJobRole>{currentJobRole}</CurrentJobRole>
-        <Separator className={classNames({ export: isExport })} />
-      </FlexBox>
-      <SectionsWrapper
-        isMobile={isMobile}
-        isExport={isExport}
-        className={classNames({ export: isExport })}
+    <>
+      <ModalComponent
+        isOpen={displayVersionModal}
+        shouldCloseOnOverlayClick={true}
+        onRequestClose={() => setDisplayVersionModal(false)}
+        className="version-modal"
       >
-        {reOrderedSectionComponents.map((section, index) => {
-          return section.display !== false ? (
-            <div key={index}>{section.component}</div>
-          ) : null;
+        <FlexBox justifyContent="center">
+          <p>
+            App version: <span>v{version}</span>
+          </p>
+        </FlexBox>
+      </ModalComponent>
+      <Wrapper
+        className={classNames({
+          export: isExport,
+          "add-margin-top": !isMobile && isInstallBannerOpen,
+          "add-margin-bottom": isMobile && isInstallBannerOpen,
         })}
-      </SectionsWrapper>
-    </Wrapper>
+      >
+        {!isExport && <ShortDesc>{shortDesc}</ShortDesc>}
+        <PageHeader>
+          {HorizontalSep}
+          <span>{name}</span>
+          {HorizontalSep}
+        </PageHeader>
+        <FlexBox direction="column" alignItems="center">
+          <CurrentJobRole>{currentJobRole}</CurrentJobRole>
+          <Separator className={classNames({ export: isExport })} />
+        </FlexBox>
+        <SectionsWrapper
+          isMobile={isMobile}
+          isExport={isExport}
+          className={classNames({ export: isExport })}
+        >
+          {reOrderedSectionComponents.map((section, index) => {
+            return section.display !== false ? (
+              <div key={index}>{section.component}</div>
+            ) : null;
+          })}
+          <Version
+            href=""
+            onClick={e => {
+              e.preventDefault();
+              setDisplayVersionModal(true);
+            }}
+          >
+            v{version}
+          </Version>
+        </SectionsWrapper>
+      </Wrapper>
+    </>
   );
 };
 
