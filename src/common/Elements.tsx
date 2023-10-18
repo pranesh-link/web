@@ -380,6 +380,7 @@ export const PWAWrapper = styled(FlexBox)<{ top?: string; bottom?: string }>`
 `;
 
 export const MobilePWAWrapper = styled(PWAWrapper)`
+  z-index: 5;
   p {
     font-size: 14px;
     padding: 0 10px;
