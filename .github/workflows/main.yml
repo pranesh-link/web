@@ -19,6 +19,7 @@ jobs:
           tag-prefix: "v"
           version-type: "minor"
   deploy:
+    needs: bump_version
     runs-on: macos-latest
     steps:
       - name: "Trigger AWS CodePipeline"
