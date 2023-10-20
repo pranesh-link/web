@@ -11,8 +11,6 @@ import classNames from "classnames";
 import styled from "styled-components";
 import { ProfileContext } from "../../../store/profile/context";
 import { SECTIONS } from "../../../common/constants";
-import { version } from "../../../../package.json";
-import { AppContext } from "../../../store/app/context";
 interface IContactProps {
   links?: ISectionInfo;
   refObj?: React.MutableRefObject<any>;
@@ -21,9 +19,6 @@ interface IContactProps {
 export const Contact = (props: IContactProps) => {
   const { links: propsLinks, refObj: propsRefObj } = props;
   const { isMobile } = useContext(ProfileContext);
-  const {
-    data: { isAdmin },
-  } = useContext(AppContext);
   let {
     data: {
       sections: { links },
@@ -44,9 +39,6 @@ export const Contact = (props: IContactProps) => {
       id={SECTIONS.LINKS}
       ref={refObj}
     >
-      {isAdmin && (
-        <div style={{ background: "red", color: "#fff" }}>{version}</div>
-      )}
       {valueIsArray(links.info) && valueIsLinkInfo(links.info)
         ? filteredLinks.map((link, index) => (
             <div

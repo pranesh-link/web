@@ -136,6 +136,7 @@ export const DEFAULT_APP_CONTEXT: IAppContext = {
       browserName: "Chrome",
       isMobile: false,
     },
+    version: "1.0.0",
     isAdmin: false,
     preloadedAssets: [],
     messages: {

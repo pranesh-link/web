@@ -11,6 +11,7 @@ export interface IAppConfigData {
     browserName: string;
     isMobile: boolean;
   };
+  version: string;
   isAdmin: boolean;
   preloadedAssets: string[];
   pwa: IPWA;
