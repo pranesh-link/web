@@ -23,6 +23,7 @@ import {
   browserName,
   isMobile as isMobileDevice,
 } from "react-device-detect";
+import { version } from "../package.json";
 
 const DEFAULT_CONFIG_DATA: IConfigData = {
   jsonConfig: {
@@ -164,6 +165,7 @@ function App() {
           isAdmin: !!isAdmin,
           preloadedAssets: preloadAssetImages,
           currentDevice: { osName, browserName, isMobile },
+          version,
         },
       }}
     >

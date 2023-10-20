@@ -3,7 +3,12 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Transition } from "react-transition-group";
 import styled from "styled-components";
 import HamBurgerIcon from "../../assets/burgericon.svg";
-import { ActionBtn, FlexBox, FlexBoxSection } from "../../common/Elements";
+import {
+  ActionBtn,
+  FlexBox,
+  FlexBoxSection,
+  Version,
+} from "../../common/Elements";
 import MenuBar from "./MenuBar";
 import CloseIcon from "../../assets/close-icon.svg";
 import { ComponentType } from "react";
@@ -11,6 +16,7 @@ import { TransitionProps } from "react-transition-group/Transition";
 import MobileApplicationIcon from "../../assets/mobile-application-icon.svg";
 import { AppContext } from "../../store/app/context";
 import { isSupportedBrowserAndOS } from "../../common/Utils";
+import { VersionModal } from "../../common/VersionModal";
 
 const TransitionComponent = Transition as ComponentType<TransitionProps>;
 
@@ -28,6 +34,7 @@ export const HamBurgerMenu = (props: IHamburgerMenuProps) => {
   const contentRef = React.useRef<HTMLDivElement>(null);
   const {
     data: {
+      version,
       appConfig: {
         pwa: { browsers, os },
       },
@@ -41,6 +48,8 @@ export const HamBurgerMenu = (props: IHamburgerMenuProps) => {
   );
 
   const [hamburgerClicked, setHamburgerClicked] = useState<boolean>(false);
+  const [displayVersionModal, setDisplayVersionModal] =
+    useState<boolean>(false);
   const scrollbarSize =
     window.innerWidth - document.documentElement.clientWidth;
 
@@ -65,6 +74,10 @@ export const HamBurgerMenu = (props: IHamburgerMenuProps) => {
 
   return (
     <>
+      <VersionModal
+        displayVersionModal={displayVersionModal}
+        setDisplayVersionModal={setDisplayVersionModal}
+      />
       <IconWrap onTouchMove={() => setIsOpen(true)}>
         <Icon
           alt=""
@@ -117,6 +130,16 @@ export const HamBurgerMenu = (props: IHamburgerMenuProps) => {
                   </ActionBtn>
                 </FlexBox>
               )}
+              <Version
+                href=""
+                onClick={e => {
+                  e.preventDefault();
+                  setIsOpen(false);
+                  setDisplayVersionModal(true);
+                }}
+              >
+                v{version}
+              </Version>
             </ContentSection>
             <RightSection onClick={() => setIsOpen(false)} />
           </Menu>

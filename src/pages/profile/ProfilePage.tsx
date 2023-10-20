@@ -42,7 +42,6 @@ const ProfilePage = (props: ProfilePageProps) => {
   const experienceRef = useRef(null);
   const educationRef = useRef(null);
   const contactRef = useRef(null);
-
   const { pwa, hasError, isExport, isMobile, profileConfig, retryBaseInfo } =
     props;
   const [retry, setRetry] = useState<boolean>(true);

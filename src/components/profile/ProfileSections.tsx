@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import styled from "styled-components";
 import { FlexBox, SectionsWrapper, Version } from "../../common/Elements";
 import { ProfileContext } from "../../store/profile/context";
@@ -9,8 +9,8 @@ import { Contact } from "./Sections/Contact";
 import classNames from "classnames";
 import { ResumeExperiences } from "./Sections/ResumeExperiences";
 import { SECTION_ORDER_DISPLAY } from "../../common/constants";
-import { version } from "../../../package.json";
-import { ModalComponent } from "../../common/Component";
+import { AppContext } from "../../store/app/context";
+import { VersionModal } from "../../common/VersionModal";
 interface IProfileSectionsProps {
   exportProfile?: () => void;
 }
@@ -28,10 +28,13 @@ const ProfileSections = (props: IProfileSectionsProps) => {
     isInstallBannerOpen,
     data: { header },
   } = React.useContext(ProfileContext);
+  const {
+    data: { version },
+  } = useContext(AppContext);
+  const [displayVersionModal, setDisplayVersionModal] = useState(false);
   const { shortDesc, name, currentJobRole } = header;
   const { ABOUTME, EDUCATION, SKILLS, EXPERIENCES, CONTACT } =
     SECTION_ORDER_DISPLAY;
-  const [displayVersionModal, setDisplayVersionModal] = useState(false);
 
   const AboutComp = useMemo(
     () => (
@@ -116,18 +119,10 @@ const ProfileSections = (props: IProfileSectionsProps) => {
 
   return (
     <>
-      <ModalComponent
-        isOpen={displayVersionModal}
-        shouldCloseOnOverlayClick={true}
-        onRequestClose={() => setDisplayVersionModal(false)}
-        className="version-modal"
-      >
-        <FlexBox justifyContent="center">
-          <p>
-            App version: <span>v{version}</span>
-          </p>
-        </FlexBox>
-      </ModalComponent>
+      <VersionModal
+        displayVersionModal={displayVersionModal}
+        setDisplayVersionModal={setDisplayVersionModal}
+      />
       <Wrapper
         className={classNames({
           export: isExport,
@@ -155,15 +150,17 @@ const ProfileSections = (props: IProfileSectionsProps) => {
               <div key={index}>{section.component}</div>
             ) : null;
           })}
-          <Version
-            href=""
-            onClick={e => {
-              e.preventDefault();
-              setDisplayVersionModal(true);
-            }}
-          >
-            v{version}
-          </Version>
+          {!isMobile && (
+            <Version
+              href=""
+              onClick={e => {
+                e.preventDefault();
+                setDisplayVersionModal(true);
+              }}
+            >
+              v{version}
+            </Version>
+          )}
         </SectionsWrapper>
       </Wrapper>
     </>
