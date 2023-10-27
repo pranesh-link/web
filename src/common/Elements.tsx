@@ -372,6 +372,9 @@ export const PWAWrapper = styled(FlexBox)<{ top?: string; bottom?: string }>`
       padding: 10px 0;
       border-radius: 25px;
       font-size: 1.2em;
+      a {
+        text-decoration: none;
+      }
     }
     &.not-now {
       color: rgb(170, 187, 187, 0.8);

@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { FlexBox, MobilePWAWrapper, PWAWrapper } from "./common/Elements";
 import {
   getLocalStorage,
+  getWebUrl,
   isBannerHidden,
   isSupportedBrowserAndOS,
   setLocalStorage,
@@ -13,20 +14,22 @@ import { AppContext } from "./store/app/context";
 interface PWABannerProps {
   pwa: IPWA;
   isMobile: boolean;
-  isInstallBannerOpen: boolean;
   hasPWAInstalled: boolean;
   isInstallPromptSupported: boolean;
-  setIsInstallBannerOpen: (isInstallBannerOpen: boolean) => void;
+  isInstallBannerOpen: boolean;
+  isStandalone: boolean;
+  setIsInstallBannerOpen: (display: boolean) => void;
   onClickInstall: Function;
 }
 export const PWABanner = (props: PWABannerProps) => {
   const {
     isMobile,
     hasPWAInstalled,
-    isInstallBannerOpen,
-    setIsInstallBannerOpen,
     onClickInstall,
     isInstallPromptSupported,
+    isInstallBannerOpen,
+    setIsInstallBannerOpen,
+    isStandalone,
     pwa: { messages, bannerExpiryTime },
   } = props;
 
@@ -52,11 +55,32 @@ export const PWABanner = (props: PWABannerProps) => {
     </button>
   );
 
-  const PWAInstallMessage = <p>{messages.install}</p>;
+  const isWebWithPWA = useMemo(
+    () => !isStandalone && hasPWAInstalled,
+
+    [isStandalone, hasPWAInstalled],
+  );
+
+  const PWAInstallMessage = (
+    <p>{isWebWithPWA ? messages.relatedApp : messages.install}</p>
+  );
 
   const InstallButton = (
-    <button className="install" onClick={async () => await onClickInstall()}>
-      {messages.yes}
+    <button
+      className="install"
+      onClick={async () => {
+        if (!isWebWithPWA) {
+          await onClickInstall();
+        }
+      }}
+    >
+      {isWebWithPWA ? (
+        <a href={getWebUrl()} target="_blank" rel="noreferrer">
+          {messages.open}
+        </a>
+      ) : (
+        messages.yes
+      )}
     </button>
   );
 
@@ -82,8 +106,8 @@ export const PWABanner = (props: PWABannerProps) => {
     isInstallPromptSupported,
     setIsInstallBannerOpen,
   ]);
-  console.log("isMobile && hasPWASupport", isMobile && hasPWASupport);
-  return !hasPWAInstalled && isInstallPromptSupported && isInstallBannerOpen ? (
+
+  return !isStandalone && (isInstallPromptSupported || isInstallBannerOpen) ? (
     <>
       {isMobile && hasPWASupport && (
         <MobilePWAWrapper

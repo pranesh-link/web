@@ -95,6 +95,8 @@ export interface IPWA {
     install: string;
     yes: string;
     no: string;
+    open: string;
+    relatedApp: string;
   };
   bannerExpiryTime: number;
 }
