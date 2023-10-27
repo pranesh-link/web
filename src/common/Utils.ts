@@ -1,4 +1,10 @@
-import { CORS_MODE, DEV_JSON_BASE_URL, PROD_JSON_BASE_URL } from "./constants";
+import {
+  CORS_MODE,
+  DEV_JSON_BASE_URL,
+  LOCAL_DEV_URL,
+  PROD_JSON_BASE_URL,
+  PROD_WEB_URL,
+} from "./constants";
 import {
   DownloadType,
   IDetailInfo,
@@ -172,3 +178,6 @@ export function preloadImage(src: string) {
     img.src = src;
   });
 }
+
+export const getWebUrl = () =>
+  process.env.NODE_ENV === "development" ? LOCAL_DEV_URL : PROD_WEB_URL;

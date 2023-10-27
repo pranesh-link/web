@@ -61,12 +61,11 @@ const ProfilePage = (props: ProfilePageProps) => {
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] =
     useState<boolean>(false);
+  const [isStandalone, setIsStandalone] = useState(false);
 
   const onClickInstall = async () => {
     const didInstall = await promptInstall();
     if (didInstall) {
-      setIsInstallBannerOpen(false);
-      setLocalStorage("isInstallBannerOpen", false);
       setHasPWAInstalled(true);
       setLocalStorage("hasPWAInstalled", true);
     }
@@ -125,6 +124,21 @@ const ProfilePage = (props: ProfilePageProps) => {
     }
   }, [retry, profileConfig]);
 
+  useEffect(() => {
+    window
+      .matchMedia("(display-mode: standalone)")
+      .addEventListener("change", ({ matches }) => {
+        setIsStandalone(matches);
+      });
+
+    return () =>
+      window
+        .matchMedia("(display-mode: standalone)")
+        .removeEventListener("change", ({ matches }) => {
+          setIsStandalone(matches);
+        });
+  }, []);
+
   return isFetchingData ? (
     <LoaderImg isMobile={isMobile} src={LoaderIcon} />
   ) : (
@@ -161,9 +175,8 @@ const ProfilePage = (props: ProfilePageProps) => {
             isDownloading={isDownloading}
             isMobile={isMobile}
             isInstallBannerOpen={
-              !hasPWAInstalled &&
-              isInstallPromptSupported &&
-              !!isInstallBannerOpen
+              !isStandalone &&
+              (isInstallPromptSupported || !!isInstallBannerOpen)
             }
             hasPWAInstalled={hasPWAInstalled}
             isHamburgerMenuOpen={isHamburgerMenuOpen}
@@ -178,6 +191,7 @@ const ProfilePage = (props: ProfilePageProps) => {
           <PWABanner
             pwa={pwa}
             isMobile={isMobile}
+            isStandalone={isStandalone}
             isInstallBannerOpen={!!isInstallBannerOpen}
             hasPWAInstalled={hasPWAInstalled}
             isInstallPromptSupported={isInstallPromptSupported}
