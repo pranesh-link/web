@@ -16,7 +16,7 @@ export const PROFILE_PDF_NAME = "Pranesh_Profile";
 export const MESSAGES = {
   genericError: "Something went wrong!",
 };
-export const PROD_WEB_URL = "https://pranesh.link";
+export const PROD_WEB_URL = "https://pranesh.link/profile";
 export const LOCAL_DEV_URL = "http://localhost:3000";
 
 export const SHORT_INFOS: ShortInfosType[] = [
