@@ -67,6 +67,8 @@ const ProfilePage = (props: ProfilePageProps) => {
   );
 
   const onClickInstall = async () => {
+    setIsInstallBannerOpen(false);
+    setLocalStorage("isInstallBannerOpen", false);
     await promptInstall();
   };
 
@@ -142,6 +144,8 @@ const ProfilePage = (props: ProfilePageProps) => {
     window.addEventListener("appinstalled", e => {
       setHasPWAInstalled(true);
       setLocalStorage("hasPWAInstalled", true);
+      setIsInstallBannerOpen(true);
+      setLocalStorage("isInstallBannerOpen", true);
     });
 window.addEventListener('beforeinstallprompt', function(e) {
   clearLocalStorage('hasPWAInstalled')
