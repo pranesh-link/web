@@ -107,7 +107,7 @@ export const PWABanner = (props: PWABannerProps) => {
     setIsInstallBannerOpen,
   ]);
 
-  return !isStandalone && (isInstallPromptSupported || isInstallBannerOpen) ? (
+  return !isStandalone && (isInstallPromptSupported && isInstallBannerOpen) ? (
     <>
       {isMobile && hasPWASupport && (
         <MobilePWAWrapper
