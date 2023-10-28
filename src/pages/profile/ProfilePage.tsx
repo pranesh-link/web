@@ -61,14 +61,12 @@ const ProfilePage = (props: ProfilePageProps) => {
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] =
     useState<boolean>(false);
-  const [isStandalone, setIsStandalone] = useState(false);
+  const [isStandalone, setIsStandalone] = useState(
+    window.matchMedia("(display-mode: standalone)").matches,
+  );
 
   const onClickInstall = async () => {
-    const didInstall = await promptInstall();
-    if (didInstall) {
-      setHasPWAInstalled(true);
-      setLocalStorage("hasPWAInstalled", true);
-    }
+    await promptInstall();
   };
 
   useEffect(() => {
@@ -137,6 +135,15 @@ const ProfilePage = (props: ProfilePageProps) => {
         .removeEventListener("change", ({ matches }) => {
           setIsStandalone(matches);
         });
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("appinstalled", e => {
+      setHasPWAInstalled(true);
+      setLocalStorage("hasPWAInstalled", true);
+    });
+
+    return () => window.removeEventListener("appinstalled", e => {});
   }, []);
 
   return isFetchingData ? (

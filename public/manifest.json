@@ -13,16 +13,8 @@
       "type": "image/png"
     }
   ],
-  "start_url": "/",
-  "scope": "/",
+  "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff",
-  "prefer_related_applications": true,
-  "related_applications": [
-    {
-      "platform": "webapp",
-      "url": "https://pranesh.link/manifest.json"
-    }
-  ]
+  "background_color": "#f0f0f0"
 }
