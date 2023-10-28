@@ -12,6 +12,7 @@ import {
 import {
   getLocalStorage,
   setLocalStorage,
+  clearLocalStorage,
   getProfileJsonResponse,
 } from "../../common/Utils";
 import {
@@ -142,8 +143,15 @@ const ProfilePage = (props: ProfilePageProps) => {
       setHasPWAInstalled(true);
       setLocalStorage("hasPWAInstalled", true);
     });
+window.addEventListener('beforeinstallprompt', function(e) {
+  clearLocalStorage('hasPWAInstalled')
+})
 
-    return () => window.removeEventListener("appinstalled", e => {});
+    return () => { window.removeEventListener("appinstalled", e => {});
+window.removeEventListener('beforeinstallprompt', function(e) {
+  clearLocalStorage('hasPWAInstalled')
+})
+}
   }, []);
 
   return isFetchingData ? (
