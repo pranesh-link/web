@@ -135,6 +135,7 @@ export const PWABanner = (props: PWABannerProps) => {
 };
 
 const MobilePWAControls = styled(FlexBox)`
+  margin-top: 10px;
   width: 100%;
   margin-right: 50px;
 `;
