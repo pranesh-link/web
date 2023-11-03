@@ -56,6 +56,7 @@ export const DEFAULT_PROFILE_CONTEXT: IProfileContext = {
     },
     forms: {
       contactForm: {
+        key: "",
         actionButtonLabel: "",
         submitLabel: "",
         submittingLabel: "",
@@ -242,9 +243,11 @@ export enum CONTACT_FORM_STATUS {
 }
 
 export const EMAILJS_CONFIG = {
-  SERVICE_ID: "service_h7f2fbh",
-  TEMPLATE_ID: "template_ccivvus",
-  PUBLIC_KEY: "YM2FkZ24YRF2W_Vgl",
+  SERVICE_ID: "U2FsdGVkX1+/Ekcp8WIEIevCcut8R0pL2cDmNPDFEQg=",
+  TEMPLATE_ID:
+    "U2FsdGVkX1+WVTFxJh0xy9cHz88fqnR1GURfEw0qLwV60o1uRo6hB12u8pNe5ody",
+  PUBLIC_KEY:
+    "U2FsdGVkX1/M46+97vn9sj2D3LbKO9dKmwqIO+Zh21fONTOa8xN+aMKg0/zeLgj6",
 };
 
 export const DEFAULT_PROFILE_CONFIG_DATA = {

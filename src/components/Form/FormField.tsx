@@ -75,7 +75,6 @@ export const FormField = (props: IFormFieldProps) => {
     [field.maxLength, fieldValue],
   );
 
-  console.log("fieldError", field.label, fieldError, errorMessage);
   return (
     <FieldWrap direction="column">
       <InputWrap alignItems="center">

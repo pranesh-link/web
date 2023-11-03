@@ -27,6 +27,7 @@ import SendingAnimation from "../../assets/loading-animation.gif";
 import SuccessAnimation from "../../assets/success-animation.gif";
 import ErrorAnimation from "../../assets/error-animation.gif";
 import { AppContext } from "../../store/app/context";
+import CryptoJS from "crypto-js";
 
 type ContactFormFields = "userName" | "userMobile" | "userEmail" | "message";
 type ContactFormData = {
@@ -87,30 +88,34 @@ export const ContactForm = (props: IContactFormProps) => {
     };
   }, [preloadedAssets]);
 
+  const { decrypt } = CryptoJS.AES;
+
+  const getDecryptedConfig = (config: string[]) =>
+    config.map(item => decrypt(item, form.key).toString(CryptoJS.enc.Utf8));
+
   const handleMailRequest = () => {
     setContactFormStatus(CONTACT_FORM_STATUS.SENDING);
     setAllowRetry(false);
-    emailjs
-      .send(
-        EMAILJS_CONFIG.SERVICE_ID,
-        EMAILJS_CONFIG.TEMPLATE_ID,
-        formData,
-        EMAILJS_CONFIG.PUBLIC_KEY,
-      )
-      .then(
-        () => {
-          setContactFormStatus(CONTACT_FORM_STATUS.SUCCESS);
-          resetFields();
-          setTimeout(
-            () => setContactFormStatus(CONTACT_FORM_STATUS.FORM_FILL),
-            3000,
-          );
-        },
-        () => {
-          setContactFormStatus(CONTACT_FORM_STATUS.ERROR);
-          setAllowRetry(true);
-        },
-      );
+    const [serviceId, templateId, publicKey] = getDecryptedConfig([
+      EMAILJS_CONFIG.SERVICE_ID,
+      EMAILJS_CONFIG.TEMPLATE_ID,
+      EMAILJS_CONFIG.PUBLIC_KEY,
+    ]);
+
+    emailjs.send(serviceId, templateId, formData, publicKey).then(
+      () => {
+        setContactFormStatus(CONTACT_FORM_STATUS.SUCCESS);
+        resetFields();
+        setTimeout(
+          () => setContactFormStatus(CONTACT_FORM_STATUS.FORM_FILL),
+          3000,
+        );
+      },
+      () => {
+        setContactFormStatus(CONTACT_FORM_STATUS.ERROR);
+        setAllowRetry(true);
+      },
+    );
   };
 
   const sendEmail = (

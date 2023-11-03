@@ -11,6 +11,7 @@ import { ResumeExperiences } from "./Sections/ResumeExperiences";
 import { SECTION_ORDER_DISPLAY } from "../../common/constants";
 import { AppContext } from "../../store/app/context";
 import { VersionModal } from "../../common/VersionModal";
+import usePWA from "react-pwa-install-prompt";
 interface IProfileSectionsProps {
   exportProfile?: () => void;
 }
@@ -35,6 +36,7 @@ const ProfileSections = (props: IProfileSectionsProps) => {
   const { shortDesc, name, currentJobRole } = header;
   const { ABOUTME, EDUCATION, SKILLS, EXPERIENCES, CONTACT } =
     SECTION_ORDER_DISPLAY;
+  const { isInstallPromptSupported } = usePWA();
 
   const AboutComp = useMemo(
     () => (
@@ -126,7 +128,8 @@ const ProfileSections = (props: IProfileSectionsProps) => {
       <Wrapper
         className={classNames({
           export: isExport,
-          "add-margin-top": !isMobile && isInstallBannerOpen,
+          "add-margin-top":
+            !isMobile && isInstallBannerOpen && isInstallPromptSupported,
           "add-margin-bottom": isMobile && isInstallBannerOpen,
         })}
       >

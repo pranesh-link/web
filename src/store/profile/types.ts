@@ -27,6 +27,7 @@ export interface IFormField {
 export type MailStatusType = Record<CONTACT_FORM_STATUS, string>;
 export interface IFormInfo {
   name: string;
+  key: string;
   actionButtonLabel: string;
   submitLabel: string;
   submittingLabel: string;
