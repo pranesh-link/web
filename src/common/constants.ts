@@ -278,3 +278,6 @@ export const CONFIG_TYPES = {
   APPCONFIG: "appConfig",
   PROFILECONFIG: "profileConfig",
 };
+
+export const PDF_NAME = "Pranesh_Resume.pdf";
+export const SERVER_FILES_LOC = "/files";
