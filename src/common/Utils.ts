@@ -2,8 +2,10 @@ import {
   CORS_MODE,
   DEV_JSON_BASE_URL,
   LOCAL_DEV_URL,
+  PDF_NAME,
   PROD_JSON_BASE_URL,
   PROD_WEB_URL,
+  SERVER_FILES_LOC,
 } from "./constants";
 import {
   DownloadType,
@@ -101,17 +103,17 @@ export const isBannerHidden = (hideTime: number) => {
   return false;
 };
 
-export const getJsonBaseUrl = () =>
+export const getServerBaseUrl = () =>
   process.env.NODE_ENV === "development"
     ? DEV_JSON_BASE_URL
     : PROD_JSON_BASE_URL;
 
-export const getIconUrl = (url: string) => `${getJsonBaseUrl()}/${url}`;
+export const getIconUrl = (url: string) => `${getServerBaseUrl()}/${url}`;
 
 export const isNetworkOnline = () => navigator.onLine;
 
 export const getJsonResponse = async (jsonToFetch: string, data?: any) => {
-  const JSON_BASE_URL = getJsonBaseUrl();
+  const JSON_BASE_URL = getServerBaseUrl();
   let hasError = false;
   data = data || {};
   try {
@@ -131,6 +133,28 @@ export const getProfileJsonResponse = async (
   data: IHeader | ISectionInfo | DownloadType | IFormInfo,
 ) => {
   return getJsonResponse(jsonToFetch, data);
+};
+
+export const getResumePdfUrl = () =>
+  `${getServerBaseUrl()}${SERVER_FILES_LOC}/${PDF_NAME}`;
+
+export const getPdfFile = async (url: string) => {
+  let hasError = false;
+  let objectUrl = "";
+  try {
+    if (url) {
+      const response = await fetch(url, {
+        mode: CORS_MODE,
+      });
+      const blob = await response.blob();
+      objectUrl = URL.createObjectURL(blob);
+    } else {
+      hasError = true;
+    }
+  } catch (e) {
+    hasError = true;
+  }
+  return { objectUrl, hasError };
 };
 
 export const getIconUrlByExportFlag = (

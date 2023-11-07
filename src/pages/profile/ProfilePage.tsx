@@ -147,15 +147,16 @@ const ProfilePage = (props: ProfilePageProps) => {
       setIsInstallBannerOpen(true);
       setLocalStorage("isInstallBannerOpen", true);
     });
-window.addEventListener('beforeinstallprompt', function(e) {
-  clearLocalStorage('hasPWAInstalled')
-})
+    window.addEventListener("beforeinstallprompt", function (e) {
+      clearLocalStorage("hasPWAInstalled");
+    });
 
-    return () => { window.removeEventListener("appinstalled", e => {});
-window.removeEventListener('beforeinstallprompt', function(e) {
-  clearLocalStorage('hasPWAInstalled')
-})
-}
+    return () => {
+      window.removeEventListener("appinstalled", e => {});
+      window.removeEventListener("beforeinstallprompt", function (e) {
+        clearLocalStorage("hasPWAInstalled");
+      });
+    };
   }, []);
 
   return isFetchingData ? (

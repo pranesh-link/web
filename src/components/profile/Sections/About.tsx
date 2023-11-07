@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   FlexBoxSection,
   Desc,
@@ -12,16 +12,17 @@ import {
   getFilteredLinks,
   getIconUrl,
   getIconUrlByExportFlag,
-  getJsonBaseUrl,
   getObjectKeyValuesByIndex,
   isEmptyObject,
   valueIsArray,
   valueIsLinkInfo,
+  getPdfFile,
+  getResumePdfUrl,
 } from "../../../common/Utils";
 import styled from "styled-components";
 import { ProfileContext } from "../../../store/profile/context";
 import { AboutMeDetails } from "./AboutMeDetails";
-import { COPIED, NOT_COPIED } from "../../../common/constants";
+import { COPIED, NOT_COPIED, PDF_NAME } from "../../../common/constants";
 import { ContactForm } from "../ContactForm";
 import { ModalComponent } from "../../../common/Component";
 import { ContactMe } from "../../../common/ContactMe";
@@ -47,6 +48,8 @@ export const About = (props: IAboutProps) => {
     {},
   );
   const [showCopy, setShowCopy] = useState<boolean>(false);
+  const [pdfUrl, setPdfUrl] = useState("");
+  const downloadRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
     const [key, value] = getObjectKeyValuesByIndex(copyState, 0);
@@ -62,16 +65,35 @@ export const About = (props: IAboutProps) => {
     }
   }, [copyState]);
 
-  const downloadProfile = useCallback(() => {
-    const { type, staticFileUrl } = download;
-    if (type === "static") {
-      window.open(`${getJsonBaseUrl()}/${staticFileUrl}`);
-    } else {
-      props.exportProfile();
-    }
-  }, [download, props]);
+  const getBlob = async () => getPdfFile(getResumePdfUrl());
+
+  useEffect(() => {
+    (async () => {
+      const blob = await getBlob();
+      setPdfUrl(blob.hasError ? "" : blob.objectUrl);
+    })();
+  }, []);
 
   const filteredLinks = getFilteredLinks(links.info as ILink[]);
+
+  const downloadFile = (url: string) => {
+    if (downloadRef.current !== null) {
+      downloadRef.current.download = PDF_NAME;
+      downloadRef.current.href = url;
+      downloadRef.current?.click();
+    }
+  };
+
+  const downloadResume = async () => {
+    let url = pdfUrl;
+    if (!url) {
+      const blob = await getBlob();
+      url = blob.objectUrl;
+      downloadFile(url);
+    } else {
+      downloadFile(url);
+    }
+  };
 
   return (
     <>
@@ -196,14 +218,23 @@ export const About = (props: IAboutProps) => {
                   !isDownloading &&
                   !hasDownloadedProfile && (
                     <>
+                      <a
+                        href="placeholder_href"
+                        ref={downloadRef}
+                        download={PDF_NAME}
+                        style={{ display: "none" }}
+                      >
+                        Placeholder
+                      </a>
                       <img
                         className="download"
                         alt="Click here"
                         height="25px"
-                        onClick={downloadProfile}
+                        onClick={downloadResume}
                         src={getIconUrl(download.download.icon)}
                         loading="lazy"
                       />
+
                       <span className="download-text">
                         {download.download.message}
                       </span>
