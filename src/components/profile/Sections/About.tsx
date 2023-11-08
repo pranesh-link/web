@@ -16,8 +16,8 @@ import {
   isEmptyObject,
   valueIsArray,
   valueIsLinkInfo,
-  getPdfFile,
-  getResumePdfUrl,
+  getPdfUrl,
+  getPdfBlob,
 } from "../../../common/Utils";
 import styled from "styled-components";
 import { ProfileContext } from "../../../store/profile/context";
@@ -26,6 +26,7 @@ import { COPIED, NOT_COPIED, PDF_NAME } from "../../../common/constants";
 import { ContactForm } from "../ContactForm";
 import { ModalComponent } from "../../../common/Component";
 import { ContactMe } from "../../../common/ContactMe";
+import { AppContext } from "../../../store/app/context";
 
 interface IAboutProps {
   exportProfile: () => void;
@@ -44,11 +45,23 @@ export const About = (props: IAboutProps) => {
     },
     refs: { homeRef: refObj },
   } = React.useContext(ProfileContext);
+  const {
+    data: {
+      preloadedFiles,
+      appConfig: { preloadSrcList },
+    },
+  } = React.useContext(AppContext);
+  const preloadedPdfBlob = preloadedFiles.find(
+    item => item.id === "resume",
+  )?.file;
+  const pdfFileName = preloadSrcList.find(
+    item => item.id === "resume",
+  )?.fileName;
   const [copyState, setCopyState] = useState<Record<string, { state: string }>>(
     {},
   );
   const [showCopy, setShowCopy] = useState<boolean>(false);
-  const [pdfUrl, setPdfUrl] = useState("");
+  const [pdfUrl] = useState<string>(preloadedPdfBlob || "");
   const downloadRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
@@ -65,20 +78,11 @@ export const About = (props: IAboutProps) => {
     }
   }, [copyState]);
 
-  const getBlob = async () => getPdfFile(getResumePdfUrl());
-
-  useEffect(() => {
-    (async () => {
-      const blob = await getBlob();
-      setPdfUrl(blob.hasError ? "" : blob.objectUrl);
-    })();
-  }, []);
-
   const filteredLinks = getFilteredLinks(links.info as ILink[]);
 
   const downloadFile = (url: string) => {
     if (downloadRef.current !== null) {
-      downloadRef.current.download = PDF_NAME;
+      downloadRef.current.download = pdfFileName || "";
       downloadRef.current.href = url;
       downloadRef.current?.click();
     }
@@ -87,7 +91,7 @@ export const About = (props: IAboutProps) => {
   const downloadResume = async () => {
     let url = pdfUrl;
     if (!url) {
-      const blob = await getBlob();
+      const blob = await getPdfBlob(getPdfUrl(pdfFileName || ""));
       url = blob.objectUrl;
       downloadFile(url);
     } else {

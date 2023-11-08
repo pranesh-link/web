@@ -2,8 +2,10 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import React, { Suspense, useEffect, useState } from "react";
 import {
   getJsonResponse,
+  getPdfBlob,
+  getPdfUrl,
   getProfileJsonResponse,
-  preloadImage,
+  toDataURL,
 } from "./common/Utils";
 import {
   CONFIG_REF_INFO,
@@ -12,7 +14,7 @@ import {
   ROUTES,
 } from "./common/constants";
 import { ISectionInfo } from "./store/profile/types";
-import { LoaderImg, preloadSrcList } from "./common/Elements";
+import { LoaderImg, getImage } from "./common/Elements";
 import LoaderIcon from "./assets/loader-icon.svg";
 import { IConfigData, IConfigDataParams } from "./store/common/types";
 import { HomePage } from "./pages/HomePage";
@@ -50,6 +52,7 @@ const DEFAULT_CONFIG_DATA: IConfigData = {
       browsers: [],
       os: [],
     },
+    preloadSrcList: [],
   },
 };
 
@@ -66,6 +69,12 @@ function App() {
     DEFAULT_APP_CONTEXT.data,
   );
   const [preloadAssetImages, setPreloadAssetImages] = useState<any>([]);
+  const [preloadedFiles, setPreloadedFiles] = useState<
+    { id: string; file: string }[]
+  >([]);
+  const [preloadSrcList, setPreloadSrcList] = useState(
+    DEFAULT_CONFIG_DATA.appConfig.preloadSrcList,
+  );
 
   const fetchSections = async (
     jsonToFetch: string,
@@ -97,11 +106,26 @@ function App() {
         return;
       }
       const imagesPromiseList: Promise<any>[] = [];
-      for (const i in preloadSrcList) {
-        imagesPromiseList.push(preloadImage(preloadSrcList[i as string]));
+      const filesList: { id: string; file: string }[] = [];
+      for (const item of preloadSrcList) {
+        if (item.type === "image") {
+          const image = await getImage(item.fileName);
+          imagesPromiseList.push(toDataURL(image, item.id));
+        }
+        if (item.fileLocation === "server" && item.type === "pdf") {
+          const pdfFile = await getPdfBlob(getPdfUrl(item.fileName));
+          filesList.push({ id: item.id, file: pdfFile.objectUrl });
+        }
       }
+
       const images = await Promise.all(imagesPromiseList);
-      setPreloadAssetImages(images.map(image => image?.currentSrc));
+      setPreloadAssetImages(
+        images.map(item => ({
+          id: item.id,
+          image: item.image,
+        })),
+      );
+      setPreloadedFiles(filesList);
       if (isCancelled) {
         return;
       }
@@ -111,7 +135,7 @@ function App() {
     return () => {
       isCancelled = true;
     };
-  }, []);
+  }, [preloadSrcList]);
 
   useEffect(() => {
     (async () => {
@@ -123,6 +147,7 @@ function App() {
           )) as unknown as { data: IConfigData }
         ).data;
         setConfigData(config);
+        setPreloadSrcList(config.appConfig.preloadSrcList);
         const {
           jsonConfig: { defaultConfig },
           appConfig,
@@ -164,6 +189,7 @@ function App() {
           ...basicConfigData,
           isAdmin: !!isAdmin,
           preloadedAssets: preloadAssetImages,
+          preloadedFiles,
           currentDevice: { osName, browserName, isMobile },
           version,
         },

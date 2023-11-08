@@ -2,7 +2,6 @@ import {
   CORS_MODE,
   DEV_JSON_BASE_URL,
   LOCAL_DEV_URL,
-  PDF_NAME,
   PROD_JSON_BASE_URL,
   PROD_WEB_URL,
   SERVER_FILES_LOC,
@@ -135,8 +134,8 @@ export const getProfileJsonResponse = async (
   return getJsonResponse(jsonToFetch, data);
 };
 
-export const getResumePdfUrl = () =>
-  `${getServerBaseUrl()}${SERVER_FILES_LOC}/${PDF_NAME}`;
+export const getPdfUrl = (fileName: string) =>
+  `${getServerBaseUrl()}${SERVER_FILES_LOC}/${fileName}`;
 
 export const getPdfFile = async (url: string) => {
   let hasError = false;
@@ -156,6 +155,8 @@ export const getPdfFile = async (url: string) => {
   }
   return { objectUrl, hasError };
 };
+
+export const getPdfBlob = async (url: string) => getPdfFile(url);
 
 export const getIconUrlByExportFlag = (
   iconUrl?: string,
@@ -190,18 +191,16 @@ export const isSupportedBrowserAndOS = (
   return isSupportedOS && isSupportedBrowser;
 };
 
-export function preloadImage(src: string) {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = function () {
-      resolve(img);
-    };
-    img.onerror = img.onabort = function () {
-      reject(src);
-    };
-    img.src = src;
+export const toDataURL = async (url: string, imageId: string) => {
+  const response = await fetch(url);
+  const blobResponse = await response.blob();
+  return await new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve({ id: imageId, image: reader.result });
+    reader.onerror = reject;
+    reader.readAsDataURL(blobResponse);
   });
-}
+};
 
 export const getWebUrl = () =>
   process.env.NODE_ENV === "development" ? LOCAL_DEV_URL : PROD_WEB_URL;

@@ -2854,6 +2854,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/crypto-js@^4.2.1":
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/@types/crypto-js/-/crypto-js-4.2.1.tgz#480edd76991a63050cb88db1a8840758c55a7135"
+  integrity sha512-FSPGd9+OcSok3RsM0UZ/9fcvMOXJ1ENE/ZbLfOPlBWj7BgXtEAM8VYfTtT760GiLbQIMoVozwVuisjvsVwqYWw==
+
 "@types/eslint@^7.2.0", "@types/eslint@^7.29.0":
   version "7.29.0"
   resolved "https://registry.yarnpkg.com/@types/eslint/-/eslint-7.29.0.tgz#e56ddc8e542815272720bb0b4ccc2aff9c3e1c78"

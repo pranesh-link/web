@@ -40,6 +40,12 @@ interface IPWAConfig {
 export interface IAppConfig {
   homepage: IHomePageConfig;
   pwa: IPWAConfig;
+  preloadSrcList: {
+    id: string;
+    type: string;
+    fileName: string;
+    fileLocation: string;
+  }[];
 }
 export interface IConfigData {
   jsonConfig: {
