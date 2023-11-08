@@ -131,6 +131,7 @@
   },
   "devDependencies": {
     "@types/classnames": "2.3.1",
+    "@types/crypto-js": "^4.2.1",
     "@types/react-modal": "^3.16.0",
     "@types/react-phone-number-input": "^3.0.15",
     "@types/react-table": "6.7.15",

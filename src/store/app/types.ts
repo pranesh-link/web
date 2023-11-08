@@ -13,7 +13,7 @@ export interface IAppConfigData {
   };
   version: string;
   isAdmin: boolean;
-  preloadedAssets: string[];
+  preloadedAssets: { id: string; image: string }[];
   pwa: IPWA;
   maintenance: IMaintenance;
   links: ISectionInfo;

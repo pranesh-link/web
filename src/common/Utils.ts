@@ -190,18 +190,16 @@ export const isSupportedBrowserAndOS = (
   return isSupportedOS && isSupportedBrowser;
 };
 
-export function preloadImage(src: string) {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = function () {
-      resolve(img);
-    };
-    img.onerror = img.onabort = function () {
-      reject(src);
-    };
-    img.src = src;
+export const toDataURL = async (url: string, imageId: string) => {
+  const response = await fetch(url);
+  const blobResponse = await response.blob();
+  return await new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve({ id: imageId, image: reader.result });
+    reader.onerror = reject;
+    reader.readAsDataURL(blobResponse);
   });
-}
+};
 
 export const getWebUrl = () =>
   process.env.NODE_ENV === "development" ? LOCAL_DEV_URL : PROD_WEB_URL;

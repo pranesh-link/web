@@ -3,7 +3,7 @@ import React, { Suspense, useEffect, useState } from "react";
 import {
   getJsonResponse,
   getProfileJsonResponse,
-  preloadImage,
+  toDataURL,
 } from "./common/Utils";
 import {
   CONFIG_REF_INFO,
@@ -104,13 +104,18 @@ function App() {
       for (const item of preloadSrcList) {
         if (item.type === "image") {
           const image = await getImage(item.fileName);
-          imagesPromiseList.push(preloadImage(image));
+          imagesPromiseList.push(toDataURL(image, item.id));
         }
       }
 
       const images = await Promise.all(imagesPromiseList);
       setPreloadAssetImages(
-        images.map(image => new URL(image?.currentSrc)?.pathname),
+        images.map(item => {
+          return {
+            id: item.id,
+            image: item.image,
+          };
+        }),
       );
       if (isCancelled) {
         return;

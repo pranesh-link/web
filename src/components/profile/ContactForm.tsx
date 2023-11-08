@@ -82,9 +82,9 @@ export const ContactForm = (props: IContactFormProps) => {
       [CONTACT_FORM_STATUS.SENDING]: SendingAnimation,
       [CONTACT_FORM_STATUS.SUCCESS]: SuccessAnimation,
       [CONTACT_FORM_STATUS.ERROR]: ErrorAnimation,
-      [CONTACT_FORM_STATUS.OFFLINE]: preloadedAssets.find(asset =>
-        asset.includes("offline"),
-      ),
+      [CONTACT_FORM_STATUS.OFFLINE]: preloadedAssets.find(
+        asset => asset.id === "offlineAnimation",
+      )?.image,
     };
   }, [preloadedAssets]);
 
@@ -172,7 +172,6 @@ export const ContactForm = (props: IContactFormProps) => {
     () => contactFormStatus === CONTACT_FORM_STATUS.OFFLINE,
     [contactFormStatus],
   );
-  console.log("formStatusIcon map", formStatusIconMap);
   const updateInput = (value: string, field: string) =>
     setFormData({ ...formData, [field as ContactFormFields]: value });
 
@@ -250,7 +249,6 @@ export const ContactForm = (props: IContactFormProps) => {
   ]);
 
   const StatusIcon = () => {
-    console.log("status icon", displayStatusInfo.icon);
     return (
       <>
         {displayStatusInfo.icon && (
