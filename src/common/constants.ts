@@ -145,6 +145,7 @@ export const DEFAULT_APP_CONTEXT: IAppContext = {
     version: "1.0.0",
     isAdmin: false,
     preloadedAssets: [],
+    preloadedFiles: [],
     messages: {
       homepage: {
         title: "",
@@ -163,6 +164,7 @@ export const DEFAULT_APP_CONTEXT: IAppContext = {
         browsers: [],
         os: [],
       },
+      preloadSrcList: [],
     },
   },
 };

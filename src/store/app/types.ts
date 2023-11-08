@@ -14,6 +14,7 @@ export interface IAppConfigData {
   version: string;
   isAdmin: boolean;
   preloadedAssets: { id: string; image: string }[];
+  preloadedFiles: { id: string; file: string }[];
   pwa: IPWA;
   maintenance: IMaintenance;
   links: ISectionInfo;
