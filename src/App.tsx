@@ -12,7 +12,7 @@ import {
   ROUTES,
 } from "./common/constants";
 import { ISectionInfo } from "./store/profile/types";
-import { LoaderImg, preloadSrcList } from "./common/Elements";
+import { LoaderImg, getImage, preloadSrcList } from "./common/Elements";
 import LoaderIcon from "./assets/loader-icon.svg";
 import { IConfigData, IConfigDataParams } from "./store/common/types";
 import { HomePage } from "./pages/HomePage";
@@ -50,6 +50,7 @@ const DEFAULT_CONFIG_DATA: IConfigData = {
       browsers: [],
       os: [],
     },
+    preloadSrcList: [],
   },
 };
 
@@ -66,6 +67,9 @@ function App() {
     DEFAULT_APP_CONTEXT.data,
   );
   const [preloadAssetImages, setPreloadAssetImages] = useState<any>([]);
+  const [preloadSrcList, setPreloadSrcList] = useState(
+    DEFAULT_CONFIG_DATA.appConfig.preloadSrcList,
+  );
 
   const fetchSections = async (
     jsonToFetch: string,
@@ -97,11 +101,17 @@ function App() {
         return;
       }
       const imagesPromiseList: Promise<any>[] = [];
-      for (const i in preloadSrcList) {
-        imagesPromiseList.push(preloadImage(preloadSrcList[i as string]));
+      for (const item of preloadSrcList) {
+        if (item.type === "image") {
+          const image = await getImage(item.fileName);
+          imagesPromiseList.push(preloadImage(image));
+        }
       }
+
       const images = await Promise.all(imagesPromiseList);
-      setPreloadAssetImages(images.map(image => image?.currentSrc));
+      setPreloadAssetImages(
+        images.map(image => new URL(image?.currentSrc)?.pathname),
+      );
       if (isCancelled) {
         return;
       }
@@ -111,7 +121,7 @@ function App() {
     return () => {
       isCancelled = true;
     };
-  }, []);
+  }, [preloadSrcList]);
 
   useEffect(() => {
     (async () => {
@@ -123,6 +133,7 @@ function App() {
           )) as unknown as { data: IConfigData }
         ).data;
         setConfigData(config);
+        setPreloadSrcList(config.appConfig.preloadSrcList);
         const {
           jsonConfig: { defaultConfig },
           appConfig,

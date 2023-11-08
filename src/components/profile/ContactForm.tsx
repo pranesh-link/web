@@ -172,7 +172,7 @@ export const ContactForm = (props: IContactFormProps) => {
     () => contactFormStatus === CONTACT_FORM_STATUS.OFFLINE,
     [contactFormStatus],
   );
-
+  console.log("formStatusIcon map", formStatusIconMap);
   const updateInput = (value: string, field: string) =>
     setFormData({ ...formData, [field as ContactFormFields]: value });
 
@@ -249,7 +249,8 @@ export const ContactForm = (props: IContactFormProps) => {
     isOffline,
   ]);
 
-  const StatusIcon = memo(() => {
+  const StatusIcon = () => {
+    console.log("status icon", displayStatusInfo.icon);
     return (
       <>
         {displayStatusInfo.icon && (
@@ -258,12 +259,11 @@ export const ContactForm = (props: IContactFormProps) => {
             alt="Form status"
             height="35px"
             src={displayStatusInfo.icon}
-            loading="lazy"
           />
         )}
       </>
     );
-  });
+  };
 
   useEffect(() => {
     if (online && contactFormStatus === CONTACT_FORM_STATUS.OFFLINE) {

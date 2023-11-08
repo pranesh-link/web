@@ -488,6 +488,10 @@ export const ModalContentWrap = styled(FlexBox)`
   }
 `;
 
+export const getImage = async (fileName: string) => {
+  const image = await import(`../assets/${fileName}`);
+  return image.default;
+};
 export const preloadSrcList: Record<string, string> = {
   offline: OfflineAnimation,
 };
