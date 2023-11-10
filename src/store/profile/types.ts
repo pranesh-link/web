@@ -9,6 +9,11 @@ export interface IProfileData {
 
 export type FormType = "contactForm";
 
+interface ILabelValue {
+  label: string;
+  value: string;
+}
+
 export interface IFormField {
   id: string;
   name: string;
@@ -16,12 +21,13 @@ export interface IFormField {
   placeholder: string;
   subType?: string;
   type: string;
-  maxLength: number;
-  regex: string;
+  maxLength?: number;
+  regex?: string;
   messages?: {
     regexError: string;
     fieldError: string;
   };
+  values?: ILabelValue[];
 }
 
 export type MailStatusType = Record<CONTACT_FORM_STATUS, string>;
@@ -30,8 +36,13 @@ export interface IFormInfo {
   key: string;
   actionButtonLabel: string;
   submitLabel: string;
+  defaultMaxLength: number;
   submittingLabel: string;
   statusMessages: MailStatusType;
+  transformFields: {
+    id: string;
+    transform: string;
+  }[];
   messages: {
     mandatoryError: string;
     retry: string;
@@ -190,3 +201,18 @@ export interface IProfileContext {
   isContactFormOpen: boolean;
   setIsContactFormOpen: Function;
 }
+
+export type ContactFormFields =
+  | "userName"
+  | "userMobile"
+  | "userEmail"
+  | "message"
+  | "userSocialMessengers";
+export type ContactFormData = {
+  [key in ContactFormFields]: string | Record<string, boolean>;
+};
+
+export type ContactFormValid = Record<string, boolean>;
+export type ContactFormError = Record<string, string>;
+
+export type ContactFormFieldData = string | Record<string, boolean>;

@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { FlexBox, FlexBoxSection } from "../../common/Elements";
-import { getRemainingCharacters } from "../../common/Utils";
+import {
+  getRemainingCharacters,
+  isStringBooleanRecord,
+} from "../../common/Utils";
 import { IFormField } from "../../store/profile/types";
 import { FIELD_TYPES } from "../../common/constants";
 import classNames from "classnames";
@@ -14,11 +17,19 @@ interface IFormFieldProps {
   field: IFormField;
   fieldValid?: boolean;
   fieldError?: string;
-  fieldValue: string;
+  fieldValue: string | Record<string, boolean>;
   isFormSubmit: boolean;
   autoFocus: boolean;
-  updateInput: (value: string, field: string) => void;
-  validateField: (value: string, field: string) => void;
+  defaultMaxLength: number;
+  updateInput: (
+    value: string | boolean,
+    field: string,
+    valueId?: string,
+  ) => void;
+  validateField: (
+    value: string | Record<string, boolean>,
+    field: string,
+  ) => void;
 }
 export const FormField = (props: IFormFieldProps) => {
   const {
@@ -28,6 +39,7 @@ export const FormField = (props: IFormFieldProps) => {
     fieldError,
     isFormSubmit,
     autoFocus,
+    defaultMaxLength,
     updateInput,
     validateField,
   } = props;
@@ -53,6 +65,13 @@ export const FormField = (props: IFormFieldProps) => {
     }
   };
 
+  const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (isStringBooleanRecord(fieldValue)) {
+      updateInput(!fieldValue[e.target.id], field.name, e.target.id);
+      validateField(fieldValue, field.name);
+    }
+  };
+
   const errorMessage = useMemo(() => {
     let errorMessage;
     switch (fieldError) {
@@ -71,8 +90,20 @@ export const FormField = (props: IFormFieldProps) => {
   }, [field.messages, fieldError, messages.mandatoryError]);
 
   const remainingCharacters = useMemo(
-    () => getRemainingCharacters(fieldValue, field.maxLength),
-    [field.maxLength, fieldValue],
+    () =>
+      getRemainingCharacters(
+        fieldValue as string,
+        field.maxLength || defaultMaxLength,
+      ),
+    [field.maxLength, fieldValue, defaultMaxLength],
+  );
+
+  const showRemainingCharacters = useMemo(
+    () =>
+      [FIELD_TYPES.TEXT, FIELD_TYPES.TEXTAREA, FIELD_TYPES.MOBILE].some(
+        item => field.type === item,
+      ),
+    [field.type],
   );
 
   return (
@@ -88,7 +119,7 @@ export const FormField = (props: IFormFieldProps) => {
               autoFocus={autoFocus}
               placeholder={field.placeholder}
               disabled={isFormSubmit}
-              value={fieldValue}
+              value={fieldValue as string}
               maxLength={field.maxLength}
               type={field.subType ? field.subType : "text"}
               name={field.name}
@@ -108,9 +139,30 @@ export const FormField = (props: IFormFieldProps) => {
               className={classNames("phone-input", {
                 error: fieldValid === false,
               })}
-              value={fieldValue}
+              value={fieldValue as string}
               onChange={handleMobileInputChange}
             />
+          </>
+        )}
+        {field.type === FIELD_TYPES.CHECKBOX && (
+          <>
+            {(field?.values || []).map(item => {
+              return (
+                <FlexBox style={{ width: "100%" }} alignItems="center">
+                  <input
+                    id={item.value}
+                    type="checkbox"
+                    onChange={handleCheckboxChange}
+                    checked={
+                      isStringBooleanRecord(fieldValue)
+                        ? fieldValue[item.value]
+                        : false
+                    }
+                  />
+                  <label>{item.label}</label>
+                </FlexBox>
+              );
+            })}
           </>
         )}
         {field.type === FIELD_TYPES.TEXTAREA && (
@@ -124,7 +176,7 @@ export const FormField = (props: IFormFieldProps) => {
               })}
               maxLength={field.maxLength}
               name={field.name}
-              value={fieldValue}
+              value={fieldValue as string}
               onChange={handleTextChange}
             />
           </>
@@ -132,16 +184,18 @@ export const FormField = (props: IFormFieldProps) => {
       </InputWrap>
       <FlexBox justifyContent="flex-end" alignItems="center">
         {!isMobile && fieldError && <Error>{errorMessage}</Error>}
-        <RemainingCharacters>
-          <span
-            className={classNames({
-              "empty-characters": remainingCharacters === 0,
-            })}
-          >
-            {remainingCharacters}
-          </span>
-          /{field.maxLength}
-        </RemainingCharacters>
+        {showRemainingCharacters && (
+          <RemainingCharacters>
+            <span
+              className={classNames({
+                "empty-characters": remainingCharacters === 0,
+              })}
+            >
+              {remainingCharacters}
+            </span>
+            /{field.maxLength}
+          </RemainingCharacters>
+        )}
       </FlexBox>
     </FieldWrap>
   );

@@ -10,8 +10,13 @@ import emailjs from "@emailjs/browser";
 import styled from "styled-components";
 import { ActionBtn, FlexBox, FlexBoxSection } from "../../common/Elements";
 import classNames from "classnames";
-import { IFormField } from "../../store/profile/types";
-import { validateLength, validateRegex } from "../../common/FormUtils";
+import {
+  ContactFormData,
+  ContactFormError,
+  ContactFormFields,
+  ContactFormValid,
+  IFormField,
+} from "../../store/profile/types";
 import { FormField } from "../Form/FormField";
 import {
   EMAILJS_CONFIG,
@@ -21,27 +26,29 @@ import {
 } from "../../common/constants";
 import { isPossiblePhoneNumber } from "react-phone-number-input";
 import { ProfileContext } from "../../store/profile/context";
-import { isNetworkOnline } from "../../common/Utils";
+import {
+  isNetworkOnline,
+  isString,
+  isStringBooleanRecord,
+} from "../../common/Utils";
 import { ModalComponent } from "../../common/Component";
 import SendingAnimation from "../../assets/loading-animation.gif";
 import SuccessAnimation from "../../assets/success-animation.gif";
 import ErrorAnimation from "../../assets/error-animation.gif";
 import { AppContext } from "../../store/app/context";
 import CryptoJS from "crypto-js";
-
-type ContactFormFields = "userName" | "userMobile" | "userEmail" | "message";
-type ContactFormData = {
-  [key in ContactFormFields]: string;
-};
-
-type ContactFormValid = Record<string, boolean>;
-type ContactFormError = Record<string, string>;
+import {
+  transformMailRequest,
+  validateLength,
+  validateRegex,
+} from "../Form/Utils";
 
 const DEFAULT_FORM_DATA = {
   userName: "",
   userMobile: "",
   userEmail: "",
   message: "",
+  userSocialMessengers: {},
 };
 
 interface IContactFormProps {
@@ -102,7 +109,12 @@ export const ContactForm = (props: IContactFormProps) => {
       EMAILJS_CONFIG.PUBLIC_KEY,
     ]);
 
-    emailjs.send(serviceId, templateId, formData, publicKey).then(
+    const transformedPaylod = transformMailRequest(
+      formData,
+      form.transformFields,
+    );
+
+    emailjs.send(serviceId, templateId, transformedPaylod, publicKey).then(
       () => {
         setContactFormStatus(CONTACT_FORM_STATUS.SUCCESS);
         resetFields();
@@ -172,17 +184,35 @@ export const ContactForm = (props: IContactFormProps) => {
     () => contactFormStatus === CONTACT_FORM_STATUS.OFFLINE,
     [contactFormStatus],
   );
-  const updateInput = (value: string, field: string) =>
-    setFormData({ ...formData, [field as ContactFormFields]: value });
+  const updateInput = (
+    value: string | boolean,
+    field: string,
+    valueId?: string,
+  ) => {
+    if (valueId) {
+      setFormData({
+        ...formData,
+        [field as ContactFormFields]: {
+          ...(formData[field as ContactFormFields] as Record<string, any>),
+          [valueId]: value,
+        },
+      });
+    } else {
+      setFormData({ ...formData, [field as ContactFormFields]: value });
+    }
+  };
 
   const handleSpecialValidations = (
     type: string,
-    fieldValue: string,
+    fieldValue: string | Record<string, boolean> | Object,
     isValid: boolean,
   ) => {
     switch (type) {
       case FIELD_TYPES.MOBILE:
-        isValid = isPossiblePhoneNumber(fieldValue);
+        isValid = isPossiblePhoneNumber(fieldValue as string);
+        break;
+      case FIELD_TYPES.CHECKBOX:
+        isValid = isStringBooleanRecord(fieldValue);
         break;
     }
     return isValid;
@@ -208,17 +238,28 @@ export const ContactForm = (props: IContactFormProps) => {
     return error;
   };
 
-  const validateField = (value: string, field: string) => {
-    const { regex, type } = form.fields.find(
+  const validateField = (
+    value: string | Record<string, boolean>,
+    field: string,
+  ) => {
+    let mandatoryError = false,
+      regexError = false,
+      fieldError = false,
+      isValid = false;
+    const { regex = "", type } = form.fields.find(
       formField => formField.name === field,
     ) as IFormField;
-    const fieldValue = value.trim();
-    let isValid = false;
-    isValid = validateLength(fieldValue);
-    const mandatoryError = !validateLength(fieldValue);
-    const regexError = !validateRegex(fieldValue, regex, isValid);
-    const fieldError = !handleSpecialValidations(type, fieldValue, isValid);
+    let fieldValue = value;
+    if (isString(value)) {
+      fieldValue = value.trim();
+
+      isValid = validateLength(fieldValue);
+      mandatoryError = !validateLength(fieldValue);
+      regexError = !validateRegex(fieldValue, regex, isValid);
+    }
+    fieldError = !handleSpecialValidations(type, fieldValue, isValid);
     isValid = !mandatoryError && !regexError && !fieldError;
+
     let error = "";
     if (mandatoryError || regexError || fieldError) {
       error = getErrorPriority(mandatoryError, regexError, fieldError);
@@ -335,6 +376,7 @@ export const ContactForm = (props: IContactFormProps) => {
           return (
             <FormField
               key={index}
+              defaultMaxLength={form.defaultMaxLength}
               autoFocus={index === 0 && online}
               field={field}
               fieldValue={formData[fieldName]}
