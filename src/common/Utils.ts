@@ -169,6 +169,16 @@ export const getIconUrlByExportFlag = (
 
 export const isEmptyObject = (obj: Object) => Object.keys(obj).length === 0;
 
+export const isStringBooleanRecord = (
+  val: any,
+): val is Record<string, boolean> =>
+  typeof val[Object.keys(val)[0]] === "boolean" ||
+  (typeof val === "object" && Object.keys(val).length === 0);
+
+export const isObject = (val: any): val is Object => typeof val === "object";
+
+export const isString = (val: any): val is string => typeof val === "string";
+
 export const getObjectKeyValuesByIndex = (obj: Object, index: number) => [
   Object.keys(obj)[index],
   Object.values(obj)[index],

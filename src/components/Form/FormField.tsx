@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { FlexBox, FlexBoxSection } from "../../common/Elements";
-import { getRemainingCharacters } from "../../common/Utils";
+import {
+  getRemainingCharacters,
+  isStringBooleanRecord,
+} from "../../common/Utils";
 import { IFormField } from "../../store/profile/types";
 import { FIELD_TYPES } from "../../common/constants";
 import classNames from "classnames";
@@ -14,11 +17,19 @@ interface IFormFieldProps {
   field: IFormField;
   fieldValid?: boolean;
   fieldError?: string;
-  fieldValue: string;
+  fieldValue: string | Record<string, boolean>;
   isFormSubmit: boolean;
   autoFocus: boolean;
-  updateInput: (value: string, field: string) => void;
-  validateField: (value: string, field: string) => void;
+  defaultMaxLength: number;
+  updateInput: (
+    value: string | boolean,
+    field: string,
+    valueId?: string,
+  ) => void;
+  validateField: (
+    value: string | Record<string, boolean>,
+    field: string,
+  ) => void;
 }
 export const FormField = (props: IFormFieldProps) => {
   const {
@@ -28,6 +39,7 @@ export const FormField = (props: IFormFieldProps) => {
     fieldError,
     isFormSubmit,
     autoFocus,
+    defaultMaxLength,
     updateInput,
     validateField,
   } = props;
@@ -53,6 +65,13 @@ export const FormField = (props: IFormFieldProps) => {
     }
   };
 
+  const handleCheckboxChange = (id: string) => {
+    if (isStringBooleanRecord(fieldValue)) {
+      updateInput(!fieldValue[id], field.name, id);
+      validateField(fieldValue, field.name);
+    }
+  };
+
   const errorMessage = useMemo(() => {
     let errorMessage;
     switch (fieldError) {
@@ -71,12 +90,27 @@ export const FormField = (props: IFormFieldProps) => {
   }, [field.messages, fieldError, messages.mandatoryError]);
 
   const remainingCharacters = useMemo(
-    () => getRemainingCharacters(fieldValue, field.maxLength),
-    [field.maxLength, fieldValue],
+    () =>
+      getRemainingCharacters(
+        fieldValue as string,
+        field.maxLength || defaultMaxLength,
+      ),
+    [field.maxLength, fieldValue, defaultMaxLength],
+  );
+
+  const showRemainingCharacters = useMemo(
+    () =>
+      [FIELD_TYPES.TEXT, FIELD_TYPES.TEXTAREA, FIELD_TYPES.MOBILE].some(
+        item => field.type === item,
+      ),
+    [field.type],
   );
 
   return (
-    <FieldWrap direction="column">
+    <FieldWrap
+      direction="column"
+      className={classNames({ "has-child-field": field?.childFields?.length })}
+    >
       <InputWrap alignItems="center">
         <FormLabel>{field.label}</FormLabel>
         {field.type === FIELD_TYPES.TEXT && (
@@ -88,7 +122,7 @@ export const FormField = (props: IFormFieldProps) => {
               autoFocus={autoFocus}
               placeholder={field.placeholder}
               disabled={isFormSubmit}
-              value={fieldValue}
+              value={fieldValue as string}
               maxLength={field.maxLength}
               type={field.subType ? field.subType : "text"}
               name={field.name}
@@ -108,9 +142,46 @@ export const FormField = (props: IFormFieldProps) => {
               className={classNames("phone-input", {
                 error: fieldValid === false,
               })}
-              value={fieldValue}
+              value={fieldValue as string}
               onChange={handleMobileInputChange}
             />
+          </>
+        )}
+        {field.type === FIELD_TYPES.CHECKBOX && (
+          <>
+            {(field?.values || []).map(item => {
+              const isChecked = isStringBooleanRecord(fieldValue)
+                ? fieldValue[item.value]
+                : false;
+              return (
+                <FlexBox
+                  style={{ width: "100%", position: "relative" }}
+                  alignItems="center"
+                  key={item.value}
+                  id={item.value}
+                >
+                  <CheckboxInput
+                    id={item.value}
+                    type="checkbox"
+                    onClick={() => {
+                      handleCheckboxChange(item.value);
+                    }}
+                    checked={isChecked}
+                  />
+                  {isChecked && (
+                    <CheckboxTick
+                      id={item.value}
+                      onClick={() => {
+                        handleCheckboxChange(item.value);
+                      }}
+                    >
+                      &#10003;
+                    </CheckboxTick>
+                  )}
+                  <CheckboxInputLabel>{item.label}</CheckboxInputLabel>
+                </FlexBox>
+              );
+            })}
           </>
         )}
         {field.type === FIELD_TYPES.TEXTAREA && (
@@ -124,7 +195,7 @@ export const FormField = (props: IFormFieldProps) => {
               })}
               maxLength={field.maxLength}
               name={field.name}
-              value={fieldValue}
+              value={fieldValue as string}
               onChange={handleTextChange}
             />
           </>
@@ -132,16 +203,18 @@ export const FormField = (props: IFormFieldProps) => {
       </InputWrap>
       <FlexBox justifyContent="flex-end" alignItems="center">
         {!isMobile && fieldError && <Error>{errorMessage}</Error>}
-        <RemainingCharacters>
-          <span
-            className={classNames({
-              "empty-characters": remainingCharacters === 0,
-            })}
-          >
-            {remainingCharacters}
-          </span>
-          /{field.maxLength}
-        </RemainingCharacters>
+        {showRemainingCharacters && (
+          <RemainingCharacters>
+            <span
+              className={classNames({
+                "empty-characters": remainingCharacters === 0,
+              })}
+            >
+              {remainingCharacters}
+            </span>
+            /{field.maxLength}
+          </RemainingCharacters>
+        )}
       </FlexBox>
     </FieldWrap>
   );
@@ -154,7 +227,9 @@ const FormLabel = styled.label`
 `;
 
 const FieldWrap = styled(FlexBoxSection)`
-  margin-bottom: 20px;
+  &:not(.has-child-field) {
+    margin-bottom: 20px;
+  }
   input,
   textarea {
     padding-left: 7px;
@@ -231,4 +306,40 @@ const Error = styled.span`
   margin-right: 10px;
   font-style: italic;
   font-weight: 600;
+`;
+
+const CheckboxInput = styled.input`
+  margin: 0;
+  margin-right: 10px;
+  height: 20px;
+  width: 20px;
+  cursor: pointer;
+  -webkit-appearance: none;
+  background: #fff;
+  border-radius: 3px;
+  border: 0.5px solid #ccc;
+  &:checked {
+    background-color: #3f9c35;
+    border: none;
+    box-shadow: transparent 0 -1px 0px 1px, inset transparent 0 -1px 0px,
+      #3f9c35 0 2px 20px;
+    color: #99a1a7;
+  }
+  &:hover {
+    border: none;
+    box-shadow: transparent 0 -1px 0px 1px, inset transparent 0 -1px 0px,
+      #3498db 0 2px 20px;
+  }
+`;
+
+const CheckboxInputLabel = styled.label``;
+
+const CheckboxTick = styled.span`
+  position: absolute;
+  left: 4px;
+  color: #fff;
+  transform: rotate(10deg);
+  font-size: 16px;
+  font-weight: bolder;
+  cursor: pointer;
 `;

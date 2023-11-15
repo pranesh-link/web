@@ -56,7 +56,9 @@ export const DEFAULT_PROFILE_CONTEXT: IProfileContext = {
     },
     forms: {
       contactForm: {
+        transformFields: [],
         key: "",
+        defaultMaxLength: 20,
         actionButtonLabel: "",
         submitLabel: "",
         submittingLabel: "",
@@ -229,6 +231,7 @@ export const EXPERIENCE_TYPES = {
 export const FIELD_TYPES = {
   TEXT: "text",
   MOBILE: "mobile",
+  CHECKBOX: "checkbox",
   TEXTAREA: "textarea",
 };
 
@@ -283,3 +286,5 @@ export const CONFIG_TYPES = {
 
 export const PDF_NAME = "Pranesh_Resume.pdf";
 export const SERVER_FILES_LOC = "/files";
+export const YES = "Yes";
+export const NO = "No";
