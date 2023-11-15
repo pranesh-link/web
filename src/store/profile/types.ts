@@ -23,6 +23,8 @@ export interface IFormField {
   type: string;
   maxLength?: number;
   regex?: string;
+  parentField?: string;
+  childFields?: string[];
   messages?: {
     regexError: string;
     fieldError: string;

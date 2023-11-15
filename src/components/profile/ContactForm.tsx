@@ -15,33 +15,22 @@ import {
   ContactFormError,
   ContactFormFields,
   ContactFormValid,
-  IFormField,
 } from "../../store/profile/types";
 import { FormField } from "../Form/FormField";
 import {
   EMAILJS_CONFIG,
-  FIELD_TYPES,
   LABEL_TEXT,
   CONTACT_FORM_STATUS,
 } from "../../common/constants";
-import { isPossiblePhoneNumber } from "react-phone-number-input";
 import { ProfileContext } from "../../store/profile/context";
-import {
-  isNetworkOnline,
-  isString,
-  isStringBooleanRecord,
-} from "../../common/Utils";
+import { isNetworkOnline } from "../../common/Utils";
 import { ModalComponent } from "../../common/Component";
 import SendingAnimation from "../../assets/loading-animation.gif";
 import SuccessAnimation from "../../assets/success-animation.gif";
 import ErrorAnimation from "../../assets/error-animation.gif";
 import { AppContext } from "../../store/app/context";
 import CryptoJS from "crypto-js";
-import {
-  transformMailRequest,
-  validateLength,
-  validateRegex,
-} from "../Form/Utils";
+import { transformMailRequest, validateField } from "../Form/Utils";
 
 const DEFAULT_FORM_DATA = {
   userName: "",
@@ -184,6 +173,7 @@ export const ContactForm = (props: IContactFormProps) => {
     () => contactFormStatus === CONTACT_FORM_STATUS.OFFLINE,
     [contactFormStatus],
   );
+
   const updateInput = (
     value: string | boolean,
     field: string,
@@ -202,76 +192,21 @@ export const ContactForm = (props: IContactFormProps) => {
     }
   };
 
-  const handleSpecialValidations = (
-    type: string,
-    fieldValue: string | Record<string, boolean> | Object,
-    isValid: boolean,
-  ) => {
-    switch (type) {
-      case FIELD_TYPES.MOBILE:
-        isValid = isPossiblePhoneNumber(fieldValue as string);
-        break;
-      case FIELD_TYPES.CHECKBOX:
-        isValid = isStringBooleanRecord(fieldValue);
-        break;
-    }
-    return isValid;
-  };
-
-  const getErrorPriority = (
-    mandatoryError: boolean,
-    regexError: boolean,
-    fieldError: boolean,
-  ) => {
-    let error = "";
-    switch (true) {
-      case mandatoryError:
-        error = "mandatoryError";
-        break;
-      case regexError:
-        error = "regexError";
-        break;
-      case fieldError:
-        error = "fieldError";
-        break;
-    }
-    return error;
-  };
-
-  const validateField = (
+  const handleValidation = (
     value: string | Record<string, boolean>,
     field: string,
   ) => {
-    let mandatoryError = false,
-      regexError = false,
-      fieldError = false,
-      isValid = false;
-    const { regex = "", type } = form.fields.find(
-      formField => formField.name === field,
-    ) as IFormField;
-    let fieldValue = value;
-    if (isString(value)) {
-      fieldValue = value.trim();
-
-      isValid = validateLength(fieldValue);
-      mandatoryError = !validateLength(fieldValue);
-      regexError = !validateRegex(fieldValue, regex, isValid);
-    }
-    fieldError = !handleSpecialValidations(type, fieldValue, isValid);
-    isValid = !mandatoryError && !regexError && !fieldError;
-
-    let error = "";
-    if (mandatoryError || regexError || fieldError) {
-      error = getErrorPriority(mandatoryError, regexError, fieldError);
-    }
-    setFormError({ ...(formError || {}), [field]: error });
-
-    const fieldValidity = { ...(formValid || {}), [field]: isValid };
-    const currentFormDisabled =
-      Object.values(fieldValidity).some(valid => valid === false) ||
-      Object.keys(fieldValidity).length !== Object.keys(formData).length;
-    setFormValid(fieldValidity);
-    setFormDisabled(currentFormDisabled);
+    const validation = validateField(
+      form,
+      formData,
+      formError,
+      formValid,
+      value,
+      field,
+    );
+    setFormError(validation.formError);
+    setFormValid(validation.formValid);
+    setFormDisabled(validation.formDisabled);
   };
 
   const displayStatusInfo = useMemo(() => {
@@ -377,13 +312,13 @@ export const ContactForm = (props: IContactFormProps) => {
             <FormField
               key={index}
               defaultMaxLength={form.defaultMaxLength}
-              autoFocus={index === 0 && online}
+              autoFocus={online && index === 0}
               field={field}
               fieldValue={formData[fieldName]}
               fieldValid={formValid?.[fieldName]}
               fieldError={formError?.[fieldName]}
               updateInput={updateInput}
-              validateField={validateField}
+              validateField={handleValidation}
               isFormSubmit={isFormSubmit}
             />
           );
