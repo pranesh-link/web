@@ -13,7 +13,9 @@ import {
   IFormInfo,
   ContactFormValid,
   ContactFormError,
+  ILabelValue,
 } from "../../store/profile/types";
+import CryptoJS from "crypto-js";
 
 export const validateLength = (value: string | number) => `${value}`.length > 0;
 
@@ -137,4 +139,30 @@ export const validateField = (
     formValid: { ...(formValid || {}), [field]: isValid },
     formDisabled: currentFormDisabled,
   };
+};
+const { decrypt } = CryptoJS.AES;
+
+export const getDecryptedConfig = (config: string[], formKey: string) =>
+  config.map(item => decrypt(item, formKey).toString(CryptoJS.enc.Utf8));
+
+const FIELD_DEFAULT_VALUE_FUNC_MAP = {
+  [FIELD_TYPES.TEXT]: () => "",
+  [FIELD_TYPES.MOBILE]: () => "",
+  [FIELD_TYPES.TEXTAREA]: () => "",
+  [FIELD_TYPES.CHECKBOX]: (values: ILabelValue[] = []) => {
+    const defaultCheckboxValues: any = {};
+    values.forEach(i => {
+      defaultCheckboxValues[i.value] = false;
+    });
+    return defaultCheckboxValues;
+  },
+};
+
+export const getDefaultContactFormData = (formFields: IFormField[]) => {
+  const defaultFormData: any = {};
+  formFields.forEach(
+    i =>
+      (defaultFormData[i.id] = FIELD_DEFAULT_VALUE_FUNC_MAP[i.type](i?.values)),
+  );
+  return defaultFormData;
 };
