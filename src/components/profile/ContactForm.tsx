@@ -29,16 +29,13 @@ import SendingAnimation from "../../assets/loading-animation.gif";
 import SuccessAnimation from "../../assets/success-animation.gif";
 import ErrorAnimation from "../../assets/error-animation.gif";
 import { AppContext } from "../../store/app/context";
-import CryptoJS from "crypto-js";
-import { transformMailRequest, validateField } from "../Form/Utils";
-
-const DEFAULT_FORM_DATA = {
-  userName: "",
-  userMobile: "",
-  userEmail: "",
-  message: "",
-  userSocialMessengers: {},
-};
+import {
+  getDecryptedConfig,
+  getDefaultContactFormData,
+  transformMailRequest,
+  validateField,
+} from "../Form/Utils";
+import { isMobile } from "react-device-detect";
 
 interface IContactFormProps {
   closeModal: () => void;
@@ -53,9 +50,15 @@ export const ContactForm = (props: IContactFormProps) => {
   const {
     data: { preloadedAssets },
   } = useContext(AppContext);
+  const defaultFormData = useMemo(
+    () => getDefaultContactFormData(form.fields),
+    [form.fields],
+  );
+
   const { statusMessages, messages } = form;
   const { closeModal } = props;
-  const [formData, setFormData] = useState<ContactFormData>(DEFAULT_FORM_DATA);
+
+  const [formData, setFormData] = useState<ContactFormData>(defaultFormData);
   const [formValid, setFormValid] = useState<ContactFormValid | null>(null);
   const [formError, setFormError] = useState<ContactFormError | null>(null);
   const [formDisabled, setFormDisabled] = useState<boolean>(true);
@@ -68,12 +71,12 @@ export const ContactForm = (props: IContactFormProps) => {
   const [allowRetry, setAllowRetry] = useState(false);
 
   const resetFields = () => {
-    setFormData(DEFAULT_FORM_DATA);
+    setFormData(defaultFormData);
     setFormDisabled(true);
   };
 
-  const formStatusIconMap = useMemo(() => {
-    return {
+  const formStatusIconMap = useMemo(
+    () => ({
       [CONTACT_FORM_STATUS.FORM_FILL]: "",
       [CONTACT_FORM_STATUS.SENDING]: SendingAnimation,
       [CONTACT_FORM_STATUS.SUCCESS]: SuccessAnimation,
@@ -81,22 +84,21 @@ export const ContactForm = (props: IContactFormProps) => {
       [CONTACT_FORM_STATUS.OFFLINE]: preloadedAssets.find(
         asset => asset.id === "offlineAnimation",
       )?.image,
-    };
-  }, [preloadedAssets]);
-
-  const { decrypt } = CryptoJS.AES;
-
-  const getDecryptedConfig = (config: string[]) =>
-    config.map(item => decrypt(item, form.key).toString(CryptoJS.enc.Utf8));
+    }),
+    [preloadedAssets],
+  );
 
   const handleMailRequest = () => {
     setContactFormStatus(CONTACT_FORM_STATUS.SENDING);
     setAllowRetry(false);
-    const [serviceId, templateId, publicKey] = getDecryptedConfig([
-      EMAILJS_CONFIG.SERVICE_ID,
-      EMAILJS_CONFIG.TEMPLATE_ID,
-      EMAILJS_CONFIG.PUBLIC_KEY,
-    ]);
+    const [serviceId, templateId, publicKey] = getDecryptedConfig(
+      [
+        EMAILJS_CONFIG.SERVICE_ID,
+        EMAILJS_CONFIG.TEMPLATE_ID,
+        EMAILJS_CONFIG.PUBLIC_KEY,
+      ],
+      form.key,
+    );
 
     const transformedPaylod = transformMailRequest(
       formData,
@@ -305,7 +307,8 @@ export const ContactForm = (props: IContactFormProps) => {
           </Retry>
         </StatusMessage>
       </ModalComponent>
-      <Form onSubmit={sendEmail}>
+      <Form isMobile={isMobile} onSubmit={sendEmail}>
+        <FormHeader>{form.header}</FormHeader>
         {form.fields.map((field, index) => {
           const fieldName = field.name as ContactFormFields;
           return (
@@ -343,13 +346,17 @@ export const ContactForm = (props: IContactFormProps) => {
   );
 };
 
-const Form = styled.form`
+const Form = styled.form<{ isMobile: boolean }>`
   display: flex;
   flex-direction: column;
   background: #f0f0f0;
   outline: none;
-  padding: 45px 30px 20px;
+  padding: 20px 30px;
   border-radius: 15px;
+
+  @media only screen and (max-width: 767px) {
+    padding: 15px 25px;
+  }
 `;
 
 const StatusMessage = styled(FlexBox)`
@@ -419,4 +426,10 @@ const Retry = styled.a`
 const ProgressMessage = styled.p`
   margin-left: 10px;
   font-weight: 600;
+`;
+
+const FormHeader = styled.h2`
+  text-align: center;
+  margin: 0px;
+  padding-bottom: 25px;
 `;

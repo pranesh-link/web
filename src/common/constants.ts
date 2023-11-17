@@ -56,6 +56,7 @@ export const DEFAULT_PROFILE_CONTEXT: IProfileContext = {
     },
     forms: {
       contactForm: {
+        header: "",
         transformFields: [],
         key: "",
         defaultMaxLength: 20,

@@ -13,6 +13,7 @@ import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import { ProfileContext } from "../../store/profile/context";
 import TickIcon from "../../assets/white-tick-icon.svg";
+import { isMobile } from "react-device-detect";
 interface IFormFieldProps {
   field: IFormField;
   fieldValid?: boolean;
@@ -44,7 +45,6 @@ export const FormField = (props: IFormFieldProps) => {
     validateField,
   } = props;
   const {
-    isMobile,
     data: {
       forms: { contactForm: form },
     },
@@ -112,7 +112,7 @@ export const FormField = (props: IFormFieldProps) => {
       className={classNames({ "has-child-field": field?.childFields?.length })}
     >
       <InputWrap alignItems="center">
-        <FormLabel>{field.label}</FormLabel>
+        <FieldLabel isMobile={isMobile}>{field.label}</FieldLabel>
         {field.type === FIELD_TYPES.TEXT && (
           <>
             <TextInput
@@ -163,24 +163,25 @@ export const FormField = (props: IFormFieldProps) => {
                   <CheckboxInput
                     id={item.value}
                     type="checkbox"
-                    onClick={() => {
+                    onChange={() => {
                       handleCheckboxChange(item.value);
                     }}
                     checked={isChecked}
                   />
                   {isChecked && (
-                    <>
-                      <CheckboxTick
-                        id={item.value}
-                        src={TickIcon}
-                        onClick={() => {
-                          handleCheckboxChange(item.value);
-                        }}
-                      />
-                      {/* &#10003; */}
-                    </>
+                    <CheckboxTick
+                      id={item.value}
+                      src={TickIcon}
+                      onClick={() => {
+                        handleCheckboxChange(item.value);
+                      }}
+                    />
                   )}
-                  <CheckboxInputLabel>{item.label}</CheckboxInputLabel>
+                  <CheckboxInputLabel
+                    className={classNames({ checked: isChecked })}
+                  >
+                    {item.label}
+                  </CheckboxInputLabel>
                 </FlexBox>
               );
             })}
@@ -222,10 +223,14 @@ export const FormField = (props: IFormFieldProps) => {
   );
 };
 
-const FormLabel = styled.label`
+const FieldLabel = styled.label<{ isMobile: boolean }>`
   flex-basis: 30%;
   font-weight: 600;
   margin-right: 10px;
+
+  @media only screen and (max-width: 767px) {
+    flex-basis: 35%;
+  }
 `;
 
 const FieldWrap = styled(FlexBoxSection)`
@@ -334,7 +339,13 @@ const CheckboxInput = styled.input`
   }
 `;
 
-const CheckboxInputLabel = styled.label``;
+const CheckboxInputLabel = styled.label`
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  &.checked {
+    font-weight: 600;
+  }
+`;
 
 const CheckboxTick = styled.img`
   position: absolute;

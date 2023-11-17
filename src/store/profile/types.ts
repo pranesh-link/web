@@ -9,7 +9,7 @@ export interface IProfileData {
 
 export type FormType = "contactForm";
 
-interface ILabelValue {
+export interface ILabelValue {
   label: string;
   value: string;
 }
@@ -35,6 +35,7 @@ export interface IFormField {
 export type MailStatusType = Record<CONTACT_FORM_STATUS, string>;
 export interface IFormInfo {
   name: string;
+  header: string;
   key: string;
   actionButtonLabel: string;
   submitLabel: string;
