@@ -12,7 +12,7 @@ import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import { ProfileContext } from "../../store/profile/context";
-
+import TickIcon from "../../assets/white-tick-icon.svg";
 interface IFormFieldProps {
   field: IFormField;
   fieldValid?: boolean;
@@ -169,14 +169,16 @@ export const FormField = (props: IFormFieldProps) => {
                     checked={isChecked}
                   />
                   {isChecked && (
-                    <CheckboxTick
-                      id={item.value}
-                      onClick={() => {
-                        handleCheckboxChange(item.value);
-                      }}
-                    >
-                      &#10003;
-                    </CheckboxTick>
+                    <>
+                      <CheckboxTick
+                        id={item.value}
+                        src={TickIcon}
+                        onClick={() => {
+                          handleCheckboxChange(item.value);
+                        }}
+                      />
+                      {/* &#10003; */}
+                    </>
                   )}
                   <CheckboxInputLabel>{item.label}</CheckboxInputLabel>
                 </FlexBox>
@@ -325,7 +327,7 @@ const CheckboxInput = styled.input`
       #3f9c35 0 2px 20px;
     color: #99a1a7;
   }
-  &:hover {
+  &:not(:checked):hover {
     border: none;
     box-shadow: transparent 0 -1px 0px 1px, inset transparent 0 -1px 0px,
       #3498db 0 2px 20px;
@@ -334,12 +336,11 @@ const CheckboxInput = styled.input`
 
 const CheckboxInputLabel = styled.label``;
 
-const CheckboxTick = styled.span`
+const CheckboxTick = styled.img`
   position: absolute;
-  left: 4px;
-  color: #fff;
+  left: 3px;
+  bottom: 4px;
+  height: 13px;
   transform: rotate(10deg);
-  font-size: 16px;
-  font-weight: bolder;
   cursor: pointer;
 `;
