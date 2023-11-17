@@ -19,6 +19,7 @@ export interface IFormField {
   name: string;
   label: string;
   placeholder: string;
+  required?: boolean;
   subType?: string;
   type: string;
   maxLength?: number;

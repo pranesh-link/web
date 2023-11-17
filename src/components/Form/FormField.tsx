@@ -112,7 +112,7 @@ export const FormField = (props: IFormFieldProps) => {
       className={classNames({ "has-child-field": field?.childFields?.length })}
     >
       <InputWrap alignItems="center">
-        <FieldLabel isMobile={isMobile}>{field.label}</FieldLabel>
+        <FieldLabel isMobile={isMobile}>{field.label}{field.required && <strong style={{"color": "red", "paddingLeft": "5px"}}>*</strong>}</FieldLabel>
         {field.type === FIELD_TYPES.TEXT && (
           <>
             <TextInput
