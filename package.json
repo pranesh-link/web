@@ -1,6 +1,6 @@
 {
   "name": "pranesh-link",
-  "version": "1.24.0",
+  "version": "1.25.0",
   "private": true,
   "dependencies": {
     "@babel/core": "7.12.3",
