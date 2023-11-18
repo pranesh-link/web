@@ -47,12 +47,19 @@ export const ContactForm = (props: IContactFormProps) => {
   const {
     data: { preloadedAssets },
   } = useContext(AppContext);
+
+  const { statusMessages, messages, label, fields } = form;
+
   const defaultFormData = useMemo(
-    () => getDefaultContactFormData(form.fields),
-    [form.fields],
+    () => getDefaultContactFormData(fields),
+    [fields],
   );
 
-  const { statusMessages, messages, label } = form;
+  const requiredFields = useMemo(
+    () => fields.filter(i => i.required),
+    [fields],
+  );
+
   const { closeModal } = props;
 
   const [formData, setFormData] = useState<ContactFormData>(defaultFormData);
@@ -215,6 +222,7 @@ export const ContactForm = (props: IContactFormProps) => {
       formData,
       formError,
       formValid,
+      requiredFields,
       value,
       field,
     );
@@ -340,7 +348,7 @@ export const ContactForm = (props: IContactFormProps) => {
       </ModalComponent>
       <Form isMobile={isMobile} onSubmit={handleFormSubmit}>
         <FormHeader>{form.header}</FormHeader>
-        {form.fields.map((field, index) => {
+        {fields.map((field, index) => {
           const fieldName = field.name as ContactFormFields;
           return (
             <FormField
