@@ -128,7 +128,7 @@ export const ContactForm = (props: IContactFormProps) => {
 const sendEmail = (
     e:
       | FormEvent<HTMLFormElement>
-      | React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+      | React.MouseEvent<HTMLAnchorElement, MouseEvent>
 | React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
