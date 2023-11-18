@@ -125,19 +125,11 @@ export const ContactForm = (props: IContactFormProps) => {
     );
   };
 
-  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (hasReviewedForm) {
-      sendEmail(e);
-    } else {
-      setContactFormStatus(CONTACT_FORM_STATUS.REVIEW);
-    }
-  };
-
-  const sendEmail = (
+const sendEmail = (
     e:
       | FormEvent<HTMLFormElement>
       | React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+| React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
     if (online) {
@@ -147,6 +139,20 @@ export const ContactForm = (props: IContactFormProps) => {
       setAllowRetry(true);
     }
   };
+
+  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if(online) {
+    if (hasReviewedForm) {
+      sendEmail(e);
+    } else {
+      setContactFormStatus(CONTACT_FORM_STATUS.REVIEW);
+    }} else {
+setContactFormStatus(CONTACT_FORM_STATUS.OFFLINE)
+}
+  };
+
+  
 
   useEffect(() => {
     document.body.classList.add("modal-open");
@@ -341,7 +347,7 @@ export const ContactForm = (props: IContactFormProps) => {
               <ActionBtn className="review-edit" onClick={handleReviewAndEdit}>
                 {label.reviewEdit}
               </ActionBtn>
-              <ActionBtn className="send">{label.submit}</ActionBtn>
+              <ActionBtn className="send" onClick={sendEmail}>{label.submit}</ActionBtn>
             </ActionsWrap>
           )}
         </StatusWrap>
