@@ -245,6 +245,7 @@ export enum CONTACT_FORM_STATUS {
   SENDING = "sending",
   SUCCESS = "success",
   ERROR = "error",
+  REVIEW = "review",
   OFFLINE = "offline",
 }
 

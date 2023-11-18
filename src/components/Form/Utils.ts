@@ -104,6 +104,7 @@ export const validateField = (
   formData: ContactFormData,
   formError: ContactFormError | null,
   formValid: ContactFormValid | null,
+  requiredFields: IFormField[],
   value: string | Record<string, boolean>,
   field: string,
 ) => {
@@ -133,13 +134,14 @@ export const validateField = (
   const fieldValidity = { ...(formValid || {}), [field]: isValid };
   const currentFormDisabled =
     Object.values(fieldValidity).some(valid => valid === false) ||
-    Object.keys(fieldValidity).length !== Object.keys(formData).length;
+    Object.keys(fieldValidity).length !== requiredFields.length;
   return {
     formError: { ...(formError || {}), [field]: error },
     formValid: { ...(formValid || {}), [field]: isValid },
     formDisabled: currentFormDisabled,
   };
 };
+
 const { decrypt } = CryptoJS.AES;
 
 export const getDecryptedConfig = (config: string[], formKey: string) =>

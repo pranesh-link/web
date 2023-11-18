@@ -1,6 +1,7 @@
 import {
   FormEvent,
   memo,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -17,11 +18,7 @@ import {
   ContactFormValid,
 } from "../../store/profile/types";
 import { FormField } from "../Form/FormField";
-import {
-  EMAILJS_CONFIG,
-  LABEL_TEXT,
-  CONTACT_FORM_STATUS,
-} from "../../common/constants";
+import { EMAILJS_CONFIG, CONTACT_FORM_STATUS } from "../../common/constants";
 import { ProfileContext } from "../../store/profile/context";
 import { isNetworkOnline } from "../../common/Utils";
 import { ModalComponent } from "../../common/Component";
@@ -50,12 +47,19 @@ export const ContactForm = (props: IContactFormProps) => {
   const {
     data: { preloadedAssets },
   } = useContext(AppContext);
+
+  const { statusMessages, messages, label, fields } = form;
+
   const defaultFormData = useMemo(
-    () => getDefaultContactFormData(form.fields),
-    [form.fields],
+    () => getDefaultContactFormData(fields),
+    [fields],
   );
 
-  const { statusMessages, messages } = form;
+  const requiredFields = useMemo(
+    () => fields.filter(i => i.required),
+    [fields],
+  );
+
   const { closeModal } = props;
 
   const [formData, setFormData] = useState<ContactFormData>(defaultFormData);
@@ -68,10 +72,13 @@ export const ContactForm = (props: IContactFormProps) => {
       : CONTACT_FORM_STATUS.OFFLINE,
   );
   const [online, setOnline] = useState(isNetworkOnline());
-  const [allowRetry, setAllowRetry] = useState(false);
+  const [allowRetry, setAllowRetry] = useState(true);
+  const [hasReviewedForm, setHasReviewedForm] = useState<boolean>(false);
 
   const resetFields = () => {
     setFormData(defaultFormData);
+    setContactFormStatus(CONTACT_FORM_STATUS.FORM_FILL);
+    setHasReviewedForm(false);
     setFormDisabled(true);
   };
 
@@ -84,6 +91,7 @@ export const ContactForm = (props: IContactFormProps) => {
       [CONTACT_FORM_STATUS.OFFLINE]: preloadedAssets.find(
         asset => asset.id === "offlineAnimation",
       )?.image,
+      [CONTACT_FORM_STATUS.REVIEW]: "",
     }),
     [preloadedAssets],
   );
@@ -108,17 +116,22 @@ export const ContactForm = (props: IContactFormProps) => {
     emailjs.send(serviceId, templateId, transformedPaylod, publicKey).then(
       () => {
         setContactFormStatus(CONTACT_FORM_STATUS.SUCCESS);
-        resetFields();
-        setTimeout(
-          () => setContactFormStatus(CONTACT_FORM_STATUS.FORM_FILL),
-          3000,
-        );
+        setTimeout(() => resetFields(), 3000);
       },
       () => {
         setContactFormStatus(CONTACT_FORM_STATUS.ERROR);
         setAllowRetry(true);
       },
     );
+  };
+
+  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (hasReviewedForm) {
+      sendEmail(e);
+    } else {
+      setContactFormStatus(CONTACT_FORM_STATUS.REVIEW);
+    }
   };
 
   const sendEmail = (
@@ -152,6 +165,7 @@ export const ContactForm = (props: IContactFormProps) => {
         CONTACT_FORM_STATUS.ERROR,
         CONTACT_FORM_STATUS.SENDING,
         CONTACT_FORM_STATUS.OFFLINE,
+        CONTACT_FORM_STATUS.REVIEW,
       ].indexOf(contactFormStatus) > -1,
     [contactFormStatus],
   );
@@ -173,6 +187,11 @@ export const ContactForm = (props: IContactFormProps) => {
 
   const isOffline = useMemo(
     () => contactFormStatus === CONTACT_FORM_STATUS.OFFLINE,
+    [contactFormStatus],
+  );
+
+  const isReview = useMemo(
+    () => contactFormStatus === CONTACT_FORM_STATUS.REVIEW,
     [contactFormStatus],
   );
 
@@ -203,6 +222,7 @@ export const ContactForm = (props: IContactFormProps) => {
       formData,
       formError,
       formValid,
+      requiredFields,
       value,
       field,
     );
@@ -210,6 +230,11 @@ export const ContactForm = (props: IContactFormProps) => {
     setFormValid(validation.formValid);
     setFormDisabled(validation.formDisabled);
   };
+
+  const handleReviewAndEdit = useCallback(() => {
+    setHasReviewedForm(true);
+    setContactFormStatus(CONTACT_FORM_STATUS.FORM_FILL);
+  }, []);
 
   const displayStatusInfo = useMemo(() => {
     const icon = formStatusIconMap[contactFormStatus];
@@ -280,36 +305,50 @@ export const ContactForm = (props: IContactFormProps) => {
           }
         }}
       >
-        <StatusMessage
-          direction={isError || isOffline ? "column" : "row"}
-          justifyContent="space-evenly"
-          alignItems="center"
-          className={classNames(contactFormStatus, {
-            "high-border": isSending || isSuccess,
-          })}
-        >
-          {isError || isOffline ? (
-            <FlexBox alignItems="center">
-              <IconMessage />
-            </FlexBox>
-          ) : (
-            <IconMessage />
-          )}
-
-          <Retry
-            href=""
-            className={classNames({
-              hide: !allowRetry,
+        <StatusWrap direction="column">
+          <StatusMessage
+            direction={isError || isOffline ? "column" : "row"}
+            justifyContent="space-evenly"
+            alignItems="center"
+            className={classNames(contactFormStatus, {
+              "high-border": isSending || isSuccess,
             })}
-            onClick={sendEmail}
           >
-            {displayStatusInfo.retryMessage}
-          </Retry>
-        </StatusMessage>
+            {isError || isOffline ? (
+              <FlexBox alignItems="center">
+                <IconMessage />
+              </FlexBox>
+            ) : (
+              <IconMessage />
+            )}
+
+            <Retry
+              href=""
+              className={classNames({
+                hide: !allowRetry,
+              })}
+              onClick={sendEmail}
+            >
+              {displayStatusInfo.retryMessage}
+            </Retry>
+          </StatusMessage>
+          {isReview && (
+            <ActionsWrap
+              className={classNames({ "review-status": isReview })}
+              justifyContent="center"
+              alignItems="center"
+            >
+              <ActionBtn className="review-edit" onClick={handleReviewAndEdit}>
+                {label.reviewEdit}
+              </ActionBtn>
+              <ActionBtn className="send">{label.submit}</ActionBtn>
+            </ActionsWrap>
+          )}
+        </StatusWrap>
       </ModalComponent>
-      <Form isMobile={isMobile} onSubmit={sendEmail}>
+      <Form isMobile={isMobile} onSubmit={handleFormSubmit}>
         <FormHeader>{form.header}</FormHeader>
-        {form.fields.map((field, index) => {
+        {fields.map((field, index) => {
           const fieldName = field.name as ContactFormFields;
           return (
             <FormField
@@ -327,9 +366,9 @@ export const ContactForm = (props: IContactFormProps) => {
           );
         })}
 
-        <FieldWrap justifyContent="space-between" alignItems="center">
+        <ActionsWrap justifyContent="space-between" alignItems="center">
           <ActionBtn className="close" onClick={closeModal}>
-            {LABEL_TEXT.close}
+            {label.close}
           </ActionBtn>
           <FormSubmit
             disabled={formDisabled || isFormSubmit}
@@ -338,9 +377,9 @@ export const ContactForm = (props: IContactFormProps) => {
             })}
             type="submit"
           >
-            {isFormSubmit ? form.submittingLabel : form.submitLabel}
+            {isFormSubmit ? label.submitting : label.submit}
           </FormSubmit>
-        </FieldWrap>
+        </ActionsWrap>
       </Form>
     </>
   );
@@ -359,23 +398,36 @@ const Form = styled.form<{ isMobile: boolean }>`
   }
 `;
 
-const StatusMessage = styled(FlexBox)`
+const StatusWrap = styled(FlexBox)`
+  border-radius: min(50px, (480px - 400px + 1px) * 9999);
   background: #f0f0f0;
-  border-radius: 15px;
-  padding: 15px 15px;
-  margin: 0 10px;
-  &.error {
-    padding: 15px 25px;
-  }
-  &.high-border {
-    border-radius: 30px;
-    padding: 5px 20px;
+  padding: 5px 15px;
+  @media only screen and (max-width: 767px) {
+    width: 100%;
   }
 `;
 
-const FieldWrap = styled(FlexBoxSection)`
-  margin-bottom: 20px;
-  .close {
+const StatusMessage = styled(FlexBox)`
+  background: #f0f0f0;
+  border-radius: 15px;
+  &.error {
+    padding: 5px 15px;
+  }
+  &.high-border {
+    border-radius: 30px;
+    padding: 5px 0;
+  }
+`;
+
+const ActionsWrap = styled(FlexBoxSection)`
+  margin: 20px 0 0px;
+  &.review-status {
+    margin: 10px 0 5px;
+  }
+
+  .close,
+  .review-edit,
+  .send {
     font-size: 15px;
     padding: 10px 25px;
     background: #ee4b2b;
@@ -388,6 +440,19 @@ const FieldWrap = styled(FlexBoxSection)`
     @media only screen and (max-width: 767px) {
       opacity: 1;
     }
+  }
+  .review-edit,
+  .send {
+    padding: 5px 15px;
+  }
+
+  .review-edit {
+    margin-right: 10px;
+    background: #b21807;
+  }
+
+  .send {
+    background: #3fc935;
   }
 `;
 
@@ -424,6 +489,9 @@ const Retry = styled.a`
 `;
 
 const ProgressMessage = styled.p`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-left: 10px;
   font-weight: 600;
 `;
