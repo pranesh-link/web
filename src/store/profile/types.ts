@@ -39,10 +39,9 @@ export interface IFormInfo {
   header: string;
   key: string;
   actionButtonLabel: string;
-  submitLabel: string;
   defaultMaxLength: number;
-  submittingLabel: string;
   statusMessages: MailStatusType;
+  label: Record<string, string>;
   transformFields: {
     id: string;
     transform: string;
