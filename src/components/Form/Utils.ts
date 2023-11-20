@@ -191,3 +191,20 @@ export const getErrorMessage = (
   }
   return errorMessage;
 };
+
+export const getRemainingCharPercentMap = (
+  remainingCharacters: number,
+  maxLength: number = 1,
+) => {
+  const remainingCharactersPercent = (remainingCharacters / maxLength) * 100;
+  return {
+    lesserToNoChars: remainingCharactersPercent <= 10,
+    lessChars:
+      remainingCharactersPercent > 10 && remainingCharactersPercent <= 25,
+  };
+};
+
+export const isLessCharacters = (
+  remainingCharacters: number,
+  maxLength: number = 1,
+) => (remainingCharacters / maxLength) * 100 <= 10;

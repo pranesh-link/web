@@ -82,6 +82,20 @@ const TextArea = styled.textarea`
 const RemainingCharacters = styled.span`
   margin-top: 5px;
   font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  .remaining-characters {
+    padding-right: 1.5px;
+  }
+  .lesser-to-no-characters {
+    color: #ee4b2b;
+  }
+  .less-characters {
+    color: #ffa500;
+  }
+  .field-maxlength {
+    padding-left: 1.5px;
+  }
 `;
 
 const InputWrap = styled(FlexBox)`

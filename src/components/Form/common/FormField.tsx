@@ -22,7 +22,7 @@ import { TextField } from "../fields/TextField";
 import { TextAreaField } from "../fields/TextAreaField";
 import { MobileField } from "../fields/MobileField";
 import { CheckboxField } from "../fields/CheckboxField";
-import { getErrorMessage } from "../Utils";
+import { getErrorMessage, getRemainingCharPercentMap } from "../Utils";
 
 interface IFormFieldProps {
   field: IFormField;
@@ -102,6 +102,11 @@ export const FormField = (props: IFormFieldProps) => {
     [field.type],
   );
 
+  const charPercentMap = useMemo(
+    () => getRemainingCharPercentMap(remainingCharacters, field.maxLength),
+    [remainingCharacters, field.maxLength],
+  );
+
   return (
     <FieldWrap
       direction="column"
@@ -154,13 +159,14 @@ export const FormField = (props: IFormFieldProps) => {
         {showRemainingCharacters && (
           <RemainingCharacters>
             <span
-              className={classNames({
-                "empty-characters": remainingCharacters === 0,
+              className={classNames("remaining-characters", {
+                "lesser-to-no-characters": charPercentMap.lesserToNoChars,
+                "less-characters": charPercentMap.lessChars,
               })}
             >
               {remainingCharacters}
             </span>
-            /{field.maxLength}
+            /<span className="field-maxlength">{field.maxLength}</span>
           </RemainingCharacters>
         )}
       </FlexBox>
