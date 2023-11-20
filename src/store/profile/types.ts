@@ -13,7 +13,15 @@ export interface ILabelValue {
   label: string;
   value: string;
 }
+export interface IFieldErrorMessages {
+  regexError: string;
+  fieldError: string;
+}
 
+export interface IFormMessages {
+  mandatoryError: string;
+  retry: string;
+}
 export interface IFormField {
   id: string;
   name: string;
@@ -26,10 +34,7 @@ export interface IFormField {
   regex?: string;
   parentField?: string;
   childFields?: string[];
-  messages?: {
-    regexError: string;
-    fieldError: string;
-  };
+  messages?: IFieldErrorMessages;
   values?: ILabelValue[];
 }
 
@@ -46,10 +51,7 @@ export interface IFormInfo {
     id: string;
     transform: string;
   }[];
-  messages: {
-    mandatoryError: string;
-    retry: string;
-  };
+  messages: IFormMessages;
   fields: IFormField[];
 }
 

@@ -22,6 +22,7 @@ import { TextField } from "../fields/TextField";
 import { TextAreaField } from "../fields/TextAreaField";
 import { MobileField } from "../fields/MobileField";
 import { CheckboxField } from "../fields/CheckboxField";
+import { getErrorMessage } from "../Utils";
 
 interface IFormFieldProps {
   field: IFormField;
@@ -79,22 +80,10 @@ export const FormField = (props: IFormFieldProps) => {
     }
   };
 
-  const errorMessage = useMemo(() => {
-    let errorMessage;
-    switch (fieldError) {
-      case "mandatoryError":
-        errorMessage = messages.mandatoryError;
-        break;
-      case "regexError":
-      case "fieldError":
-        errorMessage = field?.messages?.[fieldError] || "";
-        break;
-      default:
-        errorMessage = "";
-        break;
-    }
-    return errorMessage;
-  }, [field.messages, fieldError, messages.mandatoryError]);
+  const errorMessage = useMemo(
+    () => getErrorMessage(messages, field?.messages, fieldError),
+    [field.messages, fieldError, messages],
+  );
 
   const remainingCharacters = useMemo(
     () =>

@@ -14,6 +14,8 @@ import {
   ContactFormValid,
   ContactFormError,
   ILabelValue,
+  IFieldErrorMessages,
+  IFormMessages,
 } from "../../store/profile/types";
 import CryptoJS from "crypto-js";
 
@@ -167,4 +169,25 @@ export const getDefaultContactFormData = (formFields: IFormField[]) => {
       (defaultFormData[i.id] = FIELD_DEFAULT_VALUE_FUNC_MAP[i.type](i?.values)),
   );
   return defaultFormData;
+};
+
+export const getErrorMessage = (
+  messages: IFormMessages,
+  fieldErrorMessages?: IFieldErrorMessages,
+  fieldError?: string,
+) => {
+  let errorMessage;
+  switch (fieldError) {
+    case "mandatoryError":
+      errorMessage = messages.mandatoryError;
+      break;
+    case "regexError":
+    case "fieldError":
+      errorMessage = fieldErrorMessages?.[fieldError] || "";
+      break;
+    default:
+      errorMessage = "";
+      break;
+  }
+  return errorMessage;
 };
