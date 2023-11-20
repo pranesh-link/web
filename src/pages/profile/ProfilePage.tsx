@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import usePWA from "react-pwa-install-prompt";
-import { PWABanner } from "../../PWABanner";
+import { PWABanner } from "../../components/common/PWABanner";
 import { Profile } from "../../components/profile/Profile";
 import {
   DEFAULT_PROFILE_CONTEXT,

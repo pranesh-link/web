@@ -1,15 +1,15 @@
 import styled from "styled-components";
-import { FlexBox, MobilePWAWrapper, PWAWrapper } from "./common/Elements";
+import { FlexBox, MobilePWAWrapper, PWAWrapper } from "../../common/Elements";
 import {
   getLocalStorage,
   getWebUrl,
   isBannerHidden,
   isSupportedBrowserAndOS,
   setLocalStorage,
-} from "./common/Utils";
+} from "../../common/Utils";
 import { useContext, useEffect, useMemo } from "react";
-import { IPWA } from "./store/profile/types";
-import { AppContext } from "./store/app/context";
+import { IPWA } from "../../store/profile/types";
+import { AppContext } from "../../store/app/context";
 
 interface PWABannerProps {
   pwa: IPWA;

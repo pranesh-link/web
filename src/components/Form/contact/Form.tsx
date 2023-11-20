@@ -9,29 +9,29 @@ import {
 } from "react";
 import emailjs from "@emailjs/browser";
 import styled from "styled-components";
-import { ActionBtn, FlexBox, FlexBoxSection } from "../../common/Elements";
+import { ActionBtn, FlexBox, FlexBoxSection } from "../../../common/Elements";
 import classNames from "classnames";
 import {
   ContactFormData,
   ContactFormError,
   ContactFormFields,
   ContactFormValid,
-} from "../../store/profile/types";
-import { FormField } from "../Form/FormField";
-import { EMAILJS_CONFIG, CONTACT_FORM_STATUS } from "../../common/constants";
-import { ProfileContext } from "../../store/profile/context";
-import { isNetworkOnline } from "../../common/Utils";
-import { ModalComponent } from "../../common/Component";
-import SendingAnimation from "../../assets/loading-animation.gif";
-import SuccessAnimation from "../../assets/success-animation.gif";
-import ErrorAnimation from "../../assets/error-animation.gif";
-import { AppContext } from "../../store/app/context";
+} from "../../../store/profile/types";
+import { FormField } from "../common/FormField";
+import { EMAILJS_CONFIG, CONTACT_FORM_STATUS } from "../../../common/constants";
+import { ProfileContext } from "../../../store/profile/context";
+import { isNetworkOnline } from "../../../common/Utils";
+import { ModalComponent } from "../../../common/Component";
+import SendingAnimation from "../../../assets/loading-animation.gif";
+import SuccessAnimation from "../../../assets/success-animation.gif";
+import ErrorAnimation from "../../../assets/error-animation.gif";
+import { AppContext } from "../../../store/app/context";
 import {
   getDecryptedConfig,
   getDefaultContactFormData,
   transformMailRequest,
   validateField,
-} from "../Form/Utils";
+} from "../Utils";
 import { isMobile } from "react-device-detect";
 
 interface IContactFormProps {
@@ -125,11 +125,11 @@ export const ContactForm = (props: IContactFormProps) => {
     );
   };
 
-const sendEmail = (
+  const sendEmail = (
     e:
       | FormEvent<HTMLFormElement>
       | React.MouseEvent<HTMLAnchorElement, MouseEvent>
-| React.MouseEvent<HTMLButtonElement, MouseEvent>
+      | React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     e.preventDefault();
     if (online) {
@@ -142,17 +142,16 @@ const sendEmail = (
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if(online) {
-    if (hasReviewedForm) {
-      sendEmail(e);
+    if (online) {
+      if (hasReviewedForm) {
+        sendEmail(e);
+      } else {
+        setContactFormStatus(CONTACT_FORM_STATUS.REVIEW);
+      }
     } else {
-      setContactFormStatus(CONTACT_FORM_STATUS.REVIEW);
-    }} else {
-setContactFormStatus(CONTACT_FORM_STATUS.OFFLINE)
-}
+      setContactFormStatus(CONTACT_FORM_STATUS.OFFLINE);
+    }
   };
-
-  
 
   useEffect(() => {
     document.body.classList.add("modal-open");
@@ -347,7 +346,9 @@ setContactFormStatus(CONTACT_FORM_STATUS.OFFLINE)
               <ActionBtn className="review-edit" onClick={handleReviewAndEdit}>
                 {label.reviewEdit}
               </ActionBtn>
-              <ActionBtn className="send" onClick={sendEmail}>{label.submit}</ActionBtn>
+              <ActionBtn className="send" onClick={sendEmail}>
+                {label.submit}
+              </ActionBtn>
             </ActionsWrap>
           )}
         </StatusWrap>

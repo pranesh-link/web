@@ -14,6 +14,8 @@ import {
   ContactFormValid,
   ContactFormError,
   ILabelValue,
+  IFieldErrorMessages,
+  IFormMessages,
 } from "../../store/profile/types";
 import CryptoJS from "crypto-js";
 
@@ -168,3 +170,41 @@ export const getDefaultContactFormData = (formFields: IFormField[]) => {
   );
   return defaultFormData;
 };
+
+export const getErrorMessage = (
+  messages: IFormMessages,
+  fieldErrorMessages?: IFieldErrorMessages,
+  fieldError?: string,
+) => {
+  let errorMessage;
+  switch (fieldError) {
+    case "mandatoryError":
+      errorMessage = messages.mandatoryError;
+      break;
+    case "regexError":
+    case "fieldError":
+      errorMessage = fieldErrorMessages?.[fieldError] || "";
+      break;
+    default:
+      errorMessage = "";
+      break;
+  }
+  return errorMessage;
+};
+
+export const getRemainingCharPercentMap = (
+  remainingCharacters: number,
+  maxLength: number = 1,
+) => {
+  const remainingCharactersPercent = (remainingCharacters / maxLength) * 100;
+  return {
+    lesserToNoChars: remainingCharactersPercent <= 10,
+    lessChars:
+      remainingCharactersPercent > 10 && remainingCharactersPercent <= 25,
+  };
+};
+
+export const isLessCharacters = (
+  remainingCharacters: number,
+  maxLength: number = 1,
+) => (remainingCharacters / maxLength) * 100 <= 10;

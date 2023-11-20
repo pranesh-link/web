@@ -61,14 +61,14 @@ export const DEFAULT_PROFILE_CONTEXT: IProfileContext = {
         key: "",
         defaultMaxLength: 20,
         actionButtonLabel: "",
-        submitLabel: "",
-        submittingLabel: "",
+        label: {},
         statusMessages: {
           success: "",
           error: "",
           form_fill: "",
           sending: "",
           offline: "",
+          review: "",
         },
         messages: {
           retry: "",

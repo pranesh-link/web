@@ -23,7 +23,7 @@ import styled from "styled-components";
 import { ProfileContext } from "../../../store/profile/context";
 import { AboutMeDetails } from "./AboutMeDetails";
 import { COPIED, NOT_COPIED, PDF_NAME } from "../../../common/constants";
-import { ContactForm } from "../ContactForm";
+import { ContactForm } from "../../Form/contact/Form";
 import { ModalComponent } from "../../../common/Component";
 import { ContactMe } from "../../../common/ContactMe";
 import { AppContext } from "../../../store/app/context";
@@ -226,7 +226,7 @@ export const About = (props: IAboutProps) => {
                         href="placeholder_href"
                         ref={downloadRef}
                         download={PDF_NAME}
-                        style={{ display: "none" }}
+                        className="hide"
                       >
                         Placeholder
                       </a>
