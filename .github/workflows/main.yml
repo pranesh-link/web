@@ -1,4 +1,4 @@
-name: Code deploy trigger
+name: Code deploy
 
 on:
   push:
