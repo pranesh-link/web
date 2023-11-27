@@ -1,4 +1,4 @@
-name: Create Tag, bump version and trigger AWS Codepipeline
+name: Code deploy trigger
 
 on:
   push:
