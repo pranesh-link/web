@@ -1,4 +1,5 @@
 <p align="center">
+  <a href="https://github.com/prans1991/pranesh-link"><img alt="GitHub Actions status" src="https://github.com/prans1991/pranesh-link/workflows/Code%20deploy/badge.svg"></a>
   <a href="https://github.com/prans1991/pranesh-link"><img alt="GitHub Actions status" src="https://github.com/prans1991/pranesh-link/workflows/Build/badge.svg"></a>
   <a href="https://github.com/prans1991/pranesh-link"><img alt="GitHub Actions status" src="https://github.com/prans1991/pranesh-link/workflows/PR/badge.svg"></a>
 </p>
