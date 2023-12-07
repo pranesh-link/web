@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import { IMaintenance } from "../../store/common/types";
-import { Contact } from "../../components/profile/Sections/Contact";
-import { ISectionInfo } from "../../store/profile/types";
 import { useRef } from "react";
-import { getIconUrl } from "../../common/Utils";
+import { Utils, ISectionInfo, Contact } from "react-profile-component";
+import { ENVIRONMENT } from "../../common/constants";
 
+const { getIconUrl } = Utils;
 interface IMaintenanceProps {
   maintenance: IMaintenance;
   links: ISectionInfo;
@@ -18,7 +18,7 @@ const MaintenancePage = (props: IMaintenanceProps) => {
         <img
           className="maintenance-image"
           alt="maintenance"
-          src={getIconUrl(maintenance.image)}
+          src={getIconUrl(ENVIRONMENT, maintenance.image)}
         />
         <h1 dangerouslySetInnerHTML={{ __html: maintenance.message }} />
       </div>
@@ -38,7 +38,7 @@ const MaintenanceArticle = styled.article<{ isMobile: boolean }>`
   color: #fff;
 
   .maintenance-image {
-    height: ${(props) => (props.isMobile ? "300px" : "400px")};
+    height: ${props => (props.isMobile ? "300px" : "400px")};
   }
 
   .contact-links {
@@ -49,12 +49,11 @@ const MaintenanceArticle = styled.article<{ isMobile: boolean }>`
     padding: 20px 0;
     background: rgb(34, 34, 34);
     .links {
-      justify-content: ${(props) =>
-        props.isMobile ? "space-evenly" : "center"};
+      justify-content: ${props => (props.isMobile ? "space-evenly" : "center")};
     }
     img {
       height: 30px;
-      margin-right: ${(props) => (props.isMobile ? "0" : "50px")};
+      margin-right: ${props => (props.isMobile ? "0" : "50px")};
     }
   }
 
@@ -69,7 +68,7 @@ const MaintenanceArticle = styled.article<{ isMobile: boolean }>`
   }
 
   h1 {
-    font-size: ${(props) => (props.isMobile ? "30px" : "50px")};
+    font-size: ${props => (props.isMobile ? "30px" : "50px")};
     font-weight: 100;
     text-align: center;
   }

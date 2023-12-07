@@ -1,4 +1,6 @@
 @import "~typeface-open-sans/index.css";
+/* @import "~profile/dist/index.css"; */
+@import "~react-phone-number-input/style.css";
 
 body {
   margin: 0;

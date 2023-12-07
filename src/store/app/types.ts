@@ -1,4 +1,4 @@
-import { IAppConfig, IMaintenance } from "../common/types";
+import { IAppConfig, IMaintenance, IPreloadSrc } from "../common/types";
 import { IPWA, ISectionInfo } from "../profile/types";
 
 export interface IAppContext {
@@ -15,6 +15,7 @@ export interface IAppConfigData {
   isAdmin: boolean;
   preloadedAssets: { id: string; image: string }[];
   preloadedFiles: { id: string; file: string }[];
+  preloadSrcList: IPreloadSrc[];
   pwa: IPWA;
   maintenance: IMaintenance;
   links: ISectionInfo;
