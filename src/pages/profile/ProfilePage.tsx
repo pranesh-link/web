@@ -1,32 +1,39 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import usePWA from "react-pwa-install-prompt";
-import { PWABanner } from "../../components/common/PWABanner";
-import { Profile } from "../../components/profile/Profile";
+import styled from "styled-components";
+import LoaderIcon from "../../assets/loader-icon.svg";
+import { IConfigDataParams } from "../../store/common/types";
 import {
-  DEFAULT_PROFILE_CONTEXT,
-  PAGE_TITLES,
-  MESSAGES,
-  LABEL_TEXT,
-  DEFAULT_PROFILE_CONFIG_DATA,
-} from "../../common/constants";
-import {
-  getLocalStorage,
-  setLocalStorage,
-  clearLocalStorage,
-  getProfileJsonResponse,
-} from "../../common/Utils";
-import {
+  PWABanner,
+  Profile,
+  Elements,
+  Constants,
+  Utils,
   IProfileData,
   ISectionInfo,
   IHeader,
   DownloadType,
   IPWA,
   IExperienceJsonInfo,
-} from "../../store/profile/types";
-import styled from "styled-components";
-import { ActionBtn, FlexBoxSection, LoaderImg } from "../../common/Elements";
-import LoaderIcon from "../../assets/loader-icon.svg";
-import { IConfigDataParams } from "../../store/common/types";
+} from "react-profile-component";
+import { AppContext } from "../../store/app/context";
+import { ENVIRONMENT } from "../../common/constants";
+
+const { ActionBtn, FlexBoxSection, LoaderImg } = Elements;
+const {
+  getLocalStorage,
+  setLocalStorage,
+  clearLocalStorage,
+  getProfileJsonResponse,
+} = Utils;
+
+const {
+  DEFAULT_PROFILE_CONTEXT,
+  PAGE_TITLES,
+  MESSAGES,
+  LABEL_TEXT,
+  DEFAULT_PROFILE_CONFIG_DATA,
+} = Constants;
 
 interface ProfilePageProps {
   pwa: IPWA;
@@ -43,6 +50,17 @@ const ProfilePage = (props: ProfilePageProps) => {
   const experienceRef = useRef(null);
   const educationRef = useRef(null);
   const contactRef = useRef(null);
+  const {
+    data: {
+      appConfig: { pwa: pwaConfig },
+      currentDevice: { browserName, osName },
+      version,
+      preloadedAssets,
+      preloadedFiles,
+      preloadSrcList,
+    },
+  } = useContext(AppContext);
+  const { browsers, os } = pwaConfig;
   const { pwa, hasError, isExport, isMobile, profileConfig, retryBaseInfo } =
     props;
   const [retry, setRetry] = useState<boolean>(true);
@@ -85,7 +103,11 @@ const ProfilePage = (props: ProfilePageProps) => {
         data: ISectionInfo | IHeader | DownloadType,
         name: string,
       ) => {
-        const response = await getProfileJsonResponse(jsonToFetch, data);
+        const response = await getProfileJsonResponse(
+          ENVIRONMENT,
+          jsonToFetch,
+          data,
+        );
         setHasErrorInProfile(response.hasError);
         return { name, data: response.data };
       };
@@ -207,15 +229,24 @@ const ProfilePage = (props: ProfilePageProps) => {
               setIsHamburgerMenuOpen(isHamburgerMenuOpen)
             }
             onInstallPWA={onClickInstall}
+            environment={ENVIRONMENT}
+            appVersion={version}
+            deviceConfig={{ os, osName, browserName, browsers }}
+            preloadSrcList={preloadSrcList}
+            preloadedAssets={preloadedAssets}
+            preloadedFiles={preloadedFiles}
           />
           <PWABanner
             pwa={pwa}
+            environment={ENVIRONMENT}
+            config={{ ...pwaConfig, browserName, osName }}
             isMobile={isMobile}
             isStandalone={isStandalone}
             isInstallBannerOpen={!!isInstallBannerOpen}
+            isWebWithPWA={!isStandalone && hasPWAInstalled}
             hasPWAInstalled={hasPWAInstalled}
             isInstallPromptSupported={isInstallPromptSupported}
-            setIsInstallBannerOpen={isInstallBannerOpen =>
+            setIsInstallBannerOpen={(isInstallBannerOpen: boolean) =>
               setIsInstallBannerOpen(isInstallBannerOpen)
             }
             onClickInstall={onClickInstall}

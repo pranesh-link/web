@@ -1,20 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import React, { Suspense, useEffect, useState } from "react";
-import {
-  getJsonResponse,
-  getPdfBlob,
-  getPdfUrl,
-  getProfileJsonResponse,
-  toDataURL,
-} from "./common/Utils";
-import {
-  CONFIG_REF_INFO,
-  CONFIG_TYPES,
-  DEFAULT_APP_CONTEXT,
-  ROUTES,
-} from "./common/constants";
-import { ISectionInfo } from "./store/profile/types";
-import { LoaderImg, getImage } from "./common/Elements";
 import LoaderIcon from "./assets/loader-icon.svg";
 import { IConfigData, IConfigDataParams } from "./store/common/types";
 import { HomePage } from "./pages/HomePage";
@@ -26,6 +11,24 @@ import {
   isMobile as isMobileDevice,
 } from "react-device-detect";
 import { version } from "../package.json";
+import {
+  Constants,
+  Elements,
+  ISectionInfo,
+  Utils,
+} from "react-profile-component";
+import { getImage } from "./common/Utils";
+import { DEFAULT_APP_CONTEXT, ENVIRONMENT, ROUTES } from "./common/constants";
+
+const { LoaderImg } = Elements;
+const {
+  getJsonResponse,
+  getPdfBlob,
+  getPdfUrl,
+  getProfileJsonResponse,
+  toDataURL,
+} = Utils;
+const { CONFIG_REF_INFO, CONFIG_TYPES } = Constants;
 
 const DEFAULT_CONFIG_DATA: IConfigData = {
   jsonConfig: {
@@ -81,13 +84,17 @@ function App() {
     data: ISectionInfo,
     name: string,
   ) => {
-    const response = await getProfileJsonResponse(jsonToFetch, data);
+    const response = await getProfileJsonResponse(
+      ENVIRONMENT,
+      jsonToFetch,
+      data,
+    );
     setHasError(response.hasError);
     return { name, data: response.data as ISectionInfo };
   };
 
   const fetchData = async (jsonToFetch: string, name: string) => {
-    const response = await getJsonResponse(jsonToFetch);
+    const response = await getJsonResponse(ENVIRONMENT, jsonToFetch);
     setHasError(response.hasError);
     return { name, data: response.data };
   };
@@ -113,7 +120,9 @@ function App() {
           imagesPromiseList.push(toDataURL(image, item.id));
         }
         if (item.fileLocation === "server" && item.type === "pdf") {
-          const pdfFile = await getPdfBlob(getPdfUrl(item.fileName));
+          const pdfFile = await getPdfBlob(
+            getPdfUrl(ENVIRONMENT, item.fileName),
+          );
           filesList.push({ id: item.id, file: pdfFile.objectUrl });
         }
       }
@@ -190,11 +199,13 @@ function App() {
           isAdmin: !!isAdmin,
           preloadedAssets: preloadAssetImages,
           preloadedFiles,
+          preloadSrcList,
           currentDevice: { osName, browserName, isMobile },
           version,
         },
       }}
     >
+      {/* <SayHello name="Pranesh1" /> */}
       <Suspense fallback={<LoaderImg isMobile={isMobile} src={LoaderIcon} />}>
         <BrowserRouter>
           <Routes>

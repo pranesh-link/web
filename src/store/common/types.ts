@@ -37,15 +37,17 @@ interface IPWAConfig {
   browsers: string[];
   os: string[];
 }
+
+export interface IPreloadSrc {
+  id: string;
+  type: string;
+  fileName: string;
+  fileLocation: string;
+}
 export interface IAppConfig {
   homepage: IHomePageConfig;
   pwa: IPWAConfig;
-  preloadSrcList: {
-    id: string;
-    type: string;
-    fileName: string;
-    fileLocation: string;
-  }[];
+  preloadSrcList: IPreloadSrc[];
 }
 export interface IConfigData {
   jsonConfig: {

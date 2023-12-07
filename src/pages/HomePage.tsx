@@ -1,11 +1,13 @@
 import { useContext, useEffect, useMemo } from "react";
 import { AppContext } from "../store/app/context";
-import { FlexBoxSection, LoaderImg } from "../common/Elements";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../common/constants";
-import { getLocalStorage } from "../common/Utils";
 import LoaderIcon from "../assets/loader-icon.svg";
+import { Utils, Elements } from "react-profile-component";
+
+const { getLocalStorage } = Utils;
+const { FlexBoxSection, LoaderImg } = Elements;
 
 export const HomePage = () => {
   const {
