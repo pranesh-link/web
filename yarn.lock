@@ -11213,10 +11213,10 @@ react-phone-number-input@3.3.6:
     libphonenumber-js "^1.10.44"
     prop-types "^15.8.1"
 
-react-profile-component@1.25.0:
-  version "1.25.0"
-  resolved "https://registry.yarnpkg.com/react-profile-component/-/react-profile-component-1.25.0.tgz#df0b187833050dc61ca0fb287de0e5bed83d202c"
-  integrity sha512-5P7ooGockw3soquGV5gVcF2hbe9MmlLf+tyP/zyVt2O5oo85c8AVAfuw1vAlHHN1lpv64a6Y0jMU3FgnDnlVNA==
+react-profile-component@1.32.0:
+  version "1.32.0"
+  resolved "https://registry.yarnpkg.com/react-profile-component/-/react-profile-component-1.32.0.tgz#961a5ec2f4ce6ddec5ef4e2eb25e0a6b7a169cd3"
+  integrity sha512-bjKlBM2vh8JF69J/kqwPmq+XrVbWPey1DW7EBgpuIr/kg7Ppm/A8Mm+bo6uUbmeyuFaXRGtVnmTYU42qtCtCvg==
 
 react-pwa-install-prompt@1.0.5:
   version "1.0.5"

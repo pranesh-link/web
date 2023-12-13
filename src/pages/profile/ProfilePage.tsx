@@ -17,7 +17,12 @@ import {
   IExperienceJsonInfo,
 } from "react-profile-component";
 import { AppContext } from "../../store/app/context";
-import { ENVIRONMENT } from "../../common/constants";
+import {
+  EMAILJS_CONFIG,
+  ENVIRONMENT,
+  CMS_SERVER_CONFIG,
+  WEB_SERVER_CONFIG,
+} from "../../common/constants";
 
 const { ActionBtn, FlexBoxSection, LoaderImg } = Elements;
 const {
@@ -106,6 +111,7 @@ const ProfilePage = (props: ProfilePageProps) => {
         const response = await getProfileJsonResponse(
           ENVIRONMENT,
           jsonToFetch,
+          CMS_SERVER_CONFIG,
           data,
         );
         setHasErrorInProfile(response.hasError);
@@ -235,6 +241,15 @@ const ProfilePage = (props: ProfilePageProps) => {
             preloadSrcList={preloadSrcList}
             preloadedAssets={preloadedAssets}
             preloadedFiles={preloadedFiles}
+            emailJsConfig={{
+              serviceId: EMAILJS_CONFIG.SERVICE_ID,
+              templateId: EMAILJS_CONFIG.TEMPLATE_ID,
+              publicKey: EMAILJS_CONFIG.PUBLIC_KEY,
+            }}
+            serverConfig={{
+              webServerConfig: WEB_SERVER_CONFIG,
+              cmsServerConfig: CMS_SERVER_CONFIG,
+            }}
           />
           <PWABanner
             pwa={pwa}
@@ -246,6 +261,7 @@ const ProfilePage = (props: ProfilePageProps) => {
             isWebWithPWA={!isStandalone && hasPWAInstalled}
             hasPWAInstalled={hasPWAInstalled}
             isInstallPromptSupported={isInstallPromptSupported}
+            webServerConfig={WEB_SERVER_CONFIG}
             setIsInstallBannerOpen={(isInstallBannerOpen: boolean) =>
               setIsInstallBannerOpen(isInstallBannerOpen)
             }
