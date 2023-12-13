@@ -18,7 +18,12 @@ import {
   Utils,
 } from "react-profile-component";
 import { getImage } from "./common/Utils";
-import { DEFAULT_APP_CONTEXT, ENVIRONMENT, ROUTES } from "./common/constants";
+import {
+  CMS_SERVER_CONFIG,
+  DEFAULT_APP_CONTEXT,
+  ENVIRONMENT,
+  ROUTES,
+} from "./common/constants";
 
 const { LoaderImg } = Elements;
 const {
@@ -87,6 +92,7 @@ function App() {
     const response = await getProfileJsonResponse(
       ENVIRONMENT,
       jsonToFetch,
+      CMS_SERVER_CONFIG,
       data,
     );
     setHasError(response.hasError);
@@ -94,7 +100,11 @@ function App() {
   };
 
   const fetchData = async (jsonToFetch: string, name: string) => {
-    const response = await getJsonResponse(ENVIRONMENT, jsonToFetch);
+    const response = await getJsonResponse(
+      ENVIRONMENT,
+      jsonToFetch,
+      CMS_SERVER_CONFIG,
+    );
     setHasError(response.hasError);
     return { name, data: response.data };
   };
@@ -121,7 +131,7 @@ function App() {
         }
         if (item.fileLocation === "server" && item.type === "pdf") {
           const pdfFile = await getPdfBlob(
-            getPdfUrl(ENVIRONMENT, item.fileName),
+            getPdfUrl(ENVIRONMENT, item.fileName, CMS_SERVER_CONFIG),
           );
           filesList.push({ id: item.id, file: pdfFile.objectUrl });
         }
