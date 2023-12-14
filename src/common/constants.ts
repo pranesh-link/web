@@ -1,6 +1,7 @@
 import { IAppContext } from "../store/app/types";
 import {
   Constants,
+  Environment,
   ICMSServerConfig,
   IWebServerConfig,
 } from "react-profile-component";
@@ -8,7 +9,7 @@ import { IMaintenance } from "../store/common/types";
 
 const { DEFAULT_PROFILE_CONTEXT, DEFAULT_PWA } = Constants;
 
-export const ENVIRONMENT = process.env.NODE_ENV;
+export const ENVIRONMENT: Environment = process.env.NODE_ENV;
 export const ROUTES = {
   ROUTE_PROFILE: "/profile",
   ROUTE_MAINTENANCE: "/maintenance",

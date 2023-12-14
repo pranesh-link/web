@@ -57,7 +57,7 @@
     "react-device-detect": "2.2.3",
     "react-dom": "18.2.0",
     "react-phone-number-input": "3.3.6",
-    "react-profile-component": "1.32.0",
+    "react-profile-component": "1.33.0",
     "react-pwa-install-prompt": "1.0.5",
     "react-refresh": "0.8.3",
     "react-router-dom": "6.7.0",
@@ -86,7 +86,8 @@
     "wStart": "set \"GENERATE_SOURCEMAP=false\" && node scripts/start.js",
     "build": "GENERATE_SOURCEMAP=false node scripts/build.js",
     "wBuild": "set \"GENERATE_SOURCEMAP=false\" && node scripts/build.js",
-    "test": "node scripts/test.js"
+    "test": "node scripts/test.js",
+    "update-prof": "yarn add react-profile-component@latest"
   },
   "husky": {
     "hooks": {
