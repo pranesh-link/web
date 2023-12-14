@@ -1,5 +1,13 @@
 version: 0.2
 
+env:
+  variables:
+    CLOUDFRONT_DISTRIBUTION_ID_1: ""
+    CLOUDFRONT_DISTRIBUTION_ID_2: ""
+  parameter-store:
+    CLOUDFRONT_DISTRIBUTION_ID_1: "/cloudfront/E2YV5D4M0ZJSJ6"
+    CLOUDFRONT_DISTRIBUTION_ID_2: "/cloudfront/E1GO1D6PKT8TCP"
+
 phases:
   install:
     runtime-versions:
@@ -12,9 +20,13 @@ phases:
       - yarn
   build:
     commands:
+      - echo "Invalidating CloudFront cache..."
+      - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID_1 --paths "/*"
+      - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID_2 --paths "/*"
       - yarn build
   post_build:
     commands:
+      - echo "CloudFront cache invalidated successfully!"
       - aws s3 rm s3://www.pranesh.link --recursive
       - aws s3 sync ./build s3://www.pranesh.link --acl public-read
       - aws s3 rm s3://pranesh-react-app --recursive
