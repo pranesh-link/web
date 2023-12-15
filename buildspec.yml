@@ -1,10 +1,5 @@
 version: 0.2
 
-env:
-  parameter-store:
-    CLOUDFRONT_DISTRIBUTION_ID_1: CLOUDFRONT_DISTRIBUTION_ID_1
-    CLOUDFRONT_DISTRIBUTION_ID_2: CLOUDFRONT_DISTRIBUTION_ID_2
-
 phases:
   install:
     runtime-versions:
@@ -18,8 +13,8 @@ phases:
   build:
     commands:
       - echo "Invalidating CloudFront cache..."
-      - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID_1 --paths "/*"
-      - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID_2 --paths "/*"
+      - aws cloudfront create-invalidation --distribution-id /cloudfront/E2YV5D4M0ZJSJ6 --paths "/*"
+      - aws cloudfront create-invalidation --distribution-id /cloudfront/E1GO1D6PKT8TCP --paths "/*"
       - yarn build
   post_build:
     commands:
