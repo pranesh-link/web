@@ -13,8 +13,8 @@ phases:
   build:
     commands:
       - echo "Invalidating CloudFront cache..."
-      - aws cloudfront create-invalidation --distribution-id /cloudfront/E2YV5D4M0ZJSJ6 --paths "/*"
-      - aws cloudfront create-invalidation --distribution-id /cloudfront/E1GO1D6PKT8TCP --paths "/*"
+      - aws cloudfront create-invalidation --distribution-id E2YV5D4M0ZJSJ6 --paths "/*"
+      - aws cloudfront create-invalidation --distribution-id E1GO1D6PKT8TCP --paths "/*"
       - yarn build
   post_build:
     commands:
