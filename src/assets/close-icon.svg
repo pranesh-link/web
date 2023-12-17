@@ -6,4 +6,12 @@
             <path d="M.267 8L3.86 4.063c.077-.084.203-.084.28 0L7.733 8" transform="translate(8 8)"/>
         </g>
     </g>
+<style>
+        g {
+            stroke: #FFF;
+        }
+        @media (prefers-color-scheme: dark) {
+            g { stroke: white; }
+        }
+    </style>
 </svg>
