@@ -88,6 +88,9 @@ const ProfilePage = (props: ProfilePageProps) => {
   const [isStandalone, setIsStandalone] = useState(
     window.matchMedia("(display-mode: standalone)").matches,
   );
+  const [isDarkMode, setIsDarkMode] = useState(
+    window.matchMedia("(prefers-color-scheme: dark)").matches,
+  );
 
   const onClickInstall = async () => {
     setIsInstallBannerOpen(false);
@@ -169,6 +172,21 @@ const ProfilePage = (props: ProfilePageProps) => {
   }, []);
 
   useEffect(() => {
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", ({ matches }) => {
+        setIsDarkMode(matches);
+      });
+
+    return () =>
+      window
+        .matchMedia("(prefers-color-scheme: dark)")
+        .removeEventListener("change", ({ matches }) => {
+          setIsDarkMode(matches);
+        });
+  }, []);
+
+  useEffect(() => {
     window.addEventListener("appinstalled", e => {
       setHasPWAInstalled(true);
       setLocalStorage("hasPWAInstalled", true);
@@ -212,6 +230,7 @@ const ProfilePage = (props: ProfilePageProps) => {
         <Wrapper>
           <Profile
             isExport={isExport}
+            isDarkMode={isDarkMode}
             profileData={profileData}
             refs={{
               homeRef,

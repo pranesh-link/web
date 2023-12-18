@@ -1,3 +1,4 @@
+import { IPreloadSrc } from "react-profile-component";
 export interface IMaintenance {
   isUnderMaintenance: boolean;
   message: string;
@@ -38,12 +39,6 @@ interface IPWAConfig {
   os: string[];
 }
 
-export interface IPreloadSrc {
-  id: string;
-  type: string;
-  fileName: string;
-  fileLocation: string;
-}
 export interface IAppConfig {
   homepage: IHomePageConfig;
   pwa: IPWAConfig;
