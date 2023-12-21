@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { IMaintenance } from "../../store/common/types";
 import { useRef } from "react";
 import { Utils, ISectionInfo, Contact } from "react-profile-component";
-import { ENVIRONMENT } from "../../common/constants";
+import { CMS_SERVER_CONFIG, ENVIRONMENT } from "../../common/constants";
 
 const { getIconUrl } = Utils;
 interface IMaintenanceProps {
@@ -18,7 +18,7 @@ const MaintenancePage = (props: IMaintenanceProps) => {
         <img
           className="maintenance-image"
           alt="maintenance"
-          src={getIconUrl(ENVIRONMENT, maintenance.image)}
+          src={getIconUrl(maintenance.image, ENVIRONMENT, CMS_SERVER_CONFIG)}
         />
         <h1 dangerouslySetInnerHTML={{ __html: maintenance.message }} />
       </div>
@@ -49,7 +49,7 @@ const MaintenanceArticle = styled.article<{ isMobile: boolean }>`
     padding: 20px 0;
     background: rgb(34, 34, 34);
     .links {
-      justify-content: ${props => (props.isMobile ? "space-evenly" : "center")};
+      justify-content: space-evenly;
     }
     img {
       height: 30px;

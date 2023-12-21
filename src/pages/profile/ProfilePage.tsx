@@ -241,10 +241,7 @@ const ProfilePage = (props: ProfilePageProps) => {
             }}
             isDownloading={isDownloading}
             isMobile={isMobile}
-            isInstallBannerOpen={
-              !isStandalone &&
-              (isInstallPromptSupported || !!isInstallBannerOpen)
-            }
+            isInstallBannerOpen={!isStandalone && !!isInstallBannerOpen}
             hasPWAInstalled={hasPWAInstalled}
             isHamburgerMenuOpen={isHamburgerMenuOpen}
             setIsDownloading={(isDownloading: boolean) =>
