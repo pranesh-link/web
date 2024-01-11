@@ -1,5 +1,5 @@
-import { IAppConfig, IMaintenance, IPreloadSrc } from "../common/types";
-import { IPWA, ISectionInfo } from "../profile/types";
+import { IPWA, IPreloadSrc, ISectionInfo } from "react-profile-component";
+import { IAppConfig, IMaintenance } from "../common/types";
 
 export interface IAppContext {
   data: IAppConfigData;
