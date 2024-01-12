@@ -22,6 +22,7 @@ import {
   ENVIRONMENT,
   CMS_SERVER_CONFIG,
   WEB_SERVER_CONFIG,
+  PAGE_TITLES
 } from "../../common/constants";
 
 const { ActionBtn, FlexBoxSection, LoaderImg } = Elements;
@@ -34,7 +35,6 @@ const {
 
 const {
   DEFAULT_PROFILE_CONTEXT,
-  PAGE_TITLES,
   MESSAGES,
   LABEL_TEXT,
   DEFAULT_PROFILE_CONFIG_DATA,
