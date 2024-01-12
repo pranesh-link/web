@@ -15,6 +15,10 @@ export const ROUTES = {
   ROUTE_MAINTENANCE: "/maintenance",
 };
 
+export const PAGE_TITLES = {
+  profile: "Pranesh",
+};
+
 export const DEFAULT_MAINTENANCE_DATA: IMaintenance = {
   isUnderMaintenance: false,
   message: "",
