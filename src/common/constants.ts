@@ -16,7 +16,7 @@ export const ROUTES = {
 };
 
 export const PAGE_TITLES = {
-  profile: "Pranesh",
+  profile: "Pranesh | Lead UI Engineer",
 };
 
 export const DEFAULT_MAINTENANCE_DATA: IMaintenance = {
