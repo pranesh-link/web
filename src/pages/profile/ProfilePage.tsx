@@ -15,6 +15,7 @@ import {
   DownloadType,
   IPWA,
   IExperienceJsonInfo,
+  mockProfileData,
 } from "react-profile-component";
 import { AppContext } from "../../store/app/context";
 import {
@@ -22,7 +23,7 @@ import {
   ENVIRONMENT,
   CMS_SERVER_CONFIG,
   WEB_SERVER_CONFIG,
-  PAGE_TITLES
+  PAGE_TITLES,
 } from "../../common/constants";
 
 const { ActionBtn, FlexBoxSection, LoaderImg } = Elements;
@@ -65,6 +66,8 @@ const ProfilePage = (props: ProfilePageProps) => {
       preloadSrcList,
     },
   } = useContext(AppContext);
+  const queryParams = new URLSearchParams(window.location.search);
+  const isMock = queryParams.get("demo");
   const { browsers, os } = pwaConfig;
   const { pwa, hasError, isExport, isMobile, profileConfig, retryBaseInfo } =
     props;
@@ -76,20 +79,20 @@ const ProfilePage = (props: ProfilePageProps) => {
     boolean | null
   >(getLocalStorage("isInstallBannerOpen"));
   const [hasPWAInstalled, setHasPWAInstalled] = useState<boolean>(
-    getLocalStorage("hasPWAInstalled") || false,
+    getLocalStorage("hasPWAInstalled") || false
   );
   const [profileData, setProfileData] = useState<IProfileData>(
-    DEFAULT_PROFILE_CONTEXT.data,
+    DEFAULT_PROFILE_CONTEXT.data
   );
   const [isFetchingData, setIsFetchingData] = useState<boolean>(true);
   const [isDownloading, setIsDownloading] = useState<boolean>(false);
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] =
     useState<boolean>(false);
   const [isStandalone, setIsStandalone] = useState(
-    window.matchMedia("(display-mode: standalone)").matches,
+    window.matchMedia("(display-mode: standalone)").matches
   );
   const [isDarkMode, setIsDarkMode] = useState(
-    window.matchMedia("(prefers-color-scheme: dark)").matches,
+    window.matchMedia("(prefers-color-scheme: dark)").matches
   );
 
   const onClickInstall = async () => {
@@ -109,13 +112,13 @@ const ProfilePage = (props: ProfilePageProps) => {
       const fetchInfo = async (
         jsonToFetch: string,
         data: ISectionInfo | IHeader | DownloadType,
-        name: string,
+        name: string
       ) => {
         const response = await getProfileJsonResponse(
           ENVIRONMENT,
           jsonToFetch,
           CMS_SERVER_CONFIG,
-          data,
+          data
         );
         setHasErrorInProfile(response.hasError);
         return { name, data: response.data };
@@ -125,12 +128,12 @@ const ProfilePage = (props: ProfilePageProps) => {
         const { profileSections, links, skills, download, contactForm } = (
           await Promise.all(
             profileConfig.map((data: IConfigDataParams) =>
-              fetchInfo(data.ref, DEFAULT_SECTIONS_DETAILS, data.name),
-            ),
+              fetchInfo(data.ref, DEFAULT_SECTIONS_DETAILS, data.name)
+            )
           )
         ).reduce(
           (curr, prev) => ({ ...curr, [prev.name]: prev.data }),
-          DEFAULT_PROFILE_CONFIG_DATA,
+          DEFAULT_PROFILE_CONFIG_DATA
         );
 
         const { header, experiences } = profileSections;
@@ -138,10 +141,10 @@ const ProfilePage = (props: ProfilePageProps) => {
         const experienceData = (
           await Promise.all(
             (experiences.info as any[]).map((data: IExperienceJsonInfo) =>
-              fetchInfo(data.ref, DEFAULT_SECTIONS_DETAILS, data.name),
-            ),
+              fetchInfo(data.ref, DEFAULT_SECTIONS_DETAILS, data.name)
+            )
           )
-        ).map(data => data.data);
+        ).map((data) => data.data);
 
         const sections = {
           ...profileSections,
@@ -149,12 +152,16 @@ const ProfilePage = (props: ProfilePageProps) => {
           experiences: { ...experiences, info: experienceData },
           links,
         };
-        setProfileData({ header, sections, download, forms: { contactForm } });
+        setProfileData(
+          isMock
+            ? mockProfileData
+            : { header, sections, download, forms: { contactForm } }
+        );
         setIsFetchingData(false);
         setRetry(false);
       })();
     }
-  }, [retry, profileConfig]);
+  }, [retry, profileConfig, isMock]);
 
   useEffect(() => {
     window
@@ -187,7 +194,7 @@ const ProfilePage = (props: ProfilePageProps) => {
   }, []);
 
   useEffect(() => {
-    window.addEventListener("appinstalled", e => {
+    window.addEventListener("appinstalled", (e) => {
       setHasPWAInstalled(true);
       setLocalStorage("hasPWAInstalled", true);
       setIsInstallBannerOpen(true);
@@ -198,7 +205,7 @@ const ProfilePage = (props: ProfilePageProps) => {
     });
 
     return () => {
-      window.removeEventListener("appinstalled", e => {});
+      window.removeEventListener("appinstalled", (e) => {});
       window.removeEventListener("beforeinstallprompt", function (e) {
         clearLocalStorage("hasPWAInstalled");
       });
