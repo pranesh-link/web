@@ -12397,10 +12397,10 @@ react-phone-number-input@3.3.6:
     libphonenumber-js "^1.10.44"
     prop-types "^15.8.1"
 
-react-profile-component@1.46.0:
-  version "1.46.0"
-  resolved "https://registry.yarnpkg.com/react-profile-component/-/react-profile-component-1.46.0.tgz#1c12d4eeba55e2b66e930e08268061b0fc7149bc"
-  integrity sha512-YRWuSQzLDtjeLFQhIZXkAbvRU62UMnmYw/5oBWcPsHrTqlpwoh4gL02Ui5a+MqzmHKd8Axuu4Ekjl1gBxYElug==
+react-profile-component@1.48.0:
+  version "1.48.0"
+  resolved "https://registry.yarnpkg.com/react-profile-component/-/react-profile-component-1.48.0.tgz#902c4af79f11f850722ecf341ccb4cdc2efdae17"
+  integrity sha512-IhRwLg8oZzSgOaDSaPhQa3boZXV2LMLgZC5JZ71USCYfMBrBXx3BKezjeXHVtAEUqXcG7noxCMptDL3AYxHgbA==
   dependencies:
     "@babel/core" "7.23.3"
     "@babel/preset-react" "7.23.3"

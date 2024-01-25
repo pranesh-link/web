@@ -1,8 +1,10 @@
 import styled from "styled-components";
 import { IMaintenance } from "../../store/common/types";
-import { useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { Utils, ISectionInfo, Contact } from "react-profile-component";
-import { CMS_SERVER_CONFIG, ENVIRONMENT } from "../../common/constants";
+import { CMS_SERVER_CONFIG, ENVIRONMENT, ROUTES } from "../../common/constants";
+import { AppContext } from "../../store/app/context";
+import { useNavigate } from "react-router-dom";
 
 const { getIconUrl } = Utils;
 interface IMaintenanceProps {
@@ -12,6 +14,18 @@ interface IMaintenanceProps {
 }
 const MaintenancePage = (props: IMaintenanceProps) => {
   const { maintenance, links, isMobile } = props;
+  const {
+    data: {
+      maintenance: { isUnderMaintenance },
+    },
+  } = useContext(AppContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isUnderMaintenance) {
+      navigate(ROUTES.ROUTE_PROFILE);
+    }
+  }, [isUnderMaintenance, navigate]);
   return (
     <MaintenanceArticle isMobile={isMobile}>
       <div className="maintenance-info">
@@ -38,7 +52,7 @@ const MaintenanceArticle = styled.article<{ isMobile: boolean }>`
   color: #fff;
 
   .maintenance-image {
-    height: ${props => (props.isMobile ? "300px" : "400px")};
+    height: ${(props) => (props.isMobile ? "300px" : "400px")};
   }
 
   .contact-links {
@@ -53,7 +67,7 @@ const MaintenanceArticle = styled.article<{ isMobile: boolean }>`
     }
     img {
       height: 30px;
-      margin-right: ${props => (props.isMobile ? "0" : "50px")};
+      margin-right: ${(props) => (props.isMobile ? "0" : "50px")};
     }
   }
 
@@ -68,7 +82,7 @@ const MaintenanceArticle = styled.article<{ isMobile: boolean }>`
   }
 
   h1 {
-    font-size: ${props => (props.isMobile ? "30px" : "50px")};
+    font-size: ${(props) => (props.isMobile ? "30px" : "50px")};
     font-weight: 100;
     text-align: center;
   }
