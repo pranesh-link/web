@@ -74,26 +74,26 @@ function App() {
   const [configData, setConfigData] =
     useState<IConfigData>(DEFAULT_CONFIG_DATA);
   const [basicConfigData, setBasicConfigData] = useState<IAppConfigData>(
-    DEFAULT_APP_CONTEXT.data,
+    DEFAULT_APP_CONTEXT.data
   );
   const [preloadAssetImages, setPreloadAssetImages] = useState<any>([]);
   const [preloadedFiles, setPreloadedFiles] = useState<
     { id: string; file: string }[]
   >([]);
   const [preloadSrcList, setPreloadSrcList] = useState(
-    DEFAULT_CONFIG_DATA.appConfig.preloadSrcList,
+    DEFAULT_CONFIG_DATA.appConfig.preloadSrcList
   );
 
   const fetchSections = async (
     jsonToFetch: string,
     data: ISectionInfo,
-    name: string,
+    name: string
   ) => {
     const response = await getProfileJsonResponse(
       ENVIRONMENT,
       jsonToFetch,
       CMS_SERVER_CONFIG,
-      data,
+      data
     );
     setHasError(response.hasError);
     return { name, data: response.data as ISectionInfo };
@@ -103,7 +103,7 @@ function App() {
     const response = await getJsonResponse(
       ENVIRONMENT,
       jsonToFetch,
-      CMS_SERVER_CONFIG,
+      CMS_SERVER_CONFIG
     );
     setHasError(response.hasError);
     return { name, data: response.data };
@@ -131,7 +131,7 @@ function App() {
         }
         if (item.fileLocation === "server" && item.type === "pdf") {
           const pdfFile = await getPdfBlob(
-            getPdfUrl(ENVIRONMENT, item.fileName, CMS_SERVER_CONFIG),
+            getPdfUrl(ENVIRONMENT, item.fileName, CMS_SERVER_CONFIG)
           );
           filesList.push({ id: item.id, file: pdfFile.objectUrl });
         }
@@ -139,10 +139,10 @@ function App() {
 
       const images = await Promise.all(imagesPromiseList);
       setPreloadAssetImages(
-        images.map(item => ({
+        images.map((item) => ({
           id: item.id,
           image: item.image,
-        })),
+        }))
       );
       setPreloadedFiles(filesList);
       if (isCancelled) {
@@ -162,7 +162,7 @@ function App() {
         const config = (
           (await fetchData(
             CONFIG_REF_INFO.ref,
-            CONFIG_REF_INFO.name,
+            CONFIG_REF_INFO.name
           )) as unknown as { data: IConfigData }
         ).data;
         setConfigData(config);
@@ -177,12 +177,12 @@ function App() {
             return type === CONFIG_TYPES.PROFILECONFIG
               ? fetchSections(ref, basicConfigData.links, name)
               : fetchData(ref, name);
-          }),
+          })
         );
         setBasicConfigData({
           ...configData.reduce(
             (curr, prev) => ({ ...curr, [prev.name]: prev.data }),
-            basicConfigData,
+            basicConfigData
           ),
           appConfig,
         });
@@ -194,11 +194,11 @@ function App() {
   }, [retry]);
 
   const ProfilePageComponent = React.lazy(
-    () => import("./pages/profile/ProfilePage"),
+    () => import("./pages/profile/ProfilePage")
   );
 
   const MaintenancePageComponent = React.lazy(
-    () => import("./pages/maintenance/MaintenancePage"),
+    () => import("./pages/maintenance/MaintenancePage")
   );
 
   return (
@@ -215,7 +215,6 @@ function App() {
         },
       }}
     >
-      {/* <SayHello name="Pranesh1" /> */}
       <Suspense fallback={<LoaderImg isMobile={isMobile} src={LoaderIcon} />}>
         <BrowserRouter>
           <Routes>

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useContext } from "react";
+import { useRef, useState, useEffect, useContext } from "react";
 import usePWA from "react-pwa-install-prompt";
 import styled from "styled-components";
 import LoaderIcon from "../../assets/loader-icon.svg";
@@ -56,6 +56,7 @@ const ProfilePage = (props: ProfilePageProps) => {
   const experienceRef = useRef(null);
   const educationRef = useRef(null);
   const contactRef = useRef(null);
+  const openSourceRef = useRef(null);
   const {
     data: {
       appConfig: { pwa: pwaConfig },
@@ -125,7 +126,14 @@ const ProfilePage = (props: ProfilePageProps) => {
       };
 
       (async () => {
-        const { profileSections, links, skills, download, contactForm } = (
+        const {
+          profileSections,
+          links,
+          skills,
+          download,
+          contactForm,
+          profileLabels,
+        } = (
           await Promise.all(
             profileConfig.map((data: IConfigDataParams) =>
               fetchInfo(data.ref, DEFAULT_SECTIONS_DETAILS, data.name)
@@ -155,7 +163,13 @@ const ProfilePage = (props: ProfilePageProps) => {
         setProfileData(
           isMock
             ? mockProfileData
-            : { header, sections, download, forms: { contactForm } }
+            : {
+                header,
+                sections,
+                download,
+                forms: { contactForm },
+                labels: profileLabels,
+              }
         );
         setIsFetchingData(false);
         setRetry(false);
@@ -245,6 +259,7 @@ const ProfilePage = (props: ProfilePageProps) => {
               experienceRef,
               educationRef,
               contactRef,
+              openSourceRef,
             }}
             isDownloading={isDownloading}
             isMobile={isMobile}
