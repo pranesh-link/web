@@ -1,4 +1,10 @@
-import { useRef, useState, useEffect, useContext } from "react";
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  useContext,
+  useLayoutEffect,
+} from "react";
 import usePWA from "react-pwa-install-prompt";
 import styled from "styled-components";
 import LoaderIcon from "../../assets/loader-icon.svg";
@@ -25,7 +31,7 @@ import {
   WEB_SERVER_CONFIG,
   PAGE_TITLES,
 } from "../../common/constants";
-
+import "react-profile-component/dist/index.css";
 const { ActionBtn, FlexBoxSection, LoaderImg } = Elements;
 const {
   getLocalStorage,
@@ -95,6 +101,9 @@ const ProfilePage = (props: ProfilePageProps) => {
   const [isDarkMode, setIsDarkMode] = useState(
     window.matchMedia("(prefers-color-scheme: dark)").matches
   );
+  const [pwaOffset, setPwaOffset] = useState(0);
+
+  const pwaRef = React.createRef<HTMLDivElement>();
 
   const onClickInstall = async () => {
     setIsInstallBannerOpen(false);
@@ -160,6 +169,7 @@ const ProfilePage = (props: ProfilePageProps) => {
           experiences: { ...experiences, info: experienceData },
           links,
         };
+
         setProfileData(
           isMock
             ? mockProfileData
@@ -176,6 +186,12 @@ const ProfilePage = (props: ProfilePageProps) => {
       })();
     }
   }, [retry, profileConfig, isMock]);
+
+  useLayoutEffect(() => {
+    if (pwaRef.current && pwaRef.current.clientHeight) {
+      setPwaOffset(pwaRef?.current?.clientHeight);
+    }
+  }, [pwaRef]);
 
   useEffect(() => {
     window
@@ -253,6 +269,7 @@ const ProfilePage = (props: ProfilePageProps) => {
             isExport={isExport}
             isDarkMode={isDarkMode}
             profileData={profileData}
+            pwaOffset={pwaOffset}
             refs={{
               homeRef,
               skillsRef,
@@ -303,6 +320,7 @@ const ProfilePage = (props: ProfilePageProps) => {
             setIsInstallBannerOpen={(isInstallBannerOpen: boolean) =>
               setIsInstallBannerOpen(isInstallBannerOpen)
             }
+            ref={pwaRef}
             onClickInstall={onClickInstall}
           />
         </Wrapper>
