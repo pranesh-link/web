@@ -13,10 +13,12 @@ export const ENVIRONMENT: Environment = process.env.NODE_ENV;
 export const ROUTES = {
   ROUTE_PROFILE: "/profile",
   ROUTE_MAINTENANCE: "/maintenance",
+  ROUTE_BMICALCULATOR: "/bmi-calculator",
 };
 
 export const PAGE_TITLES = {
   profile: "Pranesh | Lead UI Engineer",
+  bmiCalculator: "BMI Calculator",
 };
 
 export const DEFAULT_MAINTENANCE_DATA: IMaintenance = {
@@ -27,6 +29,26 @@ export const DEFAULT_MAINTENANCE_DATA: IMaintenance = {
 
 export const DEFAULT_APP_CONTEXT: IAppContext = {
   data: {
+    bmiCalculatorForm: {
+      name: "bmi-calculator",
+      header: "",
+      fields: [],
+      key: "",
+      actionButtonLabel: "",
+      defaultMaxLength: 3,
+      label: {},
+      messages: { mandatoryError: "", retry: "" },
+      statusMessages: {
+        error: "",
+        form_fill: "",
+        offline: "",
+        review: "",
+        sending: "",
+        success: "",
+      },
+      bmiRanges: [],
+      transformFields: [],
+    },
     currentDevice: {
       osName: "Android",
       browserName: "Chrome",
@@ -80,4 +102,9 @@ export const CMS_SERVER_CONFIG: ICMSServerConfig = {
 export const WEB_SERVER_CONFIG: IWebServerConfig = {
   devWebUrl: DEV_WEB_URL,
   prodWebUrl: PROD_WEB_URL,
+};
+
+export const DEFAULT_BMI_CALCULATOR_FORM_DATA = {
+  heightInCm: "",
+  weightInKg: "",
 };

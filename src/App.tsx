@@ -201,6 +201,10 @@ function App() {
     () => import("./pages/maintenance/MaintenancePage")
   );
 
+  const BMICalculatorPageComponent = React.lazy(
+    () => import("./pages/BMICalculatorPage")
+  );
+
   return (
     <AppProvider
       value={{
@@ -261,6 +265,14 @@ function App() {
                         pwa={basicConfigData.pwa}
                         retryBaseInfo={() => setRetry(true)}
                       />
+                    </>
+                  }
+                />
+                <Route
+                  path={ROUTES.ROUTE_BMICALCULATOR}
+                  element={
+                    <>
+                      <BMICalculatorPageComponent />
                     </>
                   }
                 />
