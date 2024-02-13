@@ -1,5 +1,9 @@
 import { IPWA, IPreloadSrc, ISectionInfo } from "react-profile-component";
-import { IAppConfig, IMaintenance } from "../common/types";
+import {
+  IAppConfig,
+  IBMICalculatorFormInfo,
+  IMaintenance,
+} from "../common/types";
 
 export interface IAppContext {
   data: IAppConfigData;
@@ -21,6 +25,7 @@ export interface IAppConfigData {
   links: ISectionInfo;
   messages: IMessages;
   appConfig: IAppConfig;
+  bmiCalculatorForm: IBMICalculatorFormInfo;
 }
 
 export interface IMessages {

@@ -1,4 +1,4 @@
-import { IPreloadSrc } from "react-profile-component";
+import { IFormInfo, IPreloadSrc } from "react-profile-component";
 export interface IMaintenance {
   isUnderMaintenance: boolean;
   message: string;
@@ -50,4 +50,29 @@ export interface IConfigData {
     profileConfig: IConfigDataParams[];
   };
   appConfig: IAppConfig;
+}
+
+export type BMICalculatorFields = "heightInCm" | "weightInKg";
+
+export type BMICalculatorFormData = {
+  [key in BMICalculatorFields]: string;
+};
+
+type BMIRangeLabels =
+  | "underWeight"
+  | "healthyWeight"
+  | "overWeight"
+  | "obese"
+  | "severeObese";
+
+interface IBMIRange {
+  id: BMIRangeLabels;
+  min?: number;
+  max?: number;
+  label: string;
+  prefixedPercentile: number;
+  color: string;
+}
+export interface IBMICalculatorFormInfo extends IFormInfo {
+  bmiRanges: IBMIRange[];
 }
