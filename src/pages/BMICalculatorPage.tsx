@@ -98,7 +98,7 @@ const BMICalculatorPage = () => {
   );
 
   const hasValidFieldValues = useMemo(() => {
-    return Object.values(fieldError).some((item) => item === "");
+    return Object.values(fieldError).every((item) => item === "");
   }, [fieldError]);
 
   const bmiRangePercent = useMemo(() => {
