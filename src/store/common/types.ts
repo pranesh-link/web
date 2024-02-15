@@ -65,12 +65,13 @@ type BMIRangeLabels =
   | "obese"
   | "severeObese";
 
-interface IBMIRange {
+export interface IBMIRange {
   id: BMIRangeLabels;
   min?: number;
   max?: number;
   label: string;
   prefixedPercentile: number;
+  isHealthyRange?: boolean;
   color: string;
 }
 export interface IBMICalculatorFormInfo extends IFormInfo {

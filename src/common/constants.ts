@@ -46,7 +46,15 @@ export const DEFAULT_APP_CONTEXT: IAppContext = {
         sending: "",
         success: "",
       },
-      bmiRanges: [],
+      bmiRanges: [
+        {
+          id: "underWeight",
+          max: 18.5,
+          label: "Underweight",
+          prefixedPercentile: 0,
+          color: "#3498db",
+        },
+      ],
       transformFields: [],
     },
     currentDevice: {
@@ -108,3 +116,6 @@ export const DEFAULT_BMI_CALCULATOR_FORM_DATA = {
   heightInCm: "",
   weightInKg: "",
 };
+
+export const DEFAULT_BMI_CALCULATOR_FORM_ERROR =
+  DEFAULT_BMI_CALCULATOR_FORM_DATA;

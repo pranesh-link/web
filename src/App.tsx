@@ -202,7 +202,7 @@ function App() {
   );
 
   const BMICalculatorPageComponent = React.lazy(
-    () => import("./pages/BMICalculatorPage")
+    () => import("./pages/bmi-calculator/BMICalculatorPage")
   );
 
   return (
