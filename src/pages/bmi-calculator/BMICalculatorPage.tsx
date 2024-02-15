@@ -113,7 +113,7 @@ const BMICalculatorPage = () => {
     return isValidBMI
       ? findAndReplace(label.weightSuggest, [
           weightDirection,
-          diffToIdealWeight,
+          Math.abs(diffToIdealWeight),
         ])
       : "";
   }, [isValidBMI, label.weightSuggest, weightSuggestConfig]);
