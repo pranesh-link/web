@@ -3,7 +3,7 @@ import {
   IFormField,
   validateRegex,
 } from "react-profile-component";
-import { findAndReplace, round } from "../../common/Utils";
+import { round } from "../../common/Utils";
 import { BMICalculatorFormData, IBMIRange } from "../../store/common/types";
 
 export const getCurrentBMIRange = (bmiRanges: IBMIRange[], bmi: number) => {
