@@ -65,9 +65,6 @@ const BMICalculatorForm = styled(Form)`
       .weight-to-adjust {
         color: #3fc935;
       }
-      .weight-direction {
-        border-bottom: 1px solid #3fc935;
-      }
     }
     &.reduce {
       .weight-direction,
