@@ -48,16 +48,15 @@ const BMICalculatorForm = styled(Form)`
   .weight-suggestion {
     .weight-direction,
     .weight-to-adjust,
-    .ideal-weight {
+    .ideal-weight,
+    .healthy-bmi {
       font-weight: 700;
       font-style: italic;
       font-size: 16px;
     }
-    .ideal-weight {
+    .ideal-weight,
+    .healthy-bmi {
       color: #3fc935;
-    }
-    .weight-direction {
-      font-size: 16px;
     }
 
     &.gain {

@@ -85,7 +85,8 @@ export const getWeightSuggestConfig = (
   label: Record<string, string>,
   formData: BMICalculatorFormData,
   bmi: number,
-  healthyBMIRange: IBMIRange
+  healthyBMIRange: IBMIRange,
+  isCurrentBMIHealthy: boolean
 ) => {
   if (bmi) {
     const {
@@ -97,8 +98,11 @@ export const getWeightSuggestConfig = (
       parseInt(formData.weightInKg) - nearestIdealWeight,
       2
     );
-    const weightDirection =
-      diffToIdealWeight < 0 ? label.increase : label.reduce;
+    const weightDirection = isCurrentBMIHealthy
+      ? label.ideal
+      : diffToIdealWeight < 0
+      ? label.increase
+      : label.reduce;
     return {
       weightDirection,
       idealWeightRanges: {
