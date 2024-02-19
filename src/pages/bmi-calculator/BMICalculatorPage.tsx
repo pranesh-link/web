@@ -94,9 +94,21 @@ const BMICalculatorPage = () => {
     [bmiRanges]
   );
 
+  const isCurrentBMIHealthy = useMemo(() => {
+    const { max = 100, min = 0 } = healthyBMIRange;
+    return bmi <= max && bmi >= min;
+  }, [healthyBMIRange, bmi]);
+
   const weightSuggestConfig = useMemo(
-    () => getWeightSuggestConfig(label, formData, bmi, healthyBMIRange),
-    [bmi, formData, healthyBMIRange, label]
+    () =>
+      getWeightSuggestConfig(
+        label,
+        formData,
+        bmi,
+        healthyBMIRange,
+        isCurrentBMIHealthy
+      ),
+    [bmi, formData, healthyBMIRange, label, isCurrentBMIHealthy]
   );
 
   const formattedIdealWeightRange = useMemo(() => {
@@ -110,13 +122,23 @@ const BMICalculatorPage = () => {
 
   const formattedWeightSuggestLabel = useMemo(() => {
     const { weightDirection, diffToIdealWeight } = weightSuggestConfig;
-    return isValidBMI
-      ? findAndReplace(label.weightSuggest, [
-          weightDirection,
-          Math.abs(diffToIdealWeight),
-        ])
-      : "";
-  }, [isValidBMI, label.weightSuggest, weightSuggestConfig]);
+    if (isValidBMI) {
+      return weightDirection === label.ideal
+        ? label.healthyBMI
+        : findAndReplace(label.weightSuggest, [
+            weightDirection,
+            Math.abs(diffToIdealWeight),
+          ]);
+    } else {
+      return "";
+    }
+  }, [
+    isValidBMI,
+    label.healthyBMI,
+    label.ideal,
+    label.weightSuggest,
+    weightSuggestConfig,
+  ]);
 
   const updateInput = useCallback(
     (fieldValue: FormFieldValueType, field: string) => {
