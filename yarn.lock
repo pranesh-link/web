@@ -12855,6 +12855,13 @@ react-scripts@4.0.3:
   optionalDependencies:
     fsevents "^2.1.3"
 
+react-shimmer-effects@1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/react-shimmer-effects/-/react-shimmer-effects-1.0.3.tgz#74513c92e5ec470ddab2c943a607efdaa1e6db28"
+  integrity sha512-UQw+dujUTUtpIsorHPrYlKQ1YdKUwHIOd4vReW0VOPauQ+nuRdyuwFM7Q6qL75WML3HvA8DB7rpdJGuxB9cZ5A==
+  dependencies:
+    classnames "^2.3.1"
+
 react-transition-group@4.4.1:
   version "4.4.1"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-4.4.1.tgz#63868f9325a38ea5ee9535d828327f85773345c9"

@@ -7,7 +7,6 @@ import React, {
 } from "react";
 import usePWA from "react-pwa-install-prompt";
 import styled from "styled-components";
-import LoaderIcon from "../../assets/loader-icon.svg";
 import { IConfigDataParams } from "../../store/common/types";
 import {
   PWABanner,
@@ -32,7 +31,8 @@ import {
   PAGE_TITLES,
 } from "../../common/constants";
 import "react-profile-component/dist/index.css";
-const { ActionBtn, FlexBoxSection, LoaderImg } = Elements;
+import Shimmer from "../../components/common/Shimmer";
+const { ActionBtn, FlexBoxSection } = Elements;
 const {
   getLocalStorage,
   setLocalStorage,
@@ -181,7 +181,7 @@ const ProfilePage = (props: ProfilePageProps) => {
                 labels: profileLabels,
               }
         );
-        setIsFetchingData(false);
+        setTimeout(() => setIsFetchingData(false), 1000);
         setRetry(false);
       })();
     }
@@ -243,7 +243,8 @@ const ProfilePage = (props: ProfilePageProps) => {
   }, []);
 
   return isFetchingData ? (
-    <LoaderImg isMobile={isMobile} src={LoaderIcon} />
+    // <LoaderImg isMobile={isMobile} src={LoaderIcon} />
+    <Shimmer />
   ) : (
     <>
       {hasErrorInProfile ? (

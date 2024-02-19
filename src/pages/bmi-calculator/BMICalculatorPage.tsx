@@ -44,6 +44,8 @@ const BMICalculatorPage = () => {
     document.title = PAGE_TITLES.bmiCalculator;
   }, []);
 
+  const showForm = useMemo(() => setTimeout(() => header, 1000), [header]);
+
   const hasValidFieldValues = useMemo(
     () => Object.values(fieldError).every((item) => item === ""),
     [fieldError]
@@ -130,8 +132,7 @@ const BMICalculatorPage = () => {
     },
     [fieldError, fields]
   );
-
-  return header ? (
+  return showForm ? (
     <BMICalculatorForm isMobile={isMobile}>
       <FormHeader>{header}</FormHeader>
       <Fields

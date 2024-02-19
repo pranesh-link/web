@@ -30,8 +30,21 @@ export interface IConfigDataParams {
   name: string;
 }
 
+export interface IPageLinkCollection {
+  id: string;
+  label: string;
+  links: IPageLink[];
+}
+export interface IPageLink {
+  id: string;
+  label: string;
+  route: string;
+}
+
 export interface IHomePageConfig {
+  title: string;
   profileRedirectDelay: number;
+  pages: (IPageLink | IPageLinkCollection)[];
 }
 
 interface IPWAConfig {
