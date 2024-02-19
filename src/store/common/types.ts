@@ -74,6 +74,13 @@ export interface IBMIRange {
   isHealthyRange?: boolean;
   color: string;
 }
+
+interface IMinMax {
+  min: number;
+  max: number;
+}
 export interface IBMICalculatorFormInfo extends IFormInfo {
   bmiRanges: IBMIRange[];
+  permissibleHeights: IMinMax;
+  permissibleWeights: IMinMax;
 }

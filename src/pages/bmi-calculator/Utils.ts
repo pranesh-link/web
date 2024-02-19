@@ -27,8 +27,8 @@ export const getCurrentBMIRange = (bmiRanges: IBMIRange[], bmi: number) => {
 };
 
 export const getBMI = (formData: BMICalculatorFormData) => {
-  const height = parseInt(formData.heightInCm) / 100;
-  const weight = parseInt(formData.weightInKg);
+  const height = round(Number(formData.heightInCm) / 100, 2);
+  const weight = Number(formData.weightInKg);
   return round(weight / Math.pow(height, 2), 1);
 };
 
@@ -62,13 +62,13 @@ const getIdealWeights = (
   healthyBMIRange: IBMIRange,
   bmi: number
 ) => {
-  const height = parseInt(formData.heightInCm) / 100;
+  const height = round(Number(formData.heightInCm) / 100, 2);
   const { min = 0, max = 0 } = healthyBMIRange;
   let nearestWeight = 0,
     lowestWeight = 0,
     highestWeight = 0;
-  lowestWeight = round(min * Math.pow(height, 2), 2);
-  highestWeight = round(max * Math.pow(height, 2), 2);
+  lowestWeight = round(min * Math.pow(height, 2), 1);
+  highestWeight = round(max * Math.pow(height, 2), 1);
   if (bmi < min) {
     nearestWeight = lowestWeight;
   } else if (bmi > max) {
@@ -95,7 +95,7 @@ export const getWeightSuggestConfig = (
       lowestWeight,
     } = getIdealWeights(formData, healthyBMIRange, bmi);
     const diffToIdealWeight = round(
-      parseInt(formData.weightInKg) - nearestIdealWeight,
+      Number(formData.weightInKg) - nearestIdealWeight,
       2
     );
     const weightDirection = isCurrentBMIHealthy
