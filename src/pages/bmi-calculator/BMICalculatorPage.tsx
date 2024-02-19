@@ -45,6 +45,8 @@ const BMICalculatorPage = () => {
         header,
         fields,
         bmiRanges,
+        permissibleHeights,
+        permissibleWeights,
       },
       currentDevice: { isMobile },
     },
@@ -76,7 +78,32 @@ const BMICalculatorPage = () => {
     [bmi, bmiRanges]
   );
 
-  const isValidBMI = useMemo(() => !isNaN(bmi) && bmi, [bmi]);
+  const isValidHt = useMemo(() => {
+    if (formData.heightInCm) {
+      const height = Number(formData.heightInCm);
+      return (
+        height >= permissibleHeights.min && height <= permissibleHeights.max
+      );
+    } else {
+      return true;
+    }
+  }, [formData.heightInCm, permissibleHeights.max, permissibleHeights.min]);
+
+  const isValidWt = useMemo(() => {
+    if (formData.weightInKg) {
+      const weight = Number(formData.weightInKg);
+      return (
+        weight >= permissibleWeights.min && weight <= permissibleWeights.max
+      );
+    } else {
+      return true;
+    }
+  }, [formData.weightInKg, permissibleWeights.max, permissibleWeights.min]);
+
+  const isValidBMI = useMemo(
+    () => Boolean(isValidHt && isValidWt && !isNaN(bmi) && bmi),
+    [bmi, isValidHt, isValidWt]
+  );
 
   const hasFieldValues = useMemo(
     () => Object.values(formData).some((item) => item !== ""),
@@ -140,6 +167,17 @@ const BMICalculatorPage = () => {
     weightSuggestConfig,
   ]);
 
+  const formattedInvalidValueError = useMemo(() => {
+    const { min: minHeight, max: maxHeight } = permissibleHeights;
+    const { min: minWeight, max: maxWeight } = permissibleWeights;
+    const heightRange = `${minHeight} - ${maxHeight}`;
+    const weightRange = `${minWeight} - ${maxWeight}`;
+    return findAndReplace(label.invalidHeightWeightError, [
+      heightRange,
+      weightRange,
+    ]);
+  }, [label.invalidHeightWeightError, permissibleHeights, permissibleWeights]);
+
   const updateInput = useCallback(
     (fieldValue: FormFieldValueType, field: string) => {
       setFormData({ ...formData, [field]: fieldValue });
@@ -183,6 +221,12 @@ const BMICalculatorPage = () => {
             />
           );
         })}
+        {(!isValidHt || !isValidWt) && (
+          <p
+            className="invalid-height-weight"
+            dangerouslySetInnerHTML={{ __html: formattedInvalidValueError }}
+          />
+        )}
 
         <ActionBtn
           className={classNames("reset-button", { hidden: !hasFieldValues })}

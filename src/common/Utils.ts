@@ -9,7 +9,7 @@ export const round = (value: number, precision: number) => {
 };
 
 export const findAndReplace = (
-  str: string,
+  str: string = "",
   replaceText: (string | number)[]
 ) => {
   const textsToReplace = str.match(/{(.*?)}/g) || [];

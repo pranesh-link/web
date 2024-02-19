@@ -46,6 +46,14 @@ export const DEFAULT_APP_CONTEXT: IAppContext = {
         sending: "",
         success: "",
       },
+      permissibleHeights: {
+        min: 50,
+        max: 350,
+      },
+      permissibleWeights: {
+        min: 2,
+        max: 700,
+      },
       bmiRanges: [
         {
           id: "underWeight",

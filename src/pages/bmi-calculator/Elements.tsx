@@ -32,6 +32,7 @@ const BMICalculatorForm = styled(Form)`
     margin-top: 15px;
   }
   .reset-button {
+    margin-top: 10px;
     align-self: flex-end;
     &.hidden {
       visibility: hidden;
@@ -73,6 +74,15 @@ const BMICalculatorForm = styled(Form)`
     }
   }
 
+  .invalid-height-weight {
+    color: #ee4b2b;
+    font-weight: 600;
+    font-style: italic;
+    span {
+      display: inline-block;
+      width: 100%;
+    }
+  }
   .ideal-weight-range {
     .min,
     .max {
