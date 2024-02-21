@@ -75,7 +75,7 @@ export interface IBMIRange {
   color: string;
 }
 
-interface IMinMax {
+export interface IMinMax {
   min: number;
   max: number;
 }
@@ -83,4 +83,10 @@ export interface IBMICalculatorFormInfo extends IFormInfo {
   bmiRanges: IBMIRange[];
   permissibleHeights: IMinMax;
   permissibleWeights: IMinMax;
+}
+
+export interface IWeightSuggestConfig {
+  weightDirection: string;
+  diffToIdealWeight: number;
+  idealWeightRanges: IMinMax;
 }
