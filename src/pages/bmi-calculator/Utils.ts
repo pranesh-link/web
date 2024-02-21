@@ -4,7 +4,11 @@ import {
   validateRegex,
 } from "react-profile-component";
 import { round } from "../../common/Utils";
-import { BMICalculatorFormData, IBMIRange } from "../../store/common/types";
+import {
+  BMICalculatorFormData,
+  IBMIRange,
+  IMinMax,
+} from "../../store/common/types";
 
 export const getCurrentBMIRange = (bmiRanges: IBMIRange[], bmi: number) => {
   let bmiRange = bmiRanges[0];
@@ -118,4 +122,15 @@ export const getWeightSuggestConfig = (
       diffToIdealWeight: 0,
     };
   }
+};
+
+export const validateBMIFieldInputForRanges = (
+  value: string,
+  permissibleRanges: IMinMax
+) => {
+  const formattedValue = Number(value);
+  return (
+    formattedValue >= permissibleRanges.min &&
+    formattedValue <= permissibleRanges.max
+  );
 };
