@@ -1,3 +1,5 @@
+import { IPageLink, IPageLinkCollection } from "../store/common/types";
+
 export const getImage = async (fileName: string) => {
   const image = await import(`../assets/${fileName}`);
   return image.default;
@@ -18,3 +20,10 @@ export const findAndReplace = (
     str
   );
 };
+
+export const isInstanceOfPageLink = (item: any): item is IPageLink =>
+  "route" in item;
+
+export const isInstanceOfPageLinkCollection = (
+  item: any
+): item is IPageLinkCollection => "links" in item;

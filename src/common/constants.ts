@@ -10,7 +10,7 @@ import { IMaintenance } from "../store/common/types";
 const { DEFAULT_PROFILE_CONTEXT, DEFAULT_PWA } = Constants;
 
 export const ENVIRONMENT: Environment = process.env.NODE_ENV;
-export const ROUTES = {
+export const ROUTES: Record<string, string> = {
   ROUTE_PROFILE: "/profile",
   ROUTE_MAINTENANCE: "/maintenance",
   ROUTE_BMICALCULATOR: "/bmi-calculator",
@@ -87,7 +87,9 @@ export const DEFAULT_APP_CONTEXT: IAppContext = {
     maintenance: DEFAULT_MAINTENANCE_DATA,
     appConfig: {
       homepage: {
+        title: "",
         profileRedirectDelay: 3,
+        pages: [],
       },
       pwa: {
         browsers: [],

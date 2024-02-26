@@ -1,67 +1,87 @@
-import { useContext, useEffect, useMemo } from "react";
+import React, { useContext } from "react";
 import { AppContext } from "../store/app/context";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { ROUTES } from "../common/constants";
-import LoaderIcon from "../assets/loader-icon.svg";
-import { Utils, Elements } from "react-profile-component";
+import { Elements } from "react-profile-component";
+import {
+  isInstanceOfPageLink,
+  isInstanceOfPageLinkCollection,
+} from "../common/Utils";
+import PageLink from "../components/home/PageLink";
 
-const { getLocalStorage } = Utils;
-const { FlexBoxSection, LoaderImg } = Elements;
+const { FlexBoxSection, FlexBox } = Elements;
 
 export const HomePage = () => {
   const {
     data: {
-      currentDevice: { isMobile },
-      messages: { homepage: messages },
       appConfig: {
-        homepage: { profileRedirectDelay },
+        homepage: { title, pages },
       },
     },
   } = useContext(AppContext);
 
   const navigate = useNavigate();
 
-  const hasPWAInstalled = useMemo(() => getLocalStorage("hasPWAInstalled"), []);
+  const navigateToRoute = (route: string) => navigate(route);
 
-  useEffect(() => {
-    if (hasPWAInstalled) {
-      navigate(ROUTES.ROUTE_PROFILE);
-    } else {
-      setTimeout(
-        () => navigate(ROUTES.ROUTE_PROFILE),
-        profileRedirectDelay * 1000,
-      );
-    }
-  }, [navigate, profileRedirectDelay, hasPWAInstalled]);
   return (
-    <>
-      {hasPWAInstalled ? (
-        <LoaderImg isMobile={isMobile} src={LoaderIcon} />
-      ) : (
-        <HomePageWrapper
-          direction="column"
-          alignItems="center"
-          justifyContent="space-around"
-        >
-          <FlexBoxSection direction="column">
-            <h1 className="homepage-title">{messages.title}</h1>
-            <h3 className="homepage-construction">
-              {messages.underConstruction}
-            </h3>
-            <h3 className="homepage-redirection">{messages.redirection}</h3>
-          </FlexBoxSection>
-        </HomePageWrapper>
-      )}
-    </>
+    <HomePageWrapper direction="column">
+      <FlexBoxSection direction="column">
+        <h1 className="homepage-title">{title}</h1>
+        {pages.map((item) => {
+          let displayNode: JSX.Element = <></>;
+          const { id, label } = item;
+          if (isInstanceOfPageLink(item)) {
+            displayNode = (
+              <PageLink
+                key={id}
+                label={label}
+                route={item.route}
+                redirectToRoute={navigateToRoute}
+              />
+            );
+          } else if (isInstanceOfPageLinkCollection(item)) {
+            displayNode = (
+              <React.Fragment key={id}>
+                <h3 className="homepage-redirection tools">{label}</h3>
+                <FlexBox>
+                  {item.links.map((item) => {
+                    const { id, label } = item;
+                    return (
+                      <PageLink
+                        key={id}
+                        label={label}
+                        route={item.route}
+                        redirectToRoute={navigateToRoute}
+                      />
+                    );
+                  })}
+                </FlexBox>
+              </React.Fragment>
+            );
+          }
+          return displayNode;
+        })}
+      </FlexBoxSection>
+    </HomePageWrapper>
   );
 };
 
 const HomePageWrapper = styled(FlexBoxSection)`
   height: 100vh;
-  background: #f0f0f0;
-  h1,
-  h3 {
+  background: #faf9f6;
+  padding: 50px;
+  .shimmer {
+    height: 100%;
+    width: 100%;
+    border-radius: 15px;
+    background: linear-gradient(-45deg, #ccc 40%, #faf9f6 50%, #eee 60%);
+    background-size: 300%;
+    background-position-x: 100%;
+    animation: shimmer 2s infinite linear;
+  }
+
+  h1 {
     text-align: center;
   }
 
@@ -73,8 +93,23 @@ const HomePageWrapper = styled(FlexBoxSection)`
   .homepage-construction {
     color: #ffa500;
   }
-  .homepage-redirection {
+  .tools {
     color: #3f9c35;
     font-style: italic;
+    font-size: 18px;
+    margin-left: 10px;
+  }
+  .page-link {
+    font-weight: 600;
+    width: fit-content;
+    letter-spacing: 0.3px;
+    &:hover {
+      box-shadow: transparent 0px -1px 0px 0px,
+        rgba(240, 240, 240, 0.3) 0px -1px 0px inset,
+        rgb(63, 156, 53) 0px 2px 12px;
+    }
+  }
+  @media only screen and (max-width: 767px) {
+    padding: 25px;
   }
 `;

@@ -1,6 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import React, { Suspense, useEffect, useState } from "react";
-import LoaderIcon from "./assets/loader-icon.svg";
 import { IConfigData, IConfigDataParams } from "./store/common/types";
 import { HomePage } from "./pages/HomePage";
 import { AppProvider } from "./store/app/context";
@@ -11,12 +10,7 @@ import {
   isMobile as isMobileDevice,
 } from "react-device-detect";
 import { version } from "../package.json";
-import {
-  Constants,
-  Elements,
-  ISectionInfo,
-  Utils,
-} from "react-profile-component";
+import { Constants, ISectionInfo, Utils } from "react-profile-component";
 import { getImage } from "./common/Utils";
 import {
   CMS_SERVER_CONFIG,
@@ -24,8 +18,8 @@ import {
   ENVIRONMENT,
   ROUTES,
 } from "./common/constants";
+import Shimmer from "./components/common/Shimmer";
 
-const { LoaderImg } = Elements;
 const {
   getJsonResponse,
   getPdfBlob,
@@ -219,7 +213,7 @@ function App() {
         },
       }}
     >
-      <Suspense fallback={<LoaderImg isMobile={isMobile} src={LoaderIcon} />}>
+      <Suspense fallback={<Shimmer />}>
         <BrowserRouter>
           <Routes>
             {!hasError &&

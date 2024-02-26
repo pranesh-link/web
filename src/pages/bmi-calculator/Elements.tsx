@@ -9,10 +9,11 @@ const BMICalculatorForm = styled(Form)`
   top: 0;
   bottom: 0;
   padding-bottom: 30px;
-  overflow-y: scroll;
   background: #faf9f6;
   padding: 30px 15px;
   align-items: center;
+  overflow-y: scroll;
+
   input {
     border: 2px solid rgba(62, 62, 62, 0.45);
     max-width: 200px;
