@@ -1,5 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import React, { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useState, lazy } from "react";
 import { IConfigData, IConfigDataParams } from "./store/common/types";
 import { HomePage } from "./pages/HomePage";
 import { AppProvider } from "./store/app/context";
@@ -47,7 +47,13 @@ const DEFAULT_CONFIG_DATA: IConfigData = {
     ],
   },
   appConfig: {
+    notFoundPage: {
+      title: "",
+    },
+    labels: {},
     homepage: {
+      title: "",
+      pages: [],
       profileRedirectDelay: 2,
     },
     pwa: {
@@ -187,16 +193,20 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [retry]);
 
-  const ProfilePageComponent = React.lazy(
+  const ProfilePageComponent = lazy(
     () => import("./pages/profile/ProfilePage")
   );
 
-  const MaintenancePageComponent = React.lazy(
+  const MaintenancePageComponent = lazy(
     () => import("./pages/maintenance/MaintenancePage")
   );
 
-  const BMICalculatorPageComponent = React.lazy(
+  const BMICalculatorPageComponent = lazy(
     () => import("./pages/bmi-calculator/BMICalculatorPage")
+  );
+
+  const NotFoundPageComponent = lazy(
+    () => import("./pages/not-found/NotFoundPage")
   );
 
   return (
@@ -267,6 +277,14 @@ function App() {
                   element={
                     <>
                       <BMICalculatorPageComponent />
+                    </>
+                  }
+                />
+                <Route
+                  path="*"
+                  element={
+                    <>
+                      <NotFoundPageComponent />
                     </>
                   }
                 />
