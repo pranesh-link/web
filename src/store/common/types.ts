@@ -52,8 +52,13 @@ interface IPWAConfig {
   os: string[];
 }
 
+interface INotFoundPageConfig {
+  title: string;
+}
 export interface IAppConfig {
   homepage: IHomePageConfig;
+  notFoundPage: INotFoundPageConfig;
+  labels: Record<string, string>;
   pwa: IPWAConfig;
   preloadSrcList: IPreloadSrc[];
 }

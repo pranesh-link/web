@@ -95,7 +95,6 @@ const HomePageWrapper = styled(FlexBoxSection)`
   }
   .tools {
     color: #3f9c35;
-    font-style: italic;
     font-size: 18px;
     margin-left: 10px;
   }
