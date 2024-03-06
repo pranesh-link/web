@@ -5,11 +5,9 @@ import React, {
   useContext,
   useLayoutEffect,
 } from "react";
-import usePWA from "react-pwa-install-prompt";
 import styled from "styled-components";
 import { IConfigDataParams } from "../../store/common/types";
 import {
-  PWABanner,
   Profile,
   Elements,
   Constants,
@@ -76,11 +74,9 @@ const ProfilePage = (props: ProfilePageProps) => {
   const queryParams = new URLSearchParams(window.location.search);
   const isMock = queryParams.get("demo");
   const { browsers, os } = pwaConfig;
-  const { pwa, hasError, isExport, isMobile, profileConfig, retryBaseInfo } =
-    props;
+  const { hasError, isExport, isMobile, profileConfig, retryBaseInfo } = props;
   const [retry, setRetry] = useState<boolean>(true);
   const [hasErrorInProfile, setHasErrorInProfile] = useState<boolean>(hasError);
-  const { isInstallPromptSupported, promptInstall } = usePWA();
 
   const [isInstallBannerOpen, setIsInstallBannerOpen] = useState<
     boolean | null
@@ -108,7 +104,8 @@ const ProfilePage = (props: ProfilePageProps) => {
   const onClickInstall = async () => {
     setIsInstallBannerOpen(false);
     setLocalStorage("isInstallBannerOpen", false);
-    await promptInstall();
+    // TODO PWA temporarily disabled
+    // await promptInstall();
   };
 
   useEffect(() => {
@@ -307,7 +304,8 @@ const ProfilePage = (props: ProfilePageProps) => {
               cmsServerConfig: CMS_SERVER_CONFIG,
             }}
           />
-          <PWABanner
+
+          {/* <PWABanner
             pwa={pwa}
             environment={ENVIRONMENT}
             config={{ ...pwaConfig, browserName, osName }}
@@ -323,7 +321,7 @@ const ProfilePage = (props: ProfilePageProps) => {
             }
             ref={pwaRef}
             onClickInstall={onClickInstall}
-          />
+          /> */}
         </Wrapper>
       )}
     </>
